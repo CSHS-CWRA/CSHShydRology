@@ -2,15 +2,15 @@
 This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is http://www.cwra.org/en/branches/affiliates/cshs-a.
 ## Themes
 This package contains functions which are grouped into themes. Currently the themes include:
--Statistical hydrology (trend detection, data screening, frequency analysis, regionalization)
-- Basic data manipulations (input/conversion/adapter functions, missing data infilling)
-- Visualization (data visualization, standardized plotting functions)
-- Spatial hydrology (basin delineation, landscape data analysis, working with GIS)
-- Streamflow measurement analysis (rating curve analysis, velocity profiles, naturalization)
+- Statistical hydrology (trend detection, data screening, frequency analysis, regionalization),
+- Basic data manipulations (input/conversion/adapter functions, missing data infilling),
+- Visualization (data visualization, standardized plotting functions),
+- Spatial hydrology (basin delineation, landscape data analysis, working with GIS),
+- Streamflow measurement analysis (rating curve analysis, velocity profiles, naturalization).
 
 Other themes, such as Network design/analysis (homogeneity assessment), and Ecohydrology (fisheries and ecological analysis) will also be added if there is interest.
 
-## Coding standards for hydRology
+## Coding standards
 ### General standards
 The general coding standards are as specified in the Google R coding guide at https://google.github.io/styleguide/Rguide.xml.
 
@@ -19,20 +19,24 @@ Each call to a function outside of this package and the standard set of R functi
 p <- ggplot2::ggplot(mydf,....
 ```
 ### External packages
-To reduce errors, it is a good idea to reduce reliance on other packages as much as is possible. Please check through the functions already referenced in the DESCRIPTION file before adding additional functions. When it is necessary to add a reference to an additional package, please do the following:
+To reduce errors, it is a good idea to reduce reliance on other packages as much as is possible. Please check through the functions already referenced in the **DESCRIPTION** file before adding additional functions. When it is necessary to add a reference to an additional package, please do the following:
 Make the package suggested, rather than required.
 Make a note in the function’s Roxygen documentation that the function uses the package.
 Make sure that the version number of the package is referenced properly.
 When more than one function requires a given package, it can be made a required packages.
 ### Devtools
-To make package development easier, we will use the package devtools, which provides several tools. This package is explained at https://github.com/hadley/devtools.
+To make package development easier, we will use the package **devtools**, which provides several tools. This package is explained at https://github.com/hadley/devtools.
 #### Checking
-The devtools check function will be used check each function for errors in syntax and style. Each function must pass the checks with zero warnings, errors or notes. Note that once you have loaded devtools, the check function can be accessed from a menu or from the build tab in Rstudio. It is also a good idea to 
+The devtools check function will be used check each function for errors in syntax and style. Each function must pass the checks with zero warnings, errors or notes. Note that once you have loaded **devtools**, the check function can be accessed from a menu or from the build tab in Rstudio. It is also a good idea to manually run the **check** function from the command line, i.e. 
+```R
+R CMD check
+```
+as this can catch other problems.
 #### Documentation
-All functions need to be documented using the Roxygen package, which allows you to create the help files and documentation using comments in your function. The package is explained at https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html. Rstudio has a very nice quick reference for Roxygen which you can access with Help|Roxygen Quick Reference.
+All functions need to be documented using the **Roxygen** package, which allows you to create the help files and documentation using comments in your function. The package is explained at https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html. Rstudio has a very nice quick reference for **Roxygen** which you can access with Help|Roxygen Quick Reference.
 Each function must include the name of the authors(s). Please include your email address, and any publications that you want to reference.
-Note that the package itself also has a function. This contains documentation about the package as a whole, as well as settings which are used to create the package NAMESPACE file. Note that this means that the NAMESPACE file should never be edited directly by anyone.
-When the package is compiled and tested, Roxygen will create a .Rd file for each function, the package, and for the included data files. These files should never be edited manually. If you want to check how your .Rd file will look, you can load it into Rstudio, which can render it.
+Note that the package itself also has a function. This contains documentation about the package as a whole, as well as settings which are used to create the package **NAMESPACE** file. Note that this means that the **NAMESPACE** file should _never_ be edited directly by anyone.
+When the package is compiled and tested, **Roxygen** will create a .Rd file for each function, the package, and for the included data files. These files should never be edited manually. If you want to check how your .Rd file will look, you can load it into Rstudio, which can render it.
 #### Vignettes
 Vignettes are long form documentation which can be included in R packages. They can include long descriptions and worked examples, and are very useful to thoroughly explain functions to the users. The creation process is explained at http://r-pkgs.had.co.nz/vignettes.html. Even if you don’t write code, you can contribute to writing vignettes for functions.
 #### Testing
