@@ -2,7 +2,7 @@
 This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is http://www.cwra.org/en/branches/affiliates/cshs-a.
 ## Themes
 This package contains functions which are grouped into themes. Currently the themes include:
-Statistical hydrology (trend detection, data screening, frequency analysis, regionalization)
+-Statistical hydrology (trend detection, data screening, frequency analysis, regionalization)
 - Basic data manipulations (input/conversion/adapter functions, missing data infilling)
 - Visualization (data visualization, standardized plotting functions)
 - Spatial hydrology (basin delineation, landscape data analysis, working with GIS)

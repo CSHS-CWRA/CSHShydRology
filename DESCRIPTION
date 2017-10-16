@@ -1,9 +1,9 @@
-Package: hydRology
+Package: CSHShydRology
 Type: Package
 Title: Canadian hydrological analyses
 Version: 0.0.1
 Date: 2017-10-11
-License: GPL-3
+License: AGPL-3
 LazyData: true
 URL: https://github.com/CSHS-hydRology/hydRology
 RoxygenNote: 6.0.1
