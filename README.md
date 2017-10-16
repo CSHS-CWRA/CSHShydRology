@@ -1,4 +1,4 @@
-# CSHS-hydRology
+# CSHShydRology
 This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is http://www.cwra.org/en/branches/affiliates/cshs-a.
 ## Themes
 This package contains functions which are grouped into themes. Currently the themes include:
@@ -7,6 +7,7 @@ This package contains functions which are grouped into themes. Currently the the
 - Visualization (data visualization, standardized plotting functions)
 - Spatial hydrology (basin delineation, landscape data analysis, working with GIS)
 - Streamflow measurement analysis (rating curve analysis, velocity profiles, naturalization)
+
 Other themes, such as Network design/analysis (homogeneity assessment), and Ecohydrology (fisheries and ecological analysis) will also be added if there is interest.
 
 ## Coding standards for hydRology
