@@ -1,2 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^CONTRIBUTING.md$
+^CODE_OF_CONDUCT.md$
+.github
