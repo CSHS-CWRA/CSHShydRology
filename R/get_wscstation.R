@@ -37,25 +37,28 @@
 #'  
 #' @examples
 #' \dontrun{s_info <- get_wscstation("05BB001")}
-#' 
-#' 
-#' 
-HYDAT_list<-data(HYDAT_list)
-get_wscstation <- function (stnID, stn=HYDAT_list) {
+ 
+
+get_wscstation <- function (stnID) {
   
-  rhbn <-NULL
-  stninfo <-stn[stn$Station==stnID,]
+  data("HYDAT_list", envir = environment())
+  stn <- HYDAT_list
+  rhbn <- NULL
+  stninfo <- stn[stn$Station==stnID,]
   
   if(length(stninfo[,1])==0) {
    print(paste("WSC Station ",stnID," not found"))
    return(stnID) 
   } 
 
-    if(stninfo$RHBN==TRUE) (rhbn="*" )
-    stninfo[21] <-paste(stninfo[1]," - ",stninfo[2], " - ", stninfo[4], rhbn, sep="")
-    names (stninfo) [21] <-"Station_lname"
-    return (stninfo)
+    if(stninfo$RHBN == TRUE) {
+      rhbn <- "*" 
     }
+
+  stninfo[21] <- paste(stninfo[1]," - ",stninfo[2], " - ", stninfo[4], rhbn, sep = "")
+  names (stninfo) [21] <- "Station_lname"
+  return (stninfo)
+}
 
   
   

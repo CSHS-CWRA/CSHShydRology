@@ -2,12 +2,12 @@
 % Please edit documentation in R/raster_qa.R
 \name{raster_qa}
 \alias{raster_qa}
-\title{Raster pot with WSC quality flags}
+\title{Raster plot with WSC quality flags}
 \usage{
 raster_qa(dframe)
 }
 \arguments{
-\item{dframe}{- a datafile from water survey [read.wsc]}
+\item{dfile}{- a data frane from WSC. Read in using \code{read_wsc}.}
 }
 \description{
 {
@@ -19,7 +19,7 @@ E (Estimated) red
 }
 }
 \examples{
-\dontrun{qaplot <-raster_qa("05AA008_Daily_flow_ts")}
+\dontrun{qaplot <-raster_qa(05AA008_Daily_flow_ts)}
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>

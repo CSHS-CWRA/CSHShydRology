@@ -1,4 +1,4 @@
-#' Raster pot with WSC quality flags
+#' Raster plot with WSC quality flags
 #' 
 #' @description {
 #' Produces a raster plot: years against day of year, showing all the data flags
@@ -7,7 +7,7 @@
 #' D (Dry)  yellow
 #' E (Estimated) red
 #'}
-#' @param dframe - a datafile from water survey [read.wsc]
+#' @param dfile - a data frane from WSC. Read in using \code{read_wsc}.
 
 
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
@@ -19,30 +19,22 @@
 #' 
 #' 
 #' @examples
-#' \dontrun{qaplot <-raster_qa("05AA008_Daily_flow_ts")}
-
-
-###### librarys attached
-
+#' \dontrun{qaplot <-raster_qa(05AA008_Daily_flow_ts)}
 
 raster_qa <- function( dframe) {
-
-
   ##### Fixed labels and text strings
   DOY <- "Day of Year"
-  ylabelq=expression(paste("Discharge m" ^{3}, "/sec"))
+  ylabelq <- expression(paste("Discharge m" ^{3}, "/sec"))
 
 
   ########################################################  Discharge section
 
-  rastercolours=c("gray90","gray80","gray70","gray60", "gray50", "gray40", "gray30", "gray20", "gray10")
-  qcols=grDevices::colorRampPalette(rastercolours)
-
-
+  rastercolours <- c("gray90","gray80","gray70","gray60", "gray50", "gray40", "gray30", "gray20", "gray10")
+  qcols <- grDevices::colorRampPalette(rastercolours)
 
   station <- as.character(dframe$ID[1])
-  sname<- get_wscstation(station)
-  title=sname$Station_lname
+  sname <- get_wscstation(station)
+  title <- sname$Station_lname
 
   date <-as.Date(dframe$Date,"%Y/%m/%d")
 
@@ -57,13 +49,11 @@ raster_qa <- function( dframe) {
   flag <-array(dim=c(Years,366))
 
   dframe$SYM <-as.character(dframe$SYM)   #############    change flag codes to colours
-  dframe$SYM[dframe$SYM=="A"] <-3
-  dframe$SYM[dframe$SYM=="B"] <-4
-  dframe$SYM[dframe$SYM=="D"] <-7
-  dframe$SYM[dframe$SYM=="E"] <-2
+  dframe$SYM[dframe$SYM=="A"] <- 3
+  dframe$SYM[dframe$SYM=="B"] <- 4
+  dframe$SYM[dframe$SYM=="D"] <- 7
+  dframe$SYM[dframe$SYM=="E"] <- 2
   dframe$SYM <-as.numeric(dframe$SYM)   ##### convert to numbers for plotting colour
-
-  inYear <-array(nYear:mYear)
 
   for (k in 1:length(dframe[,1])) {
 
@@ -72,14 +62,9 @@ raster_qa <- function( dframe) {
     # 1 was no flag, 2 was "A", 3 was "B", 4 was "C", 5 was "D", 6 was "E"
 
   }
-  flag[flag==1] <-NA
-
-  qmax <-max(qdata, na.rm=TRUE)
-  qmin <-min(qdata, na.rm=TRUE)
-
+  flag[flag==1] <- NA
 
   ################################   raster map of daily flows
-
 
   qraster <- raster::flip(raster::raster(qdata, xmn=1,xmx=max(doy, na.rm=TRUE), ymn=min(Year,na.rm=TRUE), 
                                  ymx=max(Year,na.rm=TRUE)), direction='y')
@@ -99,7 +84,7 @@ raster_qa <- function( dframe) {
 
 
   #################################################################  panel one
-  graphics::image(qraster, xlab=DOY, las=1, ylab="", las=1, col=qcols(9))
+  raster::image(qraster, xlab=DOY, las=1, ylab="", las=1, col=qcols(9))
 
   graphics::points(Araster, pch=15, cex=.7, col="green")     ### colours conform to ECData Explorer
   graphics::points(Braster, pch=15, cex=.7, col="cyan")

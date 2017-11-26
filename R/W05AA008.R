@@ -1,4 +1,4 @@
-#' W05AB
+#' W05AA008
 #' 
 #' The files contains a dataframe produced from read_wsc containing station data
 #' 
@@ -13,3 +13,4 @@
 #' }
 #' 
 "W05AA008"
+NULL

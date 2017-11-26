@@ -7,7 +7,7 @@
 doys(Date)
 }
 \arguments{
-\item{Date}{an array as.Date}
+\item{{Date}}{{an array as.Date}}
 }
 \value{
 a dataframe with different format dates

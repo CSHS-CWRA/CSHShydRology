@@ -1,9 +1,7 @@
 #' Station information for HYDAT as of 2016-10-16 release of ECDataExplorer
 #' 
-#' The file contains 20 fields of metadata for each station from HYDAT
-#' 
+#' @description The file contains 20 fields of metadata for each station from HYDAT
 #' @format a dateframe with 7791 rows and 20 columns of metadata
-#' @source 2016-10-16 release of ECDataExplorer
 #' \itemize{
 #' \item	 {Station}  {StationID}
 #' \item	 {StationName} {Station Name}
@@ -26,5 +24,6 @@
 #' \item	 {Datum} {if TRUE/Yes is in the reference hydrologic basin network}
 #' \item	 {Operator} {if TRUE/Yes is in the reference hydrologic basin network}
 #' }
-#' 
+#' @source 2016-10-16 release of ECDataExplorer
 "HYDAT_list"
+NULL

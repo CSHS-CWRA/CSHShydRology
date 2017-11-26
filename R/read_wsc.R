@@ -16,7 +16,7 @@
 #' 
 
   read_wsc <- function(filename) {
-  mdata <- utils::read.csv(filename)
+  mdata <- utils::read.csv(filename, header= TRUE, stringsAsFactors = FALSE)
   mdata$Date <-as.Date(mdata$Date, format="%Y/%m/%d")
   cut <- length(mdata[,1])-2
   mdata <- mdata[1:cut,]

@@ -3,7 +3,7 @@
 \docType{data}
 \name{W05AA008}
 \alias{W05AA008}
-\title{W05AB}
+\title{W05AA008}
 \format{a dateframe with 7791 rows and 20 columns of metadata}
 \source{
 2016-10-16 release of ECDataExplorer
