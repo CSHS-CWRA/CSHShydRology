@@ -22,7 +22,7 @@
 #'
 #Function prepared by VM
 
-PMP<-function(val.max,input.hrs=24,number.of.obs.unit=1,area.km=100,graphs=T){
+PMP<-function(val.max,input.hrs=24,number.of.obs.unit=1,area.km=1,graphs=T){
   
   require(ggplot2)
   require(gridExtra)
