@@ -8,3 +8,9 @@ LazyData: true
 URL: https://github.com/CSHS-hydRology/CSHShydRology
 RoxygenNote: 6.0.1
 Suggests: testthat
+Imports: RSAGA,
+    raster,
+    rgdal,
+    tidyverse,
+    Rcpp
+LinkingTo: Rcpp
