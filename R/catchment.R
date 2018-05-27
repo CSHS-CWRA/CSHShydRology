@@ -10,19 +10,24 @@
 #' @param lat A number.  Latitude of outlet in decimal degrees.
 #' @param long A number. Longitude of outlet in decimal degrees.
 #' @param buffsize A number, the buffer (m) around catchment outlet to find location on digital stream network.
-#' @param crs A number.  The EPSG coordinate system number for the DEM and the output See \url{.
-#' @param outname Character.  The name for the output shapefile.
-#' @param fillsinks Boolean, default is TRUE, using the Fill Sinks XXL method.
+#' @param crs A number.  The EPSG coordinate system number for the DEM and the output.
+#' @param outname A character string.  The name for the output shapefile.
+#' @param fillsinks Boolean.  Should sinks be filled?  Default is TRUE.
+#' @param sinkmethod A character string. SAGA method for sink filling, options are \code{"planchon.darboux.2001"}, \code{"wang.liu.2006"}, or \code{"xxl.wang.liu.2006"} (default).
+#' @param minslope A number.  Minimum slope angle preserved during sink filling, default is 0.01.
 #' @param saga.env Saga environment object.  Default is to let saga find it on its own.
-#' @return A SpatialPolygonsDataFrame and a shapefile in yjr working directory.
+#' @return SpatialPolygonsDataFrame and a shapefile in working directory.
 #' @export
-catchment <- function(dem, lat, long, 
-                      buffsize, crs, 
-                      outname, fillsinks = T, saga.env = rsaga.env()){
-  library(RSAGA)
-  library(raster)
-  library(rgdal)
-  
+catchment <- function(dem, 
+                      lat, 
+                      long, 
+                      buffsize = 100, 
+                      crs, 
+                      outname, 
+                      fillsinks = T,
+                      sinkmethod = 'xxl.wang.liu.2006',
+                      minslope = 0.01,
+                      saga.env = rsaga.env()){
   #make crs string
   crs <- paste0("+init=epsg:", crs)
   
@@ -30,16 +35,26 @@ catchment <- function(dem, lat, long,
   system('mkdir scratch')
   
   #put the dem object in there
-  raster::writeRaster(dem,"./scratch/dem.sdat",format="SAGA",NAflag=-9999, overwrite=T)
+  raster::writeRaster(dem,"./scratch/dem.sdat",
+                      format = "SAGA",
+                      NAflag = -9999, 
+                      overwrite = T)
   
   #if you don't need to fill sinks, you can save a fair bit of processing time
   if (fillsinks == T) {     #fill sinks
-    RSAGA::rsaga.fill.sinks("./scratch/dem.sgrd", './scratch/demfilled.sgrd', method = "xxl.wang.liu.2006", env = saga.env)
+    RSAGA::rsaga.fill.sinks("./scratch/dem.sgrd", './scratch/demfilled.sgrd', 
+                            method = sinkmethod,
+                            minslope = minslope,
+                            env = saga.env)
     #calculate catchment area grid from filled dem
-    RSAGA::rsaga.topdown.processing('./scratch/demfilled.sgrd', out.carea = './scratch/catchment_area.sgrd', env = saga.env)
+    RSAGA::rsaga.topdown.processing('./scratch/demfilled.sgrd', 
+                                    out.carea = './scratch/catchment_area.sgrd', 
+                                    env = saga.env)
   } else {
     #calculate catchment area grid direct from dem
-    RSAGA::rsaga.topdown.processing("./scratch/dem.sgrd", out.carea = './scratch/catchment_area.sgrd', env = saga.env)
+    RSAGA::rsaga.topdown.processing("./scratch/dem.sgrd", 
+                                    out.carea = './scratch/catchment_area.sgrd', 
+                                    env = saga.env)
   }
   
   # make the base data frame, x is longitude and y is latitude

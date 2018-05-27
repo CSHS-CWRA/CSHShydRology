@@ -4,7 +4,8 @@
 \alias{catchment}
 \title{Delineate a watershed}
 \usage{
-catchment(dem, lat, long, buffsize, crs, outname, fillsinks = T,
+catchment(dem, lat, long, buffsize = 100, crs, outname, fillsinks = T,
+  sinkmethod = "xxl.wang.liu.2006", minslope = 0.01,
   saga.env = rsaga.env())
 }
 \arguments{
@@ -16,14 +17,20 @@ catchment(dem, lat, long, buffsize, crs, outname, fillsinks = T,
 
 \item{buffsize}{A number, the buffer (m) around catchment outlet to find location on digital stream network.}
 
-\item{outname}{Character.  The name for the output shapefile.}
+\item{crs}{A number.  The EPSG coordinate system number for the DEM and the output.}
 
-\item{fillsinks}{Boolean, default is TRUE, using the Fill Sinks XXL method.}
+\item{outname}{A character string.  The name for the output shapefile.}
+
+\item{fillsinks}{Boolean.  Should sinks be filled?  Default is TRUE.}
+
+\item{sinkmethod}{A character string. SAGA method for sink filling, options are \code{"planchon.darboux.2001"}, \code{"wang.liu.2006"}, or \code{"xxl.wang.liu.2006"} (default).}
+
+\item{minslope}{A number.  Minimum slope angle preserved during sink filling, default is 0.01.}
 
 \item{saga.env}{Saga environment object.  Default is to let saga find it on its own.}
 }
 \value{
-A SpatialPolygonsDataFrame and a shapefile in yjr working directory.
+SpatialPolygonsDataFrame and a shapefile in working directory.
 }
 \description{
 Delineate a watershed
