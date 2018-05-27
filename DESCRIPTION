@@ -12,5 +12,8 @@ Imports: RSAGA,
     raster,
     rgdal,
     tidyverse,
-    Rcpp
+    Rcpp,
+    scales,
+    ggplot2,
+    lmomco
 LinkingTo: Rcpp

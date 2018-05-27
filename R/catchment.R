@@ -17,6 +17,9 @@
 #' @param minslope A number.  Minimum slope angle preserved during sink filling, default is 0.01.
 #' @param saga.env Saga environment object.  Default is to let saga find it on its own.
 #' @return SpatialPolygonsDataFrame and a shapefile in working directory.
+#' @import raster
+#' @import rgdal
+#' @import RSAGA
 #' @export
 catchment <- function(dem, 
                       lat, 
