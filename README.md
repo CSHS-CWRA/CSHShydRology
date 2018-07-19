@@ -1,4 +1,21 @@
+[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Travis build status](https://travis-ci.org/CSHS-CWRA/CSHShydRology.svg?branch=master)](https://travis-ci.org/CSHS-CWRA/CSHShydRology)
+
 # CSHShydRology
+
+## Installing this package
+You can download the complete package, as well as the manual .pdf by clicking on **releases**. However, you can download and install the most up-to-date version directly from this repository. The procedure is
+1. Install the package "devtools" - you only have to do this once. Note that this will also install several dependancies
+2. Load the devtools library
+3. Install the package.
+
+The commands are:
+``` R
+install.packages("devtools")
+library(devtools)
+install_github("CSHS-hydRology/CSHS-hydRology")
+```
+
+## What is CSHS Hydrology?
 This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is http://www.cwra.org/en/branches/affiliates/cshs-a.
 ## Themes
 This package contains functions which are grouped into themes. Currently the themes include:
@@ -49,18 +66,7 @@ Each dataset needs to be documented in the same way as a function. The creation 
 ## Working with GitHub
 There is a lot of information available on using git and GitHub in R. The best starting point is https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN which shows how to integrate git and GitHub with RStudio.
 
-### Installing this package
-You can download the complete package, as well as the manual .pdf by clicking on **releases**. However, you can download and install the most up-to-date version directly from this repository. The procedure is
-1. Install the package "devtools" - you only have to do this once. Note that this will also install several dependancies
-2. Load the devtools library
-3. Install the package.
 
-The commands are:
-``` R
-install.packages("devtools")
-library(devtools)
-install_github("CSHS-CWRA/CSHShydRology")
-```
 
 
 

@@ -1,11 +1,17 @@
-Package: CSHShydRology
 Type: Package
+Package: CSHShydRology
 Title: Canadian hydrological analyses
 Version: 0.0.1
 Date: 2017-10-11
-License: AGPL-3
-LazyData: true
+Authors@R: c(person("Kevin", "Shook", email = "Kevin.Shook@usask.ca", role = c("aut", "cre")),
+             person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("aut"))
+             )
+Description: A collection of user submitted functions to aid in the analysis of hydrological data.
+License: AGPL-3 | file LICENSE
 URL: https://github.com/CSHS-hydRology/CSHShydRology
+Suggests: 
+    testthat
+LazyData: true
 RoxygenNote: 6.0.1
 Suggests: testthat
 Imports: RSAGA,
@@ -17,3 +23,4 @@ Imports: RSAGA,
     ggplot2,
     lmomco
 LinkingTo: Rcpp
+

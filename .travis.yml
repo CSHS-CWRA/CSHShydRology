@@ -1,0 +1,26 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      r: devel
+
+    - os: linux
+      dist: trusty
+      r: release
+
+  allow_failures:
+    - os: linux
+      dist: trusty
+      r: devel
+
+
+language: R
+sudo: false
+cache: packages
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
