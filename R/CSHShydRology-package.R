@@ -1,11 +1,32 @@
 #' @title Functions for Canadian hydrological analyses
 #' @docType package
-#' @name CSHS-hydRology-package
+#' @name CSHShydRology-package
 #' 
-#' @description An R package collecting useful functions for hydrologic analysis
-
+#' @description This package is intended for the use of hydrologists, particularly those in Canada. The package will contain functions
+#' which focus on the use of Canadian data sets, such as those from Environment Canada. The package will also contain functions which
+#' are suited to Canadian hydrology, such as the important cold-region hydrological processes. Finally, the package will also contain
+#' functions which work with Canadian hydrological models, such as Raven, CRHM, Watflood, and MESH.
+#' 
+#' This packages has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) \url{https://cwra.org/en/branches/affiliates/cshs-a}
+#' which is an affiliated society of the Canadian Water Resources Association (CWRA) \url{cwra.org}.
+#' 
+#' The \pkg{CSHShydRology} will contain functions grouped into several themes, including:
+#' \describe{
+#' \item{Statistical hydrology}{trend detection, data screening, frequency analysis, regionalization}
+#' \item{Basic data manipulations}{input/conversion/adapter functions, missing data infilling}
+#' \item{Visualization}{data visualization, standardized plotting functions}
+#' \item{Spatial hydrology}{basin delineation, landscape data analysis, working with GIS}
+#' \item{Streamflow measurement analysis}{rating curve analysis, velocity profiles, naturalization}
+#' \item{Network design/analysis}{homogeneity assessment}
+#' \item{Ecohydrology}{fisheries and ecological analysis}
+#' \item{Wrappers/unwrappers}{between other packages and \pkg{CSHShydRology}}
+#'}
 #' @references
 #' To cite \pkg{CSHS-hydRology} in publications, use the command \code{citation("CSHS-hydRology")} to get the current version of the citation.\cr
-
+#' @import lubridate stats
+#' @importFrom graphics axis legend par plot points polygon
+#' @importFrom Kendall MannKendall
+#' @importFrom fields image.plot
+#' @importFrom timeDate dayOfYear
+#' @importFrom plotrix radial.plot
 NULL
-#' @import lubridate

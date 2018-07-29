@@ -1,15 +1,17 @@
-#' W05AB
+#' W05AA008
 #' 
-#' The files contains a dataframe produced from read_wsc containing station data
+#' A dataframe produced Water Survey of Canada (WSC) daily flows for station W05AA008, CROWSNEST RIVER AT FRANK Alberta.
 #' 
-#' @format a dateframe with 7791 rows and 20 columns of metadata
-#' @source 2016-10-16 release of ECDataExplorer
+#' @format A dateframe with 25252 rows and 5 columns spanning the period 1910-2013.
+#' @source Water Survey of Canada
+#' 
+#' Variables: 
 #' \itemize{
-#' \item	{ID}  {StationID}
-#' \item	{PARAM} {Parameter 1=Flow, 2=Level}
-#' \item	{Date} {in date format}
-#' \item	{Flow} {Flow in m3/sec}
-#' \item	{SYM} {Water Survey FLags A, B, D, E }
+#' \item{ID} {StationID}
+#' \item{PARAM}{Parameter 1=Flow, 2=Level}
+#' \item{Date}{\R date}
+#' \item{Flow}{Daily flow in  m\eqn{^3}{^3}/s}
+#' \item{SYM}{Water Survey FLags A, B, D, E }
 #' }
 #' 
 "W05AA008"
