@@ -40,7 +40,6 @@
 #' 	}
 
 #' @export
-#' @seealso \code{\link{flow_polar_plot}} 
 #' @examples
 #' \dontrun{
 #' # fails due to missing data in both periods
