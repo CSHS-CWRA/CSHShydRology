@@ -9,10 +9,17 @@ Authors@R: c(person("Kevin", "Shook", email = "Kevin.Shook@usask.ca", role = c("
 Description: A collection of user submitted functions to aid in the analysis of hydrological data.
 License: AGPL-3 | file LICENSE
 URL: https://github.com/CSHS-hydRology/CSHShydRology
-Depends: R (>= 3.1)
-Imports: lubridate(>= 1.3), fields, Kendall, timeDate, plotrix
+Depends: 
+    R (>= 3.1)
+Imports: 
+    fields,
+    Kendall,
+    lubridate (>= 1.3),
+    plotrix,
+    timeDate
 Suggests: 
-    testthat, knitr
+    knitr,
+    testthat
+VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 6.0.1.9000
-VignetteBuilder: knitr
