@@ -22,10 +22,11 @@
 #' @export
 
 #' @examples
-#' \dontrun{
-#' test <-booth_plot(events, threshold, title, type='mag')
-#'
-#' test <-booth_plot(events, threshold, title, type='vol')}
+#' threshold <- 0.1 * max(W05AA008$Flow)  # arbitrary threshold
+#' peaks <- get_peaks(W05AA008, threshold)
+#' events <- peaks$POTevents
+#' booth_plot(events, threshold, title = "05AA008", type='mag')
+#' booth_plot(events, threshold, title = "05AA008", type='vol')
 #'
 #
 ############################################
@@ -38,30 +39,26 @@ booth_plot <- function(events, threshold, title, type = "mag", colour1 = 1, colo
   ocol <- c("black", "blue", "darkgreen", "black", "blue", "darkgreen", "black", "blue", "darkgreen", "black", "blue", "darkgreen")
   mcol <- c("gray10", "blue", "slateblue3", "slateblue4", "green", "cyan", "green4", "darkorange", "red", "darkorange4", "gray70", "gray40")
 
-  if (length(colour1 == 12)) {
+  if (length(colour1) == 12) {
     ocol <- colour1
   } else {
     print(paste("length of colour1 is", length(colour1), " Using defaults"))
   }
 
-  if (length(colour2 == 12)) {
+  if (length(colour2) == 12) {
     mcol <- colour2
   } else {
-    print(paste("length of colour1 is", length(colour2), " Using defaults"))
+    print(paste("length of colour2 is", length(colour2), " Using defaults"))
   }
 
   xlabel <- "Duration (days)"
   xlines <- c(7, 14, 21, 60)
   xlimits <- c(1, 350)
 
-  vlabel <- expression(paste("Event volume km"^{
-    3
-  }))
+  vlabel <- expression(paste("Event volume km"^{3}))
   vlines <- c(.01, .02, .05, .1, .2, .5, 1., 2., 5., 10., 20., 50., 100., 200., 500., 1000., 2000., 5000., 10000.)
 
-  ylabel <- expression(paste("Mean Daily Discharge m"^{
-    3
-  }, "/sec"))
+  ylabel <- expression(paste("Mean Daily Discharge m"^{3}, "/sec"))
   ylines <- c(.1, .2, .5, 1., 2., 5., 10., 20., 50., 100., 200., 500., 1000., 2000., 5000., 10000.)
 
   month <- as.numeric(format(events$st_date, "%m"))

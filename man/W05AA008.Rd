@@ -21,6 +21,6 @@ Variables:
 W05AA008
 }
 \description{
-A dataframe produced Water Survey of Canada (WSC) daily flows for station W05AA008, CROWSNEST RIVER AT FRANK Alberta.
+A dataframe of Water Survey of Canada (WSC) daily flows for station W05AA008, CROWSNEST RIVER AT FRANK Alberta.
 }
 \keyword{datasets}

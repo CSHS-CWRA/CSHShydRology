@@ -34,9 +34,8 @@
 #' Whitfield, P.H., and J.W. Pomeroy. 2016. Changes to flood peaks of a mountain river: implications
 #' for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Processes 30:4657-73. doi:
 #' 10.1002/hyp.10957.
-#'
 #' @export
-#'
+#' @seealso \code{\link{booth_plot}}
 #' @examples
 #' threshold <- 0.9*max(W05AA008$Flow)  # arbitrary threshold
 #' my_peaks <- get_peaks(W05AA008, threshold)

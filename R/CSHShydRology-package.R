@@ -29,4 +29,5 @@
 #' @importFrom fields image.plot
 #' @importFrom timeDate dayOfYear
 #' @importFrom plotrix radial.plot
+#' @importFrom utils data
 NULL

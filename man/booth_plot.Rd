@@ -2,7 +2,7 @@
 % Please edit documentation in R/booth_plot.R
 \name{booth_plot}
 \alias{booth_plot}
-\title{Create a Booth plot}
+\title{Create a Booth plot of peaks over a threshold}
 \usage{
 booth_plot(events, threshold, title, type = "mag", colour1 = 1,
   colour2 = 1)
@@ -21,15 +21,15 @@ booth_plot(events, threshold, title, type = "mag", colour1 = 1,
 \item{colour2}{A vector of length 12 with fill colours of rings or symbols. Defaults to those used by Booth.}
 }
 \description{
-A Booth plot is a plot of peaks over threhold flood events with duration on the horizontal and
+A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
 either magnitude (default) or volume on the vertical axis
 }
 \examples{
-\dontrun{
-test <-booth_plot(events, threshold, title, type='mag')
-
-test <-booth_plot(events, threshold, title, type='vol')}
-
+threshold <- 0.1 * max(W05AA008$Flow)  # arbitrary threshold
+peaks <- get_peaks(W05AA008, threshold)
+events <- peaks$POTevents
+booth_plot(events, threshold, title = "05AA008", type='mag')
+booth_plot(events, threshold, title = "05AA008", type='vol')
 }
 \references{
 Booth, E.G., Mount, J.F., Viers, J.H. 2006. Hydrologic Variability of the Cosumnes River Floodplain.
@@ -38,4 +38,7 @@ San Francisco Estuary & Watershed Science 4:21.
 Whitfield, P.H., and J.W. Pomeroy. 2016. Changes to flood peaks of a mountain river: implications
 for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Processes 30:4657-73. doi:
 10.1002/hyp.10957.
+}
+\seealso{
+\code{\link{get_peaks}}
 }

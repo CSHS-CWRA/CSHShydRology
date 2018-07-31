@@ -1,0 +1,177 @@
+---
+title: "General demo of functions"
+author: "Whitfield"
+date: "June 17, 2018"
+output: rmarkdown::html_vignette
+
+vignette: >
+  %\VignetteIndexEntry{Demo Pauls Functions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(CSHShydRology)
+HYDAT_list <- HYDAT_list
+fig_file <- system.file("extdata", "04JD005_h.PNG", package = "CSHShydRology")
+
+```
+
+## Gentle demonstration of Paul's hydRology functions
+
+Vignettes are a good way to see how other use code or how they intended code to be used. It is not always obvious 
+what the author intended ... they understood how they intended the code to operate. It is pretty easy to outsmart yourself 
+in this; even easier to do it to others unintentionally. I have a long list of war stories from packages that I have used
+and where I found too much information was left out.  Sometimes that was the fault of the developer, and in other cases I was 
+dabbling into things where I did not have full command of the lingo.
+
+First, I need to explain that research code is different from production code.  In production code, we are seeking to get
+to an answer that we generally understand how it gets derived and that method is tested and accepted. In production code we expect that asking for an analysis will provide both the analysis and perhaps graphical output; here the focus is on the analalytical process not the result.
+
+In research code the functions are not so integrated. Research functions usually does one action, so analysis is generally a sequence of actions. That will be evident in this vignette.
+
+In this demonstration, I chose a station at random from ECDataExplorer.  ECDataExplorer is the frontend to the Hydat database 
+that I use in my practice.  I make this choice over other perhaps simpler methods because most of my studies use stations that 
+are selected base on attributes that can be found in ECDataExplorer, and I download the datafiles to a directory from 
+which they can be read. In research practice, one needs to ensure that all analysis is repeatable so I choose 
+to avoid dynamic access to databases as they will change over time, and often our projects take several years 
+to complete. I simply do not want to be chasing a small changes in a result that occurred because a bit more data 
+is added to the database.
+
+So, the station I chose 04JD005 PAGAWACHUAN RIVER AT HIGHWAY NO. 11 is in Northern Ontario. I downloaded from ECDataExplorer
+selecting Flow, Daily, and Timeseries. It has continuous operation and both flow and level data and is unregulated. 
+The file obtained is "04JD005_Daily_Flow_ts.csv" and stored in a directory "c:/R_data"
+
+The first thing is to access the data. I define the directory and the file name to save a lot of typing. Then, I  start with
+base R to read the file.
+
+```{r, echo=TRUE}
+mfile <- system.file("extdata", "04JD005_Daily_Flow_ts.csv", package = "CSHShydRology")
+mdata <- read.csv(mfile)
+head(mdata)
+str(mdata)
+length(mdata$ID)
+unique(mdata$ID)
+```
+
+Successful, sort of.  Three of the variables are factors and everything looks fine, but really there are two problems. 
+The first is in mdata$ID where "DISCLAIMER" pops up.  This is because Water Survey appends three lines to each file to warn the
+user about legal stuff.  The second is that Date is a factor and not an acutal date.  So we can use a different function from the CSHShydRology package:
+
+```{r, echo=TRUE}
+mdata <- read_ECDE_flows(mfile)
+head(mdata)
+str(mdata)
+length(mdata$ID)
+unique(mdata$ID)
+```
+
+The three lines that incude the DISCLAIMER are gone but a reminder still exists.  mdata$Date is now a Date and not a factor.  This is more useful form of the dataframe.  
+
+ECDataExplorer lets you see a hydrograph of the data:
+
+```{r, fig.width=6, fig.height=3}
+
+knitr::include_graphics(fig_file)
+```
+
+  
+  Which is pretty typically constructed hydrograph. The colours show the presence of some quality flags, but I 
+  find this form too time compressed.
+  
+  So I use a function to look at the data. First a raster plot of the data.
+
+
+```{r, echo=TRUE, fig.width=6, fig.height=5}
+md <- flow_raster(mdata)
+```
+
+
+Then a qa plot that shows the flags.
+
+```{r, echo=TRUE,fig.width=6, fig.height=5}
+md <- flow_raster_qa(mdata)
+```
+
+Lots of ice cover and a couple of year with long periods of estimated flows.  I am troulbed with 1999 
+where there seems to be no ice cover. An anlyst might want to query this with Water Survey of Canada.
+
+
+
+Now we can look at other things about the data. 
+
+First a regime plot, and then a flow duration curve. First since we are going to be needing day of year or day of water year we create a dataframe that contains those using the dates in mdata.  THese functions are more investigative and let the user
+assign their own titles.  For here, I get one using the function get_station to retrieve the information from HYDAT_list.  
+
+For the regime plot wyear=1 sets it to a calendar year, 10 to water year (October 1 start).  
+
+```{r, echo=TRUE,fig.width=6, fig.height=5}
+title <- get_wscstation("04JD005", stn = HYDAT_list)
+title <- title[21]
+mp <- regime_plot(mdata$Date, mdata$Flow, title, wyear = 1)
+mp <- regime_plot(mdata$Date, mdata$Flow, title, wyear = 10)
+
+fdc <- fdcurve(mdata$Flow, title)
+```
+
+
+# Leith and Whitfield (1998) and Whitfield and Cannon (2000a &b)
+
+In the 1990's there were starting to be a few papers on impacts of climate change on hydrology.  Rory Leith and I 
+spent a long time looking into how one could show differences is seasonal patterns as in much of BC mean, minimum, 
+and maximum flows were not changing.  We could see shifts in monthly data that were not significant and daily flows 
+were simply too noisy so we implemented a method of binning days together so we could compare a period of days from
+one decade to another.  This is implemented in the binned_MannWhitney function.  Alex Cannon and I then applied 
+that method to all of Canada and my students and I later applied it to Arctic temepratures, Canadian climate date, 
+and New Mexico streamflow. Significant increases (decreases) are shown by blue (red) symbols.
+
+
+```{r, echo=TRUE, fig.width=4, fig.height=5}
+
+range1 <- c(1980, 1989)
+range2 <- c(1990, 1999)
+mplot <- binned_MannWhitney(mdata, step = 5, range1, range2, ptest = 0.05)
+str(mplot)
+scol <- c("red", NA, "blue")
+ylims <- c(0, max(mplot$series$period1, mplot$series$period2))
+plot(mplot$series$period, mplot$series$period1, pch = 21, col = "blue", type = "b", ylim = ylims, main = mplot$StationID)
+points(mplot$series$period, mplot$series$period2, pch = 21, col = "green", bg = scol[mplot$series$code], type = "b")
+```
+
+In 1999-2000+ there was a lot of public interest in this topic, as there is today.  One issue was that the public 
+was not always able to grasp the details to see the big picture. So Alex and I created a polar version of the output that
+lets the view see increases and decreases and statistical significance in sort of a cartoon. Red is used for signifi
+
+```{r, echo=TRUE,fig.width=10, fig.height=6}
+
+mp <- polar_plot(mplot)
+```
+
+# scanning for trends
+
+We have also used Mann-Kendall for trend tests. The function raster_trends produces a raster plot of binned data, and does trend test across the entire period of years, and across bins of days of years. In the first case step=5 and in the second step=11
+
+```{r, echo=TRUE, fig.width=6, fig.height=6}
+
+tr <- flow_raster_trend(mdata$Date, mdata$Flow, step = 5, station = "04JD005")
+tr <- flow_raster_trend(mdata$Date, mdata$Flow, step = 11, station = "04JD005")
+```
+
+These results are interesting becuase MannWhitney shows no change but raster_plot that uses Mann_Kendall show two periods with
+significant increases and two with significant decreases presumably due to longer records. Also, the annual minimum flow is showing a significant decrease. In the second case, where step = 11 there is no longer a trend in the minimum.
+
+
+One application is to do this for different river for the same time period. To do that we needs blocks 
+of data for the same time periods. That is where the function cut_block gets used. It take a dataset and returns all records
+between a start and end date.
+
+
+```{r, echo=TRUE, fig.width=6, fig.height=5}
+
+cdata <- cut_block(mdata, "2000/01/01","2010/12/31")
+tr <- flow_raster_trend(cdata$Date, cdata$Flow, step = 11, station = "04JD005")
+```
+

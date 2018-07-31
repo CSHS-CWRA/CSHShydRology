@@ -2,10 +2,10 @@
 % Please edit documentation in R/binned_MannWhitney.R
 \name{binned_MannWhitney}
 \alias{binned_MannWhitney}
-\title{Compares two time periods of data using Mann-Whitney test.}
+\title{Compares two time periods of data using Mann-Whitney test}
 \usage{
 binned_MannWhitney(mdata, step, range1, range2, ptest = 0.05,
-  station_ID = "", station_name = "")
+  station_ID = "", station_name = "", variable = "discharge")
 }
 \arguments{
 \item{mdata}{A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.}
@@ -21,6 +21,8 @@ binned_MannWhitney(mdata, step, range1, range2, ptest = 0.05,
 \item{station_ID}{Optional ID of station.}
 
 \item{station_name}{Optional name of station.}
+
+\item{variable}{Name of variable. Default is \option{discharge}}
 }
 \value{
 Returns a list containing:
@@ -45,8 +47,8 @@ Returns a list containing:
 }
 \description{
 It bins data based upon a bin size, extracting data for two time periods
-and tests for change between two such periods
-result can be passed to polar_plot for visualization
+and tests for change between two such periods. Result can be passed to 
+\code{polar_plot} for visualization
 }
 \examples{
 \dontrun{
@@ -64,6 +66,9 @@ ptest = 0.05, station_ID = "05AA008", station_name= "Crowsnest River at Frank")
 \references{
 Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and
 hydrology in Canada. Canadian Water Resources Journal 25: 19-65.
+}
+\seealso{
+\code{\link{polar_plot}} \code{\link{polar_plot_prep}}
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>

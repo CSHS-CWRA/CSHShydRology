@@ -1,9 +1,8 @@
 #' Compares two time periods of data using Mann-Whitney test.
 #'
 #' It bins data based upon a bin size, extracting data for two time periods
-#' and tests for change between two such periods
-
-#' result can be passed to polar_plot for visualization
+#' and tests for change between two such periods. Result can be passed to 
+#' \code{polar_plot} for visualization
 #'
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #' @references
@@ -18,6 +17,7 @@
 #' @param ptest The significance level. The default is \code{0.05}.
 #' @param station_ID Optional ID of station.
 #' @param station_name Optional name of station.
+#' @param variable Name of variable. Default is \option{disharge}
 #
 #' @return Returns a list containing:
 #' \describe{
@@ -53,7 +53,9 @@
 #' ptest = 0.05, station_ID = "05AA008", station_name= "Crowsnest River at Frank")
 #'
 
-binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05, station_ID ="", station_name = "") {
+binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05, 
+                               station_ID = "", station_name = "", 
+                               variable = "discharge") {
   fail <- FALSE
   mdoy <- doys(mdata$Date)
   doy <- mdoy$doy

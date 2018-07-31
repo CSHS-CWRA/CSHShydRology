@@ -5,7 +5,7 @@
 \title{Plot hydrographs}
 \usage{
 hydrograph_plot(flows = NULL, precip = NULL, prd = NULL,
-  winter_shading = F, range_mult_flow = NULL, range_mult_precip = 1.5,
+  winter_shading = FALSE, range_mult_flow = NULL, range_mult_precip = 1.5,
   flow_labels = NULL, ylabel = "Flow [m3/s]",
   precip_label = "Precipitation [mm]", leg_pos = NULL, leg_box = NULL,
   zero_axis = T, plot_mode = "base")
@@ -18,8 +18,8 @@ hydrograph_plot(flows = NULL, precip = NULL, prd = NULL,
 \item{prd}{period to use in plotting}
 
 \item{winter_shading}{optionally adds a transparent cyan shading for the
-December 1st to March 31st period in each year that is plotted.(default is
-FALSE).}
+December 1st to March 31st period in each year that is plotted. Default is
+\code{FALSE}.}
 
 \item{range_mult_flow}{range multiplier for max value in hydrograph. This is 
 useful in preventing overlap if precip is also plotted. This value should not 
@@ -45,7 +45,7 @@ and leave the background of the legend transparent.}
 
 \item{zero_axis}{fixes the y axis to start exactly at zero (default TRUE). 
 By default, R will plot the values with a
-mall buffer for presentation. Be warned that if this option is set to
+small buffer for presentation. Be warned that if this option is set to
 TRUE, the minimum value is set to zero without checking if any flow values
 are less than zero. This option should not be used for reservoir stage plotting, since
 most reservoir stage is typically reported as an elevation.}
@@ -54,7 +54,7 @@ most reservoir stage is typically reported as an elevation.}
 \option{base} plot type is supported, \option{ggplot} is under construction.}
 }
 \value{
-\item{TRUE}{return TRUE if the function is executed properly}
+Returns \code{TRUE} if the function is executed properly.
 }
 \description{
 Creates a hydrograph plot for simulated, observed, and inflow
@@ -71,29 +71,27 @@ Note that a plot title is purposely omitted in order to allow the automatic
 generation of plot titles.
 }
 \examples{
-\dontrun{
-# example with randomly sampled data
-dd <- seq.Date(as.Date("2010-10-01"),as.Date("2013-09-30"),by=1)
+# example with synthetic random data
+dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"),by = 1)
 x <- abs(rnorm(length(dd)))
-y <- abs(rnorm(length(dd)))*x
-df <- data.frame("Date"=dd,x,y)
+y <- abs(rnorm(length(dd))) * x
+df <- data.frame("Date" = dd, x, y)
 myprd <- "2011-10-01/2012-09-30"
 
-precip <- data.frame("Date"=dd,"precip"=abs(rnorm(length(dd)))*10)
+precip <- data.frame("Date" = dd," precip" = abs(rnorm(length(dd))) * 10)
 
 # basic hydrograph plot
-hydrograph_plot(flows=df,winter_shading=F)
+hydrograph_plot(flows = df, winter_shading = FALSE)
 
-with different labels
-hydrograph_plot(flows=df,winter_shading=F,flow_labels=c("simulated","observed"))
+# with different labels
+hydrograph_plot(flows = df, winter_shading = FALSE, flow_labels = c("simulated", "observed"))
 
 # with a few more options turned on
-hydrograph_plot(flows=df,precip=precip)
+hydrograph_plot(flows = df, precip = precip)
 
 # increase the plot ranges to separate flows and precip; add a legend box
-hydrograph_plot(flows=df,precip=precip,range_mult_flow=1.7,range_mult_precip=2,leg_box=T)
-}
-
+hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
+range_mult_precip = 2, leg_box = TRUE)
 }
 \author{
 Robert Chlumsky <rchlumsk@gmail.com>

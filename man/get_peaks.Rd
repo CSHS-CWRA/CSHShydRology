@@ -51,3 +51,6 @@ Whitfield, P.H., and J.W. Pomeroy. 2016. Changes to flood peaks of a mountain ri
 for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Processes 30:4657-73. doi:
 10.1002/hyp.10957.
 }
+\seealso{
+\code{\link{booth_plot}}
+}

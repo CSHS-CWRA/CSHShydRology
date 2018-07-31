@@ -20,7 +20,6 @@
 #'
 
 #' @examples
-#' data(W05AA008)
 #' flow_raster_qa(W05AA008, "Station W05AA008")
 
 flow_raster_qa <- function(dframe, title = "") {

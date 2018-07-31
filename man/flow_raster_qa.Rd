@@ -2,7 +2,7 @@
 % Please edit documentation in R/flow_raster_qa.R
 \name{flow_raster_qa}
 \alias{flow_raster_qa}
-\title{Raster plot of streamflows with WSC quality flags.}
+\title{Raster plot of streamflows with WSC quality flags}
 \usage{
 flow_raster_qa(dframe, title = "")
 }
@@ -28,7 +28,6 @@ The data flags are:
 }
 }
 \examples{
-data(W05AA008)
 flow_raster_qa(W05AA008, "Station W05AA008")
 }
 \seealso{

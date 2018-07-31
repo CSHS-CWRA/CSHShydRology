@@ -105,3 +105,45 @@ sub_set_Years <- function(years, n) {
   names(result) <- c("position", "label")
   return(result)
 }
+
+#' @title Cuts a block in time from a time series
+#' 
+#' @description Allows the user to select a time period from a longer record. Could be used to
+#' get the same period of time from several stations for comparison.
+#'
+#'
+#' @param dataframe A time series dataframe with a \code{Date} variable
+#' @param st_date Starting date as a string with the format \option{Y/m/d}
+#' @param end_date Ending date as a string with the format \option{Y/m/d}
+#' 
+#' @return Returns a data frame with the same columns as the original data frame
+#' @export
+#' @author Paul Whitfield
+#' @examples 
+#' subset <- cut_block(W05AA008, "2000/01/01", "2010/12/31")
+
+cut_block <- function(dataframe, st_date, end_date) {
+  
+  st_date  <- as.Date(st_date, format = "%Y/%m/%d")
+  if (!st_date >= min(dataframe$Date)) {
+    print(paste("Starting Date",st_date, "is before records are available"))
+    return()
+  }
+  
+  if (!end_date <= max(dataframe$Date)) {
+    print(paste("Ending Date",st_date, "is after records are available"))
+    return()
+  }
+  
+  end_date <- as.Date(end_date, format = "%Y/%m/%d")
+  
+  result1 <- dataframe[dataframe$Date >= st_date,]
+  
+  
+  
+  result <- result1[result1$Date <= end_date,]
+  print(paste("between",st_date,"and", end_date, length(result[,1]), 
+              "records were selected"))
+  
+  return(result)
+}
