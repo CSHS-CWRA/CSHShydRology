@@ -16,7 +16,7 @@ install_github("CSHS-hydRology/CSHS-hydRology")
 ```
 
 ## What is CSHS Hydrology?
-This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is http://www.cwra.org/en/branches/affiliates/cshs-a.
+This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is https://cwra.org/en/affiliates-programs/cshs/.
 ## Themes
 This package contains functions which are grouped into themes. Currently the themes include:
 - Statistical hydrology (trend detection, data screening, frequency analysis, regionalization),
