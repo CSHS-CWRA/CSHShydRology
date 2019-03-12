@@ -1,4 +1,4 @@
-#' Compares two time periods of data using Mann-Whitney test.
+#' Compares two time periods of data using Mann-Whitney test
 #'
 #' It bins data based upon a bin size, extracting data for two time periods
 #' and tests for change between two such periods. Result can be passed to 
@@ -17,7 +17,7 @@
 #' @param ptest The significance level. The default is \code{0.05}.
 #' @param station_ID Optional ID of station.
 #' @param station_name Optional name of station.
-#' @param variable Name of variable. Default is \option{disharge}
+#' @param variable Name of variable. Default is \option{discharge}
 #
 #' @return Returns a list containing:
 #' \describe{
@@ -38,8 +38,8 @@
 #' 	\item{prob}{probability of U for each period}
 #' 	\item{code}{significance codes for each bin}
 #' 	}
-
 #' @export
+#' @seealso \code{\link{polar_plot}} \code{\link{polar_plot_prep}}
 #' @examples
 #' \dontrun{
 #' # fails due to missing data in both periods
@@ -129,10 +129,10 @@ binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05,
   }
 
   series <- data.frame(period, period1, period2, mwu, prob, code)
-  result <- list(station_ID, station_name, step, range1, range2, ptest, fail, binmethod, testmethod, series)
+  result <- list(station_ID, station_name, variable, step, range1, range2, ptest, fail, binmethod, testmethod, series)
 
   names(result) <- c(
-    "StationID", "Station_lname", "bin_width", "range1", "range2",
+    "StationID", "Station_lname", "variable", "bin_width", "range1", "range2",
     "p_used", "fail", "bin_method", "test_method", "series"
   )
 

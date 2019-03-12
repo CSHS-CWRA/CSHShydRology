@@ -3,7 +3,9 @@ Package: CSHShydRology
 Title: Canadian hydrological analyses
 Version: 1.0.0
 Date: 2018-07-31
-Authors@R: c(person("Kevin", "Shook", email = "Kevin.Shook@usask.ca", role = c("aut", "cre")),
+Authors@R: c(person("Kevin", "Shook", email = "Kevin.Shook@usask.ca", role = c("cre")),
+             person("Paul", "Whitfield", email = "paul.h.whitfield@gmail.com", role = c("aut")),
+             person("Robert", "Chlumsky", email = "rchlumsk@gmail.com", role = c("aut")),
              person("Sam", "Albers", email = "sam.albers@gmail.com", role = c("aut"))
              )
 Description: A collection of user submitted functions to aid in the analysis of hydrological data.
@@ -22,4 +24,4 @@ Suggests:
     testthat
 VignetteBuilder: knitr
 LazyData: true
-RoxygenNote: 6.0.1.9000
+RoxygenNote: 6.1.1

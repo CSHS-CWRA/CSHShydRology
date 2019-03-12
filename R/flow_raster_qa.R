@@ -1,4 +1,4 @@
-#' Raster plot of streamflows with WSC quality flags.
+#' Raster plot of streamflows with WSC quality flags
 #'
 #' Produces a raster plot of years x day of year showing the flow data in grayscale
 #' overlain by the Water Survey of Canada quality flags. Colours are consistent with

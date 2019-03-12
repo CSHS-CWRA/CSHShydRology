@@ -1,6 +1,6 @@
-#' Create a Booth plot
+#' Create a Booth plot of peaks over a threshold
 #'
-#' A Booth plot is a plot of peaks over threhold flood events with duration on the horizontal and
+#' A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
 #' either magnitude (default) or volume on the vertical axis
 #'
 #' @param events A data frame of POT events from the function \code{get_peaks}
@@ -18,19 +18,14 @@
 #' for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Processes 30:4657-73. doi:
 #' 10.1002/hyp.10957.
 
-#'
 #' @export
-
+#' @seealso \code{\link{get_peaks}}
 #' @examples
 #' threshold <- 0.1 * max(W05AA008$Flow)  # arbitrary threshold
 #' peaks <- get_peaks(W05AA008, threshold)
 #' events <- peaks$POTevents
 #' booth_plot(events, threshold, title = "05AA008", type='mag')
 #' booth_plot(events, threshold, title = "05AA008", type='vol')
-#'
-#
-############################################
-
 
 booth_plot <- function(events, threshold, title, type = "mag", colour1 = 1, colour2 = 1) {
 

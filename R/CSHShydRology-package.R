@@ -2,9 +2,9 @@
 #' @docType package
 #' @name CSHShydRology-package
 #' 
-#' @description This package is intended for the use of hydrologists, particularly those in Canada. The package will contain functions
+#' @description \pkg{CSHShydRology} is intended for the use of hydrologists, particularly those in Canada. It will contain functions
 #' which focus on the use of Canadian data sets, such as those from Environment Canada. The package will also contain functions which
-#' are suited to Canadian hydrology, such as the important cold-region hydrological processes. Finally, the package will also contain
+#' are suited to Canadian hydrology, such as the important cold-region hydrological processes. \pkg{CSHShydRology} will also contain
 #' functions which work with Canadian hydrological models, such as Raven, CRHM, Watflood, and MESH.
 #' 
 #' This packages has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) \url{https://cwra.org/en/branches/affiliates/cshs-a}
@@ -22,7 +22,7 @@
 #' \item{Wrappers/unwrappers}{between other packages and \pkg{CSHShydRology}}
 #'}
 #' @references
-#' To cite \pkg{CSHS-hydRology} in publications, use the command \code{citation("CSHS-hydRology")} to get the current version of the citation.\cr
+#' To cite \pkg{CSHShydRology} in publications, use the command \code{citation("CSHShydRology")} to get the current version of the citation.\cr
 #' @import lubridate stats
 #' @importFrom graphics axis legend par plot points polygon
 #' @importFrom Kendall MannKendall

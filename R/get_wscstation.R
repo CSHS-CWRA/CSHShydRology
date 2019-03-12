@@ -1,4 +1,5 @@
-#' Reads WSC station information from a data file
+#' Reads station information from a data file produced by ECDE
+
 #' Retrieves station information for an individual Water Survey of Canada site,
 #' adds a text string at position 21 that combines key elements for a title.
 #'

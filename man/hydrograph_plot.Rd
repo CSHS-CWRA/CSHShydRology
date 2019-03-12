@@ -5,10 +5,11 @@
 \title{Plot hydrographs}
 \usage{
 hydrograph_plot(flows = NULL, precip = NULL, prd = NULL,
-  winter_shading = FALSE, range_mult_flow = NULL, range_mult_precip = 1.5,
-  flow_labels = NULL, ylabel = "Flow [m3/s]",
-  precip_label = "Precipitation [mm]", leg_pos = NULL, leg_box = NULL,
-  zero_axis = T, plot_mode = "base")
+  winter_shading = FALSE, range_mult_flow = NULL,
+  range_mult_precip = 1.5, flow_labels = NULL,
+  ylabel = "Flow [m3/s]", precip_label = "Precipitation [mm]",
+  leg_pos = NULL, leg_box = NULL, zero_axis = T,
+  plot_mode = "base")
 }
 \arguments{
 \item{flows}{data frame of flows to plot}

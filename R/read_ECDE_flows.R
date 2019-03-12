@@ -1,4 +1,4 @@
-#' Reads a file of WSC daily flows
+#' Reads a file of WSC daily flows from ECDataExplorer
 
 #' Reads in a file WSC daily flows as returned from the program ECDataExplorer,
 #' and omits the last 3 lines as these contain the data disclaimer.

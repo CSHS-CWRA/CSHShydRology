@@ -4,7 +4,8 @@
 \alias{regime_plot}
 \title{Plots the regime of daily streamflows}
 \usage{
-regime_plot(date, flow, title = "", wyear = 1, colour = TRUE, mx = 1)
+regime_plot(date, flow, title = "", wyear = 1, colour = TRUE,
+  mx = 1)
 }
 \arguments{
 \item{date}{Vector of dates}
