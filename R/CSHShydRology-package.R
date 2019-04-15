@@ -23,7 +23,7 @@
 #'}
 #' @references
 #' To cite \pkg{CSHShydRology} in publications, use the command \code{citation("CSHShydRology")} to get the current version of the citation.\cr
-#' @import lubridate stats
+#' @import lubridate stats stringr
 #' @importFrom graphics axis legend par plot points polygon
 #' @importFrom Kendall MannKendall
 #' @importFrom fields image.plot
