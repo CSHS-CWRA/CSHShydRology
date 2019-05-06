@@ -26,7 +26,7 @@
 #' Atmosphere-Ocean, 49 (2), 163-177.}
 #' @note Not all variables are available at all stations. Attempting to retrieve a non-existent variable 
 #' will result in an error being returned.
-#' @import jsonlite
+#' @import jsonlite curl
 #' @export
 #'
 #' @examples

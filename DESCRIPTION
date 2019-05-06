@@ -20,7 +20,8 @@ Imports:
     plotrix,
     timeDate,
     stringr,
-    jsonlite
+    jsonlite,
+    curl
 Suggests: 
     knitr,
     testthat, 
