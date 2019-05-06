@@ -15,3 +15,4 @@ Used by \code{regime_plot}. This code deals only with the axis adjustments. Day 
 \author{
 Paul Whitfield
 }
+\keyword{internal}

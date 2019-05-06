@@ -72,3 +72,4 @@ period and each year where data exist, and
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }
+\keyword{plot}

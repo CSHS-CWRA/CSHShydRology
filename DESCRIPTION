@@ -19,10 +19,12 @@ Imports:
     lubridate (>= 1.3),
     plotrix,
     timeDate,
-    stringr
+    stringr,
+    jsonlite
 Suggests: 
     knitr,
-    testthat
+    testthat, 
+    rmarkdown
 VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 6.1.1

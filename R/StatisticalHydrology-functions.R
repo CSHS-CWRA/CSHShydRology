@@ -1,5 +1,5 @@
 #' Statistical analysis functions
-#' @name StatisticalHydrology-methods
+#' @name StatisticalHydrology-functions
 #' @description These functions perform statistical analyses
 #' \describe{
 #'  \item{binned_MannWhitney}{ Compares two time periods of data using Mann-Whitney test}

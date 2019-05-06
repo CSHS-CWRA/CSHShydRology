@@ -45,6 +45,7 @@
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' @keywords plot hydrograph
 #' @author Robert Chlumsky <rchlumsk@gmail.com>
+#' @import lubridate graphics
 #' @export
 #' @examples
 #' # example with synthetic random data
@@ -186,17 +187,17 @@ hydrograph_plot <- function(flows = NULL,
     N <- nrow(flows)
     prd <- sprintf(
       "%d-%02d-%02d/%i-%02d-%02d", 
-      lubridate::year(flows$Date[1]), 
-      lubridate::month(flows$Date[1]), 
-      lubridate::day(flows$Date[1]),
-      lubridate::year(flows$Date[N]), 
-      lubridate::month(flows$Date[N]), 
-      lubridate::day(flows$Date[N])
+      year(flows$Date[1]), 
+      month(flows$Date[1]), 
+      day(flows$Date[1]),
+      year(flows$Date[N]), 
+      month(flows$Date[N]), 
+      day(flows$Date[N])
     )
   }
 
   # subset data
-  flows <- CSHShydRology::date_subset(flows, prd)
+  flows <- date_subset(flows, prd)
 
   if (!(is.null(precip))) {
     precip <- date_subset(precip, prd)
@@ -207,16 +208,16 @@ hydrograph_plot <- function(flows = NULL,
   }
 
   # capture plotting parameters, restore afterwards
-  .pardefault <- graphics::par(no.readonly = T)
+  .pardefault <- par(no.readonly = T)
 
   # set parameters for plotting; then plot
   if (!(is.null(precip))) {
-    graphics::par(mar = c(5, 4, 4, 4) + 0.1)
+    par(mar = c(5, 4, 4, 4) + 0.1)
   }
   if (zero_axis) {
     # sets the interval calculation in plotting to be right to specified limits
     # otherwise extends by 4% by default
-    graphics::par(yaxs = "i")
+    par(yaxs = "i")
   }
 
   y.hmax <- max(flows[, 2:ncol(flows)], na.rm = T) * range_mult_flow
@@ -227,31 +228,31 @@ hydrograph_plot <- function(flows = NULL,
     y.hmin <- min(flows[, 2:(ncol(flows))], na.rm = T)
   }
 
-  graphics::plot(flows$Date, flows[, 2],
+  plot(flows$Date, flows[, 2],
     xlab = "Date", ylab = ylabel,
-    col = "white", type = "l", ylim = c(y.hmin, y.hmax), panel.first = graphics::grid()
+    col = "white", type = "l", ylim = c(y.hmin, y.hmax), panel.first = grid()
   )
   if (winter_shading) {
     # shaded winter months
-    temp <- flows[((lubridate::month(flows$Date) == 12) & (lubridate::day(flows$Date) == 1)) |
-      ((lubridate::month(flows$Date) == 3) & (lubridate::day(flows$Date) == 31)), ]
-    ep <- match(lubridate::date(temp$Date), lubridate::date(flows$Date))
-    if (lubridate::month(flows$Date[ep[1]]) == 3) {
+    temp <- flows[((month(flows$Date) == 12) & (day(flows$Date) == 1)) |
+      ((month(flows$Date) == 3) & (day(flows$Date) == 31)), ]
+    ep <- match(date(temp$Date), date(flows$Date))
+    if (month(flows$Date[ep[1]]) == 3) {
       # ep <- ep[-1]
       ep <- c(1, ep)
     }
-    if (lubridate::month(flows$Date[ep[length(ep)]]) == 12) {
+    if (month(flows$Date[ep[length(ep)]]) == 12) {
       # ep <- ep[-length(ep)]
       ep <- c(ep, nrow(flows))
     }
     bc <- "#00FFFF32"
     for (k in seq(1, length(ep), 2)) {
       cord.x <- c(
-        lubridate::date(flows$Date[ep[k]]), lubridate::date(flows$Date[ep[k]]),
-        lubridate::date(flows$Date[ep[k + 1]]), lubridate::date(flows$Date[ep[k + 1]])
+        date(flows$Date[ep[k]]), date(flows$Date[ep[k]]),
+        date(flows$Date[ep[k + 1]]), date(flows$Date[ep[k + 1]])
       )
       cord.y <- c(-1e3, y.hmax * 1e3, y.hmax * 1e3, -1e3)
-      graphics::polygon(cord.x, cord.y, col = bc, border = NA)
+      polygon(cord.x, cord.y, col = bc, border = NA)
     }
   }
 
@@ -265,20 +266,20 @@ hydrograph_plot <- function(flows = NULL,
 
   # add all flow data to plot
   for (i in 1:NN) {
-    graphics::lines(flows$Date, flows[, (i + 1)], lty = leg.lty[i], lwd = leg.lwd[i], col = leg.cols[i])
+    lines(flows$Date, flows[, (i + 1)], lty = leg.lty[i], lwd = leg.lwd[i], col = leg.cols[i])
   }
 
   # add precip data if not null
   if (!(is.null(precip))) {
-    graphics::par(new = T)
+    par(new = T)
     precip.col <- "#0000FF64"
-    graphics::plot(precip$Date, precip[, 2],
+    plot(precip$Date, precip[, 2],
       col = precip.col, lty = 1, lwd = 1,
       type = "h", ylim = rev(c(0, max(precip[, 2], na.rm = T) * range_mult_precip)), xaxt = "n", yaxt = "n",
       xlab = "", ylab = ""
     )
-    graphics::axis(4)
-    graphics::mtext(sprintf("%s", precip_label), side = 4, line = 2.5)
+    axis(4)
+    mtext(sprintf("%s", precip_label), side = 4, line = 2.5)
 
     leg.items <- c(leg.items, precip_label)
     leg.cols <- c(leg.cols, precip.col)
@@ -304,7 +305,7 @@ hydrograph_plot <- function(flows = NULL,
   }
 
   # add legend to plot
-  graphics::legend(
+  legend(
     x = leg_pos, 
     legend = leg.items, 
     lty = leg.lty, 
@@ -315,7 +316,7 @@ hydrograph_plot <- function(flows = NULL,
   )
 
   # restore plotting parameters
-  graphics::par(.pardefault)
+  par(.pardefault)
 
   return(TRUE)
 }

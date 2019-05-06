@@ -36,3 +36,4 @@ binned_MannWhitney, raster_trend
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }
+\keyword{internal}

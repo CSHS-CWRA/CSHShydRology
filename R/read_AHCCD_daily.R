@@ -1,47 +1,61 @@
-#' Reads AHCCD daily temperature file
+#' Reads AHCCD daily file
 #'
-#' @description This program reads Adjusted and Homogenized Canadian Climate Data (AHCCD) of daily 
-#' min, max or mean air temperatures. The values are arranged as
+#' @description This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) of daily 
+#' precipitation or temperatures. The values are arranged as
 #' month x day, which makes them difficult to read using standard \R functions.
-#' @param temp_file Required. Name of the file to be read.
+#' @param daily_file Required. Name of the file to be read.
 #' @return If successful, returns the values in a dataframe, consisting of the date, 
 #' the value and the data code. If unsuccessful, returns the value \code{FALSE}.
 #' @author Kevin Shook
-#' @seealso  \code{\link{read_AHCCD_daily_temp}} \code{\link{read_AHCCD_monthly_precip}} 
+#' @seealso  \code{\link{read_AHCCD_monthly}} \code{\link{get_AHCCD_monthly}}
 #' @references Monthly AHCCD data are available from \url{http://www.ec.gc.ca/dccha-ahccd}. 
-#' Daily values must be requested. Any use of the temperature data must cite 
-#' \cite{Vincent, L. A., X. L. Wang, E. J. Milewska, H. Wan, F. Yang, and V. Swail, 2012. 
-#' A second generation of homogenized Canadian monthly surface air temperature for climate 
-#' trend analysis, J. Geophys. Res., 117, D18110, doi:10.1029/2012JD017859.}
+#' Daily values must be requested. Any use of the data must cite 
+#'\cite{Mekis, E and L.A. Vincent, 2011: An overview of the second generation 
+#'adjusted daily precipitation dataset for trend analysis in Canada. 
+#'Atmosphere-Ocean, 49 (2), 163-177.}
+#' 
 #' @examples
 #' \dontrun{
-#'stoon_tmax <- read_AHCCD_daily_temp("dx40657120.txt")}
+#'stoon_daily_tmax <- read_AHCCD_daily("dx40657120.txt")}
+#' @import stringr utils
 #' @export
 
-read_AHCCD_daily_temp <- function(temp_file){
-    if (temp_file == "" | is.null(temp_file)){
-      cat('Error: temp_file missing\n')
-      return(FALSE)
-    }
+read_AHCCD_daily <- function(daily_file){
+  # check parameter
+  if (daily_file == "" | is.null(daily_file)){
+    stop("File not specified")
+  }
   
-    # strip off file name from path and extension to figure out data type
-    base <- basename(temp_file) # remove path
-    split <- stringr::str_split_fixed(base,stringr::fixed('.'), 2)
-    filename <- split[1]
-    # check for temp type
-    if (stringr::str_detect(tolower(filename), 'dx')){
-      temp_type <- 'tmax'
-    }
-    else if (stringr::str_detect(tolower(filename), 'dm')){
-      temp_type <- 'tmean'
-    }
-    else if (stringr::str_detect(tolower(filename), 'dn')){
-      temp_type <- 'tmin'
-    }
-    else{
-      cat('Error: wrong file type\n')
-      return(FALSE)
-    }
+  if (!file.exists(daily_file)) {
+    stop("File not found")
+  }
+  
+  # strip off file name from path and extension to figure out data type
+  base <- basename(daily_file) # remove path
+  split <- str_split_fixed(base, fixed('.'), 2)
+  filename <- split[1]
+  # check for variable type
+  if (str_detect(tolower(filename), 'dx')){
+    val_type <- 'tmax'
+  }
+  else if (str_detect(tolower(filename), 'dm')){
+    val_type <- 'tmean'
+  }
+  else if (str_detect(tolower(filename), 'dn')){
+    val_type <- 'tmin'
+  } 
+  else if (str_detect(tolower(filename), 'dt')){
+    val_type <- 'precip'
+  }
+  else if (str_detect(tolower(filename), 'dr')){
+    val_type <- 'rain'
+  }
+  else if (str_detect(tolower(filename), 'ds')){
+    val_type <- 'snow'
+  }
+  else {
+    stop("Unrecognised file type")
+  }
     
     
   # set up homes for data
@@ -59,23 +73,23 @@ read_AHCCD_daily_temp <- function(temp_file){
   
   # figure out header info
   # read 1st 10 lines
-  con <- file(temp_file, "r", blocking = FALSE, encoding="ISO_8859-2")
+  con <- file(daily_file, "r", blocking = FALSE, encoding="ISO_8859-2")
   input <- readLines(con, n=10)
   close(con)
   
   # first find number of lines containing file info
   input <- tolower(input)
-  LineNum <- stringr::str_detect(input, stringr::fixed(','))
-  englishHeaderNum <- stringr::str_detect(input, stringr::fixed("updated", ignore_case=TRUE))
+  LineNum <- str_detect(input, fixed(','))
+  englishHeaderNum <- str_detect(input, fixed("updated", ignore_case=TRUE))
   englishHeaderCount <- sum(englishHeaderNum)
-  frenchHeaderNum <- stringr::str_detect(input, stringr::fixed("jusqu", ignore_case=TRUE))
+  frenchHeaderNum <- str_detect(input, fixed("jusqu", ignore_case=TRUE))
   frenchHeaderCount <- sum(frenchHeaderNum)
   fileHeaderLines <- englishHeaderCount + frenchHeaderCount
   
   # now find number of lines containing column titles
-  englishLineNum <- stringr::str_detect(input,stringr::fixed("year", ignore_case=TRUE))
+  englishLineNum <- str_detect(input,fixed("year", ignore_case=TRUE))
   englishLineCount <- sum(englishLineNum)
-  frenchLineNum <- stringr::str_detect(input,stringr::fixed("annee", ignore_case=TRUE))
+  frenchLineNum <- str_detect(input,fixed("annee", ignore_case=TRUE))
   frenchLineCount <- sum(frenchLineNum)
   columnHeaderLines <- sum(englishLineCount) + sum(frenchLineCount)
   
@@ -105,11 +119,12 @@ read_AHCCD_daily_temp <- function(temp_file){
   all_classes <- c(header_classes, cols_classes)
   
   
-  # read data
-  raw <- utils::read.fwf(file=temp_file, widths=all, header=FALSE, colClasses=all_classes, skip=totalSkipLines)
+  # read data from file without parsing
+  raw <- read.fwf(file = daily_file, widths = all, header =FALSE, 
+                         colClasses = all_classes, skip = totalSkipLines)
   row_count <- nrow(raw)
-  # now unstack data
-  data_row <- 0
+  
+  # parse the lines into data and quality codes
   data_cols  <- seq(4,64,2)
   code_cols <- data_cols + 1
   
@@ -122,17 +137,8 @@ read_AHCCD_daily_temp <- function(temp_file){
   
   month_str <- twodigitnums[month_num]
   
-  
-  # now unstack data
-  data_row <- 0
-  
-  # transpose data
-  data_values_t <- t(data_values)
-  data_codes_t <- t(data_codes)
-  
-  # now stack data frames to vectors
-  data_values_vector <- as.vector(data_values_t, mode='numeric')
-  data_codes_vector <- as.character(as.vector(data_codes_t, mode='character'))
+  # stack the data frames to vectors
+  stacked <- stack_EC(data_values, data_codes)
   
   # replicate months
   all_days <- rep.int(twodigitnums, row_count)
@@ -152,10 +158,10 @@ read_AHCCD_daily_temp <- function(temp_file){
   good_date_loc <- !bad_date_loc
   
   # assemble data sets
-  all_data <- data.frame(date, data_values_vector, data_codes_vector)
+  all_data <- cbind(date, stacked)
   
   # get good dates only
   good_data <- all_data[good_date_loc,]
-  names(good_data) <- c('date', temp_type, 'code')
+  names(good_data) <- c('date', val_type, 'code')
   return(good_data)
 }

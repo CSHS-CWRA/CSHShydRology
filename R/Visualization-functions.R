@@ -1,5 +1,5 @@
 #' Visualization functions
-#' @name Visualization-methods
+#' @name Visualization-functions
 #' @description These functions are primarily intended for graphing, although
 #' some analyses may also be done.
 #' \describe{
