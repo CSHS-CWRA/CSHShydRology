@@ -2,6 +2,7 @@
 knitr::opts_chunk$set(echo = TRUE)
 
 library(CSHShydRology)
+library(graphics)
 HYDAT_list <- HYDAT_list
 fig_file <- system.file("extdata", "04JD005_h.PNG", package = "CSHShydRology")
 

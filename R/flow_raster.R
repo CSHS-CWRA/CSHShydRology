@@ -6,6 +6,9 @@
 #' @param rastercolours A vector of colours used for the raster plot. The default is \code{c("lightblue", "cyan", "blue", "slateblue", "orange", "red")}.
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @import grDevices fields
+#' @importFrom graphics axis legend par plot points polygon image
+#' @importFrom fields image.plot
 #' @export
 #' @seealso \code{\link{flow_raster_trend}} \code{\link{flow_raster_qa}}
 #'
@@ -21,7 +24,7 @@ flow_raster <- function(dframe, title="", rastercolours = c("lightblue", "cyan",
   
   date <- dframe$Date
   flow <- dframe$Flow
-  qcols <- grDevices::colorRampPalette(rastercolours)
+  qcols <- colorRampPalette(rastercolours)
   # get doy and year
   doy_vals <- doys(date)
   Year <- doy_vals$year
@@ -44,41 +47,41 @@ flow_raster <- function(dframe, title="", rastercolours = c("lightblue", "cyan",
   qdata <- as.matrix(qdata)
 
   ########################################################### start  plotting section
-  graphics::par(oma = c(0, 0, 3, 0))
-  graphics::layout(matrix(c(1, 1, 1, 1, 2, 1, 1, 1, 1, 3), 2, 5, byrow = TRUE))
-  graphics::par(mar = c(4, 4, 1, 1))
+  par(oma = c(0, 0, 3, 0))
+  layout(matrix(c(1, 1, 1, 1, 2, 1, 1, 1, 1, 3), 2, 5, byrow = TRUE))
+  par(mar = c(4, 4, 1, 1))
 
   #################################################################  panel one
 
   doys <- c(1:366)
   lyears <- c((nYear + 1):mYear)
 
-  graphics::image(1:366, 1:length(lyears), qdata,
+  image(1:366, 1:length(lyears), qdata,
     axes = FALSE, col = qcols(9),
     zlim = c(qmin, qmax), xlab = "", ylab = ""
   )
 
   sdoy <- sub_set_Years(doys, 10)
-  graphics::axis(1, at = sdoy$position, labels = sdoy$label, cex = 1.2)
+  axis(1, at = sdoy$position, labels = sdoy$label, cex = 1.2)
 
   if (length(lyears) >= 70) nn <- 10 else nn <- 5
   sYears <- sub_set_Years(lyears, nn)
 
-  graphics::axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
-  graphics::mtext(DOY, side = 1, line = 2.2, cex = 0.9)
+  axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
+  mtext(DOY, side = 1, line = 2.2, cex = 0.9)
 
-  graphics::box()
+  box()
 
 
   #################################################################  panel two
-  graphics::frame()
-  graphics::par(mar = c(2, 2, 2, 2))
+  frame()
+  par(mar = c(2, 2, 2, 2))
 
 
   ######### scale bar and legend
 
 
-  fields::image.plot(
+  image.plot(
     zlim = c(qmin, qmax), col = qcols(9), legend.only = TRUE,
     legend.width = 4, legend.mar = 1,
     legend.shrink = 1.0,
@@ -88,17 +91,17 @@ flow_raster <- function(dframe, title="", rastercolours = c("lightblue", "cyan",
 
   #################################################################  panel three (element #ten)
 
-  graphics::frame()
-  graphics::frame()
-  graphics::frame()
-  graphics::frame()
-  graphics::frame()
+  frame()
+  frame()
+  frame()
+  frame()
+  frame()
 
 
   ##############################################################  Add title
   tscale <- 1.7
   if (nchar(title) >= 45) tscale <- 1.5
   if (nchar(title) >= 50) tscale <- 1.2
-  graphics::mtext(title, side = 3, line = 0, cex = tscale, outer = TRUE)
+  mtext(title, side = 3, line = 0, cex = tscale, outer = TRUE)
 
 }

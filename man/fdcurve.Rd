@@ -42,3 +42,4 @@ confidence intervals. Journal of Water Resources Planning and Management ASCE 12
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }
+\keyword{plot}

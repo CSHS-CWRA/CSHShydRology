@@ -1,8 +1,10 @@
 #'@title  Generates the x axis for day of year
 #'
 #'@description  Used by \code{regime_plot}. This code deals only with the axis adjustments. Day of water year needs to be done separately
-#' @param wyear Month to begin water year. Use \code{wyear = 1} for calendar year, \code{wyear = 10} for October 1.
-#' @author Paul Whitfield
+#'@param wyear Month to begin water year. Use \code{wyear = 1} for calendar year, \code{wyear = 10} for October 1.
+#'@author Paul Whitfield
+#'@keywords internal
+#'@import graphics
 #'
 axis_doy <- function(wyear = 1) {
   cday <- c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397, 425, 456, 486, 517, 547, 578, 609, 639, 670)
@@ -15,7 +17,7 @@ axis_doy <- function(wyear = 1) {
   wtxt <- ctxt[1:13]
 
   if (wyear == 1) { # starts in January
-    graphics::axis(side = 1, at = wday, labels = wtxt, line = 0, tck = -0.025, xlab = "", xlab = "")
+    axis(side = 1, at = wday, labels = wtxt, line = 0, tck = -0.025, xlab = "", xlab = "")
     return()
   }
 
@@ -26,7 +28,7 @@ axis_doy <- function(wyear = 1) {
 
     wtxt <- ctxt[wyear:(wyear + 13)]
 
-    graphics::axis(side = 1, at = wday, labels = wtxt, line = 0, tck = -0.025, xlab = "", xlab = "")
+    axis(side = 1, at = wday, labels = wtxt, line = 0, tck = -0.025, xlab = "", xlab = "")
     return()
   }
 }
@@ -48,6 +50,7 @@ axis_doy <- function(wyear = 1) {
 #' @return Returns a vector of bin numbers that is used as a factor for each day in the dataset
 #' prints a message indicating the handling of partial bins
 #' @export
+#' @keywords internal
 #'
 #' @seealso binned_MannWhitney, raster_trend
 #'
@@ -85,6 +88,7 @@ slice <- function(doy, step) {
 #' 	\item{label}{array of labels}
 #' 	}
 #' @export
+#' @keywords internal
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #' @examples
 #' myears <- c(1900:2045)
@@ -118,6 +122,7 @@ sub_set_Years <- function(years, n) {
 #' 
 #' @return Returns a data frame with the same columns as the original data frame
 #' @export
+#' @keywords internal
 #' @author Paul Whitfield
 #' @examples 
 #' subset <- cut_block(W05AA008, "2000/01/01", "2010/12/31")
@@ -146,4 +151,131 @@ cut_block <- function(dataframe, st_date, end_date) {
               "records were selected"))
   
   return(result)
+}
+
+
+#' Stacks EC values
+#' 
+#' @description Converts data frames of Environment Canada year x month or month x day data to vectors
+#' @param data_values Required. Data frame of year x month or month x day values.
+#' @param data_codes Required. Data frame of year x month or month x day data codes.
+#'
+#' @return Returns a data frame with two colums: the data values, and the data codes.
+#' @export
+#' @keywords internal
+#'
+#' @examples \dontrun{df <- unstack_EC(data_values, data_codes)}
+#' 
+stack_EC <- function(data_values = NULL, data_codes = NULL) {
+  #check parameters
+  if (is.null(data_values))  {
+    stop("No specified data values")
+  }
+  
+  if (is.null(data_codes)) {
+    stop("No specified data codes")
+  }
+  
+  # transpose data
+  data_values_t <- t(data_values)
+  data_codes_t <- t(data_codes)
+  
+  # now stack data frames to vectors
+  data_values <- as.vector(data_values_t, mode='numeric')
+  data_codes <- as.character(as.vector(data_codes_t, mode='character'))
+  
+  df <- data.frame(data_values, data_codes)
+  return(df)
+}
+
+#' Days of year and water year
+#' 
+#' @description Converts a vector of dates into a dataframe with date, doy, dowy, year
+
+#' @param Date A vector of R dates.
+#' @param mon The month starting the water year, default is 10 (October).
+#'
+#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @return Returns a dataframe with differently-formatted dates
+#' \describe{
+#'  \item{Date}{original Date}
+#'  \item{year}{numeric calendar year}
+#'  \item{month}{numeric calendar month}
+#'  \item{doy}{numeric day of year}
+#'  \item{wyear}{numeric water year}
+#'  \item{dwy}{numeric day of water year}
+#'}
+
+#'
+#' @export
+#' @keywords internal
+#'
+#' @examples
+#' dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"), by = 1)
+#' output <- doys(dd)
+#' head(output)
+#'
+
+doys <- function(Date, mon = 10) # Date needs to be as.Date
+{
+  if (mon == 2) print("Currently restricted to water year starting March to October")
+  
+  dm <- c(31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31)
+  dm <- dm[mon - 1]
+  
+  month <- as.numeric(format(Date, "%m"))
+  year <- as.numeric(format(Date, "%Y"))
+  day <- as.numeric(format(Date, "%d"))
+  
+  
+  doy <- array(NA, dim = length(Date))
+  for (k in 1:length(Date)) {
+    doy[k] <- as.numeric(ISOdate(year[k], month[k], day[k]) - ISOdate(year[k] - 1, 12, 31))
+  }
+  
+  year1 <- year - 1
+  
+  dwy <- array(NA, dim = length(Date))
+  wyear <- array(NA, dim = length(Date))
+  
+  for (k in 1:length(Date)) {
+    if (month[k] >= mon) {
+      dwy[k] <- as.numeric(ISOdate(year[k], month[k], day[k]) - ISOdate(year[k], mon - 1, dm))
+      wyear[k] <- year[k] + 1
+    }
+    else {
+      dwy[k] <- as.numeric(ISOdate(year[k], month[k], day[k]) - ISOdate(year1[k], mon - 1, dm))
+      wyear[k] <- year[k]
+    }
+  }
+  dowy <- data.frame(Date, year, month, doy, wyear, dwy)
+  
+  return(dowy)
+}
+
+#' Subset date by String
+
+#' @description Subsets a data frame by an specified date range, provided as
+#' a string by the \code{prd} argument. This function is meant to emulate the subsetting
+#' capability of the \pkg{xts} package.
+#'
+#' @param df data frame of time series data; includes a variable called \code{Date}
+#' @param prd date range as string formatted as \option{YYYY-MM-DD/YYYY-MM-DD}
+#' @return \item{df}{subsetted data frame}
+#' @keywords date data subset
+#' @author Robert Chlumsky <rchlumsk@gmail.com>
+#' @export
+#' @keywords internal
+#' @examples{
+#' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"), by = 1)
+#' x <- rnorm(length(dd))
+#' y <- abs(rnorm(length(dd)))*2
+#' df <- data.frame("Date" = dd,x,y)
+#' prd <- "2011-10-01/2012-09-30"
+#' summary(date_subset(df,prd))}
+
+date_subset <- function(df, prd) {
+  ss <- unlist(strsplit(prd, split = "/"))
+  df <- df[df$Date >= as.Date(ss[1]) & df$Date <= as.Date(ss[2]), ]
+  return(df)
 }

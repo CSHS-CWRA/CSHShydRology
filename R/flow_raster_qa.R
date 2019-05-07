@@ -15,6 +15,9 @@
 #' @param title The (optional) title for the plot
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @import graphics grDevices fields
+#' @importFrom timeDate dayOfYear as.timeDate
+#' @importFrom fields image.plot
 #' @export
 #' @seealso \code{\link{flow_raster_trend}} \code{\link{flow_raster}}
 #'
@@ -28,11 +31,11 @@ flow_raster_qa <- function(dframe, title = "") {
   ylabelq <- expression(paste("Discharge m"^{3}, "/sec"))
 
   rastercolours <- c("gray90", "gray80", "gray70", "gray60", "gray50", "gray40", "gray30", "gray20", "gray10")
-  qcols <- grDevices::colorRampPalette(rastercolours)
+  qcols <- colorRampPalette(rastercolours)
   date <- as.Date(dframe$Date, "%Y/%m/%d")
 
   Year <- as.numeric(format(date, "%Y"))
-  doy <- as.numeric(timeDate::dayOfYear(timeDate::as.timeDate(date)))
+  doy <- as.numeric(dayOfYear(as.timeDate(date)))
 
   mYear <- max(Year, na.rm = TRUE)
   nYear <- min(Year, na.rm = TRUE) - 1
@@ -65,28 +68,28 @@ flow_raster_qa <- function(dframe, title = "") {
   qdata <- as.matrix(qdata)
 
   ########################################################### start  plotting section
-  graphics::par(oma = c(0, 0, 3, 0))
-  graphics::layout(matrix(c(1, 1, 1, 1, 2, 1, 1, 1, 1, 3), 2, 5, byrow = TRUE))
-  graphics::par(mar = c(4, 4, 1, 1))
+  par(oma = c(0, 0, 3, 0))
+  layout(matrix(c(1, 1, 1, 1, 2, 1, 1, 1, 1, 3), 2, 5, byrow = TRUE))
+  par(mar = c(4, 4, 1, 1))
 
   #################################################################  panel one
 
   doys <- c(1:366)
   lyears <- c((nYear + 1):mYear)
 
-  graphics::image(1:366, 1:length(lyears), qdata,
+  image(1:366, 1:length(lyears), qdata,
     axes = FALSE, col = qcols(9),
     zlim = c(qmin, qmax), xlab = "", ylab = ""
   )
 
   sdoy <- sub_set_Years(doys, 15)
-  graphics::axis(1, at = sdoy$position, labels = sdoy$label, cex = 1.2)
+  axis(1, at = sdoy$position, labels = sdoy$label, cex = 1.2)
 
   if (length(lyears) >= 70) nn <- 10 else nn <- 5
   sYears <- sub_set_Years(lyears, nn)
 
-  graphics::axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
-  graphics::mtext(DOY, side = 1, line = 2.2, cex = 0.9)
+  axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
+  mtext(DOY, side = 1, line = 2.2, cex = 0.9)
 
   for (ii in 1:366) {
     for (jj in 1:length(lyears)) {
@@ -94,17 +97,17 @@ flow_raster_qa <- function(dframe, title = "") {
     }
   }
 
-  graphics::box()
+  box()
 
 
   #################################################################  panel two
-  graphics::frame()
-  graphics::par(mar = c(2, 2, 2, 2))
+  frame()
+  par(mar = c(2, 2, 2, 2))
 
 
   ######### scale bar and legend
 
-  fields::image.plot(
+  image.plot(
     zlim = c(qmin, qmax), col = qcols(9), legend.only = TRUE,
     legend.width = 4, legend.mar = 1,
     legend.shrink = 1.0,
@@ -114,23 +117,23 @@ flow_raster_qa <- function(dframe, title = "") {
 
   #################################################################  panel three (element #ten)
 
-  graphics::frame()
-  graphics::frame()
-  graphics::frame()
-  graphics::frame()
-  graphics::frame()
+  frame()
+  frame()
+  frame()
+  frame()
+  frame()
 
-  graphics::par(mar = c(1, 0, 0, 1))
+  par(mar = c(1, 0, 0, 1))
   leg.txt <- c(" (A) Partial", " (B) Ice", " (D) Dry", " (E) Estimate")
   lcol <- c("green", "cyan", "yellow", "red")
-  graphics::legend("left", leg.txt, pch = c(22, 22, 22, 22), pt.bg = lcol, cex = 1.25, bty = "n")
+  legend("left", leg.txt, pch = c(22, 22, 22, 22), pt.bg = lcol, cex = 1.25, bty = "n")
 
 
   ##############################################################  Add title
   tscale <- 1.7
   if (nchar(title) >= 45) tscale <- 1.5
   if (nchar(title) >= 50) tscale <- 1.2
-  graphics::mtext(title, side = 3, line = 0, cex = tscale, outer = TRUE)
+  mtext(title, side = 3, line = 0, cex = tscale, outer = TRUE)
 
 
   ############################################################### end plotting section

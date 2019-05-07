@@ -8,6 +8,7 @@
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #'
 #' @return Returns a dataframe with the last three rows removed and the Date as Date
+#' @importFrom utils read.csv
 #' @export
 
 #' @examples 
@@ -17,7 +18,7 @@
 
 
 read_ECDE_flows <- function(filename) {
-  mdata <- utils::read.csv(filename)
+  mdata <- read.csv(filename)
   mdata$Date <- as.Date(mdata$Date, format = "%Y/%m/%d")
   cut <- length(mdata[, 1]) - 3
   mdata <- mdata[1:cut, ]

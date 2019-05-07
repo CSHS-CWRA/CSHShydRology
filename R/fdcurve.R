@@ -14,7 +14,7 @@
 #' @param gust If \code{TRUE} (the default), adds the curves from Gustard et al 1992
 #'
 #' @return Plots the flow durations and returns a data frame containing the exceedance probabilty and flow
-#'
+#' @keywords plot
 #' @references
 #' Gustard, A., A. Bullock, and J.M. Dixon. 1992. Low flow estimation in the United Kingdom.
 #' Institute of Hydrology, 292. Wallingford: Institute of Hydrology.
@@ -22,6 +22,9 @@
 #' Vogel, R.M., and N.M. Fennessy. 1994. Flow-duration curves. I: New Interpretation and
 #' confidence intervals. Journal of Water Resources Planning and Management ASCE 120:485-504.
 #'
+#' @import stats
+#' @importFrom graphics axis legend par plot points polygon
+#' 
 #' @export
 #' @examples
 #' flow <- W05AA008$Flow
@@ -68,15 +71,15 @@ fdcurve <- function(flow, title = "", normal = FALSE, gust = TRUE) {
   xla <- "Normalized Exceedance probability (%)"
   ylims <- c(1, max(q))
 
-  graphics::par(mfrow = c(1, 1))
-  graphics::par(mar = c(4, 4, 2, 1))
+  par(mfrow = c(1, 1))
+  par(mar = c(4, 4, 2, 1))
 
   if (normal == TRUE) {
-    exceed.z <- stats::qnorm(exceed)
-    p.z <- stats::qnorm(p)
+    exceed.z <- qnorm(exceed)
+    p.z <- qnorm(p)
 
     xlims <- c(-3, 3)
-    graphics::plot(exceed.z, q,
+    plot(exceed.z, q,
       type = "l", lwd = 2, col = "blue", log = "y", xaxt = "n", ylim = ylims, xlim = xlims,
       xlab = xla, ylab = yl, las = 1, main = title
     )
@@ -85,44 +88,44 @@ fdcurve <- function(flow, title = "", normal = FALSE, gust = TRUE) {
       0.001, 0.002, 0.005, 0.01, 0.02, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5,
       0.6, 0.7, 0.8, 0.9, 0.95, 0.98, 0.99, 0.995, 0.998, 0.999
     )
-    z.vals <- stats::qnorm(probs)
-    graphics::axis(side = 1, at = z.vals, labels = probs, line = 0, tck = -0.025, xlab = xla)
+    z.vals <- qnorm(probs)
+    axis(side = 1, at = z.vals, labels = probs, line = 0, tck = -0.025, xlab = xla)
 
-    graphics::abline(h = 0, lty = 3)
-    graphics::abline(h = 100, lty = 2, col = "red")
-    graphics::abline(v = stats::qnorm(0.5), lty = 2, col = "red")
+    abline(h = 0, lty = 3)
+    abline(h = 100, lty = 2, col = "red")
+    abline(v = qnorm(0.5), lty = 2, col = "red")
 
     if (gust == TRUE) {
       for (k in 1:19) {
-        graphics::points(p.z, g[k, ], type = "l", col = "gray")
-        graphics::text(p.z[7], g[k, 7], k, col = "gray", pos = 4, cex = 0.7)
+        points(p.z, g[k, ], type = "l", col = "gray")
+        text(p.z[7], g[k, 7], k, col = "gray", pos = 4, cex = 0.7)
       }
-      graphics::points(exceed.z, q, type = "l", lwd = 2, col = "blue")
-      graphics::text(-1, 1.25, "Flow Duration Curve with Gustard's Type Curves", col = "gray", cex = 0.9, pos = 1)
-      graphics::text(stats::qnorm(p[7]), g[19, 7], "permeable", col = "gray", pos = 3, cex = 0.7)
-      graphics::text(stats::qnorm(p[7]), g[1, 7], "impermeable", col = "gray", pos = 1, cex = 0.7)
+      points(exceed.z, q, type = "l", lwd = 2, col = "blue")
+      text(-1, 1.25, "Flow Duration Curve with Gustard's Type Curves", col = "gray", cex = 0.9, pos = 1)
+      text(qnorm(p[7]), g[19, 7], "permeable", col = "gray", pos = 3, cex = 0.7)
+      text(qnorm(p[7]), g[1, 7], "impermeable", col = "gray", pos = 1, cex = 0.7)
     }
   }
   else {
     xlims <- c(0, 1)
-    graphics::plot(exceed, q,
+    plot(exceed, q,
       type = "l", lwd = 2, col = "blue", log = "y", ylim = ylims, xlim = xlims, xlab = xl,
       ylab = yl, las = 1, main = title
     )
 
-    graphics::abline(v = 0, lty = 3)
-    graphics::abline(h = 100, lty = 2, col = "red")
-    graphics::abline(v = 0.5, lty = 2, col = "red")
+    abline(v = 0, lty = 3)
+    abline(h = 100, lty = 2, col = "red")
+    abline(v = 0.5, lty = 2, col = "red")
 
     if (gust == TRUE) {
       for (k in 1:19) {
-        graphics::points(p, g[k, ], type = "l", col = "gray")
-        graphics::text(p[7], g[k, 7], k, col = "gray", pos = 4, cex = 0.7)
+        points(p, g[k, ], type = "l", col = "gray")
+        text(p[7], g[k, 7], k, col = "gray", pos = 4, cex = 0.7)
       }
-      graphics::points(exceed, q, type = "l", lwd = 2, col = "blue")
-      graphics::text(.1, 1.25, "Flow Duration Curve with Gustard's Type Curves", col = "gray", cex = 0.9, pos = 4)
-      graphics::text(p[7], g[19, 7], "permeable", col = "gray", pos = 3, cex = 0.7)
-      graphics::text(p[7], g[1, 7], "impermeable", col = "gray", pos = 1, cex = 0.7)
+      points(exceed, q, type = "l", lwd = 2, col = "blue")
+      text(.1, 1.25, "Flow Duration Curve with Gustard's Type Curves", col = "gray", cex = 0.9, pos = 4)
+      text(p[7], g[19, 7], "permeable", col = "gray", pos = 3, cex = 0.7)
+      text(p[7], g[1, 7], "impermeable", col = "gray", pos = 1, cex = 0.7)
     }
   }
   result <- data.frame(exceed, q)

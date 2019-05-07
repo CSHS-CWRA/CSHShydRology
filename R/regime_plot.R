@@ -13,6 +13,7 @@
 #' @param mx The maximum y value; if \code{mx = 1} then maximum value of the flows is used to set the maximum y-axis value. The value of \code{mx} can be specified to produce a series of plots with the same scale.
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield
+#' @import graphics
 #' @export
 #'
 #' @references MacCulloch, G. and P. H. Whitfield (2012). Towards a Stream Classification System
@@ -73,16 +74,16 @@ regime_plot <- function(date, flow, title="", wyear = 1, colour = TRUE, mx = 1) 
   poly3 <- c(regime[4, ], rev(regime[6, ]))
 
   ######################################################################### plot start
-  graphics::par(mar = c(3, 5, 3, 1))
-  graphics::plot(doy1, regime[9, ], type = "p", xlab = "", xaxt = "n", col = colr[4], cex = 0.5, ylab = dmf, ylim = ylims, xlim = c(1, 366), main = title)
+  par(mar = c(3, 5, 3, 1))
+  plot(doy1, regime[9, ], type = "p", xlab = "", xaxt = "n", col = colr[4], cex = 0.5, ylab = dmf, ylim = ylims, xlim = c(1, 366), main = title)
   axis_doy(wyear)
-  graphics::polygon(mdays, poly1, col = colr[1], border = colr[1])
-  graphics::polygon(mdays, poly2, col = colr[2], border = colr[2])
-  graphics::polygon(mdays, poly3, col = colr[3], border = colr[3])
-  graphics::points(doy1, regime[1, ], type = "p", col = colr[4], cex = 0.5)
-  graphics::points(doy1, regime[5, ], type = "l", col = colr[5], lwd = 3)
+  polygon(mdays, poly1, col = colr[1], border = colr[1])
+  polygon(mdays, poly2, col = colr[2], border = colr[2])
+  polygon(mdays, poly3, col = colr[3], border = colr[3])
+  points(doy1, regime[1, ], type = "p", col = colr[4], cex = 0.5)
+  points(doy1, regime[5, ], type = "l", col = colr[5], lwd = 3)
   ltext1 <- c("min/max", "05-95%", "10-90%", "25-75%", "Median")
   lcol1 <- c(colr[4], colr[1], colr[2], colr[3], colr[5])
-  graphics::legend("topleft", legend = ltext1, col = lcol1, lty = 1, lwd = 3, bty = "n")
+  legend("topleft", legend = ltext1, col = lcol1, lty = 1, lwd = 3, bty = "n")
   ######################################################################### plot end
 }

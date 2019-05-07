@@ -20,6 +20,9 @@ booth_plot(events, threshold, title, type = "mag", colour1 = 1,
 
 \item{colour2}{A vector of length 12 with fill colours of rings or symbols. Defaults to those used by Booth.}
 }
+\value{
+No value is returned; a standard \R graphic is created.
+}
 \description{
 A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
 either magnitude (default) or volume on the vertical axis
@@ -42,3 +45,4 @@ for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Proc
 \seealso{
 \code{\link{get_peaks}}
 }
+\keyword{plot}

@@ -38,6 +38,7 @@
 #' 	\item{prob}{probability of U for each period}
 #' 	\item{code}{significance codes for each bin}
 #' 	}
+#' @import stats
 #' @export
 #' @seealso \code{\link{polar_plot}} \code{\link{polar_plot_prep}}
 #' @examples
@@ -83,7 +84,7 @@ binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05,
   fac <- list(myear, mslice)
   qsliced <- array(dim = c(nYears, periods))
 
-  q_sliced <- tapply(flow, fac, stats::median) # get median value for each bin.
+  q_sliced <- tapply(flow, fac, median) # get median value for each bin.
 
   # qliced contains median for periods and for only year where data existed. Need to reform so missing years are included
 
@@ -110,7 +111,7 @@ binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05,
 
     s1 <- qsliced[rg1[1]:rg1[2], i]
     s2 <- qsliced[rg2[1]:rg2[2], i]
-    sout <- stats::wilcox.test(s1, s2, exact = FALSE)
+    sout <- wilcox.test(s1, s2, exact = FALSE)
 
     period1[i] <- median(s1)
     period2[i] <- median(s2)

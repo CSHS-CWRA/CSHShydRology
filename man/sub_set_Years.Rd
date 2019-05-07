@@ -33,3 +33,4 @@ my_alpha
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }
+\keyword{internal}

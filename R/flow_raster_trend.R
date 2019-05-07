@@ -45,7 +45,12 @@
 #' 	\item{tau_maximum_year}{value of tau and probability for max_year}
 #' 	\item{tau_minimum_year}{value of tau and probability for min_year}
 #' 	}
-#' @export
+#' @keywords plot
+#' @import stats graphics grDevices
+#' @importFrom Kendall MannKendall
+#' @importFrom fields image.plot
+#' @importFrom graphics axis legend par plot points polygon
+#' @export 
 #' @seealso \code{\link{flow_raster}}
 #' @examples
 #'  mdoy <- doys(W05AA008$Date)
@@ -83,7 +88,7 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
   myear <- as.factor(Year)
   fac <- list(myear, mslice)
 
-  q_sliced <- tapply(flow, fac, stats::median) # get median value for each bin.
+  q_sliced <- tapply(flow, fac, median) # get median value for each bin.
 
 
   qsliced <- array(dim = c(periods, nYears))
@@ -112,7 +117,7 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
 
   for (i in 1:length(period)) { ### loop over getting values for periods of year
 
-    med_n[i] <- stats::median(qsliced[i, ], na.rm = TRUE)
+    med_n[i] <- median(qsliced[i, ], na.rm = TRUE)
     max_n[i] <- max(qsliced[i, ], na.rm = TRUE)
     min_n[i] <- min(qsliced[i, ], na.rm = TRUE)
 
@@ -121,7 +126,7 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
 
 
     t1 <- NA
-    t1 <- Kendall::MannKendall(qsliced[i, ])
+    t1 <- MannKendall(qsliced[i, ])
     tau[i] <- t1$tau
     prob[i] <- t1$sl
 
@@ -139,7 +144,7 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
 
   for (i in 1:length(Years)) { 
     ### loop over getting values for each year
-    ymed_n[i] <- stats::median(qsliced[, i], na.rm = missing)
+    ymed_n[i] <- median(qsliced[, i], na.rm = missing)
     ymax_n[i] <- max(qsliced[, i], na.rm = missing)
     ymin_n[i] <- min(qsliced[, i], na.rm = missing)
   }
@@ -148,9 +153,9 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
   ymin_n[is.infinite(ymin_n)] <- NA
 
   tcol <- c("red", "black", "blue")
-  tmy <- Kendall::MannKendall(ymed_n)
-  tminy <- Kendall::MannKendall(ymin_n)
-  tmaxy <- Kendall::MannKendall(ymax_n)
+  tmy <- MannKendall(ymed_n)
+  tminy <- MannKendall(ymin_n)
+  tmaxy <- MannKendall(ymax_n)
 
   t1 <- ifelse(as.numeric(tmy[2]) > 0.05, 2, ifelse(tmy[1] >= 0, 3, 1))
   t2 <- ifelse(as.numeric(tminy[2]) > 0.05, 2, ifelse(tminy[1] >= 0, 3, 1))
@@ -159,23 +164,23 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
 
   #####################################################  three panel output
 
-  graphics::par(oma = c(0, 0, 3, 0))
-  qcols <- grDevices::colorRampPalette(colours)
+  par(oma = c(0, 0, 3, 0))
+  qcols <- colorRampPalette(colours)
 
-  nf <- graphics::layout(matrix(c(2, 4, 1, 3), 2, 2, byrow = TRUE), c(3, 1), c(1, 3), TRUE)
+  nf <- layout(matrix(c(2, 4, 1, 3), 2, 2, byrow = TRUE), c(3, 1), c(1, 3), TRUE)
 
 
   #####################################################  panel one raster image
-  graphics::par(mar = c(4, 4, 0, 0))
+  par(mar = c(4, 4, 0, 0))
 
-  graphics::image(1:periods, 1:length(Years), qsliced,
+  image(1:periods, 1:length(Years), qsliced,
     axes = FALSE, col = qcols(9),
     zlim = c(qmin, qmax), xlab = "", ylab = ""
   )
 
   sstep <- round(periods / 5)
   speriod <- sub_set_Years(period, sstep)
-  graphics::axis(1, at = speriod$position, labels = speriod$label, cex = 1.2)
+  axis(1, at = speriod$position, labels = speriod$label, cex = 1.2)
 
   nn <- 1
   if (length(Years) >= 70) nn <- 10
@@ -183,9 +188,9 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
   if (length(Years) >= 20) nn <- 2
   sYears <- sub_set_Years(Years, nn)
 
-  graphics::axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
-  graphics::mtext(DOY, side = 1, line = 2.2, cex = 0.9)
-  graphics::box()
+  axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
+  mtext(DOY, side = 1, line = 2.2, cex = 0.9)
+  box()
 
   #####################################################  panel two doy summary of trends
   mch <- c("", 1, 19)
@@ -193,16 +198,16 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
   mcolour <- c("white", "blue", "red")
 
   ylimits <- c(min(qsliced, na.rm = TRUE), max(qsliced, na.rm = TRUE))
-  graphics::par(mar = c(1, 4, 0, 0))
-  graphics::plot(period, med_n, ylab = l_disch, col = "black", 
+  par(mar = c(1, 4, 0, 0))
+  plot(period, med_n, ylab = l_disch, col = "black", 
                  ylim = ylimits, xaxt = "n", xaxs = "i", las = 1, 
                  pch = as.numeric(mch[code]))
-  graphics::points(period, max_n, type = "l", col = "gray35")
-  graphics::points(period, min_n, type = "l", col = "gray35")
-  graphics::par(font = 5)
-  graphics::points(period, med_n, type = "p", col = mcolour[arrow], 
+  points(period, max_n, type = "l", col = "gray35")
+  points(period, min_n, type = "l", col = "gray35")
+  par(font = 5)
+  points(period, med_n, type = "p", col = mcolour[arrow], 
                    pch = as.numeric(mch_n[arrow]), cex = 1.2)
-  graphics::par(font = 1)
+  par(font = 1)
 
 
   #####################################################  panel three time series
@@ -211,28 +216,28 @@ flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "", 
   xy <- c(1:length(Years))
   ylimits <- c(min(qsliced, na.rm = TRUE), max(qsliced, na.rm = TRUE))
   if (ylimits[1] == 0) (ylimits[1] <- 0.001)
-  graphics::par(mar = c(4, 1, 0, 0))
-  graphics::plot(ymed_n, xy, col = tcol[t1], xlim = ylimits, 
+  par(mar = c(4, 1, 0, 0))
+  plot(ymed_n, xy, col = tcol[t1], xlim = ylimits, 
                  xlab = l_disch, yaxt = "n", yaxt = "n", yaxs = "i", 
                  log = "x", ylab = "")
-  graphics::points(ymax_n, xy, col = tcol[t3], pch = 19, cex = 0.7)
-  graphics::points(ymin_n, xy, col = tcol[t2], pch = 19, cex = 0.7)
+  points(ymax_n, xy, col = tcol[t3], pch = 19, cex = 0.7)
+  points(ymin_n, xy, col = tcol[t2], pch = 19, cex = 0.7)
 
   ########################################################  Add title
   tscale <- 1.6
   if (nchar(title) >= 45) tscale <- 1.4
   if (nchar(title) >= 50) tscale <- 1.2
-  graphics::mtext(title, side = 3, line = 1, cex = tscale, outer = TRUE)
+  mtext(title, side = 3, line = 1, cex = tscale, outer = TRUE)
 
 
   ########################################################  Add scalebar
-  graphics::frame()
+  frame()
 
-  graphics::par(mar = c(0, 0, 0, 4))
+  par(mar = c(0, 0, 0, 4))
 
   zr <- c(qmin, qmax)
 
-  fields::image.plot(
+  image.plot(
     zlim = zr, col = qcols(9), legend.only = TRUE,
     legend.width = 4.5, legend.shrink = 0.8,
     bigplot = c(0.1, 0.2, 0.1, 0.2),

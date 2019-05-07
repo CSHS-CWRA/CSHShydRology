@@ -1,5 +1,5 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental) [![Travis build status](https://travis-ci.org/CSHS-CWRA/CSHShydRology.svg?branch=master)](https://travis-ci.org/CSHS-CWRA/CSHShydRology)
-
+[![license](https://img.shields.io/badge/license-GPL3-lightgrey.svg)](https://choosealicense.com/)
 # CSHShydRology
 
 ## Installing this package

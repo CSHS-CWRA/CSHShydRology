@@ -16,8 +16,9 @@
 #' Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and hydrology
 #' in Canada. Canadian Water Resources Journal 25: 19-65.
 #' @return No value is returned; a standard \R graphic is created.
+#' @keywords plot
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
-#'
+#' @importFrom plotrix radial.plot radial.grid
 #' @export
 #' @seealso \code{\link{binned_MannWhitney}} \code{\link{polar_plot_prep}}
 
@@ -56,7 +57,7 @@ polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", "gr
 
   #  set basic polar plot be plotting first series which will have a radial line for each interval in set
   par(cex.lab = 0.75)
-  plotrix::radial.plot(as.numeric(series[, 2]), cpos,
+  radial.plot(as.numeric(series[, 2]), cpos,
     rp.type = "ps",
     line.col = lcol1[1], point.symbols = 16, point.col = lcol2[1],
     labels = NULL, label.pos = cpos,
@@ -98,7 +99,7 @@ polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", "gr
     )
 
     test <- ifelse(pp[ipoints[j], 5], 1, 2)
-    plotrix::radial.plot(polyy, polyx,
+    radial.plot(polyy, polyx,
       rp.type = "p", poly.col = lfill[test], line.col = NA,
       radial.lim = rlim, cex = 0.5,
       start = 3 * pi / 2, clockwise = TRUE, add = TRUE
@@ -107,14 +108,14 @@ polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", "gr
 
   # replot the first data set so it appreas on top of poylgons and then add the second
 
-  plotrix::radial.plot(as.numeric(series[, 2]), cpos,
+  radial.plot(as.numeric(series[, 2]), cpos,
     rp.type = "ps", line.col = lcol1[1],
     point.symbols = 16, point.col = lcol2[1],
     radial.lim = rlim, cex = 0.5,
     start = 3 * pi / 2, clockwise = TRUE, add = TRUE
   )
 
-  plotrix::radial.plot(as.numeric(series[, 3]), cpos,
+  radial.plot(as.numeric(series[, 3]), cpos,
     rp.type = "ps", line.col = lcol1[2],
     point.symbols = 16, point.col = lcol2[2],
     radial.lim = rlim, cex = 0.5,
@@ -122,7 +123,7 @@ polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", "gr
   )
 
   gp <- pretty(rlim)
-  plotrix::radial.grid(
+  radial.grid(
     labels = dlabels, label.pos = dbreaks, radlab = FALSE,
     radial.lim = rlim, clockwise = TRUE,
     start = 3 * pi / 2, grid.col = "gray20", show.radial.grid = FALSE,
@@ -146,7 +147,7 @@ polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", "gr
   snsym <- ssym[ssym$t == -1, ]
 
   for (k in 1:length(snsym[, 1])) {
-    plotrix::radial.plot(snsym$xmin[k], snsym$cpos[k],
+    radial.plot(snsym$xmin[k], snsym$cpos[k],
       rp.type = "s", point.symbols = 24, point.col = lsig[1], bg = lsig[1],
       radial.lim = rlim, cex = 0.85,
       start = 3 * pi / 2, clockwise = TRUE, add = TRUE
@@ -154,7 +155,7 @@ polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", "gr
   }
 
   for (k in 1:length(spsym[, 1])) {
-    plotrix::radial.plot(spsym$xmax[k], spsym$cpos[k],
+    radial.plot(spsym$xmax[k], spsym$cpos[k],
       rp.type = "s", point.symbols = 25, point.col = lsig[2], bg = lsig[2],
       radial.lim = rlim, cex = 0.85,
       start = 3 * pi / 2, clockwise = TRUE, add = TRUE

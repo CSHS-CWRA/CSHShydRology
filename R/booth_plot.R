@@ -17,8 +17,10 @@
 #' Whitfield, P.H., and J.W. Pomeroy. 2016. Changes to flood peaks of a mountain river: implications
 #' for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Processes 30:4657-73. doi:
 #' 10.1002/hyp.10957.
-
+#' @importFrom graphics axis legend par plot points polygon
 #' @export
+#' @return No value is returned; a standard \R graphic is created.
+#' @keywords plot
 #' @seealso \code{\link{get_peaks}}
 #' @examples
 #' threshold <- 0.1 * max(W05AA008$Flow)  # arbitrary threshold
@@ -62,30 +64,30 @@ booth_plot <- function(events, threshold, title, type = "mag", colour1 = 1, colo
   if (type == "vol") {
     ylimits <- c(min(events[, 4], na.rm = TRUE), round(max(events[, 4], na.rm = TRUE), digits = 1))
 
-    graphics::plot(events[, 5], events[, 4],
+    plot(events[, 5], events[, 4],
       xlab = xlabel, col = ocol[month], bg = mcol[month], pch = 22, xlim = xlimits, ylim = ylimits, ylab = vlabel,
       yaxt = "n", log = "xy", main = title
     )
-    graphics::abline(h = vlines, lty = 3, col = "gray50")
-    graphics::abline(v = xlines, lty = 3, col = "gray50")
-    graphics::axis(2, las = 2)
-    graphics::legend("topright", mname, pch = 22, col = ocol, pt.bg = mcol, bg = "white")
-    graphics::mtext(paste("Threshold=", threshold, " m3/s"), side = 4, line = 1)
+    abline(h = vlines, lty = 3, col = "gray50")
+    abline(v = xlines, lty = 3, col = "gray50")
+    axis(2, las = 2)
+    legend("topright", mname, pch = 22, col = ocol, pt.bg = mcol, bg = "white")
+    mtext(paste("Threshold=", threshold, " m3/s"), side = 4, line = 1)
   }
 
   ############################################################################ for magnitude
   if (type == "mag") {
     ylimits <- c(threshold, round(max(events[, 3], na.rm = TRUE), digits = 0))
 
-    graphics::plot(events[, 5], events[, 3],
+    plot(events[, 5], events[, 3],
       xlab = xlabel, col = ocol[month], bg = mcol[month], pch = 21, cex = 1.1, xlim = xlimits, ylim = ylimits, ylab = ylabel,
       yaxt = "n", log = "xy", main = title
     )
-    graphics::abline(h = ylines, lty = 3, col = "gray50")
-    graphics::abline(v = xlines, lty = 3, col = "gray50")
-    graphics::axis(2, las = 2)
-    graphics::legend("topright", mname, pch = 21, col = ocol, pt.bg = mcol, bg = "white")
-    graphics::mtext(paste("Threshold=", threshold, " m3/s"), side = 4, line = 1)
+    abline(h = ylines, lty = 3, col = "gray50")
+    abline(v = xlines, lty = 3, col = "gray50")
+    axis(2, las = 2)
+    legend("topright", mname, pch = 21, col = ocol, pt.bg = mcol, bg = "white")
+    mtext(paste("Threshold=", threshold, " m3/s"), side = 4, line = 1)
   }
   ############################################################################
 }

@@ -26,3 +26,4 @@ subset <- cut_block(W05AA008, "2000/01/01", "2010/12/31")
 \author{
 Paul Whitfield
 }
+\keyword{internal}
