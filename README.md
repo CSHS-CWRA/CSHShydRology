@@ -31,10 +31,7 @@ Other themes, such as Network design/analysis (homogeneity assessment), and Ecoh
 ### General standards
 The general coding standards are as specified in the Google R coding guide at https://google.github.io/styleguide/Rguide.xml.
 
-Each call to a function outside of this package and the standard set of R functions must include the name of the package containing the function, i.e.
-```R
-p <- ggplot2::ggplot(mydf,....
-```
+
 ### External packages
 To reduce errors, it is a good idea to reduce reliance on other packages as much as is possible. Please check through the functions already referenced in the **DESCRIPTION** file before adding additional functions. When it is necessary to add a reference to an additional package, please do the following:
 Make the package suggested, rather than required.
