@@ -21,7 +21,11 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
-    curl
+    curl,
+    gstat,
+    lmomco,
+    lmomRFA,
+    numDeriv
 Suggests: 
     knitr,
     testthat, 

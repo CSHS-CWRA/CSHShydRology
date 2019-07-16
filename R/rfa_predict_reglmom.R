@@ -1,0 +1,111 @@
+############################################################################
+#' Flood quantiles estimates
+#'
+#' Predict the flood quantile of index-flood model for a specific scale
+#' factor. By default the flood quantile of the first site (target) is returned.
+#' 
+#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#'
+#' @param obj An output from \link{FitRegLmom}.
+#'
+#' @param q Probability associated to the flood quantiles.
+#'
+#' @param indx Index flood factor. By default the sample average of the target.
+#'
+#' @param ci Logical. Should the confident intervals and the standard deviation
+#' be evaluated?
+#'
+#' @param corr Intersite correlation. Either a matrix or a constant coefficient
+#'   for all pairs
+#'
+#' @param nsim Number of simulations used for approximating
+#'   the confident intervals.
+#'
+#' @param alpha Significance level.
+#' 
+#' @seealso \link{FitRegLmom}, \link{Intersite}.
+#'
+#' @references 
+#'
+#' Hosking, J. R. M., & Wallis, J. R. (1997). Regional frequency analysis:
+#'   an approach based on L-moments. Cambridge Univ Pr.
+#'
+#' @import lmomRFA lmom
+#'
+#' @export
+#'
+#' @examples
+#'
+#' data(flowAtlantic)
+#'
+#' h <- GeoDist(flowAtlantic$info[,c('lon','lat')])
+#' ams <- flowAtlantic$ams
+#' ams$year <- format(ams$date, '%Y')
+#' xd <- DataWide(ams ~ id + year, ams)
+#'
+#' xd <- FindNearest(xd, h[1,], 25)
+#' h  <- FindNearest(h , h[1,], 25, row = TRUE)
+#'
+#' ## Fit the regional model
+#' fit <- FitRegLmom(xd)
+#'
+#' ## estimate flood quantiles
+#' predict(fit, c(.3,.7))
+#'
+#' ## Evaluate intersite correlation
+#' isite <- Intersite(xd)
+#'
+#' predict(fit, ci = TRUE, corr = isite$model)
+#'
+predict.reglmom <-
+  function(obj,
+           q = c(.5, .8, .9, .95, .98 , .99),
+           ci = FALSE,
+           corr = 0,
+           nsim = 1000,
+           alpha = 0.05){
+
+  ## The index-flood is the L1 of the target site
+  indx <- obj$lmom[1,1]
+
+
+  ## Extract quantile function
+  qfunc <- getFromNamespace(paste0('qua',obj$distr), 'lmom')
+
+  if(ci){
+
+    ## extract the parameter of each site individually
+    para <- coef(obj)
+
+    ## Create a regfit object
+    dd <- as.regdata(cbind(1:nrow(obj$lmom),obj$nrec,obj$lmom),FALSE)
+    rfit <- regfit(dd,obj$distr)
+
+    ## simulate flood quantile
+    simq <- regsimq(qfunc,
+                   para = para,
+                   cor = corr,
+                   index = indx,
+                   nrec = obj$nrec,
+                   nrep = nsim,
+                   fit = obj$distr,
+                   f = q,
+                   boundprob = c(alpha/2, 1-alpha/2))
+
+    ## extract confident interval and standard deviation
+    ans <- sitequantbounds(simq, rfit, site=1)
+    colnames(ans) <- c('','pred', 'se', 'lower','upper')
+    rownames(ans) <- format(q, digits = 3)
+
+    ans <- as.matrix(ans)
+    ans <- ans[,-1]
+
+  } else {
+    ## Compute the flood quantiles
+    ans <- indx * qfunc(q, obj$para)
+  }
+
+  return(ans)
+}
+
+
