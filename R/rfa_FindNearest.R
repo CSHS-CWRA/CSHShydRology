@@ -23,11 +23,11 @@
 #'
 #' Mostofi Zadeh, S., Burn, D.H., 2019. A Super Region Approach to Improve
 #'   Pooled Flood Frequency Analysis. Canadian Water Resources Journal
-#'   0, 1–14. https://doi.org/10.1080/07011784.2018.1548946
+#'   0, 1-14. https://doi.org/10.1080/07011784.2018.1548946
 #'
 #' Durocher, M., Burn, D.H., Mostofi Zadeh, S., 2018. A nationwide regional
 #'   flood frequency analysis at ungauged sites using ROI/GLS with copulas and
-#'   super regions. Journal of Hydrology 567, 191–202.
+#'   super regions. Journal of Hydrology 567, 191-202.
 #'   https://doi.org/10.1016/j.jhydrol.2018.10.011
 #'
 #' @export

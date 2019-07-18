@@ -17,17 +17,20 @@ dgpa(x, alpha = 1, kap = 0, log = FALSE)
 qgpa(p, alpha = 1, kap = 0, lower.tail = TRUE)
 }
 \arguments{
+\item{q, x}{Vector of quantiles.}
+
 \item{alpha}{Scale parameter of the GPA}
 
 \item{kap}{Shape parameter of the GPA}
 
-\item{lower.tail}{Should the propability of the lower tail be returned}
+\item{lower.tail}{Logical. Should the propability of the lower tail 
+be returned}
 
 \item{n}{Number of simulations.}
 
 \item{log}{Should the log-density be returned}
 
-\item{p, q}{Probabilities or quantiles for the GPA distribution.}
+\item{p}{Vector of probabilities.}
 }
 \description{
 Distribution, density, quantile and random function for the Generalized

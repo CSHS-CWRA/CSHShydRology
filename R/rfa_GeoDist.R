@@ -12,6 +12,8 @@
 #'   Must be of the form : \code{lon~lat}.
 #'   
 #' @param earth.radius Radius of the earth. Default 6371 km.
+#' 
+#' @param ... Other parameters.
 #'
 #' @export
 #'
@@ -26,7 +28,7 @@ GeoDist <- function(x, ...) UseMethod('GeoDist', x)
 
 #' @export
 #' @rdname GeoDist
-GeoDist.default <- function(x, earth.radius = 6371)
+GeoDist.default <- function(x, earth.radius = 6371, ...)
   fields::rdist.earth(as.matrix(x), miles = FALSE, R = earth.radius)
 
 #' @export

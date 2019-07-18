@@ -6,18 +6,18 @@
 \alias{print.reglmom}
 \alias{plot.reglmom}
 \alias{sitenames}
-\title{Fitting an index-flood model}
+\title{Fitting an index-flood model using regional L-moments}
 \usage{
 FitRegLmom(x, distr = NULL, type = "amax", diagnostic = FALSE,
   diagnostic.nsim = 1000, nmom = 4)
 
-\method{coef}{reglmom}(obj, distr = NULL)
+\method{coef}{reglmom}(object, distr = NULL, ...)
 
-\method{print}{reglmom}(obj)
+\method{print}{reglmom}(x, ...)
 
-\method{plot}{reglmom}(obj)
+\method{plot}{reglmom}(x, ...)
 
-sitenames(obj)
+sitenames(x)
 }
 \arguments{
 \item{x}{Dataset with sites in columns and time in rows.}
@@ -34,7 +34,11 @@ peaks over threshold (\code{'pot'}).}
 \item{diagnostic.nsim}{Number of simulations used to evaluate the
 diagnostic statistics.}
 
-\item{nmon}{Number of L-moments to evaluate.}
+\item{nmom}{Number of L-moments to evaluate.}
+
+\item{object}{Output from \code{FitRegLmom}.}
+
+\item{...}{Other parameters.}
 }
 \value{
 \describe{

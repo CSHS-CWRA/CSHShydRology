@@ -71,7 +71,7 @@ PoolRemove <-
     dd <- lmomRFA::as.regdata(data.frame(rownames(obj$lmom),
                                          obj$nrec, obj$lmom), FALSE)
 
-    tst <- lmomRFA::regtst(dd, diagnostic.nsim)
+    tst <- lmomRFA::regtst(dd, nsim)
 
     obj$stat <- c(tst$H, tst$Z)
 

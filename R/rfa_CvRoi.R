@@ -29,7 +29,7 @@
 #' @param ker Should a (Epanechnikov) kernel be used in to weight
 #'  local regression model. Otherwise uniform weight are used.
 #'  
-#' @param kfold Number of group used in the cross-validation scheme. 
+#' @param fold Number of group used in the cross-validation scheme. 
 #'   Can also be a vector defining the group for each site.
 #'   
 #' @param verbose Logical. Should a progress bar be displayed.
@@ -81,8 +81,7 @@
 #'
 #'  ## Perform cross-validation.
 #'  system.time(out <- CvRoi(x = xdf, nk = seq(20,150, 10), fold = 5,
-#'                  phy = fphy,  similarity = fsimilarity, model = 'Exp', 
-#'                  nmax = 20))
+#'                  phy = fphy,  similarity = fsimilarity, model = 'Exp'))
 #'
 #'  head(out, 'nsh')
 #'  plot(out, 'mad')
@@ -177,22 +176,22 @@ CvRoi <-
 
 #' @export
 #' @rdname CvRoi
-head.roicv <- function(obj, crit = 'mad'){
+head.roicv <- function(x, crit = 'mad', ...){
 
   lstCrit <- c('rmse','rrmse','nsh','mad','rmad','smad')
   bid <- which(crit == lstCrit)+1
   
     ## Find the best row
   if(crit %in% c('nsh','smad')){
-    best <- order(obj[,bid], decreasing = TRUE)[1:3]
+    best <- order(x[,bid], decreasing = TRUE)[1:3]
   } else{
-    best <- order(obj[,bid])[1:3]
+    best <- order(x[,bid])[1:3]
   }
   
 
   cat('\nCross-validation for Region of Influence (ROI)\n')
   cat('\nBest 3 sizes of neighborhood\n')
-  ans <- as.matrix(obj[best,])
+  ans <- as.matrix(x[best,])
   print(ans)
 
 }
@@ -200,7 +199,7 @@ head.roicv <- function(obj, crit = 'mad'){
 #' @export
 #' @rdname CvRoi
 plot.roicv <- 
-  function(obj, 
+  function(x, 
            crit = 'mad', 
            best.col = 'red',
            best.pch = 16,
@@ -213,17 +212,17 @@ plot.roicv <-
   
   ## Find the best row
   if(crit %in% c('nsh','smad')){
-    best <- which.max(obj[,bid])
+    best <- which.max(x[,bid])
   } else{
-    best <- which.min(obj[,bid])
+    best <- which.min(x[,bid])
   }
   
   # produce the graph
   form <- as.formula(paste(crit,'~nk'))
-  plot(form, obj, type = 'l', ...)
+  plot(form, x, type = 'l', ...)
   
-  points(obj[best,1],
-         obj[best,bid], 
+  points(x[best,1],
+         x[best,bid], 
          col = best.col, 
          pch = best.pch, 
          cex = best.cex)

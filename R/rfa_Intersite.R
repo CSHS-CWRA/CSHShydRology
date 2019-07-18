@@ -33,6 +33,9 @@
 #' @param start Initial parameter for optimization with the \code{exp} method.
 #'   It must have the form \code{(nugget, range)}.
 #'
+#' @param para Paramter of the power exponential model.
+#' 
+#' @param ... Other parameters.
 #'
 #' @return
 #' \describe{
@@ -56,7 +59,7 @@
 #'
 #' @examples
 #'
-#' Data(flowAtlantic)
+#' data(flowAtlantic)
 #' 
 #' ## Organize annual maximums
 #' ams <- flowAtlantic$ams
@@ -224,54 +227,19 @@ Intersite <-
 
 #' @export
 #' @rdname Intersite
-print.isite <- function(obj){
+print.isite <- function(x, ...){
   cat('\nIntersite-correlation\n')
-  cat('\nMethod:', obj$method)
-  cat('\nNb. sites:', ncol(obj$corr))
+  cat('\nMethod:', x$method)
+  cat('\nNb. sites:', ncol(x$corr))
 
-  if(obj$method == 'exp'){
-    cat('\nRMSE:', format(obj$rmse, digits = 4))
+  if(x$method == 'exp'){
+    cat('\nRMSE:', format(x$rmse, digits = 4))
     cat('\nParameter:\n')
-    print(obj$para, digits = 4)
+    print(x$para, digits = 4)
 
-  } else if(obj$method == 'emp'){
-    cat('\nAverage:', round(obj$para[1],3))
+  } else if(x$method == 'emp'){
+    cat('\nAverage:', round(x$para[1],3))
   }
-}
-
-#' @export
-#' @rdname Intersite
-plot.isite <- function(obj, xmat, distance, xlab = NULL, ylab = NULL, ...){
-
-  if(is.null(ylab))
-    ylab <- 'Intersite correlation'
-
-  pcorr <- obj$corr[lower.tri(obj$corr)]
-  pmdl <- obj$model[lower.tri(obj$model)]
-
-  if(obj$method == 'exp' ){
-
-    ph <- distance[lower.tri(obj$corr)]
-    pid <- order(ph)
-
-    if(is.null(xlab))
-      xlab <- 'Distance'
-
-    plot(ph, pcorr, xlab = xlab, ylab = ylab, ...)
-    lines(ph[pid], pmdl[pid], col = 2, lwd = 1.5)
-
-  } else if(obj$method == 'emp'){
-
-    if(is.null(xlab))
-      xlab <- 'Pairs'
-
-    plot(pmdl, xlab = xlab, ylab = ylab, ...)
-    abline(h = obj$para[1], col = 2, lwd = 1.5)
-
-  } else {
-    warning('There is no intersite correlation to display')
-  }
-
 }
 
 #' @export

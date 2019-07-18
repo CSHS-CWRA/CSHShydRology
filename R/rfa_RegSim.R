@@ -34,6 +34,14 @@
 #' or the LCV (`FALSE`).
 #'
 #' @param long  Logical. Should the output be returned in a long format.
+#' 
+#' @param n Number of simulations.
+#' 
+#' @param margin Which marginal distribution should be used. Either
+#'   based on the at-site (\code{'atsite'}) or regional (\code{'reg'}) 
+#'   distribution.
+#' 
+#' @param ... Other parameters.
 #'
 #' @export
 #'
@@ -72,7 +80,8 @@ RegSim.matrix <-
     corr.sqrt = FALSE,
     lmom = TRUE,
     lscale = FALSE,
-    long = FALSE)
+    long = FALSE, 
+    ...)
 {
 
   ## Extract info
@@ -170,11 +179,11 @@ RegSim.matrix <-
 
 #' @export
 #' @rdname RegSim
-RegSim.reglmom <- function(obj, n = 1, corr = 0, margin = 'atsite')
+RegSim.reglmom <- function(x, n = 1, corr = 0, margin = 'atsite', ...)
 {
 
-  nsite <- nrow(obj$lmom)
-  nmax <- max(obj$nrec)
+  nsite <- nrow(x$lmom)
+  nmax <- max(x$nrec)
 
   corr <- as.matrix(corr)
 
@@ -190,20 +199,20 @@ RegSim.reglmom <- function(obj, n = 1, corr = 0, margin = 'atsite')
   ## ---------------------------------------------------------- ##
 
   if(margin == 'atsite'){
-    lmom0 <- obj$lmom
+    lmom0 <- x$lmom
   } else if(margin == 'reg'){
-    lmom0 <- t(replicate(nsite,obj$rlmom))
+    lmom0 <- t(replicate(nsite,x$rlmom))
   }
 
   Sim1 <- function(){
-    out <- RegSim(lmom0, distr = obj$distr, nrec = obj$nrec,
+    out <- RegSim(lmom0, distr = x$distr, nrec = x$nrec,
                   corr = corr.L, corr.sqrt = TRUE, long = FALSE)
 
-    return(mapply('*', as.data.frame(out), obj$lmom[,1]))
+    return(mapply('*', as.data.frame(out), x$lmom[,1]))
   }
 
   ans <- replicate(n, Sim1())
-  colnames(ans) <- obj$station
+  colnames(ans) <- x$station
 
   ## Case there is one simulation
   if(n == 1)

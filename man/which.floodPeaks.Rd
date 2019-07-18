@@ -13,7 +13,7 @@
 which.floodPeaks(x, ...)
 
 \method{which.floodPeaks}{numeric}(x, dt = NULL, u, r = 1,
-  rlow = 0.75, ini = "wrc")
+  rlow = 0.75, ini = "wrc", ...)
 
 \method{which.floodPeaks}{formula}(form, x, u, ...)
 
@@ -21,17 +21,19 @@ which.floodPeaks(x, ...)
 
 which.clusters(x, ...)
 
-\method{which.clusters}{formula}(form, x, u, r = 1)
+\method{which.clusters}{formula}(form, x, u, r = 1, ...)
 
-\method{which.clusters}{numeric}(x, dt = NULL, u, r = 1)
+\method{which.clusters}{numeric}(x, dt = NULL, u, r = 1, ...)
 }
 \arguments{
 \item{x, form}{If numeric, \code{x} is a vector of data. If a formula is passed}
 
-\item{dt}{Date or time of observations. If not provided, regular step
-  are asumed.
+\item{...}{Other parameters.}
 
- @param u Threshold.}
+\item{dt}{Date or time of observations. If not provided, regular step
+are asumed.}
+
+\item{u}{Threshold.}
 
 \item{r, rlow, ini}{Declustering parameters. See details.}
 }
@@ -69,8 +71,8 @@ period of \code{r} consecutive values under the threshold.
 \section{References}{
 
 
-Lang M, Ouarda TBMJ, Bobée B. (1999) Towards operational guidelines for
-  over-threshold modeling. Journal of Hydrology. Dec 6;225(3):103–17.
+Lang M, Ouarda TBMJ, Bobee B. (1999) Towards operational guidelines for
+  over-threshold modeling. Journal of Hydrology. Dec 6;225(3):103-17.
 }
 
 \examples{

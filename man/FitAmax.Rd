@@ -4,7 +4,8 @@
 \alias{FitAmax}
 \title{At-site frequency analysis using annual maximums}
 \usage{
-FitAmax(x, distr = c("gev", "gno", "pe3", "glo"), ..., tol.gev = 0)
+FitAmax(x, distr = c("gev", "gno", "pe3", "glo"), method = "lmom",
+  varcov = TRUE, nsim = 1000, ..., tol.gev = 0)
 }
 \arguments{
 \item{x}{Data.}
@@ -21,6 +22,12 @@ hessian matrix. For L-moments, non-parametric bootstrap is used.}
 
 \item{nsim}{Number of simulations used to evaluate the covariance matrix
 when using L-moment estimator.}
+
+\item{...}{Other parameters.}
+
+\item{tol.gev}{Accepted difference between the AIC of the GEV and the best 
+best distribution. If the difference is inferior to \code{tol.gev}, the 
+GEV distribution is prefered.}
 }
 \value{
 \item{data}{Data Values.}
@@ -76,7 +83,7 @@ FitAmax(x, distr = c('gev','glo','gno','pe3'), method = 'mle')
 
 }
 \seealso{
-\link{predict.amax}, \link{gofTest}, \link{plot.amax}.
+\link{predict.amax}, \link{GofTest}, \link{plot.amax}.
 }
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>

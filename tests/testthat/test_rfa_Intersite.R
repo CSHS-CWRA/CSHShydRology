@@ -96,8 +96,7 @@ expect_equal(ifit$model[5,1], ifit$para[1])
 ifit <- Intersite(x1, method = 'emp', nmin = 100,
                   na.sub = 'zero')
 
-mad <- abs(ifit$model[5,1]-ifit$model[2,1])
-expect_true(mad > 1e-8)
+chol(ifit$model)
 
 ## ------------------------
 ## Case method = exp
@@ -117,11 +116,11 @@ expect_equal(ifit$method, 'exp')
 
 expect_equal(names(ifit$para),c('nugget', 'range', 'smooth'))
 mad <- max(abs(ifit$para - c(0,3,1)))
-expect_true(mad < .05)
+expect_true(mad < .1)
 
 mad <- mean(abs(as.vector(ifit$model-corr.mat)))
-expect_true(mad < 0.01)
+expect_true(mad < 0.02)
 
 mad <- mean(abs(as.vector(corr.mat - ifit$corr)))
-expect_true(mad < 0.01)
+expect_true(mad < 0.02)
 

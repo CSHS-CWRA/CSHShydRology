@@ -15,31 +15,34 @@
 \usage{
 FitPot(x, ...)
 
-\method{FitPot}{data.frame}(obj, ...)
+\method{FitPot}{data.frame}(x, ...)
 
-\method{FitPot}{matrix}(obj, ...)
+\method{FitPot}{matrix}(x, ...)
 
 \method{FitPot}{formula}(form, x, ...)
 
 \method{FitPot}{numeric}(x, dt = NULL, u = 0, method = "mle",
   declust = "none", r = 1, rlow = 0.75, nsim = 1000,
-  varcov = TRUE, unit = 365.25)
+  varcov = TRUE, unit = 365.25, ...)
 
-\method{coef}{fpot}(obj, rate = FALSE, ci = FALSE, alpha = 0.05)
+\method{coef}{fpot}(object, rate = FALSE, ci = FALSE, alpha = 0.05,
+  ...)
 
-\method{vcov}{fpot}(obj, rate = FALSE)
+\method{vcov}{fpot}(object, rate = FALSE, ...)
 
-\method{print}{fpot}(obj)
+\method{print}{fpot}(x, ...)
 
-\method{logLik}{fpot}(obj)
+\method{logLik}{fpot}(object, ...)
 
-\method{AIC}{fpot}(obj, k = 2)
+\method{AIC}{fpot}(object, k = 2, ...)
 }
 \arguments{
 \item{x, form}{Dataset. If a matrix or data.frame is passed as argument the
 first column must be the time and the second the values. A formula can be
 used to specify which variables of a data.frame to use. In this case, it
 must have the form \code{value~time}.}
+
+\item{...}{Other parameters.}
 
 \item{dt}{Date or time of observation.}
 
@@ -59,14 +62,22 @@ The scale must coincide with the observation date \code{dt}.}
 
 \item{nsim}{Number of bootstrap samples.}
 
+\item{varcov}{Logical. Should the covariance matrix of the estimated 
+parameters be evaluated.}
+
 \item{unit}{Length of cycle. Data are normaly years and \code{unit} = 365.25.
 Can be change to 12 or 52 for daily and weekly data.}
 
-\item{ci}{For \code{'coef'} should confidence interval be returned. 
-For \code{'predict'}, method used to compute confidence intervals. 
-Either \code{'profile'}, \code{'delta'} or \code{'boot'}.}
+\item{object}{Output of \code{FitPot}.}
 
-\item{se}{Should the standard error or the confidence interval be returned.}
+\item{rate}{Logical. Should the estimated probability of exeedance must be
+included in the covariance matrix.}
+
+\item{ci}{For \code{'coef'} should confidence interval be returned.}
+
+\item{alpha}{Probability outside the confidence interval.}
+
+\item{k}{The penalty per parameter to be used.}
 }
 \description{
 Fit the parameters of a thresholding model using Generalized Pareto

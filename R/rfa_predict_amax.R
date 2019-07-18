@@ -4,7 +4,7 @@
 #' Return the flood quantile of annual maximum distribution and
 #' Confident intervals are provided by bootstrap.
 #'
-#' @param obj Output from  \code{\link{FitAmax}}
+#' @param object Output from  \code{\link{FitAmax}}
 #'
 #' @param q Probabilities associated to the return level. For example,
 #'   a 100 years return period is equivalent to \code{q = 0.99}.
@@ -23,6 +23,8 @@
 #' @param out.matrix Logical. Should the resampling be returned. If true,
 #'   a list is returned containing the prediction table (\code{pred}),
 #'   the parameters (\code{para}) and the return levels (\code{qua}).
+#'   
+#' @param ... Other parameters.
 #'
 #' @export
 #'
@@ -44,27 +46,31 @@
 #' boot <- predict(fit, rp, se = FALSE, ci = 'boot',
 #'                 nsim = 500, out.matrix = TRUE)
 #'
-predict.amax <- function(obj, q = c(.5, .8, .9, .95, .98, .99),
-                           se = FALSE, ci = 'none',
-                           alpha = .05, nsim = 1000,
-                           out.matrix = FALSE){
+predict.amax <- 
+  function(object, 
+           q = c(.5, .8, .9, .95, .98, .99),
+           se = FALSE, 
+           ci = 'none',
+           alpha = .05, 
+           nsim = 1000,
+           out.matrix = FALSE, ...){
 
-  n <- length(obj$data)
+  n <- length(object$data)
 
   ## Function that compute the return level for a given vector of parameter
   FunQ <- function(z, q0){
-    lmomco::qlmomco(q0, lmomco::vec2par(z, obj$distr))
+    lmomco::qlmomco(q0, lmomco::vec2par(z, object$distr))
   }
 
   ## Compute Return level
-  ans <- FunQ(obj$para, q)
+  ans <- FunQ(object$para, q)
 
   ## Compute confident intervals by resampling techniques
   if(ci == 'boot'){
 
     ## using Parametric bootstrap
-    bootp <- matrix(NA,nsim,length(obj$para))
-    p0 <- lmomco::vec2par(obj$para, obj$distr)
+    bootp <- matrix(NA,nsim,length(object$para))
+    p0 <- lmomco::vec2par(object$para, object$distr)
 
     for(ii in 1:nsim){
 
@@ -73,20 +79,21 @@ predict.amax <- function(obj, q = c(.5, .8, .9, .95, .98, .99),
         b <- lmomco::rlmomco(n,p0)
 
         ## estimate
-        if(obj$method == 'gml'){
+        if(object$method == 'gml'){
           suppressWarnings(p <- try(
-            FitGev(b, varcov = FALSE, mu = obj$prior[1], sig2 = obj$prior[2]),
-            silent = TRUE))
+            FitGev(b, varcov = FALSE, mu = object$prior[1], 
+                   sig2 = object$prior[2]), silent = TRUE))
 
         } else {
           suppressWarnings(p <- try(
-            FitAmax(b, distr = obj$distr, method = obj$method, varcov = FALSE),
+            FitAmax(b, distr = object$distr, method = object$method, 
+                    varcov = FALSE),
             silent = TRUE))
         }
 
         ## Sample only feasible set
         if(any(class(p) != 'try-error'))
-          if(p$method == obj$method)
+          if(p$method == object$method)
             break
 
       }# end repeat
@@ -99,10 +106,10 @@ predict.amax <- function(obj, q = c(.5, .8, .9, .95, .98, .99),
   } else if(ci == 'norm'){
 
     ## Verify requirements for using the delta method
-    if(any(is.na(obj$varcov)))
+    if(any(is.na(object$varcov)))
       stop('Covariance matrix was not estimated')
 
-    bootp <- mnormt::rmnorm(nsim, obj$para, obj$varcov)
+    bootp <- mnormt::rmnorm(nsim, object$para, object$varcov)
 
   } else
     bootp <- NA
@@ -129,12 +136,12 @@ predict.amax <- function(obj, q = c(.5, .8, .9, .95, .98, .99),
   if(se | ci == 'delta'){
 
     ## Verify requirements for using the delta method
-    if(any(is.na(obj$varcov)))
+    if(any(is.na(object$varcov)))
       stop('Covariance matrix was not estimated')
 
     ## could eventually be replaced by analogic formulas
-    g <- sapply(q, function(z) numDeriv::grad(FunQ, obj$para, q0 = z))
-    sig <- sqrt(diag(crossprod(g, obj$varcov %*% g)))
+    g <- sapply(q, function(z) numDeriv::grad(FunQ, object$para, q0 = z))
+    sig <- sqrt(diag(crossprod(g, object$varcov %*% g)))
 
     if(ci == 'delta'){
       nq <- abs(qnorm(alpha/2))

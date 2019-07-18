@@ -1,5 +1,5 @@
 ###############################################################################
-#' Fitting an index-flood model
+#' Fitting an index-flood model using regional L-moments
 #'
 #' Returns the at-site L-moments, regional L-moments and the parameters of
 #' the regional growth curve for an index-flood model. 
@@ -16,14 +16,18 @@
 #'
 #' @param type Type of input data. Either annual maximums (\code{'amax'}) or
 #'   peaks over threshold (\code{'pot'}).
+#'   
+#' @param nmom Number of L-moments to evaluate.
 #'
 #' @param diagnostic Should the homogeneity (H) and goodness of fit
 #'   (Z-score) be evaluated.
 #'
 #' @param diagnostic.nsim Number of simulations used to evaluate the
 #'   diagnostic statistics.
-#'
-#' @param nmon Number of L-moments to evaluate.
+#' 
+#' @param object Output from \code{FitRegLmom}.
+#' 
+#' @param ... Other parameters.
 #'
 #' @details 
 #' 
@@ -196,19 +200,19 @@ FitRegLmom <-
 
 #' @export
 #' @rdname FitRegLmom
-coef.reglmom <- function(obj, distr = NULL){
+coef.reglmom <- function(object, distr = NULL, ...){
 
   if(is.null(distr))
-    distr <- obj$distr
+    distr <- object$distr
   
   ## Extract function lmom -> parameter
   ffunc <- getFromNamespace(paste0('pel', distr), 'lmom')
 
   ## Rescale LCV to L2
-  lmom <- obj$lmom
+  lmom <- object$lmom
   lmom[,2] <- lmom[,2]*lmom[,1]
 
-  ans <- matrix(NA, nrow(lmom), length(obj$para))
+  ans <- matrix(NA, nrow(lmom), length(object$para))
 
   for(ii in 1:nrow(lmom)){
     p0 <- try(ffunc(lmom[ii,]))
@@ -218,7 +222,7 @@ coef.reglmom <- function(obj, distr = NULL){
   }
 
   colnames(ans) <- names(p0)
-  rownames(ans) <- rownames(obj$lmom)
+  rownames(ans) <- rownames(object$lmom)
 
   return(ans)
 }
@@ -226,43 +230,43 @@ coef.reglmom <- function(obj, distr = NULL){
 
 #' @export
 #' @rdname FitRegLmom
-print.reglmom <- function(obj){
+print.reglmom <- function(x, ...){
 
   cat('\nRegional frequency analysis with pooling groups\n')
-  cat('\ntype:', obj$type)
-  cat('\nNb. site:', nrow(obj$lmom))
-  cat('\nStation-year:', sum(obj$nrec))
+  cat('\ntype:', x$type)
+  cat('\nNb. site:', nrow(x$lmom))
+  cat('\nStation-year:', sum(x$nrec))
 
-  if (any(!is.null(obj$stat))){
-    cat('\nHomogeneity:', round(obj$stat[1:3],2))
+  if (any(!is.null(x$stat))){
+    cat('\nHomogeneity:', round(x$stat[1:3],2))
 
-    if (obj$type == 'amax'){
+    if (x$type == 'amax'){
       cat('\n\nZ-scores (absolute):\n')
-      print(round(abs(obj$stat[4:8]),2))
+      print(round(abs(x$stat[4:8]),2))
 
     } else cat('\n')
   }
 
   cat('\nRegional L-moments:\n')
-  print(obj$rlmom, digits = 4)
+  print(x$rlmom, digits = 4)
 
-  cat('\nDistribution:', obj$distr)
+  cat('\nDistribution:', x$distr)
 
   cat('\nParameter:\n')
-  print(obj$para, digits = 4)
+  print(x$para, digits = 4)
 
 }
 
 
 #' @export
 #' @rdname FitRegLmom
-plot.reglmom <- function(obj){
-  lmm <- obj$lmom[,3:4]
+plot.reglmom <- function(x, ...){
+  lmm <- x$lmom[,3:4]
   colnames(lmm) <- c('t_3','t_4')
   lmom::lmrd(lmm)
-  points(obj$rlmom[3],obj$rlmom[4], pch = 16, col = 'red', cex = 1.5)
+  points(x$rlmom[3],x$rlmom[4], pch = 16, col = 'red', cex = 1.5)
 }
 
 #' @export
 #' @rdname FitRegLmom
-sitenames <- function(obj) rownames(obj$lmom)
+sitenames <- function(x) rownames(x$lmom)

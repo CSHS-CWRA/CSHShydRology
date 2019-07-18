@@ -24,6 +24,12 @@
 #'
 #' @param nsim Number of simulations used to evaluate the covariance matrix
 #'   when using L-moment estimator.
+#'   
+#' @param tol.gev Accepted difference between the AIC of the GEV and the best 
+#'   best distribution. If the difference is inferior to \code{tol.gev}, the 
+#'   GEV distribution is prefered.
+#'   
+#' @param ... Other parameters.
 #'
 #' @return
 #'
@@ -42,7 +48,7 @@
 #' Hosking, J. R. M., & Wallis, J. R. (1997). Regional frequency analysis:
 #'   an approach based on L-moments. Cambridge Univ Pr.
 #'
-#' @seealso \link{predict.amax}, \link{gofTest}, \link{plot.amax}.
+#' @seealso \link{predict.amax}, \link{GofTest}, \link{plot.amax}.
 #'
 #' @export
 #'
@@ -75,7 +81,10 @@
 #'
 FitAmax <-
   function(x, 
-           distr = c('gev','gno', 'pe3', 'glo'), 
+           distr = c('gev','gno', 'pe3', 'glo'),
+           method = 'lmom',
+           varcov = TRUE,
+           nsim = 1000,
            ...,
            tol.gev = 0){
 
@@ -84,10 +93,14 @@ FitAmax <-
 
   ## If there is only one distribution passed
   if(length(distr) == 1)
-    return(FitAmax0(x, distr = distr, lmm = lmm, ...))
+    return(FitAmax0(x, distr = distr, lmm = lmm, 
+                    method = method, varcov = varcov, nsim = nsim, ...))
 
   ## Fit data and compute the AIC for each distribution
-  fits <- lapply(distr, function(z) try(FitAmax0(x, distr = z, lmm = lmm, ...)))
+  Fun <- function(z) try(FitAmax0(x, distr = z, lmm = lmm, 
+                                  method = method, varcov = varcov, 
+                                  nsim = nsim, ...))
+  fits <- lapply(distr, Fun)
   crit <- lapply(fits, function(z) try(AIC(z)))
 
   ## If the fitting fails put AIC to Infinity
@@ -210,52 +223,52 @@ FitAmax0 <-
 
 
 #' @export
-print.amax <- function(obj){
+print.amax <- function(x, ...){
 
   cat('\nAt-site frequency analysis\n')
 
-  cat('\nDistribution:', obj$distr,
-      '\nAIC:', format(AIC(obj), digits = 4),
-      '\nMethod:', obj$method)
+  cat('\nDistribution:', x$distr,
+      '\nAIC:', format(AIC(x), digits = 4),
+      '\nMethod:', x$method)
 
   cat('\nEstimate:\n')
-  print(obj$para, digit = 4)
+  print(x$para, digit = 4)
 
-  if(all(!is.na(obj$varcov))){
+  if(all(!is.na(x$varcov))){
 
-    se <- sqrt(diag(vcov(obj)))
-    names(se) <- names(obj$para)
+    se <- sqrt(diag(vcov(x)))
+    names(se) <- names(x$para)
 
     cat('\nStd.err:\n')
     print(se, digits = 4)
   }
 
   cat('\nLmoments:\n')
-  print(data.frame(l1 = obj$lmom[1],
-                   lcv = obj$lmom[2]/obj$lmom[1],
-                   lsk = obj$lmom[3]/obj$lmom[2],
-                   lkt = obj$lmom[4]/obj$lmom[2]), digits = 4)
+  print(data.frame(l1 = x$lmom[1],
+                   lcv = x$lmom[2]/x$lmom[1],
+                   lsk = x$lmom[3]/x$lmom[2],
+                   lkt = x$lmom[4]/x$lmom[2]), digits = 4)
 }
 
 #' @export
-coef.amax <- function(obj) obj$para
+coef.amax <- function(object, ...) object$para
 
 #' @export
-AIC.amax <- function(obj, k = 2)
-  as.numeric(k*length(obj$para) - 2*obj$llik)
+AIC.amax <- function(object, k = 2, ...)
+  as.numeric(k*length(object$para) - 2*object$llik)
 
 #' @export
-as.list.amax <- function(obj){
-  class(obj) <- 'list'
-  return(obj)
+as.list.amax <- function(x, ...){
+  class(x) <- 'list'
+  return(x)
 }
 
 #' @export
-vcov.amax <- function(obj){
+vcov.amax <- function(object, ...){
 
   ## if exist return the covariance matrix
-  if(!is.null(obj$varcov))
-    ans <- obj$varcov
+  if(!is.null(object$varcov))
+    ans <- object$varcov
   else
     ans <- NA
 
@@ -264,7 +277,11 @@ vcov.amax <- function(obj){
 }
 
 #' @export
-simulate.amax <- function(obj, n)
-  rAmax(n, obj$estimate, obj$distr)  
-
+simulate.amax <- function(object, nsim, seed = NULL, ...){
+  
+  if(!is.null(seed))
+    set.seed(seed)
+  
+  return(rAmax(nsim, object$estimate, object$distr))  
+}
 

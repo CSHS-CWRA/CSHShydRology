@@ -4,11 +4,11 @@
 \alias{predict.fpot}
 \title{Prediction of flood quantiles of a given return period.}
 \usage{
-\method{predict}{fpot}(obj, rt = c(2, 5, 10, 20, 50, 100), se = FALSE,
-  ci = "none", alpha = 0.05, nsim = 1000)
+\method{predict}{fpot}(object, rt = c(2, 5, 10, 20, 50, 100),
+  se = FALSE, ci = "none", alpha = 0.05, nsim = 1000, ...)
 }
 \arguments{
-\item{obj}{Output of \link{FitPot}.}
+\item{object}{Output of \link{FitPot}.}
 
 \item{rt}{Return period.}
 
@@ -20,6 +20,8 @@ Delta method (\code{'delta'}), profile likelihood (\code{'profile'})
 and nonparametric bootstrap (\code{'boot'})}
 
 \item{nsim}{Number of bootstrap sample.}
+
+\item{...}{Other parameters.}
 }
 \description{
 Return a vector or matrix of the flood quantiles, its standard deviation and 

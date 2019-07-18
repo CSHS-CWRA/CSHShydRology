@@ -4,11 +4,11 @@
 \alias{predict.reglmom}
 \title{Flood quantiles estimates}
 \usage{
-\method{predict}{reglmom}(obj, q = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  ci = FALSE, corr = 0, nsim = 1000, alpha = 0.05)
+\method{predict}{reglmom}(object, q = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  ci = FALSE, corr = 0, nsim = 1000, alpha = 0.05, ...)
 }
 \arguments{
-\item{obj}{An output from \link{FitRegLmom}.}
+\item{object}{An output from \link{FitRegLmom}.}
 
 \item{q}{Probability associated to the flood quantiles.}
 
@@ -21,9 +21,9 @@ for all pairs}
 \item{nsim}{Number of simulations used for approximating
 the confident intervals.}
 
-\item{alpha}{Significance level.}
+\item{alpha}{Probability outside the confidence intervals.}
 
-\item{indx}{Index flood factor. By default the sample average of the target.}
+\item{...}{Other parameters.}
 }
 \description{
 Predict the flood quantile of index-flood model for a specific scale

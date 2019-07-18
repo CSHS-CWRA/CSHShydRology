@@ -17,7 +17,7 @@ FitGev(x, varcov = TRUE, mu = -0.1, sig2 = 0.015,
 
 \item{method.optim}{Optimisation method used by \code{\link{optim}}}
 
-\item{...}{Other parameter pass to \code{\link{optim}}}
+\item{...}{Other parameter pass to \code{\link{optim}}.}
 }
 \description{
 Fit a GEV distribution on annual maxima using the generalized
@@ -30,7 +30,7 @@ Asymptotic result are computed like the maximum likelihood approach.
 
 Martins, E.S., Stedinger, J.R., 2000. Generalized maximum-likelihood
 generalized extreme-value quantile estimators for hydrologic data.
-Water Resour. Res. 36, 737–744. https://doi.org/10.1029/1999WR900330
+Water Resour. Res. 36, 737-744. https://doi.org/10.1029/1999WR900330
 }
 
 \examples{

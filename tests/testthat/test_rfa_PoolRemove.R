@@ -38,7 +38,7 @@ expect_true(out1$stat[1] < fit1$stat[1])
 out1 <- PoolRemove(fit1, nmin = 15)
 expect_true(out1$stat[1] < 2)
 
-out1 <- PoolRemove(fit1, ntot.min = 5900)
+expect_warning(out1 <- PoolRemove(fit1, ntot.min = 5900))
 expect_true(nrow(out1$lmom) == 20)
 
 ## The first site must be protected for removing

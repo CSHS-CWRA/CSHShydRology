@@ -10,11 +10,14 @@ ExtractAmax(x, ...)
 
 \method{ExtractAmax}{formula}(form, x, tol = 0, ...)
 
-\method{ExtractAmax}{default}(x, tol = 0, nlab = "n", ylab = "yy")
+\method{ExtractAmax}{default}(x, tol = 0, nlab = "n", ylab = "yy",
+  ...)
 }
 \arguments{
 \item{x}{Data. If no formula is passed, the first column must be the
 value and the second the date.}
+
+\item{...}{Other parameters.}
 
 \item{form}{Formula of the form \code{value ~ date} that specifies the
 variable from which the annual maximums are extracted and a date variable.}

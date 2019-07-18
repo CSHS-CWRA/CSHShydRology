@@ -25,17 +25,26 @@
 #'
 #' @param rlow For WRC, recession level between two flood peaks in percentages.
 #'
-#' @param se Should the standard error or the confidence interval be returned.
-#'
-#' @param ci For \code{'coef'} should confidence interval be returned. 
-#'   For \code{'predict'}, method used to compute confidence intervals. 
-#'   Either \code{'profile'}, \code{'delta'} or \code{'boot'}.
-#'
 #' @param nsim Number of bootstrap samples.
+#' 
+#' @param varcov Logical. Should the covariance matrix of the estimated 
+#'   parameters be evaluated. 
 #' 
 #' @param unit Length of cycle. Data are normaly years and \code{unit} = 365.25.
 #'   Can be change to 12 or 52 for daily and weekly data.
 #'
+#' @param object Output of \code{FitPot}.   
+#'   
+#' @param ci For \code{'coef'} should confidence interval be returned.
+#' 
+#' @param alpha Probability outside the confidence interval.
+#' 
+#' @param rate Logical. Should the estimated probability of exeedance must be
+#'   included in the covariance matrix. 
+#'   
+#' @param k The penalty per parameter to be used.
+#'   
+#' @param ... Other parameters.
 #'
 #' @details
 #'
@@ -85,13 +94,13 @@ FitPot <- function(x, ...) UseMethod('FitPot',x)
 
 #' @export
 #' @rdname FitPot
-FitPot.data.frame <- function(obj,  ...)
-  FitPot.numeric(x = as.numeric(obj[,2]), dt = as.numeric(obj[,1]), ...)
+FitPot.data.frame <- function(x,  ...)
+  FitPot.numeric(x = as.numeric(x[,2]), dt = as.numeric(x[,1]), ...)
 
 #' @export
 #' @rdname FitPot
-FitPot.matrix <- function(obj,  ...)
-  FitPot.numeric(x = as.numeric(obj[,2]), dt = as.numeric(obj[,1]), ...)
+FitPot.matrix <- function(x,  ...)
+  FitPot.numeric(x = as.numeric(x[,2]), dt = as.numeric(x[,1]), ...)
 
 #' @export
 #' @rdname FitPot
@@ -102,9 +111,18 @@ FitPot.formula <- function(form, x, ...){
 
 #' @export
 #' @rdname FitPot
-FitPot.numeric <- function(x, dt = NULL, u = 0, method = 'mle',
-                    declust = 'none', r = 1, rlow = .75, nsim = 1000,
-                    varcov = TRUE, unit = 365.25){
+FitPot.numeric <- 
+  function(x, 
+           dt = NULL, 
+           u = 0, 
+           method = 'mle',
+           declust = 'none', 
+           r = 1, 
+           rlow = .75, 
+           nsim = 1000,
+           varcov = TRUE, 
+           unit = 365.25,
+           ...){
 
   ## Supply a date variable if not presented
   if(is.null(dt))
@@ -181,23 +199,28 @@ FitPot.numeric <- function(x, dt = NULL, u = 0, method = 'mle',
 
 #' @export
 #' @rdname FitPot
-coef.fpot <- function(obj, rate = FALSE, ci = FALSE, alpha = 0.05){
+coef.fpot <- 
+  function(object, 
+           rate = FALSE, 
+           ci = FALSE, 
+           alpha = 0.05, 
+           ...){
 
   if(rate)
-    ans <- c(obj$nexcess/obj$ntot,obj$estimate)
+    ans <- c(object$nexcess/object$ntot,object$estimate)
   else
-    ans <- obj$estimate
+    ans <- object$estimate
 
   if(ci){
 
     ## Full likelihood
-    llikFull <- logLik(obj)
+    llikFull <- logLik(object)
 
     ## Initiate searching intervals for parameters
-    ase <- sqrt(obj$varcov[1,1])
+    ase <- sqrt(object$varcov[1,1])
 
-    abnd0 <- c(pmax(1e-8, obj$estimate[1] - 10 * ase),
-               obj$estimate[1] + 10* ase)
+    abnd0 <- c(pmax(1e-8, object$estimate[1] - 10 * ase),
+               object$estimate[1] + 10* ase)
 
     kbnd0 <- c(-1,2)
 
@@ -208,7 +231,7 @@ coef.fpot <- function(obj, rate = FALSE, ci = FALSE, alpha = 0.05){
     ## Deviance for the profile likelihood of the scale parameter
     Dscl <- function(z){
 
-      nllik <- function(p) -sum(dgpa(obj$excess, z, p, log = TRUE))
+      nllik <- function(p) -sum(dgpa(object$excess, z, p, log = TRUE))
 
       ## Compute the profile likelihood
       llik0 <- -goptimize(nllik, kbnd0)$objective
@@ -220,7 +243,7 @@ coef.fpot <- function(obj, rate = FALSE, ci = FALSE, alpha = 0.05){
     ## Deviance for the profile likelihood of the shape parameter
     Dshp <- function(z){
 
-      nllik <- function(p) -sum(dgpa(obj$excess, p, z, log = TRUE))
+      nllik <- function(p) -sum(dgpa(object$excess, p, z, log = TRUE))
 
       llik0 <- -optimize(nllik, abnd0)$objective
 
@@ -231,19 +254,19 @@ coef.fpot <- function(obj, rate = FALSE, ci = FALSE, alpha = 0.05){
 
     suppressWarnings(lbScl <-
         goptimize(function(z) abs(Dscl(z)-khi),
-                 c(abnd0[1],obj$estimate[1]))$minimum)
+                 c(abnd0[1],object$estimate[1]))$minimum)
 
     suppressWarnings(ubScl <-
                        goptimize(function(z) abs(Dscl(z)-khi),
-                                c(obj$estimate[1],abnd0[2]))$minimum)
+                                c(object$estimate[1],abnd0[2]))$minimum)
 
     suppressWarnings(lbShp <-
                        goptimize(function(z) abs(Dshp(z)-khi),
-                                c(kbnd0[1],obj$estimate[2]))$minimum)
+                                c(kbnd0[1],object$estimate[2]))$minimum)
 
     suppressWarnings(ubShp <-
                        goptimize(function(z) abs(Dshp(z)-khi),
-                                c(obj$estimate[2],kbnd0[2]))$minimum)
+                                c(object$estimate[2],kbnd0[2]))$minimum)
 
     bnd <- data.frame(lower = c(NA,lbScl,lbShp),
                       upper = c(NA,ubScl,ubShp))
@@ -261,18 +284,18 @@ coef.fpot <- function(obj, rate = FALSE, ci = FALSE, alpha = 0.05){
 
 #' @export
 #' @rdname FitPot
-vcov.fpot <- function(obj, rate = FALSE){
+vcov.fpot <- function(object, rate = FALSE, ...){
 
   if(rate){
     ans <- matrix(0,3,3)
 
-    kn <- obj$nexcess/obj$ntot
+    kn <- object$nexcess/object$ntot
 
-    ans[1,1] <- kn*(1-kn)/obj$ntot
-    ans[2:3,2:3] <- obj$varcov
+    ans[1,1] <- kn*(1-kn)/object$ntot
+    ans[2:3,2:3] <- object$varcov
 
   } else
-    ans <- obj$varcov
+    ans <- object$varcov
 
   return(ans)
 }
@@ -280,39 +303,39 @@ vcov.fpot <- function(obj, rate = FALSE){
 
 #' @export
 #' @rdname FitPot
-print.fpot <- function(obj){
+print.fpot <- function(x, ...){
 
   cat('\nAnalysis of peaks over threshold')
 
-  cat('\n\nThreshold : ', obj$u)
-  cat('\nNumber of excess : ', obj$nexcess)
+  cat('\n\nThreshold : ', x$u)
+  cat('\nNumber of excess : ', x$nexcess)
 
-  if(!is.na(obj$nyear)){
-    cat('\nNumber of years : ', format(round(obj$nyear,2)))
-    cat('\nExcess rate (yearly): ', format(round(obj$nexcess/obj$nyear,4)))
+  if(!is.na(x$nyear)){
+    cat('\nNumber of years : ', format(round(x$nyear,2)))
+    cat('\nExcess rate (yearly): ', format(round(x$nexcess/x$nyear,4)))
 
-  } else cat('\nExcess rate: ', format(round(obj$nexcess/obj$ntot,4)))
+  } else cat('\nExcess rate: ', format(round(x$nexcess/x$ntot,4)))
 
-  cat('\nMean residual Life : ', format(obj$mrl, digits = 6))
+  cat('\nMean residual Life : ', format(x$mrl, digits = 6))
 
   cat('\n\nParameters :\n')
-  print(obj$estimate, digit = 4)
+  print(x$estimate, digit = 4)
 
-  if(!is.null(obj$varcov)){
+  if(!is.null(x$varcov)){
     cat('\nstd.err :\n')
-    print(sqrt(diag(obj$varcov)), digit = 4)
+    print(sqrt(diag(x$varcov)), digit = 4)
   }
 }
 
 
 #' @export
 #' @rdname FitPot
-logLik.fpot <- function(obj)
-  sum(dgpa(obj$excess, obj$estimate[1], obj$estimate[2], log = TRUE))
+logLik.fpot <- function(object, ...)
+  sum(dgpa(object$excess, object$estimate[1], object$estimate[2], log = TRUE))
 
 #' @export
 #' @rdname FitPot
-AIC.fpot <- function(obj, k = 2)
-  -2 * logLik(obj) + 2 * k
+AIC.fpot <- function(object, k = 2, ...)
+  -2 * logLik(object) + 2 * k
 
 

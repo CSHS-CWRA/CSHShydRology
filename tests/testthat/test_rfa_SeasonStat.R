@@ -3,19 +3,31 @@
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
+rm(list = ls())
+
+date.lst <- seq(as.Date('1950/1/1'),as.Date('2009/12/31'), 'days')
+
+set.seed(843)
+dd <- sample(date.lst, 200)
+
 ## Verify that a known exemple work
-fit <- SeasonStat(ex1$date)
+fit <- SeasonStat(dd)
+
 expect_true(class(fit) == 'numeric')
-ref <- c(-0.4259258,  0.8665048,  2.0276568,  0.9655275)
-expect_true(all(abs(ref-fit) < 1e-5))
+expect_equal(names(fit), c('x','y','angle','radius'))
+
 
 ## verify that multiple stations works
-fit2 <- SeasonStat(date~station, ex2)
+dd2 <- rbind(data.frame(station = 1, date = dd),
+            data.frame(station = 2, date = dd))
+
+
+fit2 <- SeasonStat(date~station, dd2)
 expect_true(class(fit2) == 'matrix')
-expect_true(all(rbind(fit,fit) == fit2))
+expect_equivalent(rbind(fit,fit), fit2)
 
 ## Verify that using a date in characters works
-expect_equal(fit,SeasonStat(as.character(ex1$date)))
+expect_equal(fit,SeasonStat(as.character(dd)))
 
 ## return an error if it is not a date
 expect_error(SeasonStat(1:5))

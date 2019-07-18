@@ -7,6 +7,8 @@
 SearchThresh(form, x, u, nmin = 20, verbose = TRUE, ...)
 }
 \arguments{
+\item{x, form}{Dataset and formula passed to \link{FitPot}.}
+
 \item{u}{Vector of candidate thresholds.}
 
 \item{nmin}{Stopping condition verifying that a minimal number of peaks

@@ -3,7 +3,6 @@
 \name{Intersite}
 \alias{Intersite}
 \alias{print.isite}
-\alias{plot.isite}
 \alias{IntersiteMdl}
 \title{Estimating intersite correlation}
 \usage{
@@ -11,10 +10,7 @@ Intersite(x, method = "emp", distance = NULL, nmin = 0,
   na.sub = "avg", defpos = TRUE, smooth = 1, distance.max = Inf,
   start = NULL)
 
-\method{print}{isite}(obj)
-
-\method{plot}{isite}(obj, xmat, distance, xlab = NULL, ylab = NULL,
-  ...)
+\method{print}{isite}(x, ...)
 
 IntersiteMdl(para, distance)
 }
@@ -42,6 +38,10 @@ in the fitting of the power exponential model.}
 
 \item{start}{Initial parameter for optimization with the \code{exp} method.
 It must have the form \code{(nugget, range)}.}
+
+\item{...}{Other parameters.}
+
+\item{para}{Paramter of the power exponential model.}
 }
 \value{
 \describe{
@@ -72,7 +72,7 @@ Durocher, M., Burn, D.H., Mostofi Zadeh, S., 2018. A nationwide
 
 \examples{
 
-Data(flowAtlantic)
+data(flowAtlantic)
 
 ## Organize annual maximums
 ams <- flowAtlantic$ams

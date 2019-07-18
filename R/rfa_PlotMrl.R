@@ -10,16 +10,17 @@
 #'
 #' @param u Series of candidate thresholds.
 #'
-#' @param method Estimation method.
-#'
 #' @param alpha Confidence interal with level \code{1-alpha/2}.
 #' 
 #' @param display Logical. Should the graph be display. 
+#' 
+#' @param declust,r,rlow Parameter for declustering. See \link{FitPot}.
+#' 
+#' @param ylim,ylab,xlab,col,lty,lwd Parameters for controling the graphic.
+#' 
+#' @param col.ci,lty.ci,lwd.ci Parameter for controling the confidence intervals.
 #'
-#' @param ... Others arguments are passed to function \code{plot} and
-#' \link{which.floodPeaks}
-#'
-#' @details
+#' @param ... Other arameters for controling the graphic.
 #'
 #' @seealso \link{FitPot}, \link{which.floodPeaks}.
 #'

@@ -2,24 +2,29 @@
 % Please edit documentation in R/rfa_DistSeason.R
 \name{DistSeason}
 \alias{DistSeason}
+\alias{DistSeason.numeric}
 \alias{DistSeason.data.frame}
 \alias{DistSeason.formula}
 \title{Distance in seasonal space}
 \usage{
 DistSeason(x, ...)
 
-\method{DistSeason}{data.frame}(x, w = 1/pi)
+\method{DistSeason}{numeric}(x, a, w = 1/pi, ...)
 
-\method{DistSeason}{formula}(form, x, w = 1/pi)
+\method{DistSeason}{data.frame}(x, w = 1/pi, ...)
+
+\method{DistSeason}{formula}(form, x, w = 1/pi, ...)
 }
 \arguments{
+\item{x, a}{Coordinates in the seasonal space: radius `x` and angle `a`.}
+
+\item{...}{Other parameters.}
+
 \item{w}{Weight to favor angle over radius. 
 By default it is 1/pi, which bring angle in the interval [0,1].}
 
-\item{form, x}{Formula and dataset providing the coordinates of the
+\item{form}{Formula and dataset providing the coordinates of the
 seasonal space. Must be of the form `radius ~ angle`.}
-
-\item{r, a}{Coordinates in the seasonal space: radius `r` and angle `a`.}
 }
 \description{
 Return a matrix of distances between points in the seasonal space that
@@ -32,7 +37,6 @@ and timing (angle) separately.
 scoord <- data.frame(radius = runif(5), 
                      angle = runif(5,0,2*pi))
 
-DistSeason(scoord)
 DistSeason(radius ~ angle , scoord)
 
 

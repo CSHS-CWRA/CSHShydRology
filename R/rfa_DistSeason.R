@@ -8,13 +8,15 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param r,a Coordinates in the seasonal space: radius `r` and angle `a`.
+#' @param x,a Coordinates in the seasonal space: radius `x` and angle `a`.
 #'
-#' @param form,x Formula and dataset providing the coordinates of the
+#' @param form Formula and dataset providing the coordinates of the
 #'   seasonal space. Must be of the form `radius ~ angle`.
 #'
 #' @param w Weight to favor angle over radius. 
 #'   By default it is 1/pi, which bring angle in the interval [0,1]. 
+#'   
+#' @param ... Other parameters.
 #'
 #' @references
 #'
@@ -29,19 +31,19 @@
 #' scoord <- data.frame(radius = runif(5), 
 #'                      angle = runif(5,0,2*pi))
 #' 
-#' DistSeason(scoord)
 #' DistSeason(radius ~ angle , scoord)
 #'
 #'
-DistSeason <- function(x,...)  UseMethod('DistSeason', x)
+DistSeason <- function(x, ...)  UseMethod('DistSeason', x)
 
 #' @export
-DistSeason.numeric <- function(r, a, w = 1/pi){
+#' @rdname DistSeason
+DistSeason.numeric <- function(x, a, w = 1/pi, ...){
 
   ## Extract the pairs or every angles
   n <- length(a)
 
-  if(length(r) != n)
+  if(length(x) != n)
     stop('Coordinates must be of the same length')
 
   id <- expand.grid(1:n, 1:n)
@@ -55,24 +57,24 @@ DistSeason.numeric <- function(r, a, w = 1/pi){
   a.mat <- matrix(d, nrow = n)
 
   ## Compute the absolute differences between radius
-  r.mat <- as.matrix(dist(r, method = 'man'))
+  r.mat <- as.matrix(dist(x, method = 'man'))
 
   ## squared distances
   return(sqrt(r.mat^2 + a.mat^2))
 }
 
 #' @export
-DistSeason.matrix <- function(x, w = 1/pi)
+DistSeason.matrix <- function(x, w = 1/pi, ...)
   DistSeason(x[,1], x[,2], w)
 
 #' @export
 #' @rdname DistSeason
-DistSeason.data.frame <- function(x, w = 1/pi)
+DistSeason.data.frame <- function(x, w = 1/pi, ...)
   DistSeason(x[,1], x[,2], w)
 
 #' @export
 #' @rdname DistSeason
-DistSeason.formula <- function(form, x, w = 1/pi){
+DistSeason.formula <- function(form, x, w = 1/pi, ...){
   x <- as.data.frame(x)
   x <- model.frame(form, x) ## form = r ~ a
   

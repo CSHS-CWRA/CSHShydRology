@@ -9,9 +9,9 @@
 CvRoi(x, nk, phy, similarity, kriging = NULL, ker = TRUE,
   model = "Exp", fold = 5, verbose = TRUE)
 
-\method{head}{roicv}(obj, crit = "mad")
+\method{head}{roicv}(x, crit = "mad", ...)
 
-\method{plot}{roicv}(obj, crit = "mad", best.col = "red",
+\method{plot}{roicv}(x, crit = "mad", best.col = "red",
   best.pch = 16, best.cex = 1, ...)
 }
 \arguments{
@@ -33,17 +33,17 @@ local regression model. Otherwise uniform weight are used.}
 
 \item{model}{Variogram model. See \link[gstat]{vgm}.}
 
+\item{fold}{Number of group used in the cross-validation scheme. 
+Can also be a vector defining the group for each site.}
+
 \item{verbose}{Logical. Should a progress bar be displayed.}
 
 \item{crit}{Cross-validation criteria used to evaluate the best choice.}
 
-\item{best.col, best.pch, best.cex}{Argument for the point indication the best
-choice.}
-
 \item{...}{More arguments to pass to the plot function (\link{par}).}
 
-\item{kfold}{Number of group used in the cross-validation scheme. 
-Can also be a vector defining the group for each site.}
+\item{best.col, best.pch, best.cex}{Argument for the point indication the best
+choice.}
 }
 \description{
 Return a matrix of criteria evaluated by using region of
@@ -82,8 +82,7 @@ xdf <- data.frame(y      = log(l1),
 
  ## Perform cross-validation.
  system.time(out <- CvRoi(x = xdf, nk = seq(20,150, 10), fold = 5,
-                 phy = fphy,  similarity = fsimilarity, model = 'Exp', 
-                 nmax = 20))
+                 phy = fphy,  similarity = fsimilarity, model = 'Exp'))
 
  head(out, 'nsh')
  plot(out, 'mad')

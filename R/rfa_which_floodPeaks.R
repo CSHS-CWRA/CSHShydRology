@@ -11,10 +11,12 @@
 #'
 #' @param dt Date or time of observations. If not provided, regular step
 #'   are asumed.
-#'
-#'  @param u Threshold.
+#'   
+#' @param u Threshold.
 #'
 #' @param r,rlow,ini Declustering parameters. See details.
+#' 
+#' @param ... Other parameters.
 #'
 #' @details
 #'
@@ -44,8 +46,8 @@
 #'
 #' @section References:
 #'
-#' Lang M, Ouarda TBMJ, Bobée B. (1999) Towards operational guidelines for
-#'   over-threshold modeling. Journal of Hydrology. Dec 6;225(3):103–17.
+#' Lang M, Ouarda TBMJ, Bobee B. (1999) Towards operational guidelines for
+#'   over-threshold modeling. Journal of Hydrology. Dec 6;225(3):103-17.
 #'
 #' @export
 #'
@@ -67,8 +69,14 @@ which.floodPeaks <- function(x,...) UseMethod('which.floodPeaks', x)
 
 #' @export
 #' @rdname which.floodPeaks
-which.floodPeaks.numeric <- function(x, dt = NULL, u,
-                             r = 1, rlow = 0.75, ini = 'wrc'){
+which.floodPeaks.numeric <- 
+  function(x, 
+           dt = NULL, 
+           u,
+           r = 1, 
+           rlow = 0.75, 
+           ini = 'wrc', 
+           ...){
 
   ## If time is not provided
   if(is.null(dt))
@@ -159,14 +167,14 @@ which.clusters <- function(x,...) UseMethod('which.clusters',x)
 
 #' @export
 #' @rdname which.floodPeaks
-which.clusters.formula <- function(form, x, u, r = 1){
+which.clusters.formula <- function(form, x, u, r = 1, ...){
    x <- model.frame(form,x)
    which.clusters(x[,1], x[,2], u = u, r= r)
 }
 
 #' @export
 #' @rdname which.floodPeaks
-which.clusters.numeric <- function(x, dt = NULL, u, r = 1){
+which.clusters.numeric <- function(x, dt = NULL, u, r = 1, ...){
   z <- seq_along(x)
 
   if(is.null(dt))

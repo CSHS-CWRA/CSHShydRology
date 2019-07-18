@@ -3,6 +3,8 @@
 # Martin Durocher <mduroche@@uwaterloo.ca>
 #############################################################################
 
+rm(list = ls())
+
 ## create data
 x <- matrix(0:99, nrow = 10)
 id <- c(2,4,3,6,10,8,7,9,1,5)

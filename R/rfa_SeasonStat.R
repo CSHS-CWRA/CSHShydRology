@@ -14,8 +14,10 @@
 #'
 #' @param form Formula that specifies the date and site variable. Must be of the
 #'   form \code{date ~ site}.
+#'   
+#' @param ... Other parameters.
 #'
-#' @section References:
+#' @references 
 #'
 #' Burn, D.H. (1997). Catchment similarity for regional flood frequency analysis
 #'   using seasonality measures. Journal of Hydrology 202, 212-230.
@@ -43,7 +45,7 @@
 SeasonStat <- function(x, ...) UseMethod('SeasonStat', x)
 
 #' @export
-SeasonStat.default <- function(x){
+SeasonStat.default <- function(x, ...){
 
   x <- as.Date(x)
 
@@ -64,14 +66,14 @@ SeasonStat.default <- function(x){
 
 #' @export
 #' @rdname SeasonStat
-SeasonStat.data.frame <- function(x){
+SeasonStat.data.frame <- function(x, ...){
    ans <- lapply(split(x[,1], as.character(x[,2])), SeasonStat)
    return(do.call('rbind', ans))
 }
 
 #' @export
 #' @rdname SeasonStat
-SeasonStat.formula <- function(form, x){
+SeasonStat.formula <- function(form, x, ...){
   x <- model.frame(form,as.data.frame(x))
   return(SeasonStat(x))
 }

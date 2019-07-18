@@ -18,6 +18,7 @@
 #'   the number of yearly observations and the year. 
 #'   If set to NULL the given column is not added. 
 #'    
+#' @param ... Other parameters.
 #' 
 #' @export
 #'
@@ -80,7 +81,8 @@ ExtractAmax.default <-
   function(x, 
            tol = 0, 
            nlab = 'n',
-           ylab = 'yy'){
+           ylab = 'yy',
+           ...){
 
 	## Split data by years
 	yy <- format(x[,2],'%Y')

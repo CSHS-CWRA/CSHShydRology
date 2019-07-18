@@ -10,6 +10,8 @@ JulianPlot(rose.col = "gray40", rose.lwd = 1.5, rose.cex = 1.5,
 \arguments{
 \item{rose.col, rose.lwd, rose.cex}{Property of the polar axes.}
 
+\item{rose.radius}{Vector of the position of the circular axis.}
+
 \item{...}{Other parameter passed to \link{points}.}
 }
 \description{

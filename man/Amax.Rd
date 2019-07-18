@@ -32,6 +32,10 @@ lAmax(l, distr, ...)
 \item{p}{Vector of probabilities.}
 
 \item{n}{Number of observations.}
+
+\item{l}{L-moments.}
+
+\item{...}{Other parameters.}
 }
 \description{
 Density, distribution function, quantile function and random generation
@@ -47,7 +51,7 @@ pAmax(x, c(100,3,.001), 'gno')
 x <- rAmax(100, c(100,30,0), 'gev')
 sum(dAmax(x, c(100,30, 0), 'gev', log = TRUE))
 
-lAmax(c(100, .3, .2), 'gev', lscale = F)
+lAmax(c(100, .3, .2), 'gev', lscale = FALSE)
 
 
 }

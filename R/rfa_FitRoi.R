@@ -32,6 +32,14 @@
 #' @param se Logical. Should the standard error be returned.
 #' 
 #' @param fold Number of group or group used to perform cross-validation.
+#' 
+#' @param fitted Logical. Should the fitted value be returned. Useful to
+#'   obtain fitted values at gauged sites from a ROI model when kriging is not
+#'   used. 
+#'   
+#' @param object Output from \code{FitRoi}.
+#' 
+#' @param ... Other parameters.
 #'
 #' @return
 #'
@@ -60,19 +68,20 @@
 #' data(flowUngauged)
 #' 
 #' ## Using multidimensional scaling for projecting coordinates
-#' coord <- cbind(lon,lat)
+#' coord <- flowUngauged[,c('lon','lat')]
 #' coord <- cmdscale(GeoDist(coord))
 #' colnames(coord) <- c('lon','lat')
 #' 
 #' 
 #'
 #' ## Transform data if necessary
-#' xdf <- data.frame(y      = l1,
-#'                   area   = scale(log(area)),
-#'                   wb     = scale(log(wb)),
-#'                   stream = scale(log(stream)),
-#'                   map    = scale(log(map)),
-#'                   coord)
+#' xdf <- with(flowUngauged, 
+#'          data.frame(y      = l1,
+#'                     area   = scale(log(area)),
+#'                     wb     = scale(log(wb)),
+#'                     stream = scale(log(stream)),
+#'                     map    = scale(log(map)),
+#'                     coord))
 #'
 #'  ## select a validation and training set
 #'  set.seed(9382)
@@ -112,7 +121,8 @@ FitRoi <-
            kriging = NULL, 
            model = 'Exp', 
            ker = TRUE,
-           se = FALSE){
+           se = FALSE,
+           fitted = FALSE){
 
   x <- as.data.frame(x)
   xnew <- as.data.frame(xnew)
@@ -148,6 +158,7 @@ FitRoi <-
   ##-------------------------
   
   ## allocate memory 
+  .ww <- NULL ## avoid global variable with no clear bind error forcheck
   pred <- rep(NA, length(valid))
   
   if(se)
@@ -187,10 +198,13 @@ FitRoi <-
                           similarity = similarity))
 
   ##------------------------------------
-  ## Perform kriging if necessary
+  ## Fit training set if required
   ## ----------------------------------------
   
-  if(!is.null(kriging)){
+  if(!is.null(kriging))
+    fitted <- TRUE
+  
+  if(fitted){
 
     ## For all training set
     yhat <- rep(NA, length(train))
@@ -221,23 +235,31 @@ FitRoi <-
         yhat[ii] <- predict(fit, x[ii,])
       }
     }
-
+    
+    ## Save results
+    ans$fitted <- yhat
+    
+    if(se)
+      ans$fitted.se <- yhatSe
+      
     ## compute residuals
     yres <- y0-yhat
-
+    
+    ans$resid <- yres
+  }
+  
+  ##------------------------------------
+  ## Perform kriging if necessary
+  ## ----------------------------------------
+  
+  if(!is.null(kriging)){
+    
     ## Save known component
     ans$phy <- pred
     
     if(se)
       ans$phy.se <- predSe
     
-    ans$fitted <- yhat
-    
-    if(se)
-      ans$fitted.se <- yhatSe
-    
-    ans$resid <- yres
-
     ## Extract the coordinates for the residuals
     crd2 <- data.frame(yres = c(yres, rep(0,length(pred))), crd2)
     sp::coordinates(crd2) <- kriging
@@ -289,28 +311,28 @@ FitRoi <-
 
 #' @export
 #' @rdname FitRoi
-print.roi <- function(obj){
+print.roi <- function(x, ...){
  cat('\n\nRegion of Influence (ROI)\n')
- cat('\nNumber of sites:', obj$call$nsite)
- cat('\nNumber of targets:', obj$call$npred)
+ cat('\nNumber of sites:', x$call$nsite)
+ cat('\nNumber of targets:', x$call$npred)
 
  cat('\n\nRegression:')
- cat('\n  Physic:', format(obj$call$phy))
- cat('\n  size:', sort(unique(obj$call$nk)))
- cat('\n  Similarity', format(obj$call$similarity))
- cat('\n  Kernel:', format(obj$call$ker))
+ cat('\n  Physic:', format(x$call$phy))
+ cat('\n  size:', sort(unique(x$call$nk)))
+ cat('\n  Similarity', format(x$call$similarity))
+ cat('\n  Kernel:', format(x$call$ker))
 
- if(!is.null(obj$model)){
+ if(!is.null(x$model)){
    cat('\n\nKriging:')
-   cat('\n  Coord:', format(obj$call$kriging),'\n\n')
-   print(as.data.frame(obj$model)[,1:4])
+   cat('\n  Coord:', format(x$call$kriging),'\n\n')
+   print(as.data.frame(x$model)[,1:4])
  }
 
 }
 
 #' @export
 #' @rdname FitRoi
-predict.roi <- function(obj, x, fold = 5){
+predict.roi <- function(object, x, fold = 5, ...){
   
   ## Organize the cross-validation group info
   if(length(fold) == 1){
@@ -326,20 +348,20 @@ predict.roi <- function(obj, x, fold = 5){
   
   for(ii in k){
     
-    if(sum(fold != ii) <= obj$call$nk)
+    if(sum(fold != ii) <= object$call$nk)
       stop('Requires more observations')
       
     ## For each cross-validation group
     validSet <- which(fold == ii)
     
-    if(is.null(obj$call$kriging)){
+    if(is.null(object$call$kriging)){
       
       ## Fit model without kriging
       hat <- FitRoi(x = x[-validSet,], 
                   xnew = x[validSet,] , 
-                  nk = obj$call$nk,
-                  phy = obj$call$phy,
-                  similarity = obj$call$similarity)
+                  nk = object$call$nk,
+                  phy = object$call$phy,
+                  similarity = object$call$similarity)
       
       
     } else {
@@ -347,11 +369,11 @@ predict.roi <- function(obj, x, fold = 5){
       ## Fit model with kriging
       hat <- FitRoi(x = x[-validSet,], 
                     xnew = x[validSet,], 
-                    nk = obj$call$nk,
-                    phy = obj$call$phy,
-                    similarity = obj$call$similarity,
-                    kriging = obj$call$kriging, 
-                    model = obj$model)
+                    nk = object$call$nk,
+                    phy = object$call$phy,
+                    similarity = object$call$similarity,
+                    kriging = object$call$kriging, 
+                    model = object$model)
     }
     
     ans[validSet] <- hat$pred
@@ -362,8 +384,8 @@ predict.roi <- function(obj, x, fold = 5){
 
 #' @export
 #' @rdname FitRoi
-residuals.roi <- function(obj, x, fold = 5){
-  response <- eval(obj$call$phy[[2]], envir = x)
-  return(predict(obj, x = x, fold = fold) - response)
+residuals.roi <- function(object, x, fold = 5, ...){
+  response <- eval(object$call$phy[[2]], envir = x)
+  return(predict(object, x = x, fold = fold) - response)
   
 }

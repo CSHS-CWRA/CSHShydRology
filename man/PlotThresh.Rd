@@ -11,6 +11,10 @@ PlotThresh(obj, type = "ad", ppy = NULL, ...)
 
 \item{type}{Type of plot to display. 
 Must be one or more of \code{'ad','mrl','alpha', 'kappa'}.}
+
+\item{ppy}{Range of peaks per year to display.}
+
+\item{...}{Other parameters.}
 }
 \description{
 Create various graphics to assess the selection of a threshold.

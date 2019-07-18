@@ -38,11 +38,11 @@ the shape parameter between -.5 and 1.
 
 Davison AC, Smith RL. (1990) Models for Exceedances over High Thresholds.
   Journal of the Royal Statistical Society Series B (Methodological).
-  52(3):393–442.
+  52(3):393-442.
 
 Hosking JRM (1990). L-Moments: Analysis and Estimation of Distributions Using
   Linear Combinations of Order Statistics. Journal of the Royal Statistical
-  Society Series B (Methodological). 52(1):105–24.
+  Society Series B (Methodological). 52(1):105-24.
 }
 
 \examples{

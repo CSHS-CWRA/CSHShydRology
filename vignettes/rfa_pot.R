@@ -4,21 +4,23 @@ data(flowStJohn)
 
 ## Verify the complete years of data 
 y <- as.integer(format(flowStJohn$date,'%Y'))
-sort(sapply(split(y,y), length))[1:5]
+ty <- tapply(y, y, length)
+ty[which(ty< 365)]
 
 ## Keep only complet year
 xd <- cbind(flowStJohn[y>=1927,], year = y[y>=1927])
 
 ## ------------------------------------------------------------------------
+## Random sample of GPA
+rx <- rgpa(2000, 1, 0)
+
 ## Fitting POT using MLE
-fit <- FitPot(rgpa(2000, 1, 0))
+fit <- FitPot(rx)
 print(fit)
 
+## ------------------------------------------------------------------------
 ## Show assymetrical confidence intervals
-coef(fit, ci = TRUE)
-
-## Fitting POT using L-moments
-FitPot(rgpa(2000, 1, 0), method = 'lmom', varcov = FALSE)$estimate
+round(coef(fit, ci = TRUE),3)
 
 ## ----fig.height = 4,fig.width = 6----------------------------------------
 
@@ -46,7 +48,7 @@ legend('topleft', col = c('blue','red'), pch = 16:17,
 fit <- FitPot(flow~date, xd, u = 1000, declust = 'wrc', r = r0)
 print(fit)
 
-## ---- fig.height=6, fig.width=9------------------------------------------
+## ------------------------------------------------------------------------
 ## Predict flood quantile of return period 10 and 100 years
 predict(fit, rt = c(10,100), se = TRUE, ci = 'profile')
 
@@ -94,6 +96,7 @@ FindThresh(candidates.mod, method = 'sgn-ppy',
 FindThresh(candidates.mod, method = 'sgn-ppy', 
            tol.sgn = 0.15, tol.ppy = 2.2)[,cvars]
 
+## ------------------------------------------------------------------------
 ## Verify the discrepencies with reference threshold ~ 1PPY
 FindThresh(candidates, method = 'sgn', ppy = c(1,3), tol.sgn = 0.0, 
            qua = 'q50', tol.qua = .01)[,cvars]

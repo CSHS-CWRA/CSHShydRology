@@ -14,13 +14,17 @@
 #' 
 #' @param n	Number of observations.
 #' 
+#' @param l L-moments.
+#' 
 #' @param para Vector of parameters for the given distribution.
 #' 
 #' @param distr Distribution family. See \link{lmom2par}.
 #' 
 #' @param log Logical. If TRUE, probabilities \code{p} are given as
 #'   \code{log(p)}.
-#'
+#'   
+#' @param ... Other parameters.
+#' 
 #' @export
 #'
 #' @examples
@@ -33,7 +37,7 @@
 #' x <- rAmax(100, c(100,30,0), 'gev')
 #' sum(dAmax(x, c(100,30, 0), 'gev', log = TRUE))
 #'
-#' lAmax(c(100, .3, .2), 'gev', lscale = F)
+#' lAmax(c(100, .3, .2), 'gev', lscale = FALSE)
 #'
 #'
 

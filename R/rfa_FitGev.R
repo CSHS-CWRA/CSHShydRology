@@ -17,13 +17,13 @@
 #' 
 #' @param method.optim Optimisation method used by \code{\link{optim}}
 #' 
-#' @param ... Other parameter pass to \code{\link{optim}}
+#' @param ... Other parameter pass to \code{\link{optim}}.
 #'
 #' @section References:
 #'
 #' Martins, E.S., Stedinger, J.R., 2000. Generalized maximum-likelihood
 #' generalized extreme-value quantile estimators for hydrologic data.
-#' Water Resour. Res. 36, 737–744. https://doi.org/10.1029/1999WR900330
+#' Water Resour. Res. 36, 737-744. https://doi.org/10.1029/1999WR900330
 #'
 #' @export
 #'

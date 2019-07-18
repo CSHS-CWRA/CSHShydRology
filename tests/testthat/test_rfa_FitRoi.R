@@ -63,6 +63,14 @@ expect_true(all(names(fit1$call) ==
 
 expect_equal(length(fit1$pred), sum(vid))
 
+fit1 <- FitRoi(x = xdf[tid,], xnew = xdf[vid,], nk = 60,
+             phy = fphy1, similarity = fsimilarity, fitted = TRUE)
+
+expect_true(all(names(fit1) == c('call','fitted','resid', 'pred')))
+expect_equal(fit1$fitted + fit1$resid, log(xdf[tid,]$y))
+expect_true(sd(fit1$resid)< .5)
+
+
 ##Verify the se option
 fit1 <- FitRoi(x = xdf[tid,], xnew = xdf[vid,], nk = 60,
              phy = fphy1, similarity = fsimilarity, se = TRUE)
@@ -71,6 +79,7 @@ expect_equal(length(fit1$pred), length(fit1$pred.se))
 expect_true(all(names(fit1) == c('call','pred','pred.se')))
 
 print(fit1)
+
 ##--------------------------
 ## Using kriging
 ##---------------------------
@@ -84,7 +93,7 @@ fitk <- FitRoi(x = xdf[tid,],
                kriging = fkriging,
                model = 'Exp')
                
-lname <- c("call", "phy", "fitted", "resid", "vgm", "model", "pred", 'krige') 
+lname <- c("call", "fitted", "resid", "phy", "vgm", "model", "pred", 'krige') 
 expect_true(all(names(fitk) == lname))
 
 expect_true(max(abs(fitk$phy + fitk$krige - fitk$pred)) <1e-8 )

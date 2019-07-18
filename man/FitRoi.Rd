@@ -8,13 +8,13 @@
 \title{Prediction at ungauged sites using region of influence and kriging}
 \usage{
 FitRoi(x, xnew, nk, phy, similarity, kriging = NULL, model = "Exp",
-  ker = TRUE, se = FALSE)
+  ker = TRUE, se = FALSE, fitted = FALSE)
 
-\method{print}{roi}(obj)
+\method{print}{roi}(x, ...)
 
-\method{predict}{roi}(obj, x, fold = 5)
+\method{predict}{roi}(object, x, fold = 5, ...)
 
-\method{residuals}{roi}(obj, x, fold = 5)
+\method{residuals}{roi}(object, x, fold = 5, ...)
 }
 \arguments{
 \item{x}{Data for training the model.}
@@ -41,6 +41,14 @@ local regression model. Otherwise uniform weights are used.}
 
 \item{se}{Logical. Should the standard error be returned.}
 
+\item{fitted}{Logical. Should the fitted value be returned. Useful to
+obtain fitted values at gauged sites from a ROI model when kriging is not
+used.}
+
+\item{...}{Other parameters.}
+
+\item{object}{Output from \code{FitRoi}.}
+
 \item{fold}{Number of group or group used to perform cross-validation.}
 }
 \value{
@@ -63,19 +71,20 @@ by kriging.
 data(flowUngauged)
 
 ## Using multidimensional scaling for projecting coordinates
-coord <- cbind(lon,lat)
+coord <- flowUngauged[,c('lon','lat')]
 coord <- cmdscale(GeoDist(coord))
 colnames(coord) <- c('lon','lat')
 
 
 
 ## Transform data if necessary
-xdf <- data.frame(y      = l1,
-                  area   = scale(log(area)),
-                  wb     = scale(log(wb)),
-                  stream = scale(log(stream)),
-                  map    = scale(log(map)),
-                  coord)
+xdf <- with(flowUngauged, 
+         data.frame(y      = l1,
+                    area   = scale(log(area)),
+                    wb     = scale(log(wb)),
+                    stream = scale(log(stream)),
+                    map    = scale(log(map)),
+                    coord))
 
  ## select a validation and training set
  set.seed(9382)

@@ -14,21 +14,21 @@ PlotMrl(form, x, u, declust = NULL, r = 1, rlow = 0.75,
 
 \item{u}{Series of candidate thresholds.}
 
+\item{declust, r, rlow}{Parameter for declustering. See \link{FitPot}.}
+
 \item{alpha}{Confidence interal with level \code{1-alpha/2}.}
+
+\item{col.ci, lty.ci, lwd.ci}{Parameter for controling the confidence intervals.}
+
+\item{ylim, ylab, xlab, col, lty, lwd}{Parameters for controling the graphic.}
 
 \item{display}{Logical. Should the graph be display.}
 
-\item{...}{Others arguments are passed to function \code{plot} and
-\link{which.floodPeaks}}
-
-\item{method}{Estimation method.}
+\item{...}{Other arameters for controling the graphic.}
 }
 \description{
 Produce a mean residual Life plot to help selecting to help
 selecting a proper threshold.
-}
-\details{
-
 }
 \examples{
 

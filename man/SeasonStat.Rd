@@ -8,13 +8,15 @@
 \usage{
 SeasonStat(x, ...)
 
-\method{SeasonStat}{data.frame}(x)
+\method{SeasonStat}{data.frame}(x, ...)
 
-\method{SeasonStat}{formula}(form, x)
+\method{SeasonStat}{formula}(form, x, ...)
 }
 \arguments{
 \item{x}{Data. If data.frame with two columns, they must be respectively 
 the date and a site variable.}
+
+\item{...}{Other parameters.}
 
 \item{form}{Formula that specifies the date and site variable. Must be of the
 form \code{date ~ site}.}
@@ -26,14 +28,6 @@ regularity.
 For instance a radius of one represent perfect regularity. 
 Can perform the analysis of multiple sites.
 }
-\section{References}{
-
-
-Burn, D.H. (1997). Catchment similarity for regional flood frequency analysis
-  using seasonality measures. Journal of Hydrology 202, 212-230.
-  https://doi.org/10.1016/S0022-1694(97)00068-1
-}
-
 \examples{
 
 dt <- ExtractAmax(flow~date, flowStJohn)$date
@@ -51,6 +45,11 @@ st <- SeasonStat(dt ~ site, x)
 JulianPlot()
 points(y ~ x, st, col = 2, pch = 16)
 
+}
+\references{
+Burn, D.H. (1997). Catchment similarity for regional flood frequency analysis
+  using seasonality measures. Journal of Hydrology 202, 212-230.
+  https://doi.org/10.1016/S0022-1694(97)00068-1
 }
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>

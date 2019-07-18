@@ -7,13 +7,19 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param obj Output from \code{\link{FitAmax}} or \code{\link{FitPot}}.
+#' @param object Output from \code{\link{FitAmax}} or \code{\link{FitPot}}.
 #'
 #' @param method Test to be performed. Either Anderson-Darling \code{ad},
 #'   or modified Shapiro-Wilk ('shapiro').
-#'   For a POT model, the method \code{adtab}
-#'   perform the Anderson-Darling test and interpolates the
-#'   p-value from a table.
+#'      
+#' @param nsim Number of simulations.
+#'   
+#' @param ... Other parameters.
+#' 
+#' @details 
+#' 
+#' For a POT model, the method \code{adtab} perform the Anderson-Darling 
+#' test and interpolates the p-value from a table.
 #'
 #' @export
 #'
@@ -24,7 +30,7 @@
 #'  https://doi.org/10.2307/1270819
 #'
 #'  Heo, J.-H., Shin, H., Nam, W., Om, J., Jeong, C., 2013. Approximation of
-#'  modified Anderson–Darling test statistics for extreme value distributions
+#'  modified Anderson-Darling test statistics for extreme value distributions
 #'  with unknown shape parameter. Journal of Hydrology 499, 41-49.
 #'  https://doi.org/10.1016/j.jhydrol.2013.06.008
 #'
@@ -52,38 +58,38 @@
 #' ## By default a table is used with GPA using MLE
 #'GofTest(fit)
 #'
-GofTest <- function(x, ...) UseMethod('GofTest', x)
+GofTest <- function(object, ...) UseMethod('GofTest', object)
 
 #' @export
 #' @rdname GofTest
-GofTest.amax <- function(obj, method = 'ad', nsim = 1000, ...){
+GofTest.amax <- function(object, method = 'ad', nsim = 1000, ...){
 
   ## Verification that GML was not used when fitting
-  if(obj$method == 'gml')
+  if(object$method == 'gml')
     stop('The test is not available for Generalized maximum likelihood')
 
   ## Simulate boostrap sample
-  n <- length(obj$data)
-  opara <- lmomco::vec2par(obj$para, obj$distr)
+  n <- length(object$data)
+  opara <- lmomco::vec2par(object$para, object$distr)
   xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
 
   ## Compute the test statistics for the data and the bootstrap samples
   if(method == 'ad'){
-    stat <- AdStat(obj$data, para = opara)
-    boot <- apply(xboot, 2, AdStat, type = obj$distr,
-                                    method = obj$method, ...)
+    stat <- AdStat(object$data, para = opara)
+    boot <- apply(xboot, 2, AdStat, type = object$distr,
+                                    method = object$method, ...)
     pv <- mean(boot > stat, na.rm = TRUE)
 
   } else if(method == 'shapiro') {
-    stat <- ShapiroStat(obj$data, para = opara)
-    boot <- apply(xboot, 2, ShapiroStat, type = obj$distr,
-                  method = obj$method, ...)
+    stat <- ShapiroStat(object$data, para = opara)
+    boot <- apply(xboot, 2, ShapiroStat, type = object$distr,
+                  method = object$method, ...)
     pv <- mean(boot < stat, na.rm = TRUE)
   }
 
   ans <- list(stat = stat,
               pvalue = pv,
-              distr = obj$distr,
+              distr = object$distr,
               method = method)
 
   class(ans) <- 'amaxGof'
@@ -93,19 +99,19 @@ GofTest.amax <- function(obj, method = 'ad', nsim = 1000, ...){
 }
 
 #' @export
-print.amaxGof <- function(obj){
+print.amaxGof <- function(x, ...){
 
-  if(obj$method %in% c('ad','adtab'))
+  if(x$method %in% c('ad','adtab'))
     methodName <- 'Anderson-Darling'
-  else if(obj$method == 'shapiro')
+  else if(x$method == 'shapiro')
     methodName <- 'Modified Shapiro-Wilk'
 
   cat('\nGoodness-of-fit test\n',
         '\nTest =', methodName,
-        '\nDistribution =', obj$distr)
+        '\nDistribution =', x$distr)
 
-  cat('\nstatistic :', round(obj$stat,4),
-        '\np-value :', round(obj$pvalue,4), '\n\n')
+  cat('\nstatistic :', round(x$stat,4),
+        '\np-value :', round(x$pvalue,4), '\n\n')
 }
 
 ## function to compute the statistics of the Anderson-Darling test
@@ -164,27 +170,27 @@ ShapiroStat <- function(x, type = NULL, method = NULL, para = NULL, ...){
 
 #' @export
 #' @rdname GofTest
-GofTest.fpot <- function(obj, method = 'adtab', nsim = 1000){
+GofTest.fpot <- function(object, method = 'adtab', nsim = 1000, ...){
 
-  opara <- lmomco::vec2par(c(0,obj$estimate), 'gpa')
-  n <- length(obj$excess)
+  opara <- lmomco::vec2par(c(0,object$estimate), 'gpa')
+  n <- length(object$excess)
 
   ## Case Anderson-Darling using a table
   if(method == 'adtab'){
-    stat <- AdStat(obj$excess, para = opara)
-    pv <- AdGpaTable(obj$estimate[2], A2 = stat)
+    stat <- AdStat(object$excess, para = opara)
+    pv <- AdGpaTable(object$estimate[2], A2 = stat)
 
   ## Case anderson darling using boostrap
   } else if(method == 'ad'){
 
-    if(obj$method == 'lmom')
+    if(object$method == 'lmom')
       fitMethod <- 'fgpaLmom'
-    else if(obj$method == 'mle')
+    else if(object$method == 'mle')
       fitMethod <- 'fgpa1d'
-    else if(obj$method == 'mle2')
+    else if(object$method == 'mle2')
       fitMethod <- 'fgpa2d'
 
-    stat <- AdStat(obj$excess, para = opara)
+    stat <- AdStat(object$excess, para = opara)
 
     xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
     boot <- apply(xboot, 2, AdStat, type = 'gpa', method = fitMethod)
@@ -193,14 +199,14 @@ GofTest.fpot <- function(obj, method = 'adtab', nsim = 1000){
   ## modified shapiro-wilk using boostrap
   } else if(method == 'shapiro'){
 
-    if(obj$method == 'lmom')
+    if(object$method == 'lmom')
       fitMethod <- 'fgpaLmom'
-    else if(obj$method == 'mle')
+    else if(object$method == 'mle')
       fitMethod <- 'fgpa1d'
-    else if(obj$method == 'mle2')
+    else if(object$method == 'mle2')
       fitMethod <- 'fgpa2d'
 
-    stat <- ShapiroStat(obj$excess, para = opara)
+    stat <- ShapiroStat(object$excess, para = opara)
 
     xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
     boot <- apply(xboot, 2, ShapiroStat, type = 'gpa', method = fitMethod)
@@ -242,7 +248,7 @@ GofTest.fpot <- function(obj, method = 'adtab', nsim = 1000){
 #
 #
 # Choulakian V, Stephens MA. Goodness-of-Fit Tests for the Generalized
-#   Pareto Distribution. Technometrics. 2001;43(4):478–84.
+#   Pareto Distribution. Technometrics. 2001;43(4):478-84.
 #
 
 AdGpaTable <- function(kap, pval = 0.05, A2 = NULL, ...){

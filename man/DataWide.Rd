@@ -9,7 +9,8 @@
 \usage{
 DataWide(x, ...)
 
-\method{DataWide}{data.frame}(x, order.time = TRUE, order.site = FALSE)
+\method{DataWide}{data.frame}(x, order.time = TRUE, order.site = FALSE,
+  ...)
 
 \method{DataWide}{formula}(form, x, ...)
 
@@ -21,6 +22,11 @@ to transpose.
 The second and third columns are respectively site and time variable.
 If the time variable is omitted, the pivot will ignore it and all columns
 will start at the first position.}
+
+\item{...}{Other parameters.}
+
+\item{order.time, order.site}{Logical. Should the rows (time) or 
+columns (site) of the output be sorted.}
 
 \item{form}{Formula that specifies the site and time variable.
 Must have the form: `value ~ site + time`.}

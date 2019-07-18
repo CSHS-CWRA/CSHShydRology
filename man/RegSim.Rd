@@ -9,14 +9,16 @@
 RegSim(x, ...)
 
 \method{RegSim}{matrix}(x, distr, nrec, corr = 0, corr.sqrt = FALSE,
-  lmom = TRUE, lscale = FALSE, long = FALSE)
+  lmom = TRUE, lscale = FALSE, long = FALSE, ...)
 
-\method{RegSim}{reglmom}(obj, n = 1, corr = 0, margin = "atsite")
+\method{RegSim}{reglmom}(x, n = 1, corr = 0, margin = "atsite", ...)
 }
 \arguments{
 \item{x}{Matrix (in rows) of parameters or L-moments for all sites to 
 simulate.
 Can also be an output form \link{FitRegLmom}.}
+
+\item{...}{Other parameters.}
 
 \item{distr}{Marginal distribution of each site.
 If only one value is passed as argument, the same is used for all sites.}
@@ -38,6 +40,12 @@ distribution parameters}
 or the LCV (`FALSE`).}
 
 \item{long}{Logical. Should the output be returned in a long format.}
+
+\item{n}{Number of simulations.}
+
+\item{margin}{Which marginal distribution should be used. Either
+based on the at-site (\code{'atsite'}) or regional (\code{'reg'}) 
+distribution.}
 }
 \description{
 Returns a dataset containing multiple time series in the form of

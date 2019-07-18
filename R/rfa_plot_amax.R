@@ -6,13 +6,15 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param obj Output from \link{FitAmax}.
+#' @param x Output from \link{FitAmax}.
 #'
 #' @param ci Logical. Should confidence intervals be displayed. 
 #'   See \link{predict.amax} with argument Delta method.
+#'   
+#' @param main,ylab,xlab Graphical parameters. See \code{\link{par}}.
 #'
-#' @param col.ci,lty.ci,lwd.ci Graphical parameters defining the display
-#'    of the confidence interval.
+#' @param col.ci,lty.ci,lwd.ci Graphical parameters determining the 
+#'   confidence intervals.
 #'
 #' @param ... Other graphical parameters. See \code{\link{par}}.
 #'
@@ -28,15 +30,20 @@
 #'
 #' plot(fit, ci = TRUE)
 
-plot.amax <- function(obj, main = 'Return level plot',
-                        xlab = 'Return period (year)',
-                        ylab = 'Flood quantiles',
-                        ci = FALSE, col.ci = 'red', lty.ci = 2,
-                        lwd.ci = 1, ...){
+plot.amax <- 
+  function(x, 
+           main = 'Return level plot',
+           xlab = 'Return period (year)',
+           ylab = 'Flood quantiles',
+           ci = FALSE, 
+           col.ci = 'red', 
+           lty.ci = 2,
+           lwd.ci = 1, 
+           ...){
 
-      n <- length(obj$data)
-      x <- sort(obj$data)
-      p <- obj$para
+      n <- length(x$data)
+      xd <- sort(x$data)
+      p <- x$para
       nrt <- 200
 
       ## Plotting axis
@@ -50,17 +57,17 @@ plot.amax <- function(obj, main = 'Return level plot',
       irt <- 1-1/ip
 
       ## Plot empirical points
-      plot(-log(-log(prt)), x, axes = FALSE, main = main,
+      plot(-log(-log(prt)), xd, axes = FALSE, main = main,
            ylab = ylab, xlab = xlab, ...)
 
       axis(2)
 
-      axis(1, at = -log(-log(pat)), lab = xat)
+      axis(1, at = -log(-log(pat)), labels = xat)
 
       ## if Confident interval are to be plotted
       if(ci){
 
-        bnd <- predict(obj, q = ip, se = FALSE, ci = 'delta')
+        bnd <- predict(x, q = ip, se = FALSE, ci = 'delta')
 
         lines(llip, bnd[,1], col = col.ci, lwd = lwd.ci)
 
@@ -71,7 +78,7 @@ plot.amax <- function(obj, main = 'Return level plot',
               lty = lty.ci, col = col.ci, lwd = lwd.ci)
 
       } else{
-        bnd <- predict(obj, q = ip, se = FALSE, ci = 'none')
+        bnd <- predict(x, q = ip, se = FALSE, ci = 'none')
         lines(llip, bnd, col = col.ci, lwd = lwd.ci)
       }
 }

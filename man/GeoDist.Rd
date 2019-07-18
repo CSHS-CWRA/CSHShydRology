@@ -8,12 +8,14 @@
 \usage{
 GeoDist(x, ...)
 
-\method{GeoDist}{default}(x, earth.radius = 6371)
+\method{GeoDist}{default}(x, earth.radius = 6371, ...)
 
 \method{GeoDist}{formula}(form, x, ...)
 }
 \arguments{
 \item{x}{Dateset of coordinates (lon,lat).}
+
+\item{...}{Other parameters.}
 
 \item{earth.radius}{Radius of the earth. Default 6371 km.}
 

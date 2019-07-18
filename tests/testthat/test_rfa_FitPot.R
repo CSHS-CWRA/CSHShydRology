@@ -49,17 +49,14 @@ expect_true(is.null(vcov(fit)))
 fit <- FitPot(xd0, u = 5, method = 'lmom', varcov = F)
 fit <- FitPot(xd0, u = 5, method = 'lmom', varcov = T, nsim = 5)
 
-
 ## Verif confidence interval for parameter by profile likelihood
 cc <- coef(fit, ci = TRUE)
 expect_equal(colnames(cc), c('estimate','lower','upper'))
 expect_equal(rownames(cc), c('alpha','kappa'))
 
-vm <- matrix(c(0.9759520,  0.715246, 1.477390,
-               0.0159441, -0.251472, 0.297897),
-             2,3, byrow = TRUE)
-
-expect_true(all(signif(cc)==vm))
+expect_equivalent(cc[,1], fit$estimate)
+expect_true(all(cc[,2] < cc[,1]))
+expect_true(all(cc[,3] > cc[,1]))
 
 ## verify unit
 expect_equal(fit$unit, 365.25)

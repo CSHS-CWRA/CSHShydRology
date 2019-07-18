@@ -1,57 +1,54 @@
 ## ------------------------------------------------------------------------
 library(CSHShydRology)
+data("flowStJohn")
 
+## ------------------------------------------------------------------------
 ## Extract the annual maximums
 anData <- ExtractAmax(flow ~ date, flowStJohn, tol = 365)
+nrow(anData)
 
 ## ------------------------------------------------------------------------
 fitMle <- FitAmax(anData$flow, 'gev', method = 'mle')
 print(fitMle)
 
 ## ------------------------------------------------------------------------
-## Fit GEV distribution using L-moments
-fitLmm <-FitAmax(anData$flow, 'gev', method = 'lmom', varcov = FALSE)
-
-## ------------------------------------------------------------------------
 ## Flood quantiles of 10 and 100 return periods
 predict(fitMle, q = c(.9,.99), se = TRUE, ci = 'delta', alpha = .1)
 
 ## ------------------------------------------------------------------------
+## Fitting using L-moments
+fitLmm <- FitAmax(anData$flow, 'gev', method = 'lmom', varcov = FALSE)
+
+## Prediction using bootstrap
 out <- predict(fitLmm, q = c(.9,.99), ci = 'boot', 
-               nsim = 100, out.matrix = TRUE)
+               nsim = 1000, out.matrix = TRUE)
 
-## Estimated Flood quantiles
-out$pred
-
-## Bootstraps sample of model parameters
-head(out$para)
-
-## Bootstraps sample of flood quantiles
-head(out$qua)
+## Structure of the output
+names(out)
 
 ## ---- fig.height= 4,fig.width=6------------------------------------------
 ## Return level plot
 plot(fitMle, ci = TRUE)
 
 ## ------------------------------------------------------------------------
-## Anderson-Darling goodness of fit test
-GofTest(fitLmm, nsim = 500)
+## Anderson-Darling test of goodness of fit
+GofTest(fitLmm, nsim = 1000)
 
 ## ------------------------------------------------------------------------
-## 
-FitAmax(anData$flow, 'ln3', method = 'lmom', varcov =  FALSE)
+## Fitting of the Log-normal distribution
+FitAmax(anData$flow, 'ln3', varcov = FALSE)
 
 ## ------------------------------------------------------------------------
 ## Candidates distribution
 candidates <- c('gev','glo','ln3','pe3')
 
-## Function that compute the AIC for a given distribution
+## Function that computes the AIC for a given distribution
 FAIC <- function(d)
-   AIC(FitAmax(anData$flow, d, method = 'mle', varcov =  FALSE))
+   AIC(FitAmax(anData$flow, d, method = 'mle'))
 
-## AIC of all distribution
+## AIC of all distributions
 sapply(candidates, FAIC)
 
 ## Automatic selection of the distribution
-FitAmax(anData$flow, candidates, method = 'mle', tol.gev = 2)
+FitAmax(anData$flow, candidates, method = 'mle')$distr
 

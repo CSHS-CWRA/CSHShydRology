@@ -4,12 +4,12 @@
 \alias{predict.amax}
 \title{Predict return levels}
 \usage{
-\method{predict}{amax}(obj, q = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+\method{predict}{amax}(object, q = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
   se = FALSE, ci = "none", alpha = 0.05, nsim = 1000,
-  out.matrix = FALSE)
+  out.matrix = FALSE, ...)
 }
 \arguments{
-\item{obj}{Output from  \code{\link{FitAmax}}}
+\item{object}{Output from  \code{\link{FitAmax}}}
 
 \item{q}{Probabilities associated to the return level. For example,
 a 100 years return period is equivalent to \code{q = 0.99}.}
@@ -28,6 +28,8 @@ for Monte-Carlo approximation assuming normality of the parameters.}
 \item{out.matrix}{Logical. Should the resampling be returned. If true,
 a list is returned containing the prediction table (\code{pred}),
 the parameters (\code{para}) and the return levels (\code{qua}).}
+
+\item{...}{Other parameters.}
 }
 \description{
 Return the flood quantile of annual maximum distribution and

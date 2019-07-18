@@ -3,6 +3,8 @@
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ###############################################################
 
+rm(list = ls())
+
 x <- qgpa(seq(0.01,.99, l = 1001))
 
 expect_equivalent(signif(fgpaLmom(x)), c(1.0374800, 0.0756554))

@@ -15,6 +15,11 @@
 #'
 #' @param form Formula that specifies the site and time variable.
 #'   Must have the form: `value ~ site + time`.
+#'   
+#' @param order.time,order.site Logical. Should the rows (time) or 
+#'   columns (site) of the output be sorted.
+#'   
+#' @param ... Other parameters.
 #'
 #' @export
 #'
@@ -34,7 +39,11 @@ DataWide <- function(x,...) UseMethod('DataWide',x)
 
 #' @export
 #' @rdname DataWide
-DataWide.data.frame <- function(x, order.time = TRUE, order.site = FALSE){
+DataWide.data.frame <- 
+  function(x, 
+           order.time = TRUE, 
+           order.site = FALSE,
+           ...){
 
   ## Verify if there is a time variable
   if(ncol(x) == 3){

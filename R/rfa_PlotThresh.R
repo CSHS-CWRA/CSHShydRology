@@ -14,6 +14,10 @@
 #' @param type Type of plot to display. 
 #'   Must be one or more of \code{'ad','mrl','alpha', 'kappa'}.
 #'   
+#' @param ppy Range of peaks per year to display.
+#' 
+#' @param ... Other parameters.
+#'   
 #' @seealso \link{SearchThresh}, \link{FindThresh}. 
 #'
 #' @export

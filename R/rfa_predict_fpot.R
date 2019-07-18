@@ -6,7 +6,7 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' 
-#' @param obj Output of \link{FitPot}.
+#' @param object Output of \link{FitPot}.
 #' 
 #' @param rt Return period. 
 #' 
@@ -19,6 +19,7 @@
 #'   
 #' @param nsim Number of bootstrap sample.
 #' 
+#' @param ... Other parameters.
 #' 
 #' @seealso \link{FitPot}
 #' 
@@ -38,37 +39,43 @@
 #'      
 #' predict(fit, se = TRUE, ci = 'delta')
 #' 
-predict.fpot <- function(obj, rt = c(2, 5, 10, 20, 50, 100), se = FALSE,
-                          ci = "none", alpha = 0.05, nsim = 1000){
+predict.fpot <- 
+  function(object, 
+           rt = c(2, 5, 10, 20, 50, 100), 
+           se = FALSE,
+           ci = "none", 
+           alpha = 0.05, 
+           nsim = 1000, 
+           ...){
 
   ## Define the m-observation return level
-  lambda <- rt * obj$unit * obj$nexcess / obj$ntot
+  lambda <- rt * object$unit * object$nexcess / object$ntot
 
   ## funtion that compute the return period
   Fpred <- function(para){
 
     if(abs(para[2]) > 1e-8)
-      ans <- obj$u + para[1]/para[2] * (1-lambda^(-para[2]) )
+      ans <- object$u + para[1]/para[2] * (1-lambda^(-para[2]) )
     else
-      ans <- obj$u + para[1] * log(lambda)
+      ans <- object$u + para[1] * log(lambda)
 
     return(ans)
   }
 
-  hatRt <- Fpred(obj$estimate)
+  hatRt <- Fpred(object$estimate)
 
   ## Standard error by delta method
   if(se | ci %in% c('delta','profile')){
-    negk <- -obj$estimate[2]
+    negk <- -object$estimate[2]
     lk <- lambda^negk
-    ak <- obj$estimate[1]/negk
+    ak <- object$estimate[1]/negk
 
-    gx1 <-  obj$estimate[1] * (obj$ntot/obj$nexcess)  * lk
+    gx1 <-  object$estimate[1] * (object$ntot/object$nexcess)  * lk
     gx2 <- (lk-1)/negk
     gx3 <-  ak * ( lk * log(lambda) - gx2)
 
     gx <- rbind(gx1, gx2, gx3)
-    hatSe <-  sqrt(diag(t(gx) %*% vcov(obj, rate = T) %*% gx))
+    hatSe <-  sqrt(diag(t(gx) %*% vcov(object, rate = T) %*% gx))
   }
 
   ## Confident interval by delta method
@@ -81,14 +88,15 @@ predict.fpot <- function(obj, rt = c(2, 5, 10, 20, 50, 100), se = FALSE,
   if(ci == 'boot'){
 
     ## Resample
-    xboot <- replicate(nsim, sample(obj$excess, obj$nexcess, replace = TRUE))
+    xboot <- replicate(nsim, 
+                       sample(object$excess, object$nexcess, replace = TRUE))
 
     ## Refit and predict
-    if(obj$method == 'lmom')
+    if(object$method == 'lmom')
       fn <- function(z) Fpred(fgpaLmom(z))
-    else if(obj$method == 'mle2')
+    else if(object$method == 'mle2')
       fn <- function(z) Fpred(fgpa2d(z))
-    else if (obj$method == 'mle')
+    else if (object$method == 'mle')
       fn <- function(z) Fpred(fgpa1d(z))
 
     pboot <- apply(xboot,2,fn)
@@ -116,20 +124,20 @@ predict.fpot <- function(obj, rt = c(2, 5, 10, 20, 50, 100), se = FALSE,
       Dfun <- function(z){
 
         ## Full likelihood
-        llikFull <- sum(dgpa(obj$excess, obj$estimate[1],
-                                         obj$estimate[2], log = TRUE))
+        llikFull <- sum(dgpa(object$excess, object$estimate[1],
+                                         object$estimate[2], log = TRUE))
 
         ## Negative log-likelihood
         nllik <- function(p){
 
-          num <- z - obj$u
+          num <- z - object$u
 
           if(abs(p) < 1e-8)
             denum <- log(lambda[ii])
           else
             denum <- -(lambda[ii]^(-p) -1)/p
 
-          return(-sum(dgpa(obj$excess, pmax(1e-8,num/denum), p, log = TRUE)))
+          return(-sum(dgpa(object$excess, pmax(1e-8,num/denum), p, log = TRUE)))
 
         }
 

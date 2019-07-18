@@ -4,18 +4,20 @@
 \alias{plot.amax}
 \title{Return level plot}
 \usage{
-\method{plot}{amax}(obj, main = "Return level plot",
+\method{plot}{amax}(x, main = "Return level plot",
   xlab = "Return period (year)", ylab = "Flood quantiles",
   ci = FALSE, col.ci = "red", lty.ci = 2, lwd.ci = 1, ...)
 }
 \arguments{
-\item{obj}{Output from \link{FitAmax}.}
+\item{x}{Output from \link{FitAmax}.}
+
+\item{main, ylab, xlab}{Graphical parameters. See \code{\link{par}}.}
 
 \item{ci}{Logical. Should confidence intervals be displayed. 
 See \link{predict.amax} with argument Delta method.}
 
-\item{col.ci, lty.ci, lwd.ci}{Graphical parameters defining the display
-of the confidence interval.}
+\item{col.ci, lty.ci, lwd.ci}{Graphical parameters determining the 
+confidence intervals.}
 
 \item{...}{Other graphical parameters. See \code{\link{par}}.}
 }

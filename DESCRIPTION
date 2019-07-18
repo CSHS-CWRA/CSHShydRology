@@ -23,9 +23,13 @@ Imports:
     jsonlite,
     curl,
     gstat,
+    sp,
+    lmom,
     lmomco,
     lmomRFA,
-    numDeriv
+    numDeriv,
+    mnormt,
+    Matrix
 Suggests: 
     knitr,
     testthat, 

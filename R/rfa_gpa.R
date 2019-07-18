@@ -8,7 +8,9 @@
 #'
 #' @name GPA
 #' 
-#' @param p,q Probabilities or quantiles for the GPA distribution.
+#' @param q,x Vector of quantiles.
+#' 
+#' @param p Vector of probabilities.
 #'
 #' @param n Number of simulations.
 #'
@@ -16,7 +18,8 @@
 #'
 #' @param kap Shape parameter of the GPA
 #'
-#' @param lower.tail Should the propability of the lower tail be returned
+#' @param lower.tail Logical. Should the propability of the lower tail 
+#'   be returned
 #'
 #' @param log Should the log-density be returned
 #'
@@ -48,8 +51,8 @@
 #' lines(tt,pgpa(sort(tt), a, kap), col = 2, lty = 2)
 #'
 #'
-pgpa <- function (q,  alpha = 1, kap = 0, lower.tail = TRUE)
-{
+pgpa <- function (q,  alpha = 1, kap = 0, lower.tail = TRUE){
+  
   if (min(alpha) <= 0)
     stop("invalid alpha")
 
@@ -73,8 +76,8 @@ pgpa <- function (q,  alpha = 1, kap = 0, lower.tail = TRUE)
 
 #' @export
 #' @rdname GPA
-rgpa <- function (n, alpha = 1, kap = 0)
-{
+rgpa <- function (n, alpha = 1, kap = 0){
+  
   if (min(alpha) < 0)
     stop("invalid alpha")
   if (length(kap) != 1)
@@ -86,8 +89,8 @@ rgpa <- function (n, alpha = 1, kap = 0)
 
 #' @export
 #' @rdname GPA
-dgpa <- function (x, alpha = 1, kap = 0, log = FALSE)
-{
+dgpa <- function (x, alpha = 1, kap = 0, log = FALSE){
+  
   if (min(alpha) <= 0)
     stop("invalid alpha")
 
@@ -117,8 +120,8 @@ dgpa <- function (x, alpha = 1, kap = 0, log = FALSE)
 
 #' @export
 #' @rdname GPA
-qgpa <- function (p, alpha = 1, kap = 0, lower.tail = TRUE)
-{
+qgpa <- function (p, alpha = 1, kap = 0, lower.tail = TRUE){
+  
   if (min(p, na.rm = TRUE) < 0 || max(p, na.rm = TRUE) > 1)
     stop("`p' must contain probabilities in (0,1)")
 

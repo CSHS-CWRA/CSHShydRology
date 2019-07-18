@@ -6,11 +6,9 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param obj An output from \link{FitRegLmom}.
+#' @param object An output from \link{FitRegLmom}.
 #'
 #' @param q Probability associated to the flood quantiles.
-#'
-#' @param indx Index flood factor. By default the sample average of the target.
 #'
 #' @param ci Logical. Should the confident intervals and the standard deviation
 #' be evaluated?
@@ -21,7 +19,9 @@
 #' @param nsim Number of simulations used for approximating
 #'   the confident intervals.
 #'
-#' @param alpha Significance level.
+#' @param alpha Probability outside the confidence intervals.
+#' 
+#' @param ... Other parameters.
 #' 
 #' @seealso \link{FitRegLmom}, \link{Intersite}.
 #'
@@ -58,42 +58,43 @@
 #' predict(fit, ci = TRUE, corr = isite$model)
 #'
 predict.reglmom <-
-  function(obj,
+  function(object,
            q = c(.5, .8, .9, .95, .98 , .99),
            ci = FALSE,
            corr = 0,
            nsim = 1000,
-           alpha = 0.05){
+           alpha = 0.05,
+           ...){
 
   ## The index-flood is the L1 of the target site
-  indx <- obj$lmom[1,1]
+  indx <- object$lmom[1,1]
 
 
   ## Extract quantile function
-  qfunc <- getFromNamespace(paste0('qua',obj$distr), 'lmom')
+  qfunc <- getFromNamespace(paste0('qua',object$distr), 'lmom')
 
   if(ci){
 
     ## extract the parameter of each site individually
-    para <- coef(obj)
+    para <- coef(object)
 
     ## Create a regfit object
-    dd <- as.regdata(cbind(1:nrow(obj$lmom),obj$nrec,obj$lmom),FALSE)
-    rfit <- regfit(dd,obj$distr)
+    dd <- as.regdata(cbind(1:nrow(object$lmom),object$nrec,object$lmom),FALSE)
+    rfit <- regfit(dd,object$distr)
 
     ## simulate flood quantile
     simq <- regsimq(qfunc,
                    para = para,
                    cor = corr,
                    index = indx,
-                   nrec = obj$nrec,
+                   nrec = object$nrec,
                    nrep = nsim,
-                   fit = obj$distr,
+                   fit = object$distr,
                    f = q,
                    boundprob = c(alpha/2, 1-alpha/2))
 
     ## extract confident interval and standard deviation
-    ans <- sitequantbounds(simq, rfit, site=1)
+    ans <- sitequantbounds(simq, rfit, sitenames = 1)
     colnames(ans) <- c('','pred', 'se', 'lower','upper')
     rownames(ans) <- format(q, digits = 3)
 
@@ -102,7 +103,7 @@ predict.reglmom <-
 
   } else {
     ## Compute the flood quantiles
-    ans <- indx * qfunc(q, obj$para)
+    ans <- indx * qfunc(q, object$para)
   }
 
   return(ans)

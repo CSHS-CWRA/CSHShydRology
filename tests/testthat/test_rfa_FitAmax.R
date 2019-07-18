@@ -2,7 +2,9 @@
 ## testing FitAmax
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
+
 rm(list = ls())
+
 uu <- (1:100 - .5) /100
 xgev <- qAmax(uu, c(100,30,0), 'gev')
 vname <-  c("lmom", "method", "para", "distr", "varcov", "llik", "data")

@@ -21,6 +21,7 @@ q <- qAmax(uu, c(100,30,-.5), 'gno')
 p <- pAmax(q, c(100,30,-.5), 'gno')
 expect_equal(uu,p)
 
+f0 <- FitAmax(q, 'gev', method = 'mle', varcov = FALSE)
 AIC0 <- -2*sum(dAmax(f0$data, f0$para, f0$distr, log = TRUE)) + 6
 expect_equal(AIC0, AIC(f0))
 

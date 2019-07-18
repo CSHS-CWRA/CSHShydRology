@@ -12,110 +12,109 @@ editor_options:
 
 ## Introduction
 
-In this document I will show how to use `CSHShydRology` to perform at-site 
-flood frequency analysis using annual maximums. 
-First we will extract the annual maximums using the function `ExtractAmax` from 
-the daily discharge of the Saint-John River at Fort Kent (NB).
-Note that incomplete years of data, i.e. with fewer than 365 days of observation
-are removed and a total 88 annual maximums are extracted.
+In this document we will show how to use `CSHShydRology` to perform at-site 
+flood frequency analysis using annual maximums of river discharge.
+This will be illustrated using daily streamflow data from the Saint-John River 
+at Fort Kent (NB).
 
 ```{r}
 library(CSHShydRology)
+data("flowStJohn")
+```
 
+First we need to extract the annual maximums which are store in a dataset with
+two columns: `date` and `flow`. 
+This can be done using the function `ExtractAmax`.
+For this example, incomplete years of data (less than 365 days) are removed.
+In total, we identified 88 annual maximums.
+
+```{r}
 ## Extract the annual maximums
 anData <- ExtractAmax(flow ~ date, flowStJohn, tol = 365)
+nrow(anData)
 ```
 
 The annual maximums are assumed to be independent and identically distributed.
-Risk is measured in terms of return period $T$ that characterizes the 
-average waiting time separating two events of the same magnitude.
-In practice this is equivalent to evaluate the flood quantile associated with 
-the probability $p = 1-1/T$.
-The test of Mann-Kendall is frequently performed to verify if the data do not 
-contain significant trends. 
+The tests should performed to verify that the data do not contain 
+significant trends (Mann-Kendall) or change points (Pettitt).
+Risk is commonly measured in terms of return period $T$, which characterizes the 
+average waiting time between two extreme events.
+Under stationarity, this is equivalent to evaluate the flood quantile 
+associated with the probability $p = 1-1/T$.
+ 
 
 ## Estimation of the flood quantiles
 
-According to extreme value theory, as the number of annual maximums increase, 
-their distribution converge to a Generalized Extreme Value (GEV) distribution
+Different distributions can be considered to model the annual maximums.
+Nevertheless, according to extreme value theory the distribution of
+sample maximums should converge to a Generalized Extreme Value (GEV) 
+distribution as the size of the sample increase
 $$
 F(x) = \exp\left\{ - \left[ 1 - \kappa \left(\frac{x-\xi}{\alpha} \right) 
   \right]^{1/\kappa} \right\}.
 $$
-
-The GEV distribution can be fitted using the `FitAmax` function as show in the 
-example below.
-Here, the parameters are estimated using the maximum likelihood method. 
-A summary of the estimated parameters, their standard deviations and the sample 
-L-moments are returned.
+where $\xi$ is a location parameter, $\alpha > 0$ is a scale parameter and
+$\kappa$ is a shape parameter. 
+The GEV distribution can be fitted using the `FitAmax` function. 
+The example below used the maximum likelihood method to estimate the parameters 
+three parameters of the GEV distribution. 
 
 ```{r}
 fitMle <- FitAmax(anData$flow, 'gev', method = 'mle')
 print(fitMle)
 ```
 
-It is also possible to use the L-moment method to estimate the parameters.
-Note that by default `FitAmax` compute the covariance matrix of the parameters.
-For the maximum likelihood method, the covariance matrix is derived analytically
-from the the hessian matrix, while for the L-moment estimator a parametric 
-bootstrap is used and a correction is made to ensure the positive definiteness
-of the matrix.
-The evaluation of the covariance matrix can be avoided by providing the 
-arguments `varcov = FALSE`.
+Alternatively, the L-moment method can be specified with argument 
+`method = 'lmome'`.
+By default, `FitAmax` evaluates the covariance matrix of the estimated
+parameters.
+Thi is derived analytically for the maximum likelihood method, while for 
+the L-moment method a parametric bootstrap is performed.
+If not necessary, the evaluation of the covariance matrix can be skipped by passing 
+the arguments `varcov = FALSE`.
 
-```{r}
-## Fit GEV distribution using L-moments
-fitLmm <-FitAmax(anData$flow, 'gev', method = 'lmom', varcov = FALSE)
-```
-
-
-The flood quantile of the GEV distribution can be obtained from the formula 
+The flood quantile of the GEV distribution are evaluated according to 
 $$
 x_T = \mu + \frac{\alpha}{\xi}\left[ 1+\log(1/T)^\kappa \right] .
 $$
-These predictions are evaluated using the `predict` function.
-By default return period of 2, 5, 10, 20, 50 and 100 years are provided.
-The example below shows how to obtain the flood quantile of return periods 
-10 and 100 years using the argument `q = 1-1/T`.
+These quantities are provided by the function `predict`.
+The example below indicates how to obtain the flood quantile of return periods 
+10 and 100 years.
 The standard deviation of the flood quantiles is estimated using the Delta 
-method when requested by the argument `se = TRUE`. 
-Similarly, confidence intervals are evaluated using the standard deviations by
-providing the argument `ci = 'delta'`.
+method, as requested by the argument `se = TRUE`. 
+When the argument `ci = 'delta'` is passed, confidence intervals are 
+evaluated as a factor of the standard deviations.
+
 
 ```{r}
 ## Flood quantiles of 10 and 100 return periods
 predict(fitMle, q = c(.9,.99), se = TRUE, ci = 'delta', alpha = .1)
 ```
 
-confidence intervals can also be obtained using parametric bootstraps with the 
-option `ci = 'boot'`.
-This may be required if the normal approximation of the confidence intervals is 
-realistic.
-The argument `out.matrix` requests that the bootstrap samples of the parameters 
-and the flood quantiles be returned.
+Alternatively, confidence intervals can be obtained using parametric bootstraps 
+using the option `ci = 'boot'`.
+In that the argument `out.matrix` can be used to request that the bootstrap 
+samples be returned.
 
 ```{r}
+## Fitting using L-moments
+fitLmm <- FitAmax(anData$flow, 'gev', method = 'lmom', varcov = FALSE)
+
+## Prediction using bootstrap
 out <- predict(fitLmm, q = c(.9,.99), ci = 'boot', 
-               nsim = 100, out.matrix = TRUE)
+               nsim = 1000, out.matrix = TRUE)
 
-## Estimated Flood quantiles
-out$pred
-
-## Bootstraps sample of model parameters
-head(out$para)
-
-## Bootstraps sample of flood quantiles
-head(out$qua)
+## Structure of the output
+names(out)
 ```
 
 
 ## Verification of the model
 
 The return level plot provides a visual assessment of the fitted distribution by 
-comparing the sampled and estimated flood quantiles.
-The graphic below shows a good agreement between the two.
-The confidence intervals are obtained using normal approximation based on 
-the delta method. 
+comparing the sample and theoritical flood quantiles.
+For convinience, the x-axis is expressed in term of return periods.
+Below, the graphic shows a good agreement.
 
 ```{r, fig.height= 4,fig.width=6  }
 ## Return level plot
@@ -124,78 +123,72 @@ plot(fitMle, ci = TRUE)
 
 Another diagnostic is the goodness of fit test of Anderson-Darling that verifies
 if the observations were likely to be generated by a GEV distribution. 
-A p-value superior to 0.05 indicates that the hypothesis of a GEV cannot 
+A p-value superior for instance 0.05 indicates that the hypothesis of a GEV cannot 
 be rejected at this significant level.
 
 ```{r}
-## Anderson-Darling goodness of fit test
-GofTest(fitLmm, nsim = 500)
+## Anderson-Darling test of goodness of fit
+GofTest(fitLmm, nsim = 1000)
 ```
 
 ## Selection of the best distribution
 
-The GEV distribution is not the only distribution used in flood frequency 
-analysis.
-Frequent alternative candidates are the shifted log-normal distribution 
+The GEV distribution is not the only distribution available to carry out
+flood frequency analysis.
+Common alternatives are the shifted log-normal distribution 
 (`'ln3'`), the Generalized logistic distribution (`'glo'`) and the Pearson 
 type III distribution (`'pe3'`).
 These distribution can be fitted by the function `FitAmax` in the same way as
 the GEV.
 
 ```{r}
-## 
-FitAmax(anData$flow, 'ln3', method = 'lmom', varcov =  FALSE)
+## Fitting of the Log-normal distribution
+FitAmax(anData$flow, 'ln3', varcov = FALSE)
 ```
 
 A best distribution can be selected using the Akaike Information Criterion (AIC)
 as returned by the function `AIC`. 
-However, the process of selecting the best ditribution can be automatized, 
-by passing a list of distribution.
-In this exemple below, all candidates have similar AIC, which
-indicates that all distributions represent reasonable choices. 
-The argument `tol.gev` can be used to ensure that the selected candidate has
-a AIC greater than the GEV distribution by a given margin, otherwise GEV will be
-prefered.
+The process of selecting the best ditribution can be automatized as shown
+in the exemple below.
+Here all candidates have similar AIC, which indicates that all distributions 
+represent reasonable choices. 
 
 ```{r}
 ## Candidates distribution
 candidates <- c('gev','glo','ln3','pe3')
 
-## Function that compute the AIC for a given distribution
+## Function that computes the AIC for a given distribution
 FAIC <- function(d)
-   AIC(FitAmax(anData$flow, d, method = 'mle', varcov =  FALSE))
+   AIC(FitAmax(anData$flow, d, method = 'mle'))
 
-## AIC of all distribution
+## AIC of all distributions
 sapply(candidates, FAIC)
 
 ## Automatic selection of the distribution
-FitAmax(anData$flow, candidates, method = 'mle', tol.gev = 2)
+FitAmax(anData$flow, candidates, method = 'mle')$distr
 ```
 
 ## Conclusion
 
-In this document we showed how to evaluate flood quantiles using annual maximum 
-river discharge.
-Initially, the extraction of the annual maximums (`ExtractAmax`) was discussed.
-Instructions were provided to estimate (`FitAmax`) the model for different 
-distributions and to select a best distribution using the AIC (`FitAmax.auto`). 
+This document shows how to evaluate flood quantiles using annual maximum 
+of river discharge.
+Initially, annual maximums (`ExtractAmax`) were extracted and a 
+distribution was fitted (`FitAmax`). 
+The AIC criteria was then used to identify the best distributions among a small
+group of candidates. 
 The function to obtain the flood quantiles and their uncertainties (`predict`) 
-was presented.
-Finally, the return level plot (`plot`) was presented as a common way to 
-visualize the quality of the fitting and goodness of fit test were discussed.
-For a general introduction to the technical aspect of modeling annual maximums,
-the readers are referred to Coles (2001) or Hosking and Wallis (1997).
+was finally presented.
+To assess the outcomes of the model, the return level plot (`plot`) was 
+presented as a way to visualize the quality of the fitting and 
+goodness of fit test were discussed (`GofTest`).
+For a more in depth introduction the readers are referred to Coles (2001) 
+and Hosking and Wallis (1997).
 
 ## References
 
 Coles, S., 2001. An introduction to statistical modeling of extreme values. 
- Springer Verlag.
+  Springer Verlag.
 
 Hosking, J.R.M., Wallis, J.R., 1997. Regional frequency analysis: an approach 
- based on L-moments. Cambridge Univ Pr.
-
-Önöz, B., Bayazit, M., 2012. Block bootstrap for Mann–Kendall trend test of 
- serially dependent data. Hydrol. Process. 26, 3552–3560. 
- https://doi.org/10.1002/hyp.8438
-
-
+  based on L-moments. Cambridge Univ Pr.
+ 

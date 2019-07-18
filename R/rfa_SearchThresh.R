@@ -8,6 +8,8 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
+#' @param x,form Dataset and formula passed to \link{FitPot}.
+#'
 #' @param u Vector of candidate thresholds.
 #' 
 #' @param nmin Stopping condition verifying that a minimal number of peaks

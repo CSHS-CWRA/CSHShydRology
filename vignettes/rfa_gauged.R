@@ -2,7 +2,7 @@
 library(CSHShydRology)
 attach(flowAtlantic) 
 
-## Compute the distance between descriptors
+## Compute the Euclidean distance between descriptors
 covar <- scale(log(info[,c('area','map')]))
 distance.covar <- as.matrix(dist(covar))
 colnames(distance.covar) <- rownames(distance.covar) <- as.character(info$id)
@@ -45,12 +45,12 @@ xd <- DataWide(ams ~ id + year, ams)
 distance.target <- distance.st2[colnames(xd),'01AK007']
 xd.target <- FindNearest(xd, distance = distance.target, 25)
 
-## ----fig.height=5, fig.width=6-------------------------------------------
-
+## ------------------------------------------------------------------------
 ## Fit regional growth curve
 fit.target <- FitRegLmom(xd.target)
-fit.target
+print(fit.target)
 
+## ----fig.height=5, fig.width=6-------------------------------------------
 plot(fit.target)
 
 ## ------------------------------------------------------------------------
@@ -73,7 +73,8 @@ geo.target <- distance.geo[sid,sid]
 icor2 <- Intersite(xd[,sid], method = 'exp',
                    distance = geo.target, 
                    distance.max = 300)
-icor2
+
+print(icor2)
 
 ## Display the results
 theta <- icor2$corr[lower.tri(icor2$corr)]

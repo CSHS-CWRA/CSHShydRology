@@ -6,6 +6,9 @@
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' 
 #' @param rose.col,rose.lwd,rose.cex Property of the polar axes.
+#' 
+#' @param rose.radius Vector of the position of the circular axis.
+#' 
 #' @param ... Other parameter passed to \link{points}.
 #' 
 #' @seealso \link{SeasonStat}.
