@@ -1,0 +1,456 @@
+---
+title: "Prediction of flood quantiles at ungauged sites"
+output: 
+    rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ungauged-RFA}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+## Introduction
+
+This document shows how to use `CSHShydRology` to predict
+flood quantiles at ungauged sites. 
+For this purpose, flood quantiles need to be predicted according to 
+available catchment descriptors.
+There are two general approaches, the quantile
+regression techniques (QRT) and the parameter regression techniques (PRT).
+In the former approach, at-site analyses are carried out on gauged sites 
+in order to obtain at-site estimates of the flood quantiles.
+Afterward, the flood quantile of a target site is derived from the
+at-site estimates using a regression model. 
+The second approach (PRT) predicts instead the parameters of the target 
+distribution based on at-site estimates of the same parameters.
+For this second approach, statistics like L-moments could replace
+the parameters  (Durocher et al., 2019; Laio et al., 2011).
+Both methods were shown to lead to similar results and 
+the choice must depend on practical considerations. (Ahn and Palmer, 2016; 
+Haddad and Rahman, 2012).
+
+Here the QRT approach is adopted to predict a 100 years return period using a
+combination on local regression and kriging.
+Note that the prediction of each parameter (L-moments) for the PRT approach 
+would follow the same steps.
+
+
+## Data preparation
+
+For this example, we are working with a group 562 stations across Canada where
+relevant information is found in the dataset `flowUngauged`.
+The instructions below prepared the main dataset containing 4 catchment 
+descriptors: drainage area (`area`), percentage of waterbodies (`wb`), 
+stream density (`stream`) and mean annual precipitation (`map`).
+These descriptors are initially transformed and scaled.
+
+
+```{r}
+library(CSHShydRology)
+data(flowUngauged)
+
+## Transform data if necessary.
+xd0 <- with(flowUngauged, 
+  data.frame(area   = scale(log(area)),
+             wb     = scale(log(wb)),
+             stream = scale(log(stream)),
+             map    = scale(log(map)))
+  )
+```
+
+Additionally, classical multidimensional scaling is used to project the
+site coordinates in a 2D space that tends preserves the great-circle distance.
+The code below add these new coordinates to the descriptors
+
+```{r}
+## Project the coordinates
+coord <- cmdscale(GeoDist(~lon+lat,flowUngauged))
+colnames(coord) <- c('lon','lat')
+
+xd0 <- cbind(xd0, coord)
+```
+
+
+The dataset does not contain the annual maximums of each sites but provide the
+sample L-moments. 
+We use the function `lAmax` that links L-moments to the parameters of a given 
+distribution and `qAmax` to evaluate the flood quantiles of each site assuming
+a Generalized Extreme Value (GEV) distribution.
+Note below that the presence of the argument `scale = FALSE` that specified that the LCV is passed rather than the L-scale.
+
+```{r}
+## Convert L-moments to parameter
+para100 <- apply(flowUngauged[,c('l1','lcv','lsk')], 
+                 1, lAmax, distr = 'gev', lscale = FALSE)
+
+## Estimate at-site flood quantiles
+F100 <- function(z) qAmax(0.99, z, distr = 'gev')
+qua100 <- apply(para100, 2, F100)
+xd0 <- cbind(xd0, q100 = qua100)
+```
+
+For the rest of the document, we put aside 26 sites that will be considered 
+as ungauged and used the other sites to predict them.
+
+```{r}
+## Create a set of ungauged sites
+id <- seq(1,501,20)
+xd <- xd0[-id, ]
+target <- xd0[id,]
+```
+
+## Region of influence
+
+The prediction of the flood quantiles at ungauged sites is done by the 
+function `FitRoi`. 
+We denote $i = 0$ the target site and $i= 1, 2, \ldots, n$ the gauged 
+sites. 
+First, a measure of similarity is needed to define weights that represents the 
+importance of each gauged site to the prediction of the target.
+In this case, the measure of similarity is defined as the Euclidean distance 
+$$
+h_{i,j} = \left\| \mathbf{s}_i-\mathbf{s}_j\right\|
+$$ 
+between attributes $\mathbf{s_j}$.
+The latter could be catchment descriptors, coordinates or a mixed of both.
+For simplicity, it will be assumed that the gauged sites are sorted such as
+the distances with the target $h_{0,i} = h_i \leq h_{i+1}$ are 
+increasing.
+Accordingly, the weights are taken as  
+$$
+w_i = \begin{cases} 
+1 - (h_i/h_{n_k})^2 & i < n_k \\
+0 & i\geq n_k
+\end{cases},
+$$
+which are proportional to an Epechnikov kernel where the bandwidth is 
+the $n_k$-th nearest site.
+This give more importance to the sites having more similar attributes.
+This create neighborhoods, or regions of influence (ROI) where only 
+the sites $i < n_k$ are contributing to the estimation of the target. 
+ 
+At a target site, the flood quantiles are predicted by a linear model 
+$$
+\log(Y) = \mathbf{X}\beta + \epsilon
+$$
+where $\beta$ is a vector of parameters, $Y$ represents the at-site estimates, $\mathbf{X}$ is a design matrix 
+of the catchment descriptors and $\epsilon$ is a term of error.
+Note that the catchment descriptors in $\mathbf{X}$ may differ 
+from the attributes used to define the measure of similarity ($\mathbf{s}_i$).
+The estimates of the parameters $\widehat \beta$ are given by weighted 
+least squares estimator  
+$$
+\widehat \beta = \left( \mathbf{X}' W \mathbf{X}\right)^{-1}
+\mathbf{X}'W \mathbf{y}
+$$
+where $W=(w_1,\dots, w_n)$ is the diagonal matrix of weights. 
+The exemple below shows how to fit the local regression models on the 
+ungauged sites.
+Note that the argument `ker = FALSE` can be passed to use  
+uniform weights where $n_k$ represents the number of sites with non zero 
+weights.
+
+
+```{r}
+## Define the ROI model
+formula.phy <- log(q100) ~ area + map + stream + wb
+formula.dist <- ~ area + map + stream + wb
+
+## Fit the model
+fit <- FitRoi(x = xd, xnew = target, nk = 30, 
+              phy = formula.phy, similarity = formula.dist) 
+print(fit)
+```
+
+```{r fig.height = 4, fig.width = 6}
+## Graphics of the predicted versus known flood quantiles a ungauged sites
+plot(log(target$q100),fit$pred,
+     xlab = 'At-site flood quantiles (log)',
+     ylab = 'Predicted flood quantiles (log)')
+abline(0,1)
+
+```
+
+## Cross-validation
+
+Cross-validation is a technique used to measure the prediction error of 
+a model by resampling.
+It is strongly suggested to use similar approach to calibrate the argument `nk` 
+that defines the size of the regions of influence.
+The k-fold cross-validation strategy consists to divide the gauged sites in k 
+groups of equal size.
+Typical values of k are 5 or 10.
+In turn, each group is treated as ungauged and predicted by the other sites.
+These predictions can be compared to the "known" flood quantiles by evaluating
+common criteria such as the Root Mean Square Error (RMSE) and the Mean Absolute 
+Deviation (MAD).
+The function `CvRoi` performs cross-validation and return the evaluation 
+criteria. The function `head` return the three best choice for `nk` according 
+to a given criteria.
+
+```{r }
+## List of size to try.
+nk.lst <- seq(30,100,10)
+
+## Perform cross-validation
+cv0 <- CvRoi(x = xd, nk = nk.lst, fold = 5,
+            phy = formula.phy, similarity = formula.dist,
+            verbose = FALSE)
+
+## output results
+head(signif(cv0,3), crit = 'mad')
+```
+
+
+```{r fig.height = 4, fig.width = 6}
+## Mean absolute deviation with respect to 'nk'
+plot(cv0, crit = 'mad')
+
+```
+
+
+
+Cross-validation can also be used to select relevant catchment descriptors. 
+By default, the output of `CvRoi` varies as the groups are created randomly.
+Specific cross-validation groups can be passed in argument to ensure that 
+concurrent models are evaluated using the same design.
+The second example below shows that the descriptors `wb` and `stream` improve 
+the predictive power of the model.
+
+```{r }
+
+## Create cross-validation groups
+set.seed(392)
+kf <- sample(rep_len(1:5, nrow(xd)))
+
+## Perform cross-validation with different choices of descriptors
+cv0 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+            phy = formula.phy, similarity = formula.dist,
+            verbose = FALSE)
+
+formula.phy2 <- log(q100) ~ area + map 
+
+cv1 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+            phy = formula.phy2, similarity = formula.dist,
+            verbose = FALSE)
+
+## Compare the prediction power
+head(signif(cv0,3), crit = 'mad')
+head(signif(cv1,3), crit = 'mad')
+
+
+```
+
+
+If other criteria than those included in `CvRoi` are desired, it is 
+possible to perform the cross-validation sheme and keep the predicted value (or 
+residuals) using functions `predict` (`residuals`).
+
+
+```{r}
+## Evaluate the predictions and residuals from the cross-validation of a given 
+## ROI model
+
+fit <- FitRoi(x = xd, xnew = target, nk = 50, 
+              phy = formula.phy, similarity = formula.dist) 
+
+hat <- predict(fit, xd, fold = kf)
+res <- residuals(fit, xd, fold = kf)
+
+## Median of relative absolute error
+median(abs(res/hat))
+
+```
+
+## Kriging
+
+The catchment descriptors provide useful information to describe the relation
+between the flood quantiles and its physical catchment descriptors. 
+However, important characteristics of the basins may not be available and so, 
+spatial correlation among the residuals may remain if the missing
+information is spatially distributed (Durocher et al., 2019).
+Therefore, a spatial predictor could be used to correct the initial regression 
+model by spatially predicting the residuals.
+This is often called regression-kriging.
+Considering $\mathbf{z} = \mathbf{y}-g(\mathbf{X})$, 
+the residuals of the local regression. 
+The simple kriging estimator, is the linear predictor $z_0 = \mathbf{a}'\mathbf{z}$, that minimize the predicted variance and is given by
+$$
+\mathbf{a} = \Sigma^{-1}\sigma
+$$
+where $\sigma$ is the covariance matrix of the residual and 
+$\sigma = \mathrm{cov}(\mathbf{z},z_0)$.
+This requires the estimation of a covariance model, which is treated in 
+textbooks such as Schabenberger and Gotway (2014).
+One model of covariance with respect to the distance $h > 0$ is the exponential 
+model 
+$$
+C(h) = C(0) -\tau \exp\left(-3 \frac{h}{\alpha}\right)
+$$
+where $\alpha > 0$ is a parameter that characterizes 
+the rate at which the covariance falls with $h$ and 
+$\tau \in \left[0,C(0)\right]$ is a nugget effect 
+that creates a discontinuity at $h = 0$.  
+
+The function `FitRoi` and `CvRoi` can directly perform the kriging on the 
+residuals by passing a set of coordinates to the argument `kriging`.
+The example below shows that the addition of the spatial component improves the 
+prediction power of the model.
+
+```{r, warning = FALSE}
+formula.krig <- ~ lon + lat
+
+cvk <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+            phy = formula.phy, similarity = formula.dist,
+            kriging = formula.krig, verbose = FALSE)
+```
+
+
+```{r, warning = FALSE}
+## Effect of kriging of the prediction of flood quantiles.
+plot(cvk, ylim = c(0.38, 0.45))
+lines(mad~nk, cv0, col = 'red')
+legend('topleft', horiz = TRUE, 
+       legend = c('with','without'),
+       col = c('black','red'), lty = rep(1,2))
+```
+
+
+## Bootstrapping
+
+The argument `se = TRUE` can be passed to `FitRoi` to return estimation of the 
+standard deviation for the regression part (`phy.se`) or the kriging part 
+(`krige.se`) of the model. 
+These outputs may be useful to assess the quality of the fitting, but they 
+don't give a proper evaluation of the total uncertainty.
+Indeed, errors must be propagate at each step.
+Overall the model could be seen as having two terms of errors
+$$
+Y = f(\mathbf{s}) + \eta + \omega
+$$
+where $\eta$ is a term of sampling error and $\omega$ is a term of modeling 
+error.
+A similar hypothesis is used in this context when
+using Generalized Least Squares (GLS) for estimating of the total variance 
+(Tasker and Stedinger, 1989; Durocher et al., 2018).
+In that context, the modeling error $\omega$ is assumed to have a constant 
+variance at all sites. 
+If the residuals of the fitted model are independent of the sampling 
+errors, a residual of the total error can be generated by resampling 
+independently each terms of error. 
+
+The example below simulates the gauged sites using the function `RegSim`.
+Here, 50 years of data is employed with
+a constant coefficient of corrrelation of 0.4 representing the intersite 
+correlation between the annual maximums.
+At each time, the at-site flood quantiles are evaluated using the 
+method of L-moments.
+Here only a small sample of size `nboot` is generated for illustration purpose.
+
+```{r}
+## Size of the bootstrap sample
+nboot <- 30
+
+## Empirical L-moments
+lmm <- flowUngauged[-id, c('l1','lcv','lsk')]
+
+## Function that return the flood quantiles of 100 years return period
+## for one site.
+Fqua <- function(z){
+  l <- lmom::samlmu(z) 
+  p <- lmom::pelgev(l)
+  return(lmom::quagev(.99,p))
+}
+
+## Function that simulates a dataset and return flood quantiles for all sites
+Fsim <- function(){
+  xs <- RegSim(lmm, 'gev', nrec = 50, corr = .4)
+  return(apply(xs, 2, Fqua))
+}
+
+## Perform bootstrap for the at-site analysis
+set.seed(12)
+lq100 <- log(replicate(nboot, Fsim()))
+
+```
+
+A bootstrap sample of the total error is obtained then 
+by adding the model residuals to the sample from the at-site analyses. 
+Note that if kriging is not required, the argument `fitted = TRUE` must be 
+passed to obtain the fitted values (and residual) of the ROI model at 
+the gauged sites.
+
+
+```{r}
+## Fit the model
+fit <- FitRoi(x = xd, xnew = target, nk = 50, 
+              phy = formula.phy, similarity = formula.dist,
+              fitted = TRUE) 
+
+## Extract model residuals assuming they are symmetrical.
+resid.mdl <- c(fit$resid, -fit$resid)
+
+## create a copy that could be modified
+xd.boot <- xd
+
+## Fit ROI on a bootstrap sample
+Fboot <- function(){
+  
+  ## sample residual of sampling and modeling errors.
+  boot.jj <- sample.int(nboot, 1)
+  boot.resid <- sample(resid.mdl, nrow(xd), replace = TRUE)
+  xd.boot$q100 <- exp(lq100[,boot.jj] + boot.resid)
+  
+  return(FitRoi(x = xd.boot, xnew = target, nk = 50, 
+              phy = formula.phy, similarity = formula.dist)$pred) 
+}
+
+boot <- replicate(nboot, Fboot())
+
+## Evaluate the standard deviation of the bootstrap sample.
+boot.se <- apply(boot, 1, sd)
+
+```
+
+
+## Conclusion
+
+In this document we showed how the function `FitRoi` can be used to fit local
+regression-kriging model to estimate flood quantiles at ungauged sites. 
+The selection of the catchment descriptors and the size of the region of 
+influence were further calibrated using the function `CvRoi`. 
+Finally, a bootstrap strategy was proposed to estimate the 
+variance of the total error. 
+ 
+## References
+
+Ahn, K.-H., & Palmer, R. (2016). Regional flood frequency analysis using 
+  spatial proximity and basin characteristics: Quantile regression vs. 
+  parameter regression technique. Journal of Hydrology, 540, 515-526.
+  https://doi.org/10.1016/j.jhydrol.2016.06.047
+  
+Durocher, M., Burn, D. H., Zadeh, S. M., & Ashkar, F. (2019). Estimating flood 
+  quantiles at ungauged sites using nonparametric regression methods with
+  spatial components. Hydrological Sciences Journal, 64(9), 1056-1070.
+  https://doi.org/10.1080/02626667.2019.1620952
+
+Durocher, M., Burn, D. H., & Mostofi Zadeh, S. (2018). A nationwide regional 
+  flood frequency analysis at ungauged sites using ROI/GLS with copulas and 
+  super regions. Journal of Hydrology, 567, 191-202.
+  https://doi.org/10.1016/j.jhydrol.2018.10.011
+
+Haddad, K., & Rahman, A. (2012). Regional flood frequency analysis in eastern 
+  Australia: Bayesian GLS regression-based methods within fixed region and ROI 
+  framework - Quantile Regression vs. Parameter Regression Technique. Journal 
+  of Hydrology, 430-431, 142-161. https://doi.org/10.1016/j.jhydrol.2012.02.012
+
+Laio, F., Ganora, D., Claps, P., & Galeati, G. (2011). Spatially smooth 
+  regional estimation of the flood frequency curve (with uncertainty). 
+  Journal of Hydrology, 408(1-2), 67-77. 
+  http://dx.doi.org/10.1016/j.jhydrol.2011.07.022
+
+Schabenberger, O., & Gotway, C. A. (2004). Statistical methods 
+ for spatial data analysis (Vol. 64). CRC Press.
+ 
+Tasker, G., & Stedinger, J. (1989). An operational GLS model for hydrologic 
+  regression. Journal of Hydrology, 111(1), 361 - 375.
+  https://doi.org/10.1016/0022-1694(89)90268-0

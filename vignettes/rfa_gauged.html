@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Prediction of flood quantiles at ungauged sites</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Prediction of flood quantiles at ungauged sites</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This document shows how to use <code>CSHShydRology</code> to perform regional flood frequency analysis using pooling groups and the index-flood model. The methodology is presented using 45 hydrometric sites located in the Atlantic provinces of Canada. The dataset <code>flowAtlantic</code> contains the annual maximums of river discharge <code>ams</code> and some catchment descriptors: drainage area, mean annual precipitation.</p>
+</div>
+<div id="measure-of-similarity" class="section level2">
+<h2>Measure of similarity</h2>
+<p>For this analysis, pooling groups are formed as nearest sites of a target from which regional information will be transfered. Different measures of similarity exist to identify the members of a pooling group. Geograpical distance and Euclidean distance between the catchment descriptors may be considered. The example below shows how to evaluate these distances. Notice that the descriptors are transformed and scaled before the Euclidean distance is computed. The <code>Geodist</code> function compute a great-circle distance between point.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(CSHShydRology)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">attach</span>(flowAtlantic) </a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">## Compute the Euclidean distance between descriptors</span></a>
+<a class="sourceLine" id="cb1-5" title="5">covar &lt;-<span class="st"> </span><span class="kw">scale</span>(<span class="kw">log</span>(info[,<span class="kw">c</span>(<span class="st">&#39;area&#39;</span>,<span class="st">&#39;map&#39;</span>)]))</a>
+<a class="sourceLine" id="cb1-6" title="6">distance.covar &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(covar))</a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw">colnames</span>(distance.covar) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.covar) &lt;-<span class="st"> </span><span class="kw">as.character</span>(info<span class="op">$</span>id)</a>
+<a class="sourceLine" id="cb1-8" title="8"></a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="co">## Compute great-circle distance</span></a>
+<a class="sourceLine" id="cb1-10" title="10">coord &lt;-<span class="st"> </span>info[,<span class="kw">c</span>(<span class="st">&#39;lon&#39;</span>,<span class="st">&#39;lat&#39;</span>)]</a>
+<a class="sourceLine" id="cb1-11" title="11">distance.geo &lt;-<span class="st"> </span><span class="kw">GeoDist</span>(coord)</a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">colnames</span>(distance.geo) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.geo) &lt;-<span class="st"> </span><span class="kw">as.character</span>(info<span class="op">$</span>id)</a></code></pre></div>
+<p>Another measure of similarity is based on the seasonality of the annual maximums that characterizes the flood regime the site of interest. An angular value (in radian) can be attributed to the moment when a flood is observed <span class="math display">\[
+\theta_i = \mathrm{(Julian \,date)}_i\left( \frac{2\pi}{365}\right).
+\]</span> Accordingly, a sample of <span class="math inline">\(n\)</span> angular values is summarized by averaging each Cartesian coordinate separately.</p>
+<p><span class="math display">\[
+\begin{align}
+\bar x &amp;= \frac{1}{n}\sum_{i=1}^n \cos(\theta_i) \\
+\bar y &amp;= \frac{1}{n}\sum_{i=1}^n \sin(\theta_i) 
+\end{align}
+\]</span> However, these summary statistics are easier to interpret in polar coordinates.</p>
+<p><span class="math display">\[
+\begin{align}
+\theta &amp;= \arctan \left( \bar y / \bar x\right)\\
+r &amp;= \sqrt{\bar x^2 + \bar y^2} \\
+\end{align}
+\]</span> Here, <span class="math inline">\(\theta\)</span> represents the average moment of occurrence for the annual maximum discharges and <span class="math inline">\(r\)</span> represent its regularity during the year. In particular, values of <span class="math inline">\(r\)</span> close to 1 entails that the maximum discharge occurs almost the same day every year, while values close to 0 imply that the maximum discharge could be observed at any moment of the years. Even for regional frequency analysis based threshold modeling, Mostofi Zadeh et al. (2019) showed that the seasonality based on annual maximum discharges should be preferred.</p>
+<p>The seasonality of one or several sites can be estimated using the <code>SeasonStat</code> function.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw">SeasonStat</span>(ams[ams<span class="op">$</span>id <span class="op">==</span><span class="st"> </span>ams<span class="op">$</span>id[<span class="dv">1</span>], ]<span class="op">$</span>date)</a></code></pre></div>
+<pre><code>##          x          y      angle     radius 
+## -0.2308825  0.5945593  1.9411980  0.6378146</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">st &lt;-<span class="st"> </span><span class="kw">SeasonStat</span>(date <span class="op">~</span><span class="st"> </span>id, ams)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">head</span>(st)</a></code></pre></div>
+<pre><code>##                    x         y    angle    radius
+## 01AF007 -0.230882469 0.5945593 1.941198 0.6378146
+## 01AF009 -0.308499369 0.7230383 1.974081 0.7861019
+## 01AJ010  0.005594521 0.4226291 1.557560 0.4226661
+## 01AK001 -0.130335849 0.7598669 1.740668 0.7709638
+## 01AK007 -0.053384346 0.5568674 1.666370 0.5594204
+## 01AL002 -0.040488450 0.6006337 1.638104 0.6019968</code></pre>
+<p>Next, the distance between sites can be evaluated using the Eucledean distance between cartesian or polar coordinates. The function <code>DistSeason</code> compute the distance between pairs <span class="math inline">\((r_j,\theta_j)\)</span> and <span class="math inline">\((r_k, \theta_k)\)</span> according to</p>
+<p><span class="math display">\[
+h_{i,j} =\sqrt{\|r_j-r_k \|^2 + \left(\frac{\|\theta_j-\theta_k\|}{\pi}\right)^2}
+\]</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">## Distance using cartesian coordinates</span></a>
+<a class="sourceLine" id="cb6-2" title="2">distance.st &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(st[,<span class="kw">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>)]))</a>
+<a class="sourceLine" id="cb6-3" title="3"><span class="kw">colnames</span>(distance.geo) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.geo) &lt;-<span class="st"> </span><span class="kw">as.character</span>(info<span class="op">$</span>id)</a>
+<a class="sourceLine" id="cb6-4" title="4"></a>
+<a class="sourceLine" id="cb6-5" title="5"><span class="co">## Distance using polar coordinates</span></a>
+<a class="sourceLine" id="cb6-6" title="6">distance.st2 &lt;-<span class="st"> </span><span class="kw">DistSeason</span>(radius <span class="op">~</span><span class="st"> </span>angle , st)</a>
+<a class="sourceLine" id="cb6-7" title="7"><span class="kw">colnames</span>(distance.st2) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.st2) &lt;-<span class="st"> </span><span class="kw">as.character</span>(info<span class="op">$</span>id)</a></code></pre></div>
+<p>The graphic below shows the seasonal statistics of the Atlantic rivers. A k-means algorithm is used to divide the sites in three regions. One region includes sites with nival regimes (blue), <em>i.e.</em> annual floods are occurring more regularly around May. A second region (green) represents sites with pluvial regime, <em>i.e.</em> with a lower regularity and where rainfall events are occurring during winter. Finally, a third region (orange) regroups sites with mixed regimes where a dominant spring freshet occurs between March and May, but where maximum discharges are also frequently cause by rainfalls at other moments of the year.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">set.seed</span>(<span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb7-2" title="2">km &lt;-<span class="st"> </span><span class="kw">kmeans</span>(<span class="kw">as.dist</span>(distance.st2), <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb7-3" title="3">regime &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;darkgreen&#39;</span>,<span class="st">&#39;orange&#39;</span>)[km<span class="op">$</span>cluster]</a>
+<a class="sourceLine" id="cb7-4" title="4"></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="kw">JulianPlot</span>()</a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="kw">points</span>(st, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">col =</span> regime)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="pooling-groups" class="section level2">
+<h2>Pooling groups</h2>
+<p>The index-flood model is frequently used to evaluate flood quantile based on a regional growth curve that characterizes a pooling group. This model assumes that all at-site distributions are proportional to the same regional growth curve up to a scale factor. This scale factor is usually taken as the sample mean. Most of the time, this regional growth curve is estimated using the L-moment algorithm that takes the average of the sample L-moments of all standardized distributions inside the pooling group to derive the parameters of the regional growth curve. A best distribution is then selected by identifying the distribution where the L-moments are the most coherent with the sample estimates. See Burn (1990) and Hosking and Wallis (1997) for a more in depth introduction.</p>
+<p>The example below first used the function <code>DataWide</code>, to construct a matrix of the data where sites are represented by columns and years by rows. Next, nearest sites to the target <code>01AK007</code> are extracted. Here, the target is assumed to be the site with distance 0. Notice also that the example below makes sure that the distance matrix respect the order imposed by the columns of <code>xd</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">## Organisation of the data in a matrix</span></a>
+<a class="sourceLine" id="cb8-2" title="2">ams<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">format</span>(ams<span class="op">$</span>date, <span class="st">&#39;%Y&#39;</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3">xd &lt;-<span class="st"> </span><span class="kw">DataWide</span>(ams <span class="op">~</span><span class="st"> </span>id <span class="op">+</span><span class="st"> </span>year, ams)</a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">## Extract a pooling groups</span></a>
+<a class="sourceLine" id="cb8-6" title="6">distance.target &lt;-<span class="st"> </span>distance.st2[<span class="kw">colnames</span>(xd),<span class="st">&#39;01AK007&#39;</span>]</a>
+<a class="sourceLine" id="cb8-7" title="7">xd.target &lt;-<span class="st"> </span><span class="kw">FindNearest</span>(xd, <span class="dt">distance =</span> distance.target, <span class="dv">25</span>)</a></code></pre></div>
+<p>Finally, the regional growth curve is estimated using the regional L-moments. The summary of the fitted model indicates that the best distribution is the generalized extreme value (GEV) distribution. This is determined by the Z-scores that identify the distribution with the closest L-kurtosis to its sample estimates.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">## Fit regional growth curve</span></a>
+<a class="sourceLine" id="cb9-2" title="2">fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xd.target)</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">print</span>(fit.target)</a></code></pre></div>
+<pre><code>## 
+## Regional frequency analysis with pooling groups
+## 
+## type: amax
+## Nb. site: 25
+## Station-year: 1245
+## Homogeneity: 5.06 2.09 0.7
+## 
+## Z-scores (absolute):
+## Zglo Zgev Zgno Zpe3 Zgpa 
+## 2.28 0.61 1.44 3.07 7.43 
+## 
+## Regional L-moments:
+##     L1    LCV    LSK   LKUR 
+## 1.0000 0.2029 0.2116 0.1733 
+## 
+## Distribution: gev
+## Parameter:
+##       xi    alpha    kappa 
+##  0.82283  0.27499 -0.06379</code></pre>
+<p>A complementary tool to the Z-score is the L-moment ratio diagram that illustrates the L-skewness and the L-kurtosis of all sites. It can be seen in the figure below that the average (dot) is located near the theoretical line of the GEV.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">plot</span>(fit.target)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>To assess the hypothesis of the index-flood model, the degree of homogeneity of the pooling group must be verified. Accordingly, for a homogenous group each at-site L-coefficient of variation <span class="math inline">\(V\)</span> or LCV should be close to their regional value. Therefore, a large dispersion of the LCV provide evidences that the pooling groups is not homogenous. To this end, a common heterogeneity measure is <span class="math display">\[
+H = \frac{V-\mu_V}{\sigma_V}
+\]</span> where values <span class="math inline">\(H &lt; 1\)</span> can be interpreted as acceptably homogenous, <span class="math inline">\(1\leq H&lt;2\)</span> possibly heterogenous and <span class="math inline">\(H \geq 2\)</span> definitely heterogenous.</p>
+<p>A pooling group may be found overall heterogeneous only because it contents few heterogenous elements. In turns, each site can be removed from the pooling group and the one that best improve the heterogeneity measure <span class="math inline">\(H\)</span> should be permanently removed. This process can be repeated until a homogenous pooling group is found or that a given stopping criteria is reached. The function <code>PoolRemove</code> search for the heterogenous sites, removes them and updates the regional growth curve. In the present situation, two sites are removed to obtain a homogenous pooling group.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co">## Remove heterogenous sites </span></a>
+<a class="sourceLine" id="cb12-2" title="2">fit.target2 &lt;-<span class="st"> </span><span class="kw">PoolRemove</span>(fit.target)</a></code></pre></div>
+<pre><code>## [1] &quot;n:25, h:5.06, t:1245&quot;
+## [1] &quot;n:24, h:2.55, t:1149&quot;</code></pre>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="co">## New heterogeneity measure</span></a>
+<a class="sourceLine" id="cb14-2" title="2">fit.target2<span class="op">$</span>stat[<span class="dv">1</span>]</a></code></pre></div>
+<pre><code>##         
+## 1.51703</code></pre>
+</div>
+<div id="intersite-correlation" class="section level2">
+<h2>Intersite correlation</h2>
+<p>Snow accumulation or large rainfall system may create floods that affect<br />
+multiple sites simultaneously. This generates a spatial dependence that will result in larger uncertainties for the estimated flood quantiles in contrast to a scenario where all sites are independent. Better inference for the estimated flood quantiles can be obtained by parametric bootstrap. For this resampling scheme, a multivariate Normal distribution is simulated at each time step and the at-site distribution are transformed to the original scale using the at-site L-moments.</p>
+<p>The spearman correlation <span class="math inline">\(\rho_{i,j}\)</span> between pairs of the i-th and j-th sites measure the degree of association between series of flood events. This measure is well suited to quantify the intersite correlations between paired observations as it is not affected by the at-site distributions. The relation <span class="math display">\[
+\theta_{i,j} = 2 \sin\left(\rho_{i,j}\frac{\pi}{6}\right)
+\]</span> links the correlation coefficients <span class="math inline">\(\theta_{i,j}\)</span> of the multivariate Normal distribution to the spearman correlation. However, corrections should be done to ensure that the final covariance matrix is positive definite (Higham, 2002).</p>
+<p>The function <code>Intersite</code> can be used to estimate the parameter of the multivariate normal distribution. The output is a list containing among others the correlation coefficient <code>corr</code> and their corrected value <code>model</code>. The function <code>sitename</code> can be used to extract the names of the sites in a pooling group. This is useful to extract data or distance matrix from the pooling groups after heterogenous site have been extracted.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">sid &lt;-<span class="st"> </span><span class="kw">sitenames</span>(fit.target2)</a>
+<a class="sourceLine" id="cb16-2" title="2">icor &lt;-<span class="st"> </span><span class="kw">Intersite</span>(xd[,sid])</a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="kw">round</span>(icor<span class="op">$</span>model[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],<span class="dv">2</span>)</a></code></pre></div>
+<pre><code>##         01AK007 01AL002 01AP002
+## 01AK007    1.00    0.87    0.26
+## 01AL002    0.87    1.00    0.43
+## 01AP002    0.26    0.43    1.00</code></pre>
+<p>Due to the spatial nature of flood generating process the strength of the dependence may depend on the distance between the sites. An exponential model can be fitted by the function <code>Intersite</code> if a distance <span class="math inline">\(h\)</span> is provided. Note that it is important that the order of the column in the matrix of data and distance, be the same. The exponential model has the form</p>
+<p><span class="math display">\[
+\widehat{\theta}_{i,j} = \begin{cases}
+(1-\tau) \exp\left(-3 \left|\frac{h}{\gamma}\right|^p \right) &amp; h &gt; 0  \\
+1 &amp; h = 0\\
+\end{cases}
+\]</span> where the nugget effect <span class="math inline">\(\tau \in [0,1]\)</span> that represents a discontinuity at the origin <span class="math inline">\(h = 0\)</span> and the range parameter <span class="math inline">\(\gamma &gt; 0\)</span> that controls the decay of the correlation with respect to the distance are estimated by weighted least squares with weights proportional to the number of paired observations.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">## Fit the exponential model</span></a>
+<a class="sourceLine" id="cb18-2" title="2">geo.target &lt;-<span class="st"> </span>distance.geo[sid,sid]</a>
+<a class="sourceLine" id="cb18-3" title="3"></a>
+<a class="sourceLine" id="cb18-4" title="4">icor2 &lt;-<span class="st"> </span><span class="kw">Intersite</span>(xd[,sid], <span class="dt">method =</span> <span class="st">&#39;exp&#39;</span>,</a>
+<a class="sourceLine" id="cb18-5" title="5">                   <span class="dt">distance =</span> geo.target, </a>
+<a class="sourceLine" id="cb18-6" title="6">                   <span class="dt">distance.max =</span> <span class="dv">300</span>)</a>
+<a class="sourceLine" id="cb18-7" title="7"></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="kw">print</span>(icor2)</a></code></pre></div>
+<pre><code>## 
+## Intersite-correlation
+## 
+## Method: exp
+## Nb. sites: 23
+## RMSE: 15.33
+## Parameter:
+##   nugget    range   smooth 
+##   0.2496 436.1266   1.0000</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">## Display the results</span></a>
+<a class="sourceLine" id="cb20-2" title="2">theta &lt;-<span class="st"> </span>icor2<span class="op">$</span>corr[<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)]</a>
+<a class="sourceLine" id="cb20-3" title="3">theta.model &lt;-<span class="st"> </span>icor2<span class="op">$</span>model[<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)]</a>
+<a class="sourceLine" id="cb20-4" title="4">h &lt;-<span class="st"> </span>geo.target[<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)]</a>
+<a class="sourceLine" id="cb20-5" title="5"></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="kw">plot</span>(h, theta, <span class="dt">pch =</span> <span class="st">&#39;.&#39;</span>, <span class="dt">cex =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb20-7" title="7"><span class="kw">points</span>(h, theta.model, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>, <span class="dt">pch =</span> <span class="dv">16</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="flood-quantiles" class="section level2">
+<h2>Flood quantiles</h2>
+<p>Flood quantiles can be obtained from the function <code>predict</code>. However to obtain reliable confidence intervals, a bootstrap method is necessary The argument <code>corr</code> can be the correlation matrix of a multivariate Normal distribution used for simulation. It can also be a single value, in which case a constant coefficient of correlation is used. When, the function <code>Intersite</code> evaluates the correlation matrix empirically, it computes the average coefficient of correlation (<code>para</code>).</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="kw">predict</span>(fit.target2, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.99</span>), <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">corr =</span> icor<span class="op">$</span>model)</a></code></pre></div>
+<pre><code>##           pred       se     lower   upper
+## 0.90  89.71647  7.67803  76.22335 105.780
+## 0.99 142.26533 27.69585 100.41214 216.629</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1"><span class="kw">predict</span>(fit.target2, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.99</span>), <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">corr =</span> icor<span class="op">$</span>para)</a></code></pre></div>
+<pre><code>##           pred        se    lower    upper
+## 0.90  89.71647  7.741799 75.90489 105.1242
+## 0.99 142.26533 27.791801 99.95145 209.6870</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this document we showed how to perform a regional flood frequency analysis using similarity based seasonal statistics and pooling groups. First seasonal statistics were evaluated (<code>SeasonStat</code>) as well as the the pairwise distance (<code>DistSeason</code>) of the sites in the seasonal space. The annual maximums were then reorganized in a matrix with sites in columns and years in rows (<code>DataWide</code>). Next, the nearest sites to a target were identified (<code>FindNearest</code>) and an index flood model was fitted (<code>FitRegLmom</code>) using the L-moments algorithm. It was found that the pooling group of the target was not homogenous. The most heterogenous sites were then removed in a stepwise manner (<code>PoolRemove</code>) and the flood quantiles were finally estimated (<code>predict</code>). To account for the intersite correlation that could lead to an underestimation of the true uncertainty of the flood quantiles, a model for the intersite correlation was initially estimated (<code>Intersite</code>).</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><p>Burn, D. H. (1990). An appraisal of the “region of influence” approach to flood frequency analysis. Hydrological Sciences Journal, 35(2), 149–165. <a href="https://doi.org/10.1080/02626669009492415" class="uri">https://doi.org/10.1080/02626669009492415</a></p></li>
+<li><p>Burn, D. H. (1997). Catchment similarity for regional flood frequency analysis using seasonality measures. Journal of Hydrology, 202(1–4), 212–230. <a href="https://doi.org/10.1016/S0022-1694(97)00068-1" class="uri">https://doi.org/10.1016/S0022-1694(97)00068-1</a></p></li>
+<li><p>Durocher, M., Burn, D. H., &amp; Mostofi Zadeh, S. (2018). A nationwide regional flood frequency analysis at ungauged sites using ROI/GLS with copulas and super regions. Journal of Hydrology, 567, 191–202. <a href="https://doi.org/10.1016/j.jhydrol.2018.10.011" class="uri">https://doi.org/10.1016/j.jhydrol.2018.10.011</a></p></li>
+<li><p>Higham, Nick (2002). Computing the nearest correlation matrix - a problem from finance; IMA Journal of Numerical Analysis 22, 329–343. <a href="https://doi.org/10.1093/imanum/22.3.329" class="uri">https://doi.org/10.1093/imanum/22.3.329</a></p></li>
+<li><p>Hosking, J. R. M., &amp; Wallis, J. R. (1997). Regional frequency analysis: an approach based on L-moments. Cambridge Univ Pr.</p></li>
+<li><p>Mostofi Zadeh, S., Durocher, M., Burn, D. H., &amp; Ashkar, F. (2019). Pooled flood frequency analysis: a comparison based on peaks-over-threshold and annual maximum series. Hydrological Sciences Journal, 0(ja), null. <a href="https://doi.org/10.1080/02626667.2019.1577556" class="uri">https://doi.org/10.1080/02626667.2019.1577556</a></p></li>
+</ul>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
