@@ -74,11 +74,12 @@ plot(cv0, crit = 'mad')
 set.seed(392)
 kf <- sample(rep_len(1:5, nrow(xd)))
 
-## Perform cross-validation with different choices of descriptors
+## Perform cross-validation with all descriptors
 cv0 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
+## Formula without wb and stream
 formula.phy2 <- log(q100) ~ area + map 
 
 cv1 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
@@ -92,7 +93,7 @@ head(signif(cv1,3), crit = 'mad')
 
 
 ## ------------------------------------------------------------------------
-## Evaluate the predictions and residuals from the cross-validation of a given 
+## Evaluate the predictions and residuals from the cross-validation for a given 
 ## ROI model
 
 fit <- FitRoi(x = xd, xnew = target, nk = 50, 

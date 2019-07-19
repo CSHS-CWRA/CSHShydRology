@@ -17,36 +17,25 @@ provinces of Canada.
 The dataset `flowAtlantic` contains the annual maximums of river discharge `ams`
 and some catchment descriptors: drainage area, mean annual precipitation. 
 
-## Measure of similarity
-
-For this analysis, pooling groups are formed as nearest sites of a target
-from which regional information will be transfered. 
-Different measures of similarity exist to identify the members of a pooling
-group.
-Geograpical distance and Euclidean distance between the catchment descriptors 
-may be considered.
-The example below shows how to evaluate these distances.
-Notice that the descriptors are transformed and scaled before the
-Euclidean distance is computed. 
-The `Geodist` function compute a great-circle distance between point.
-
 ```{r}
 library(CSHShydRology)
-attach(flowAtlantic) 
-
-## Compute the Euclidean distance between descriptors
-covar <- scale(log(info[,c('area','map')]))
-distance.covar <- as.matrix(dist(covar))
-colnames(distance.covar) <- rownames(distance.covar) <- as.character(info$id)
-
-## Compute great-circle distance
-coord <- info[,c('lon','lat')]
-distance.geo <- GeoDist(coord)
-colnames(distance.geo) <- rownames(distance.geo) <- as.character(info$id)
+data(flowAtlantic) 
+ams <- flowAtlantic$ams
+info <- flowAtlantic$info
 ```
 
-Another measure of similarity is based on the seasonality of the annual 
-maximums that characterizes the flood regime the site of interest.
+## Measure of similarity
+
+For this analysis, pooling groups are formed as the nearest sites of a target
+site from which regional information will be transfered. 
+Different measures of similarity exist to identify the members of a pooling
+group.
+Here we will used a measure of similarity based on the seasonality of the annual 
+maximums that characterizes the flood regime of the site of interest.
+This follow the recommendation of Mostofi Zadeh 
+et al. (2019) that showed that the seasonality based on annual maximum discharges 
+should be preferred for regional frequency analysis based threshold modeling.
+
 An angular value (in radian) can be attributed to the moment when a flood is 
 observed 
 $$
@@ -61,7 +50,12 @@ $$
 \bar y &= \frac{1}{n}\sum_{i=1}^n \sin(\theta_i) 
 \end{align}
 $$
-However, these summary statistics are easier to interpret in polar coordinates.
+Nevertheless, these summary statistics are easier to interpret in polar 
+coordinates where $\theta$ represents the average moment of occurrence for the annual
+maximum discharges and $r$ represent its regularity during the year.
+In particular, values of $r$ close to 1 entails that the maximum discharge
+occurs almost the same day every year, while values close to 0 imply that the 
+maximum discharge could be observed at any moment of the years.
 
 $$
 \begin{align}
@@ -69,23 +63,17 @@ $$
 r &= \sqrt{\bar x^2 + \bar y^2} \\
 \end{align}
 $$
-Here, $\theta$ represents the average moment of occurrence for the annual
-maximum discharges and $r$ represent its regularity during the year.
-In particular, values of $r$ close to 1 entails that the maximum discharge
-occurs almost the same day every year, while values close to 0 imply that the 
-maximum discharge could be observed at any moment of the years.
-Even for regional frequency analysis based threshold modeling, Mostofi Zadeh 
-et al. (2019) showed that the seasonality based on annual maximum discharges 
-should be preferred.
 
 The seasonality of one or several sites can be estimated using the `SeasonStat`
 function.
 
 ```{r}
-SeasonStat(ams[ams$id == ams$id[1], ]$date)
+## Evaluate seasonal statistics
+s <- ams[ams$id == ams$id[1], ]$date
+SeasonStat(s)
+
 st <- SeasonStat(date ~ id, ams)
 head(st)
-
 ```
 
 Next, the distance between sites can be evaluated using the Eucledean distance
@@ -97,25 +85,24 @@ h_{i,j} =\sqrt{\|r_j-r_k \|^2 + \left(\frac{\|\theta_j-\theta_k\|}{\pi}\right)^2
 $$
 
 ```{r}
+## Site names
+sname <- as.character(info$id)
+
 ## Distance using cartesian coordinates
 distance.st <- as.matrix(dist(st[,c('x','y')]))
-colnames(distance.geo) <- rownames(distance.geo) <- as.character(info$id)
+colnames(distance.st) <- rownames(distance.st) <- sname
 
 ## Distance using polar coordinates
 distance.st2 <- DistSeason(radius ~ angle , st)
-colnames(distance.st2) <- rownames(distance.st2) <- as.character(info$id)
+colnames(distance.st2) <- rownames(distance.st2) <- sname
+
 ```
 
 
 The graphic below shows the seasonal statistics of the Atlantic rivers. 
-A k-means algorithm is used to divide the sites in three regions. 
-One region includes sites with nival regimes (blue), _i.e._ annual floods 
-are occurring more regularly around May.
-A second region (green) represents sites with pluvial regime, _i.e._ with a 
-lower regularity and where rainfall events are occurring during winter.
-Finally, a third region (orange) regroups sites with mixed regimes where 
-a dominant spring freshet occurs between March and May, but where maximum 
-discharges are also frequently cause by rainfalls at other moments of the year.
+A k-means algorithm is used to divide the sites in three regions based on 
+regularity and timing.
+
 
 ```{r, fig.height=5, fig.width=5}
 set.seed(0)
@@ -126,29 +113,14 @@ JulianPlot()
 points(st, pch = 16, col = regime)
 ```
 
-
 ## Pooling groups
-
-The index-flood model is frequently used to evaluate flood quantile based on a 
-regional growth curve that characterizes a pooling group. 
-This model assumes that all at-site distributions are proportional to the same
-regional growth curve up to a scale factor.
-This scale factor is usually taken as the sample mean.
-Most of the time, this regional growth curve is estimated using the L-moment 
-algorithm that takes the average of the sample L-moments of all standardized 
-distributions inside the pooling group to derive the parameters of the regional
-growth curve. 
-A best distribution is then selected by identifying the distribution where the 
-L-moments are the most coherent with the sample estimates.
-See Burn (1990) and Hosking and Wallis (1997) for a more in depth
-introduction.
 
 The example below first used the function `DataWide`, to construct a matrix of 
 the data where sites are represented by columns and years by rows.
 Next, nearest sites to the target `01AK007` are extracted.
 Here, the target is assumed to be the site with distance 0.
-Notice also that the example below makes sure that the distance matrix respect 
-the order imposed by the columns of `xd`.
+Notice that the example below makes sure that the columns of the distance matrix
+respect the order imposed by the columns of `xd`.
 
 
 ```{r}
@@ -162,7 +134,29 @@ distance.target <- distance.st2[colnames(xd),'01AK007']
 xd.target <- FindNearest(xd, distance = distance.target, 25)
 ```
 
-Finally, the regional growth curve is estimated using the regional L-moments.
+## Index-flood model
+
+The index-flood model is frequently used to evaluate flood quantile $Q_T$ 
+of return period $T$ based on a regional growth curve that characterizes the
+pooling group. 
+This model assumes that all at-site distributions are proportional to the same
+regional growth curve up to a scale factor $\mu$.
+This scale factor is usually taken as the sample mean.
+Therefore, the estimated flood quantile have the form
+$$
+Q_T = \mu \times q_T
+$$
+where $q_T$ is the flood quantile of the region growth curve.
+Most of the time, the regional growth curve is estimated using the L-moment 
+algorithm that takes that derived the regional parameter from the average of 
+the sample L-moments of the sites in the pooling groups. 
+A best distribution is then selected by identifying the distribution where the 
+L-moments are the most coherent with the sample estimates.
+See Burn (1990) and Hosking and Wallis (1997) for a more in depth
+introduction.
+
+The regional growth curve is estimated using the regional L-moments by the
+function `FitRegLmom`.
 The summary of the fitted model indicates that the best distribution is the
 generalized extreme value (GEV) distribution.
 This is determined by the Z-scores that identify the distribution with the 
@@ -174,16 +168,17 @@ fit.target <- FitRegLmom(xd.target)
 print(fit.target)
 ```
 
-
 A complementary tool to the Z-score is the L-moment ratio diagram 
 that illustrates the L-skewness and the L-kurtosis of all sites.
-It can be seen in the figure below that the average (dot) is located near the 
-theoretical line of the GEV.
+It can be seen in the figure below that the average (red dot) is located near 
+the theoretical line of the GEV.
 
 
 ```{r fig.height=5, fig.width=6}
 plot(fit.target)
 ```
+
+## Homogenous regions
 
 To assess the hypothesis of the index-flood model, the degree of homogeneity of
 the pooling group must be verified.
@@ -195,8 +190,8 @@ To this end, a common heterogeneity measure is
 $$
 H = \frac{V-\mu_V}{\sigma_V}
 $$
-where values $H < 1$ can be interpreted as acceptably homogenous, $1\leq H<2$ possibly
-heterogenous and $H \geq 2$ definitely heterogenous.
+where values $H < 1$ can be interpreted as acceptably homogenous, $1\leq H<2$ 
+possibly heterogenous and $H \geq 2$ definitely heterogenous.
 
 A pooling group may be found overall heterogeneous only because it contents few 
 heterogenous elements. 
@@ -206,7 +201,8 @@ This process can be repeated until a homogenous pooling group is found or that
 a given stopping criteria is reached.
 The function `PoolRemove` search for the heterogenous sites, removes them and 
 updates the regional growth curve.
-In the present situation, two sites are removed to obtain a homogenous pooling group.
+In the present situation, two sites are removed to obtain a homogenous pooling 
+group.
 
 ```{r}
 ## Remove heterogenous sites 
@@ -219,27 +215,26 @@ fit.target2$stat[1]
 
 ## Intersite correlation
 
-Snow accumulation or large rainfall system may create floods that affect  
-multiple sites simultaneously. 
-This generates a spatial dependence that will result in 
-larger uncertainties for the estimated flood quantiles in contrast to a scenario
-where all sites are independent. 
-Better inference for the estimated flood quantiles can be obtained by 
-parametric bootstrap.
-For this resampling scheme, a multivariate Normal distribution is simulated at 
-each time step and the at-site distribution are transformed to the original
-scale using the at-site L-moments.
+Inference for the L-moment algorithm require parametric bootstrap.
+Snow accumulation or large rainfall system generate floods 
+that affect multiple sites simultaneously, which creates spatial dependence 
+among sites. 
+This will result in more uncertainties about the estimated flood quantiles 
+in comparison to independent data. 
+To account for intersite correlation, a multivariate Normal distribution is used 
+to simulate at spatially distributed data that are later transformed to 
+the proper at-site distributions.
 
 The spearman correlation $\rho_{i,j}$ between pairs of the i-th and j-th sites 
 measure the degree of association between series of flood events.
 This measure is well suited to quantify the intersite correlations between 
-paired observations as it is not affected by the at-site distributions.
+paired observations as it is invariant to the at-site distributions.
 The relation
 $$
 \theta_{i,j} = 2 \sin\left(\rho_{i,j}\frac{\pi}{6}\right)
 $$
 links the correlation coefficients $\theta_{i,j}$ of the 
-multivariate Normal distribution to the spearman correlation.
+multivariate Normal distribution to the spearman correlation coefficients.
 However, corrections should be done to ensure that the final covariance matrix
 is positive definite (Higham, 2002).
 
@@ -248,10 +243,9 @@ The function `Intersite` can be used to estimate the parameter of the
 multivariate normal distribution.
 The output is a list containing among others the correlation coefficient `corr`
 and their corrected value `model`.
-The function `sitename` can be used to extract the names of the sites in a 
+The function `sitename` is used to extract the names of the sites in a 
 pooling group.
-This is useful to extract data or distance matrix from the pooling groups after
-heterogenous site have been extracted.
+
 
 ```{r}
 sid <- sitenames(fit.target2)
@@ -259,12 +253,9 @@ icor <- Intersite(xd[,sid])
 round(icor$model[1:3,1:3],2)
 ```
 
-Due to the spatial nature of flood generating process 
-the strength of the dependence may depend on the distance between the sites. 
-An exponential model can be fitted by the function `Intersite` if a distance $h$
-is provided. 
-Note that it is important that the order of the column in the matrix of data and
-distance, be the same.
+The strength of the dependence may depend on the distance between sites. 
+In this case, an exponential model can be fitted by the function `Intersite` 
+if a distance is provided. 
 The exponential model has the form
 
 $$
@@ -277,13 +268,18 @@ where the nugget effect $\tau \in [0,1]$ that represents a discontinuity at the
 origin $h = 0$ and the range parameter $\gamma > 0$ that controls the decay of 
 the correlation with respect to the distance are estimated by weighted least 
 squares with weights proportional to the number of paired observations.
+Note that it is important in the example below that the order of the column in the matrix of data and distance matched.
 
 
 ```{r fig.height=5, fig.width=6}
 
-## Fit the exponential model
+## Compute the distance
+distance.geo <- GeoDist(~lon+lat, info)
+colnames(distance.geo) <- rownames(distance.geo) <- sname
 geo.target <- distance.geo[sid,sid]
 
+
+## Fit the exponential model
 icor2 <- Intersite(xd[,sid], method = 'exp',
                    distance = geo.target, 
                    distance.max = 300)
@@ -304,17 +300,20 @@ points(h, theta.model, col = 'red', pch = 16)
 ## Flood quantiles
 
 Flood quantiles can be obtained from the function `predict`. 
-However to obtain reliable confidence intervals, a bootstrap method is necessary
-The argument `corr` can be the correlation matrix of a multivariate Normal 
-distribution used for simulation. 
-It can also be a single value, in which case a constant coefficient of 
+The example below obtains the flood quantiles of 10 and 100 years return 
+periods with different models of intersite correlations.
+The argument `corr` is the correlation matrix of a multivariate Normal 
+distribution used for the parametric bootstrap. 
+A single value can also be passed, in which case a constant coefficient of 
 correlation is used.
 When, the function `Intersite` evaluates the correlation matrix 
 empirically, it computes the average coefficient of correlation (`para`).
 
 ```{r}
-predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$model)
+## Using exponential model
+predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor2$model)
 
+## Using constant coefficient of correlation
 predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$para)
 ```
 

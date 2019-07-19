@@ -1,31 +1,29 @@
 ## ------------------------------------------------------------------------
 library(CSHShydRology)
-attach(flowAtlantic) 
-
-## Compute the Euclidean distance between descriptors
-covar <- scale(log(info[,c('area','map')]))
-distance.covar <- as.matrix(dist(covar))
-colnames(distance.covar) <- rownames(distance.covar) <- as.character(info$id)
-
-## Compute great-circle distance
-coord <- info[,c('lon','lat')]
-distance.geo <- GeoDist(coord)
-colnames(distance.geo) <- rownames(distance.geo) <- as.character(info$id)
+data(flowAtlantic) 
+ams <- flowAtlantic$ams
+info <- flowAtlantic$info
 
 ## ------------------------------------------------------------------------
-SeasonStat(ams[ams$id == ams$id[1], ]$date)
+## Evaluate seasonal statistics
+s <- ams[ams$id == ams$id[1], ]$date
+SeasonStat(s)
+
 st <- SeasonStat(date ~ id, ams)
 head(st)
 
-
 ## ------------------------------------------------------------------------
+## Site names
+sname <- as.character(info$id)
+
 ## Distance using cartesian coordinates
 distance.st <- as.matrix(dist(st[,c('x','y')]))
-colnames(distance.geo) <- rownames(distance.geo) <- as.character(info$id)
+colnames(distance.st) <- rownames(distance.st) <- sname
 
 ## Distance using polar coordinates
 distance.st2 <- DistSeason(radius ~ angle , st)
-colnames(distance.st2) <- rownames(distance.st2) <- as.character(info$id)
+colnames(distance.st2) <- rownames(distance.st2) <- sname
+
 
 ## ---- fig.height=5, fig.width=5------------------------------------------
 set.seed(0)
@@ -67,9 +65,13 @@ round(icor$model[1:3,1:3],2)
 
 ## ----fig.height=5, fig.width=6-------------------------------------------
 
-## Fit the exponential model
+## Compute the distance
+distance.geo <- GeoDist(~lon+lat, info)
+colnames(distance.geo) <- rownames(distance.geo) <- sname
 geo.target <- distance.geo[sid,sid]
 
+
+## Fit the exponential model
 icor2 <- Intersite(xd[,sid], method = 'exp',
                    distance = geo.target, 
                    distance.max = 300)
@@ -86,7 +88,9 @@ points(h, theta.model, col = 'red', pch = 16)
 
 
 ## ------------------------------------------------------------------------
-predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$model)
+## Using exponential model
+predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor2$model)
 
+## Using constant coefficient of correlation
 predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$para)
 

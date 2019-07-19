@@ -29,7 +29,7 @@ thresh <- 500
 r0 <- round(4 + log(14700)) # 14 days
 
 ## Extract peaks based on run declustering
-peaks1 <- which.clusters(flow~date, xd, u = thresh, r = r0)
+peaks1 <- which.clusters(flow~date, xd, u = thresh, r = 5)
 
 ## Extract peaks based on WRC recommendations
 peaks2 <- which.floodPeaks(flow~date, xd, u = thresh, r = r0, rlow = 0.75)

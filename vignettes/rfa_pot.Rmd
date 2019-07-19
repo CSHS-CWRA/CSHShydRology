@@ -12,12 +12,12 @@ vignette: >
 ## Introduction
 
 This document presents how `CSHShydRology` can be used to perform at-site flood
-frequency analysis using the threshold modeling. 
-This example is illustrated using the daily discharge of the Saint-John River at
-Fort Kent (NB).
+frequency analysis using threshold modeling. 
+This example is illustrated using the daily discharges of the Saint-John River 
+at Fort Kent (NB).
 First a verification is done to make sure that only complete year of data are 
 included.
-In this case, all years are complete after 1926.
+In this case, all years are complete since 1927.
 
 
 ```{r}
@@ -40,10 +40,11 @@ distribution (GPA) assuming that the data are independent exceedances.
 $$ 
 F(x)= \exp\left\{- \left( 1-\kappa \frac{x}{\alpha} \right)^{1/\kappa} \right\}
 $$
-The recommended estimation method is the maximum likelihood (MLE), but the L-moment 
-method can be employed instead by passing the argument `method = 'lmom'`.
+The recommended estimation method is normally the maximum likelihood (MLE), 
+but the L-moment method can be employed by passing the argument 
+`method = 'lmom'`.
 For MLE, confidence intervals of the parameters are derived using the delta 
-method.
+method, while parametric bootstrap is needed for the L-moments method.
 
 
 ```{r}
@@ -56,9 +57,9 @@ print(fit)
 ```
 
 
-However, in some occasions symmetrical confidence intervals can be unrealistic.  
-In this case, confidence intervals provided by the profile likelihood method are
-returned by the function `coef`.
+In some occasions symmetrical confidence intervals can be unrealistic.  
+In this case, one should prefer the confidence intervals provided 
+by the profile likelihood method as returned by the function `coef`.
 
 
 ```{r}
@@ -70,23 +71,21 @@ round(coef(fit, ci = TRUE),3)
 ## Declustering
 
 In practice, daily streamflow evolve smoothly and declustering techniques are 
-necessary to extract independents flood peaks above a desired threshold $u$. 
-Without declustering, exceedances are likely to found in clusters 
-associated with the same hydrological event.
-Two function are available to extract independent peaks: `which.cluster` and 
+necessary to extract independents flood peaks above a given threshold $u$. 
+Without declustering, exceedances are likely to be found in clusters.
+Two functions are available to extract independent peaks: `which.cluster` and 
 `which.floodPeaks`. 
 The first method is a running declustering method that extracts the maximum of 
 each cluster separated by at least `r` observations below the threshold. 
-Such method may is more appropriate for rainfall events that are separated 
-by sunny days. 
+Such method may be more appropriate for extracting rainfall events. 
 The second method follows the recommendation of the Water Resource Council of 
 the United States as described in Lang et al. (1999). 
 In brief, two adjacent peaks must respect the following two conditions: 
-i) they must be separated by $4+log(A)$ days, where $A$ is the drainage area 
-in square kilometers; and ii) the minimal intermediate flow must be less than 
+(i) they must be separated by $4+log(A)$ days, where $A$ is the drainage area 
+in square kilometers; and (ii) the minimal intermediate flow must be less than 
 75% of the lowest of the two peaks.
 The example below illustrates the extraction of the peaks by the two methods. 
-It is seen that the choice of a declustering method has a significant impact
+It is seen that the choice of a declustering method has an impact
 on the extracted peaks.
 
 ```{r fig.height = 4,fig.width = 6}
@@ -96,7 +95,7 @@ thresh <- 500
 r0 <- round(4 + log(14700)) # 14 days
 
 ## Extract peaks based on run declustering
-peaks1 <- which.clusters(flow~date, xd, u = thresh, r = r0)
+peaks1 <- which.clusters(flow~date, xd, u = thresh, r = 5)
 
 ## Extract peaks based on WRC recommendations
 peaks2 <- which.floodPeaks(flow~date, xd, u = thresh, r = r0, rlow = 0.75)
@@ -124,22 +123,23 @@ print(fit)
 
 ## Predicting flood quantiles
 
-In the fitted model above, the shape parameter is positive, which 
-indicates the distribution has an upper bound $u + \alpha/\kappa$.
+In the previous model, the shape parameter is positive, which 
+indicates that the distribution has an upper bound $u + \alpha/\kappa$.
 The flood quantiles $x_T$ of a $T$ year return period event is defined as the 
-quantile of probability $[1-1/(\lambda T)]$ of the exceedance distribution, where $\lambda$ is the excess rate (average number of exceedances per year).
-A natural estimator of $\lambda$ is the fraction of flood events over the number
-of years of observations.
-It was determinded that for a GPA distribution the flood quantiles are given by
+quantile of probability $[1-1/(\lambda T)]$ of the exceedance distribution, where $\lambda$ is the excess rate (average number of exceedances per year or PPY).
+For the GPA distribution the flood quantiles are given by
 $$
 x_T = u + \frac{\alpha}{\kappa}\left[ 1 - \left(\lambda T\right)^{-\kappa}
-\right].
+\right],
 $$
-The flood quantiles can be evaluated using the function `predict`, where
+and a natural estimator of $\lambda$ is the fraction of flood events over the number
+of years of observations.
+
+The flood quantiles are evaluated by the function `predict`, where
 the standard deviation and confidence intervals are included by passing 
 the argument `ci`.
 In the example below, the profile likelihood method is used to evaluate the 
-confidence intervals of the flood quantiles.
+confidence intervals of the flood quantiles of 10 and 100 return years.
 Other available methods are the delta method (`delta`) and 
 parametric bootstraps (`boot`).
 
@@ -153,19 +153,17 @@ predict(fit, rt = c(10,100), se = TRUE, ci = 'profile')
 
 An import aspect of threshold modeling is the selection of the threshold. 
 This decision is normally based on the notion of stability, which entails 
-that if $u$ is a well-chosen threshold then the 
-exceedances follow a GPA distribution and 
-all the exceedances for higher thresholds $u^\ast>u$ also follow a GPA with 
-the same shape parameter.
+that if $u$ is a well-chosen threshold then all the exceedances for all
+thresholds $u^\ast \geq u$ follow a GPA with the same shape parameter.
 The objective is therefore to find the lowest threshold that ensures such 
 stability. 
-One visual assessment of the threshold stability is provided by the mean residual 
-life plot (MRL).
-In this graph, the mean of the exceedances is plotted for various candidate 
-thresholds.
+One visual assessment of the threshold stability is provided by the mean 
+residual life plot (MRL).
+In this graph, the mean of the exceedances is plotted against a list of
+candidate thresholds.
 When stability is reached, the MRL plot should exhibit a linear trend.
 In the figure below, the MRL plot indicates that thresholds greater than 
-$u = 1000$ are reasonable choices.
+1000 are reasonable choices.
 
 ```{r, fig.height=4, fig.width=6}
 ## List of candidate thresholds
@@ -175,11 +173,11 @@ ulst <- seq(500,1500, 25)
 PlotMrl(flow~date, xd, u = ulst, declust = 'wrc', r = r0)
 ```
 
-However, due to sampling error, MRL plots does not always lead to clear 
+However, due to sampling error, MRL plots does not always lead to clear cut
 decision.
-Another validation approach for selecting a threshold is by looking 
+Another approach for selecting a threshold is by looking 
 directly at the evolution of the shape parameter with respect to the thresholds.
-The function `SearchThresh` return key statistics of the POT model for various 
+The function `SearchThresh` return key statistics of the POT model for several 
 thresholds.
 The graphics below shows that above `u = 1000` the shape parameter is stable and
 leads to coherent estimated flood quantiles.
@@ -201,28 +199,28 @@ The function `SearchThresh` also extracts the p-value of that test for every
 candidate threshold. 
 The figure below shows that before a threshold of approximately 900, the 
 p-values of the AD test are low and does not support the hypothesis of a GPA. 
+After this changing point, the p-values increased until reaching 0.5 for a 
+threshold of about 950. 
+Here, the value 0.5 is the upper bound imposed by the table of Choulaki and 
+Stephen (2001), which is used for interpolating the p-values. 
 
 
 ```{r, fig.height = 4, fig.width = 6}
 PlotThresh(candidates,  type = c('ad'))
 ```
 
-
-After this changing point, the p-values increased until reaching 0.5 for a 
-threshold of about 950. 
-Here, the value 0.5 is the upper bound imposed by the table of Choulaki and 
-Stephen (2001), which is used for interpolating the p-values. 
-For the common significance level of 0.05, it was found that such procedure 
+For the common significance level like 0.05, it was found that such procedure 
 often selects too low of a threshold and so, Solari et al. (2017) suggested 
 to use instead the maximum p-value. 
-Alternatively, Durocher et al. (2018) suggested of using a critical values of 0.25 to 
-avoid high probability of randomly acceptating the GPA (False positive).
+Alternatively, Durocher et al. (2018) suggested of using a critical values 
+between 0.10 and 0.25 to avoid higher probability of falsely acceptating the 
+GPA (False positive).
 According to this latter criteria, the lowest stable threshold among 
 the candidates is found at `u = 925`, while the maximum is `u = 950`.
 These values can be extracted using the function `FindThresh` with argument
-`method = 'max'` and `method = 'sgn'`.
-Note in particular that the argument `ppy` can be used to remove the candidate
-threshold that a number of average peaks per year outsite a given interval.
+`method = 'max'` or `method = 'sgn'`.
+The argument `ppy` can be used to remove candidate
+thresholds that have excess rate outsite a desired interval.
 
 ```{r}
 ## Threshold with maximum AD p-value
@@ -236,7 +234,7 @@ FindThresh(candidates, method = 'sgn', tol.sgn = 0.25,
 ```
 
 Another method to automatically select the threshold is to imposed a given 
-excess rate or PPY. 
+excess rate. 
 By passing the argument `type = 'ppy'` and `tol.ppy = 2.2`, the candidate threshold 
 with the excess rate the closest to 2.2 is returned.
 
@@ -246,15 +244,14 @@ FindThresh(candidates, method = 'ppy', tol.ppy = 2.2)[,cvars]
 ```
 
 In some situation a critical p-value such as 0.25 may not be reached or the 
-threshold associated to a given excess rate may lead to samples of 
-data that are not well approximated by a GPA.
+threshold associated to a given excess rate may lead to samples that aren't well approximated by a GPA.
 Mixing criteria for automatically selecting a threshold may lead to 
-a more robust procedure. 
-The approach of selecting the first threshold that reached a specific p-value has
-the advantage of being generally more precise as it includes more peaks and 
-ensure that GPA is a reasonable model.  
-The arguments `sgn-max` or `sgn-ppy` ask to `FindThresh` to search for the 
-`sgn` threshold and if it cannot be found, will return the alternative 
+a more robust procedure (Durocher et al., 2018). 
+The approach `sgn` has the advantage of generally leading to
+more precise estimations as it includes more peaks and ensure that GPA is a
+reasonable model.  
+The arguments `sgn-max` or `sgn-ppy` ask the function `FindThresh` to search 
+for the `sgn` threshold and if it cannot be found, will return the alternative 
 candidates.
 
 
@@ -271,18 +268,19 @@ FindThresh(candidates.mod, method = 'sgn-ppy',
 ```
 
 
-In association with the method `sgn`, the function `FindThresh` can also reject
+With the approach `sgn`, the function `FindThresh` can also reject
 thresholds where the relative discrepency between the flood quantile of the 
-selected threshold and some reference thresholds is to large.
-This serve as an additional verification that the flood quantile tend to remain
+selected threshold and a reference threshold is to large.
+This serve as an additional verification that flood quantiles tend remain
 stable after the selected threshold.
 The reference threshold is defined as the average of the flood quantiles 
 associated with the 5 lowest thresholds among the candidates.
 In the example below, the argument `ppy = c(1,3)` is used to impose a lower 
-bound of 1 PPY which lead to a reference flood quantile around 1 PPY.
+bound of 1 PPY which lead to a reference of about 1 PPY.
 With the St-John River, the flood quantile quickly stabilize.
 After a threshold of `u = 825`, the relative discrepencies between the selected
-and reference treshold is less than 1%.
+and reference threshold is less than 1%.
+This behavior results from the presence of a light tails.
 
 
 ```{r}
@@ -295,11 +293,12 @@ FindThresh(candidates, method = 'sgn', ppy = c(1,3), tol.sgn = 0.25,
 
 ```
 
+
 ## Conclusion
 
-In this document, it was shown how a threshold modeling can be carried out  
-to evaluate flood quantiles.
-Instructions for fitting the model (`FitPot`), evaluate uncertainty of 
+In this document, it was shown how threshold modeling can be carried out  
+to estimate flood quantiles for different return period.
+Instructions for fitting the model (`FitPot`), evaluate the uncertainty of 
 the parameters (`coef`) and derived the flood quantile were provided 
 (`predict`).
 Basic validation procedures based on the mean residual life plot
