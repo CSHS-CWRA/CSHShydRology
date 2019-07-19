@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>At-site flood frequency analysis using threshold modeling</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">At-site flood frequency analysis using threshold modeling</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This document presents how <code>CSHShydRology</code> can be used to perform at-site flood frequency analysis using threshold modeling. This example is illustrated using the daily discharges of the Saint-John River at Fort Kent (NB). First a verification is done to make sure that only complete year of data are included. In this case, all years are complete since 1927.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(CSHShydRology)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">data</span>(flowStJohn)</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">## Verify the complete years of data </span></a>
+<a class="sourceLine" id="cb1-5" title="5">y &lt;-<span class="st"> </span><span class="kw">as.integer</span>(<span class="kw">format</span>(flowStJohn<span class="op">$</span>date,<span class="st">&#39;%Y&#39;</span>))</a>
+<a class="sourceLine" id="cb1-6" title="6">ty &lt;-<span class="st"> </span><span class="kw">tapply</span>(y, y, length)</a>
+<a class="sourceLine" id="cb1-7" title="7">ty[<span class="kw">which</span>(ty<span class="op">&lt;</span><span class="st"> </span><span class="dv">365</span>)]</a></code></pre></div>
+<pre><code>## 1926 
+##   92</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co">## Keep only complet year</span></a>
+<a class="sourceLine" id="cb3-2" title="2">xd &lt;-<span class="st"> </span><span class="kw">cbind</span>(flowStJohn[y<span class="op">&gt;=</span><span class="dv">1927</span>,], <span class="dt">year =</span> y[y<span class="op">&gt;=</span><span class="dv">1927</span>])</a></code></pre></div>
+</div>
+<div id="estimating-model-parameters" class="section level2">
+<h2>Estimating model parameters</h2>
+<p>The Function <code>FitPot</code> estimates the parameter of a Generalized Pareto distribution (GPA) assuming that the data are independent exceedances. <span class="math display">\[ 
+F(x)= \exp\left\{- \left( 1-\kappa \frac{x}{\alpha} \right)^{1/\kappa} \right\}
+\]</span> The recommended estimation method is normally the maximum likelihood (MLE), but the L-moment method can be employed by passing the argument <code>method = &#39;lmom&#39;</code>. For MLE, confidence intervals of the parameters are derived using the delta method, while parametric bootstrap is needed for the L-moments method.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co">## Random sample of GPA</span></a>
+<a class="sourceLine" id="cb4-2" title="2">rx &lt;-<span class="st"> </span><span class="kw">rgpa</span>(<span class="dv">2000</span>, <span class="dv">1</span>, <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3"></a>
+<a class="sourceLine" id="cb4-4" title="4"><span class="co">## Fitting POT using MLE</span></a>
+<a class="sourceLine" id="cb4-5" title="5">fit &lt;-<span class="st"> </span><span class="kw">FitPot</span>(rx)</a>
+<a class="sourceLine" id="cb4-6" title="6"><span class="kw">print</span>(fit)</a></code></pre></div>
+<pre><code>## 
+## Analysis of peaks over threshold
+## 
+## Threshold :  0
+## Number of excess :  2000
+## Number of years :  5.48
+## Excess rate (yearly):  365.25
+## Mean residual Life :  0.960293
+## 
+## Parameters :
+##   alpha   kappa 
+## 0.98474 0.02546 
+## 
+## std.err :
+##   alpha   kappa 
+## 0.03074 0.02179</code></pre>
+<p>In some occasions symmetrical confidence intervals can be unrealistic.<br />
+In this case, one should prefer the confidence intervals provided by the profile likelihood method as returned by the function <code>coef</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">## Show assymetrical confidence intervals</span></a>
+<a class="sourceLine" id="cb6-2" title="2"><span class="kw">round</span>(<span class="kw">coef</span>(fit, <span class="dt">ci =</span> <span class="ot">TRUE</span>),<span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##       estimate  lower upper
+## alpha    0.985  0.917 1.046
+## kappa    0.025 -0.029 0.065</code></pre>
+</div>
+<div id="declustering" class="section level2">
+<h2>Declustering</h2>
+<p>In practice, daily streamflow evolve smoothly and declustering techniques are necessary to extract independents flood peaks above a given threshold <span class="math inline">\(u\)</span>. Without declustering, exceedances are likely to be found in clusters. Two functions are available to extract independent peaks: <code>which.cluster</code> and <code>which.floodPeaks</code>. The first method is a running declustering method that extracts the maximum of each cluster separated by at least <code>r</code> observations below the threshold. Such method may be more appropriate for extracting rainfall events. The second method follows the recommendation of the Water Resource Council of the United States as described in Lang et al. (1999). In brief, two adjacent peaks must respect the following two conditions: (i) they must be separated by <span class="math inline">\(4+log(A)\)</span> days, where <span class="math inline">\(A\)</span> is the drainage area in square kilometers; and (ii) the minimal intermediate flow must be less than 75% of the lowest of the two peaks. The example below illustrates the extraction of the peaks by the two methods. It is seen that the choice of a declustering method has an impact on the extracted peaks.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">## Define a threshold and the minimum separating time. Drainage Area =  14700.</span></a>
+<a class="sourceLine" id="cb8-2" title="2">thresh &lt;-<span class="st"> </span><span class="dv">500</span></a>
+<a class="sourceLine" id="cb8-3" title="3">r0 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="dv">4</span> <span class="op">+</span><span class="st"> </span><span class="kw">log</span>(<span class="dv">14700</span>)) <span class="co"># 14 days</span></a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">## Extract peaks based on run declustering</span></a>
+<a class="sourceLine" id="cb8-6" title="6">peaks1 &lt;-<span class="st"> </span><span class="kw">which.clusters</span>(flow<span class="op">~</span>date, xd, <span class="dt">u =</span> thresh, <span class="dt">r =</span> <span class="dv">5</span>)</a>
+<a class="sourceLine" id="cb8-7" title="7"></a>
+<a class="sourceLine" id="cb8-8" title="8"><span class="co">## Extract peaks based on WRC recommendations</span></a>
+<a class="sourceLine" id="cb8-9" title="9">peaks2 &lt;-<span class="st"> </span><span class="kw">which.floodPeaks</span>(flow<span class="op">~</span>date, xd, <span class="dt">u =</span> thresh, <span class="dt">r =</span> r0, <span class="dt">rlow =</span> <span class="fl">0.75</span>)</a>
+<a class="sourceLine" id="cb8-10" title="10"></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="co">## Plot the peaks extracted for the year 1927</span></a>
+<a class="sourceLine" id="cb8-12" title="12"><span class="kw">plot</span>(flow<span class="op">~</span>date, xd[xd<span class="op">$</span>year <span class="op">==</span><span class="st"> </span><span class="dv">1927</span>,],<span class="dt">type =</span> <span class="st">&#39;l&#39;</span>, <span class="dt">col =</span> <span class="st">&#39;grey&#39;</span>)</a>
+<a class="sourceLine" id="cb8-13" title="13"><span class="kw">abline</span>(<span class="dt">h =</span> thresh, <span class="dt">col =</span> <span class="dv">2</span> ,<span class="dt">lwd =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb8-14" title="14"><span class="kw">points</span>(flow<span class="op">~</span>date, xd[peaks1,], <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>, <span class="dt">cex=</span><span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb8-15" title="15"><span class="kw">points</span>(flow<span class="op">~</span>date, xd[peaks2,], <span class="dt">pch =</span> <span class="dv">17</span>, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>)</a>
+<a class="sourceLine" id="cb8-16" title="16"><span class="kw">legend</span>(<span class="st">&#39;topleft&#39;</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;red&#39;</span>), <span class="dt">pch =</span> <span class="dv">16</span><span class="op">:</span><span class="dv">17</span>, </a>
+<a class="sourceLine" id="cb8-17" title="17">       <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&#39;Cluster&#39;</span>,<span class="st">&#39;WRC&#39;</span>))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>The declustering techniques are integrated to the function <code>FitPot</code> and are performed when the argument <code>declust</code> is passed. The example below leads to the identification of the same peaks as in <code>peaks2</code> above, before fitting a GPA distribution.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="co">## Fit a POT model after declustering</span></a>
+<a class="sourceLine" id="cb9-2" title="2">fit &lt;-<span class="st"> </span><span class="kw">FitPot</span>(flow<span class="op">~</span>date, xd, <span class="dt">u =</span> <span class="dv">1000</span>, <span class="dt">declust =</span> <span class="st">&#39;wrc&#39;</span>, <span class="dt">r =</span> r0)</a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="kw">print</span>(fit)</a></code></pre></div>
+<pre><code>## 
+## Analysis of peaks over threshold
+## 
+## Threshold :  1000
+## Number of excess :  158
+## Number of years :  88
+## Excess rate (yearly):  1.7955
+## Mean residual Life :  982.039
+## 
+## Parameters :
+##     alpha     kappa 
+## 1295.9003    0.3196 
+## 
+## std.err :
+##     alpha     kappa 
+## 120.26515   0.05413</code></pre>
+</div>
+<div id="predicting-flood-quantiles" class="section level2">
+<h2>Predicting flood quantiles</h2>
+<p>In the previous model, the shape parameter is positive, which indicates that the distribution has an upper bound <span class="math inline">\(u + \alpha/\kappa\)</span>. The flood quantiles <span class="math inline">\(x_T\)</span> of a <span class="math inline">\(T\)</span> year return period event is defined as the quantile of probability <span class="math inline">\([1-1/(\lambda T)]\)</span> of the exceedance distribution, where <span class="math inline">\(\lambda\)</span> is the excess rate (average number of exceedances per year or PPY). For the GPA distribution the flood quantiles are given by <span class="math display">\[
+x_T = u + \frac{\alpha}{\kappa}\left[ 1 - \left(\lambda T\right)^{-\kappa}
+\right],
+\]</span> and a natural estimator of <span class="math inline">\(\lambda\)</span> is the fraction of flood events over the number of years of observations.</p>
+<p>The flood quantiles are evaluated by the function <code>predict</code>, where the standard deviation and confidence intervals are included by passing the argument <code>ci</code>. In the example below, the profile likelihood method is used to evaluate the confidence intervals of the flood quantiles of 10 and 100 return years. Other available methods are the delta method (<code>delta</code>) and parametric bootstraps (<code>boot</code>).</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">## Predict flood quantile of return period 10 and 100 years</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">predict</span>(fit, <span class="dt">rt =</span> <span class="kw">c</span>(<span class="dv">10</span>,<span class="dv">100</span>), <span class="dt">se =</span> <span class="ot">TRUE</span>, <span class="dt">ci =</span> <span class="st">&#39;profile&#39;</span>)</a></code></pre></div>
+<pre><code>##         pred       se    lower    upper
+## 10  3443.623 377.2849 3219.308 3642.194
+## 100 4282.903 620.8015 4049.693 4825.945</code></pre>
+</div>
+<div id="selecting-the-threshold" class="section level2">
+<h2>Selecting the threshold</h2>
+<p>An import aspect of threshold modeling is the selection of the threshold. This decision is normally based on the notion of stability, which entails that if <span class="math inline">\(u\)</span> is a well-chosen threshold then all the exceedances for all thresholds <span class="math inline">\(u^\ast \geq u\)</span> follow a GPA with the same shape parameter. The objective is therefore to find the lowest threshold that ensures such stability. One visual assessment of the threshold stability is provided by the mean residual life plot (MRL). In this graph, the mean of the exceedances is plotted against a list of candidate thresholds. When stability is reached, the MRL plot should exhibit a linear trend. In the figure below, the MRL plot indicates that thresholds greater than 1000 are reasonable choices.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">## List of candidate thresholds</span></a>
+<a class="sourceLine" id="cb13-2" title="2">ulst &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">500</span>,<span class="dv">1500</span>, <span class="dv">25</span>)</a>
+<a class="sourceLine" id="cb13-3" title="3"></a>
+<a class="sourceLine" id="cb13-4" title="4"><span class="co">## Mean residual life plot</span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="kw">PlotMrl</span>(flow<span class="op">~</span>date, xd, <span class="dt">u =</span> ulst, <span class="dt">declust =</span> <span class="st">&#39;wrc&#39;</span>, <span class="dt">r =</span> r0)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>However, due to sampling error, MRL plots does not always lead to clear cut decision. Another approach for selecting a threshold is by looking directly at the evolution of the shape parameter with respect to the thresholds. The function <code>SearchThresh</code> return key statistics of the POT model for several thresholds. The graphics below shows that above <code>u = 1000</code> the shape parameter is stable and leads to coherent estimated flood quantiles.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">candidates &lt;-<span class="st"> </span><span class="kw">SearchThresh</span>(flow<span class="op">~</span>date, xd, <span class="dt">u =</span> ulst, <span class="dt">declust =</span> <span class="st">&#39;wrc&#39;</span>, <span class="dt">r =</span> r0,</a>
+<a class="sourceLine" id="cb14-2" title="2">                           <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb14-3" title="3"></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="kw">PlotThresh</span>(candidates,  <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&#39;kappa&#39;</span>))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">PlotThresh</span>(candidates,  <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&#39;q2&#39;</span>,<span class="st">&#39;q5&#39;</span>,<span class="st">&#39;q10&#39;</span>,<span class="st">&#39;q20&#39;</span>,<span class="st">&#39;q50&#39;</span>))</a></code></pre></div>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAGACAMAAAByRC0tAAAAaVBMVEUAAAAAADoAAGYAAP8AOjoAOpAAZrY6AAA6ADo6AGY6Ojo6OpA6kNtmAABmADpmkJBmtv+QOgCQZgCQkGaQ2/+2ZgC2Zjq2/7a2///bkDrb25Db2//b////AAD/tmb/25D//7b//9v///+ykNfKAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAP10lEQVR4nO2dbWObOBZG3Xab7MwmM8nOeKfe7ZCX//8jFyHA2MYg9FxjJJ3zoXGd5ILhRBJC3Lv7BBDY3XsHIG0QCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCQQCCSMBdqBId9W29LfF+/cSyDbcIXzbbUt/X3+xl0FqmqBv/zpXr0/O5kf/Hv+LQinTIE+Xr/++Px8e3yq//v2z1aaqranwqCFlCnQwfnjDHqpvfGva6mcTvsH241lT5ECvT8/+ZdOl0OrTGNTpxaEUqRAx16r1mX/az0Eeuq6sgqBllGkQP1Ip37x/vz9Z90UPbVvMghaSH4Cfbz6SYKrTcmpQO2Lrz8QKIrsBDrs2vFN1b24DHfShTXUAyC6sChyE8hfSzUcXN80Gu44iO5+pLaHQXQUuQn0/vzSvbzWmLSX8R+v3//7+NRefNU/y2V8FLkJFNQC1Z40Bu2a8bNTph5EM5EYRW4C1WOgtgmaGAN9+lsZ7Uh7X3998b/KrYzFZCdQe29rt7vS/pyG+w/CiOQn0NrhCgeBQCI/gQImEsGO7AQKmUgEO3ITKPAyHqzITaCwiUQwIzeBaIFWJjeBQicSwYjsBFo2kRgRH07IT6CIcBgUTzkCTT2PhkHR5CdQ1EQiBsWSnUCRE4kYFEluAkVfxoc/aQ1DchNImEjEoBhyE0iZSMSgCHITSJpIxKDlZCdQxERi7JbgM0eBpHAYtBQEuuWmCiA3gfwzg1X0ikQMWkiWAjXXX4ML+gXhEGghOQrUqhO3HgiDlpGjQP5p5cgViQi0jBwFklogDFpGfgJ1OVf7FBwLwyHQInIT6LNxyKVJuDYRjUCmZCiQGg6DloBAt95c5iDQzbeXNwh08+3lDQLdfoNZg0C332DWINAKW8wZBFphizmTlkBudvkwsdhwYTjlR8CTlkD77z/fHh/EZM4h28WgUJISyN0lrXYvYj0CBLIkOYFcinCtHkET7ljysnkU+ql9r88TjUGBJCVQ3Xe56kzvz2oXNih5+fFaS3Nw9+9PMtUjUCBpCdTcaP94jfJnmJ1jUPKyr7FyVisDg8JISyATzkpeNtQtz1m1Hp6VD6NIgS7rhdUjq4t6YUtK25dLYgLVfdj3n/trS8VCw11ULHSrz0YrFiLRHGkJVJ/egxtESwZdClR1Y+jRkpe7IcqGsyQpgdw41y2VVy/jz7owv/o1rOQlEp2RlEBuHsgJpE4knpa8bHOahZe8RKIBSQnUtUB76WbY7qTkZZ8PZlnJS3q0lqQEasdAfQqgOFy4Y8nLZjaxC7645CUapSWQf+xLrEvZ38poMjAc/AsXM7rkZckKJSaQBcNwViUvy1WocIEMoxaqUH4C3a1iYZkKpSNQl/twUo77ViwscTydjkBh3LteWHEXZbkJtIWKhUVJlJtA926B+o2U4lA6Ar0/P/XDoMkx0FYqFpbhUDoChaIkGremgM4sKYHef2uX79g+lXHbk7w75ZabugdJCmTwVMbZW+ud19wsSkig/fHPeGpBWdxE4rondZdPs5SQQMcWaIroicR7nsaENUpKoACkemF3PoVJNkeCQOft8MyntxBotnsSJxI3cfZGj+tm+Rb/qws/vcmTqbOjZ3UicQsGJUVSXVjI4xjqRCIGLSMxgQLWsooTiQi0jKQEinwqftl2MWgRSQnUJAeKZWbwNrY5mCcpgUJuphqsSMSgBSQlUAgWKxIxKJzcBLJZD4RBwaQlUNeH3WoicfGuQVoC7b//PDx0JS1HMVqRiEGhJCWQm0isXHaOiWfjAycSj0k2a95++dG+R5LNpSQm0EtzstsTPk7IROIgyWbzGz7Ly8mz8fOX++BISiDXP7klHZMChYQbJNlsGh7338vsHCezRoGTSMWRlEDNid8/TXZhIeFOkmzWXV3l26Px/EBn4qDRKWkJ5M543UUFrGidGGhfJtn0AgVlKOti0B61JCbQLAEPQI/kSHQ/eTVH4uSuFS9SbgJ1F1+TLZCdQH3MYi1KSqCge2GuGMLNu7DxwCU2RzYChdzptmuB5k7yvm5FJgU6TbLZCRScZHOO9US6vv5zNZNt1kSPvnn2bcMubC4T5mH3NCnQSZLNz1agZUk2Q7jRSQw3ZMYvE6zXRF//IIYCzfYzb4//mBRokGTzGC8myeY8Rkcz6rivQVJjoI75fqaWY1KgY5LN5j/+S3SSTQvM/lpXJkWB9HphPVZJNsslKYFmb3MtCwcGJCWQDQhkCQKBRFICBSZqDQ0HBiQlUPtYj0GtDLAiKYE+Xr056nIOsCMpgW6U4g4EkhKoa4HkemFgRlICtXcaDtp88cV2NzzPu33SEshfh2nziONJNpEoksQEsuBKOCSKohyBQm5MotBiyhEoLBwKLQSBLr6NQktIcUmryHx+oJQUuvcioiSXtGqEZOdIQaF5SWYWqZkwsaR1bk8WftSVSl6Ghpv7oaWf8fbEH/9bMtECGe+rzc1Ut/BdXLi85NOIfzlWbEiYc5IaRHdZWu98M/XGVm1C2WCSEqhLP7bFm6mjVkVxk927GUkJ1KUf42bqdkhKoG5B2XpjIJgjLYFudTMVoklMoAD0ROOwgOwEWpBo/Jho088xGT4WXw6JCfT2uJt+/jg8ze8w0Waf7wWWkpZAvlWZeiojPNH4MNGmNi9QNEkJ1DUvExOJwS3QSaLNA71XLEkJFDKRGFqx8CRL2f7X3XQtcbhGUgIFtEDBFQuHeRJ9Vrw9BkWQlEABY6DgcOeJNhkIxZGWQPNXYcHhzhNtTublhKskJlAAgROJ54k2uZaPIzuBgicSB4k225oZdGERJCaQ4UTiMNFmk5uVQXQMaQlkOZF4kmhzX39lBBRDUgJZTiQeIdGmQlICWU4kgg02j/WErMfc2ERiFtito53h+i5cCDTzS3NBr29+YxOJ6RJ0Xm+3zTMungub+aX4zd97IvEOh92Wbe5+UmOgIHJckbhBcTqyE2jBisSNYtXur0NuAkVcxm+DJGwZIR2Bwp6NXzKR2L+xhQHpaps3Jh2BwohvgezO5bghyasyTm4CWUwkzggwy5LdTZ50BBp0TpOUNJG4ARITaNBDRYNAliAQSGQqUDUxX41AluQn0H63e3r718/rYyYEsiQ7gdwS570vqZHURGKq5CZQ81N+eXzwRCIIpCTQcaZlaibaGfbxv09aoHVIR6BADp1c/XM7UjiYITuBugR41dVVZwhkSX4CrR2ucBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJMoR6PK5rWO1niYhAykSYyhHoPNwg2o9H6+1RwfKPcVQrkCDaj0+ze+BNL8RFCvQSbWeBrEcfaEUK9BlqYM9LVAExQp0UWzlajIGmAKBqm4NNWPoGIoV6KwLo/2JpFiBTqv1HNL0R81kZJDy6Nv1HTHe5Y0JNKzWo2aeXodF5/X22275ttCV+H3YmkCDaj2+9veGWdeWRRTbhX0OqvUc/IuNzAPds6VZTn4CLU40vo1qPUnYMkJ2Am0/0fj4WOLOOxVNbgJtK9F4VqqMk5tAMYnGrcnVlVFyE+huLVC2TcwMuQlkXLFwfLySf8cUTnYC2SQaL12LcPITSA2HOItAoP5tGp0Y8hNoecVCxBHITqDtTyTmRW4CbWsisQByE2gLE4lFkZtAtEArk5tAxhOJMEd2AlGxcF3yE2jtcIVTjkDctroJ+Qm0fCIRBLITiInEdclNIC7jVyY3gZhIXJncBKIFWpncBAqZSARDvq22pb8v3rmJQPMTiQI3abySCZrMjt5jG2GkcwgRaOVthJHOIUSg6G24B92bYdANkmamcwgRKHYbrmjz+7PLNoZACcTcnED+Mv7jtR5CI1ACMTcnUDeRuP/+E4ESiLk5gfqJxP0DAiUQc3MC9R3X+/P1+/Hr7El2QZPZUW0b3VS0r4UBsKF5IEgSBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAIJBAKJ+wr09rjz5VSrriBUpVeG6tfd2gV9++XHeEAhso/ZZBt4Mtvbdkc/22KRpsd1nLsKVNUfslki64rzNgV6+xfxuHW3lTPILuj7s6/9ehFQiOxjfrzWv33YWR2CdkfdvjaPXlke1yvcUyC/QO3w9Yd/sX/47F8oQR/OYslBK5+O5DKgELmN+fbo2kqrQ1D1eVPen51Alsf1GvcUqC/u3B/G/kV80F4gs6DV7qk6OdkGkbuY7f++/Gmxt4Ogh+//bsqN2h3Xa9xToOrrX8/NAMCbVH/4/oUQtevCLIN6gS4CSpEHv7a3itn9Xh3EjYFMj+sV7inQYdeU5n1oe+f63/6FErYdL1oGbQ79ZUAp8vF0ukwDRnvrg7oeywlke1zHuatAX9q/C9MP6gpGu1LRyQhUdWNoM4Fc7pQiBGo+bd0/Wza1x34/kS7MZzqx7MKaECV0Yf4D1R/OcrDX/7GZBrUeRH/2p7NNG2i0t03QttL67iX3QbR/ULGyvYz3x8o4aGV+Gd/3Nv1zLiZ7e2xk9gVcxjd9dfPZLCe8ujGQZdDKfiKxa9W6TF02e3sqUO4Tic0Fk2/BD91M+0Gfct/bB+27m/OAQuRhb+NimOztmUCmx3UcbqaCBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKBBAKd8f7cJkf5+ldb5fzaz71ceeM2SQy2CgKN4PMxXShyAgJ5EGgEBAoHgUboBPr90eW8f//tD5cN9NBmjXHZ9d277Xf7HDWNQC6Lyh8IVDqdQC6L/Jc/359dqh2XEdSlg2oyoFW7l+67TUphl27fCeSSW1U3SsSzURBohE6gpyZjXvO1+afJKNvngvff9dnjKudZm5Nwj0ClMxgD1f80X/3AptHJG9R910vTfOPlmAmvHBBohDGBusynvr7Oy5lA/scOCASOqy1Qx77psWiBPhFolBGBTq/aB+9ejoEOCFQ6IwJ5LfZt1YDq2AKdXIX5qzIEKp0xgZp5oKZkhk/Le2yXmAcCiAaBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQAKBQOL/n+y6z5H56TMAAAAASUVORK5CYII=" /><!-- --></p>
+<p>The process of selecting a good threshold can be automatized using a goodness of fit test like the Anderson-Darling (AD) test. The function <code>SearchThresh</code> also extracts the p-value of that test for every candidate threshold. The figure below shows that before a threshold of approximately 900, the p-values of the AD test are low and does not support the hypothesis of a GPA. After this changing point, the p-values increased until reaching 0.5 for a threshold of about 950. Here, the value 0.5 is the upper bound imposed by the table of Choulaki and Stephen (2001), which is used for interpolating the p-values.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">PlotThresh</span>(candidates,  <span class="dt">type =</span> <span class="kw">c</span>(<span class="st">&#39;ad&#39;</span>))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>For the common significance level like 0.05, it was found that such procedure often selects too low of a threshold and so, Solari et al. (2017) suggested to use instead the maximum p-value. Alternatively, Durocher et al. (2018) suggested of using a critical values between 0.10 and 0.25 to avoid higher probability of falsely acceptating the GPA (False positive). According to this latter criteria, the lowest stable threshold among the candidates is found at <code>u = 925</code>, while the maximum is <code>u = 950</code>. These values can be extracted using the function <code>FindThresh</code> with argument <code>method = &#39;max&#39;</code> or <code>method = &#39;sgn&#39;</code>. The argument <code>ppy</code> can be used to remove candidate thresholds that have excess rate outsite a desired interval.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co">## Threshold with maximum AD p-value</span></a>
+<a class="sourceLine" id="cb17-2" title="2">cvars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;u&#39;</span>,<span class="st">&#39;ppy&#39;</span>,<span class="st">&#39;ad&#39;</span>,<span class="st">&#39;q50&#39;</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="kw">FindThresh</span>(candidates, <span class="dt">method =</span> <span class="st">&#39;max&#39;</span>)[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy  ad      q50
+## 19 950 1.886364 0.5 4087.983</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co">## First threshold with AD p-value &gt; 0.25</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="kw">FindThresh</span>(candidates, <span class="dt">method =</span> <span class="st">&#39;sgn&#39;</span>, <span class="dt">tol.sgn =</span> <span class="fl">0.25</span>, </a>
+<a class="sourceLine" id="cb19-3" title="3">           <span class="dt">ppy =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy        ad      q50
+## 18 925 1.977273 0.3518947 4082.018</code></pre>
+<p>Another method to automatically select the threshold is to imposed a given excess rate. By passing the argument <code>type = &#39;ppy&#39;</code> and <code>tol.ppy = 2.2</code>, the candidate threshold with the excess rate the closest to 2.2 is returned.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1"><span class="co">## Threshold with approximately 2.2 PPY</span></a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">FindThresh</span>(candidates, <span class="dt">method =</span> <span class="st">&#39;ppy&#39;</span>, <span class="dt">tol.ppy =</span> <span class="fl">2.2</span>)[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy         ad      q50
+## 15 850 2.204545 0.02224744 4086.882</code></pre>
+<p>In some situation a critical p-value such as 0.25 may not be reached or the threshold associated to a given excess rate may lead to samples that aren’t well approximated by a GPA. Mixing criteria for automatically selecting a threshold may lead to a more robust procedure (Durocher et al., 2018). The approach <code>sgn</code> has the advantage of generally leading to more precise estimations as it includes more peaks and ensure that GPA is a reasonable model.<br />
+The arguments <code>sgn-max</code> or <code>sgn-ppy</code> ask the function <code>FindThresh</code> to search for the <code>sgn</code> threshold and if it cannot be found, will return the alternative candidates.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">candidates.mod &lt;-<span class="st"> </span>candidates</a>
+<a class="sourceLine" id="cb23-2" title="2">candidates.mod<span class="op">$</span>ad &lt;-<span class="st"> </span><span class="kw">pmin</span>(<span class="fl">0.2</span>, candidates.mod<span class="op">$</span>ad)</a>
+<a class="sourceLine" id="cb23-3" title="3"></a>
+<a class="sourceLine" id="cb23-4" title="4"><span class="co">## First threshold with AD p-value &gt; 0.25</span></a>
+<a class="sourceLine" id="cb23-5" title="5"><span class="kw">FindThresh</span>(candidates.mod, <span class="dt">method =</span> <span class="st">&#39;sgn-ppy&#39;</span>, </a>
+<a class="sourceLine" id="cb23-6" title="6">           <span class="dt">tol.sgn =</span> <span class="fl">0.25</span>, <span class="dt">tol.ppy =</span> <span class="fl">2.2</span>)[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy         ad      q50
+## 15 850 2.204545 0.02224744 4086.882</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="kw">FindThresh</span>(candidates.mod, <span class="dt">method =</span> <span class="st">&#39;sgn-ppy&#39;</span>, </a>
+<a class="sourceLine" id="cb25-2" title="2">           <span class="dt">tol.sgn =</span> <span class="fl">0.15</span>, <span class="dt">tol.ppy =</span> <span class="fl">2.2</span>)[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy        ad      q50
+## 17 900 2.045455 0.1941356 4081.048</code></pre>
+<p>With the approach <code>sgn</code>, the function <code>FindThresh</code> can also reject thresholds where the relative discrepency between the flood quantile of the selected threshold and a reference threshold is to large. This serve as an additional verification that flood quantiles tend remain stable after the selected threshold. The reference threshold is defined as the average of the flood quantiles associated with the 5 lowest thresholds among the candidates. In the example below, the argument <code>ppy = c(1,3)</code> is used to impose a lower bound of 1 PPY which lead to a reference of about 1 PPY. With the St-John River, the flood quantile quickly stabilize. After a threshold of <code>u = 825</code>, the relative discrepencies between the selected and reference threshold is less than 1%. This behavior results from the presence of a light tails.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="co">## Verify the discrepencies with reference threshold ~ 1PPY</span></a>
+<a class="sourceLine" id="cb27-2" title="2"><span class="kw">FindThresh</span>(candidates, <span class="dt">method =</span> <span class="st">&#39;sgn&#39;</span>, <span class="dt">ppy =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), <span class="dt">tol.sgn =</span> <span class="fl">0.0</span>, </a>
+<a class="sourceLine" id="cb27-3" title="3">           <span class="dt">qua =</span> <span class="st">&#39;q50&#39;</span>, <span class="dt">tol.qua =</span> <span class="fl">.01</span>)[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy    ad      q50
+## 14 825 2.329545 0.001 4110.183</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb29-1" title="1"><span class="kw">FindThresh</span>(candidates, <span class="dt">method =</span> <span class="st">&#39;sgn&#39;</span>, <span class="dt">ppy =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>), <span class="dt">tol.sgn =</span> <span class="fl">0.25</span>, </a>
+<a class="sourceLine" id="cb29-2" title="2">           <span class="dt">qua =</span> <span class="st">&#39;q50&#39;</span>, <span class="dt">tol.qua =</span> <span class="fl">.01</span>)[,cvars]</a></code></pre></div>
+<pre><code>##      u      ppy        ad      q50
+## 18 925 1.977273 0.3518947 4082.018</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this document, it was shown how threshold modeling can be carried out<br />
+to estimate flood quantiles for different return period. Instructions for fitting the model (<code>FitPot</code>), evaluate the uncertainty of the parameters (<code>coef</code>) and derived the flood quantile were provided (<code>predict</code>). Basic validation procedures based on the mean residual life plot (<code>PlotMrl</code>) and goodness of fit tests (<code>GofTest</code>) were shown to assess the fitting of the model.<br />
+Finally, automatic procedures to selected a best candidate threshold was discussed (<code>SearchThresh</code> and <code>FindThresh</code>).</p>
+<p>For a general introduction to the technical aspect of threshold modeling, the reader is referred to Coles (2001) or Davison and Smith (1990).</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Choulakian, V., Stephens, M.A. (2001). Goodness-of-Fit Tests for the Generalized Pareto Distribution. Technometrics 43, 478–484. <a href="https://doi.org/10.2307/1270819" class="uri">https://doi.org/10.2307/1270819</a></p>
+<p>Coles, S., 2001. An introduction to statistical modeling of extreme values. Springer Verlag.</p>
+<p>Davison, A.C., Smith, R.L. (1990). Models for Exceedances over High Thresholds. Journal of the Royal Statistical Society. Series B (Methodological) 52, 393–442.</p>
+<p>Durocher, M., Zadeh, S.M., Burn, D.H., Ashkar, F. (2018). Comparison of automatic procedures for selecting flood peaks over threshold based on goodness-of-fit tests. Hydrological Processes 0. <a href="https://doi.org/10.1002/hyp.13223" class="uri">https://doi.org/10.1002/hyp.13223</a></p>
+<p>Lang, M., Ouarda, T.B.M.J., Bobée, B. (1999). Towards operational guidelines for over-threshold modeling. Journal of Hydrology 225, 103–117. <a href="https://doi.org/10.1016/S0022-1694(99)00167-5" class="uri">https://doi.org/10.1016/S0022-1694(99)00167-5</a></p>
+<p>Solari, S., Egüen, M., Polo, M.J., Losada, M.A. (2017). Peaks Over Threshold (POT): A methodology for automatic threshold estimation using goodness of fit p-value. Water Resour. Res. 53, 2833–2849. <a href="https://doi.org/10.1002/2016WR019426" class="uri">https://doi.org/10.1002/2016WR019426</a></p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -361,4 +361,3 @@ intersite correlation was initially estimated (`Intersite`).
   frequency analysis: a comparison based on peaks-over-threshold and annual 
   maximum series. Hydrological Sciences Journal, 0(ja), null.
   https://doi.org/10.1080/02626667.2019.1577556
-

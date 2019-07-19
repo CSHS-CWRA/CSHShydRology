@@ -113,7 +113,7 @@ cvk <- CvRoi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             kriging = formula.krig, verbose = FALSE)
 
-## ---- warning = FALSE, fig.height=5, fig.width = 6-----------------------
+## ---- warning = FALSE, fig.height=4, fig.width = 6-----------------------
 ## Effect of kriging of the prediction of flood quantiles.
 plot(cvk, ylim = c(0.38, 0.45))
 lines(mad~nk, cv0, col = 'red')
