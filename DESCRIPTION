@@ -1,8 +1,8 @@
 Type: Package
 Package: CSHShydRology
 Title: Canadian hydrological analyses
-Version: 1.0.1
-Date: 2019-05-07
+Version: 1.1.0
+Date: 2019-09-03
 Authors@R: c(person("Kevin", "Shook", email = "Kevin.Shook@usask.ca", role = c("cre")),
              person("Paul", "Whitfield", email = "paul.h.whitfield@gmail.com", role = c("aut")),
              person("Robert", "Chlumsky", email = "rchlumsk@gmail.com", role = c("aut")),

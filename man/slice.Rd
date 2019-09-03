@@ -31,7 +31,7 @@ dice <- slice(doy, 30)
 plot(doy, dice)
 }
 \seealso{
-binned_MannWhitney, raster_trend
+\code{\link{ch_binned_MannWhitney}} \code{\link{ch_flow_raster_trend}}
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
