@@ -5,6 +5,7 @@
 \alias{fgpa1d}
 \alias{fgpa2d}
 \alias{fgpaLmom}
+\alias{fgpaMom}
 \title{Estimation of the Generalized Pareto distribution.}
 \usage{
 fgpa1d(x, sol = FALSE)
@@ -12,6 +13,8 @@ fgpa1d(x, sol = FALSE)
 fgpa2d(x, sol = FALSE, par0 = NULL, ...)
 
 fgpaLmom(x)
+
+fgpaMom(x)
 }
 \arguments{
 \item{x}{Sample.}

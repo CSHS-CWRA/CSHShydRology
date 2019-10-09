@@ -16,7 +16,8 @@ DistSeason(x, ...)
 \method{DistSeason}{formula}(form, x, w = 1/pi, ...)
 }
 \arguments{
-\item{x, a}{Coordinates in the seasonal space: radius `x` and angle `a`.}
+\item{x, a}{Coordinates in the seasonal space. 
+Can be a data.frame or vectors with radius `x` and angle `a`.}
 
 \item{...}{Other parameters.}
 
@@ -45,6 +46,9 @@ DistSeason(radius ~ angle , scoord)
 Durocher, M., Burn, D. H., & Ashkar, F. (2019). Comparison of estimation
   methods for a nonstationary index-flood model in flood frequency
   analysis using peaks over threshold. https://doi.org/10.31223/osf.io/rnepc
+}
+\seealso{
+\link{SeasonStat}
 }
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>

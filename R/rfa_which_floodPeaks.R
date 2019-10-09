@@ -183,7 +183,7 @@ which.clusters.numeric <- function(x, dt = NULL, u, r = 1, ...){
   if(length(dt) != length(x))
     stop('Different length between data and time.')
 
-  ## Keep value above treshold values, remove missing
+  ## Keep value above threshold values, remove missing
   ## Also make sure that time value are finite
   id <- x > u & !is.na(x) & is.finite(dt)
   x  <- x[id]

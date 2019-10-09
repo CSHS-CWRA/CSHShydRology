@@ -105,7 +105,7 @@ FitPot.matrix <- function(x,  ...)
 #' @export
 #' @rdname FitPot
 FitPot.formula <- function(form, x, ...){
-  xd <- model.frame(form,as.data.frame(x))
+  xd <- model.frame(form, as.data.frame(x))
   return(FitPot.numeric(x = xd[,1], dt = xd[,2], ...))
 }
 
@@ -140,11 +140,21 @@ FitPot.numeric <-
 
   ans <- list(excess = x[cid] - u, time = dt[cid])
 
-  ## Estimatate the parameters
-  if(method == 'lmom'){
+  ## select the fitting function
+  if(method == 'lmom')
+    f <- fgpaLmom
+  else if(method == 'mom')
+    f <- fgpaMom
+  else if(method == 'mle')
+    f <- fgpa1d
+  else if(method == 'mle2')
+    f <- fgpa2d
+  
+  ## Estimate the parameters
+  if(method %in% c('lmom', 'mom')){
 
     ## Estimatate the parameters
-    ans$estimate <- fgpaLmom(ans$excess)
+    ans$estimate <- f(ans$excess)
 
     ## Covariance matrix estimated by boostraps
     if(varcov){
@@ -152,32 +162,25 @@ FitPot.numeric <-
 
       xboot <- replicate(nsim,
                          sample(ans$excess, length(ans$excess), replace = TRUE))
-      pboot <- t(apply(xboot,2,fgpaLmom))
+      pboot <- t(apply(xboot,2,f))
 
       ## Correct
       vc <- Matrix::nearPD(cov(pboot))$mat
       ans$varcov <- as.matrix(vc)
     }
 
-  } else if(method == 'mle'){
-    sol <- fgpa1d(ans$excess, sol = TRUE)
-    ans$estimate <- sol$par
+  } else if(method %in% c('mle','mle2')){
 
     if(varcov){
+      sol <- f(ans$excess, sol = TRUE)
+      ans$estimate <- sol$par
       ans$varcov <- sol$varcov
       colnames(ans$varcov) <- rownames(ans$varcov) <- names(ans$estimate)
+    
+    } else{
+      ans$estimate <- f(ans$excess, sol = FALSE)
     }
-
-  } else if(method == 'mle2'){
-    sol <- fgpa2d(ans$excess, sol = TRUE)
-
-    ans$estimate <- sol$par
-
-    if(varcov){
-      ans$varcov <- sol$varcov
-      colnames(ans$varcov) <- rownames(ans$varcov) <- names(ans$estimate)
-    }
-
+    
     if( (ans$estimate[2] < -.5 + 1e-4) | (ans$estimate[2] > 1-1e-4) )
       warning(paste('Shape parameter have reach boundary. Normal',
                     ' approximation of the likelihood may be unreliable'))
@@ -234,7 +237,7 @@ coef.fpot <-
       nllik <- function(p) -sum(dgpa(object$excess, z, p, log = TRUE))
 
       ## Compute the profile likelihood
-      llik0 <- -goptimize(nllik, kbnd0)$objective
+      suppressWarnings(llik0 <- -optimize(nllik, kbnd0)$objective)
 
       return(2*(llikFull-llik0))
 
@@ -245,7 +248,7 @@ coef.fpot <-
 
       nllik <- function(p) -sum(dgpa(object$excess, p, z, log = TRUE))
 
-      llik0 <- -optimize(nllik, abnd0)$objective
+      suppressWarnings(llik0 <- -optimize(nllik, abnd0)$objective)
 
       return(2*(llikFull-llik0))
     }
@@ -253,19 +256,19 @@ coef.fpot <-
     ## Find the boundary
 
     suppressWarnings(lbScl <-
-        goptimize(function(z) abs(Dscl(z)-khi),
+        optimize(function(z) abs(Dscl(z)-khi),
                  c(abnd0[1],object$estimate[1]))$minimum)
 
     suppressWarnings(ubScl <-
-                       goptimize(function(z) abs(Dscl(z)-khi),
+                       optimize(function(z) abs(Dscl(z)-khi),
                                 c(object$estimate[1],abnd0[2]))$minimum)
 
     suppressWarnings(lbShp <-
-                       goptimize(function(z) abs(Dshp(z)-khi),
+                       optimize(function(z) abs(Dshp(z)-khi),
                                 c(kbnd0[1],object$estimate[2]))$minimum)
 
     suppressWarnings(ubShp <-
-                       goptimize(function(z) abs(Dshp(z)-khi),
+                       optimize(function(z) abs(Dshp(z)-khi),
                                 c(object$estimate[2],kbnd0[2]))$minimum)
 
     bnd <- data.frame(lower = c(NA,lbScl,lbShp),

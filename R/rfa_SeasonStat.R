@@ -16,6 +16,8 @@
 #'   form \code{date ~ site}.
 #'   
 #' @param ... Other parameters.
+#' 
+#' @seealso \link{DistSeason}
 #'
 #' @references 
 #'

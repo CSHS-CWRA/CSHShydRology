@@ -49,6 +49,10 @@ expect_true(is.null(vcov(fit)))
 fit <- FitPot(xd0, u = 5, method = 'lmom', varcov = F)
 fit <- FitPot(xd0, u = 5, method = 'lmom', varcov = T, nsim = 5)
 
+## try moment estimator
+fit <- FitPot(xd0, u = 5, method = 'mom', varcov = F)
+fit <- FitPot(xd0, u = 5, method = 'mom', varcov = T, nsim = 5)
+
 ## Verif confidence interval for parameter by profile likelihood
 cc <- coef(fit, ci = TRUE)
 expect_equal(colnames(cc), c('estimate','lower','upper'))

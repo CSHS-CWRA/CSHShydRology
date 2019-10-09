@@ -30,11 +30,17 @@ expect_equal(signif(pp$se), se.ref)
 ## verify profile confidence interval
 pp <- predict(fit, rt = c(10,100), ci = 'profile')
 pp.ref <- matrix(nrow = 2, ncol = 3, byrow = TRUE, 
-                 data = c(12.1644, 10.8399, 14.8732,
-                          16.9163, 13.3549, 27.1540))
+                 data = c(12.1644, 10.8399, 15.0029,
+                          16.9163, 13.5834, 26.7115))
   
 expect_true(all(signif(pp)==pp.ref))
 
 ## verify profile confidence interval
 pp <- predict(fit, ci = 'boot', nsim = 10)
 expect_equal(dim(pp), c(6,3))
+
+
+## verify profile confidence interval
+pp <- predict(fit, ci = 'boot', nsim = 10, out.matrix = TRUE)
+expect_equal(names(pp), c(6,3))
+

@@ -44,7 +44,7 @@ fit <- FitRoi(x = xd, xnew = target, nk = 30,
 print(fit)
 
 ## ----fig.height = 4, fig.width = 6---------------------------------------
-## Graphics of the predicted versus known flood quantiles a ungauged sites
+## Graphics of the predicted versus known flood quantiles at ungauged sites
 plot(log(target$q100),fit$pred,
      xlab = 'At-site flood quantiles (log)',
      ylab = 'Predicted flood quantiles (log)')
@@ -52,8 +52,9 @@ abline(0,1)
 
 
 ## ------------------------------------------------------------------------
-## List of size to try.
+## List of neigborhood sizes to try.
 nk.lst <- seq(30,100,10)
+set.seed(1)
 
 ## Perform cross-validation
 cv0 <- CvRoi(x = xd, nk = nk.lst, fold = 5,
@@ -122,13 +123,15 @@ legend('topleft', horiz = TRUE,
        col = c('black','red'), lty = rep(1,2))
 
 ## ------------------------------------------------------------------------
-## Size of the bootstrap sample
+## Size of the bootstrap sample. It is chosen very low to speed up
+## the computation. Much larger values, like 1000, should be consider in 
+## practice.
 nboot <- 30
 
 ## Empirical L-moments
 lmm <- flowUngauged[-id, c('l1','lcv','lsk')]
 
-## Function that return the flood quantiles of 100 years return period
+## Function that returns the flood quantiles of 100 year return period
 ## for one site.
 Fqua <- function(z){
   l <- lmom::samlmu(z) 
@@ -136,7 +139,7 @@ Fqua <- function(z){
   return(lmom::quagev(.99,p))
 }
 
-## Function that simulates a dataset and return flood quantiles for all sites
+## Function that simulates a dataset and returns flood quantiles for all sites
 Fsim <- function(){
   xs <- RegSim(lmm, 'gev', nrec = 50, corr = .4)
   return(apply(xs, 2, Fqua))
@@ -151,12 +154,12 @@ lq100 <- log(replicate(nboot, Fsim()))
 ## Fit the model
 fit <- FitRoi(x = xd, xnew = target, nk = 50, 
               phy = formula.phy, similarity = formula.dist,
-              fitted = TRUE) 
+              fitted = TRUE, se = TRUE) 
 
 ## Extract model residuals assuming they are symmetrical.
 resid.mdl <- c(fit$resid, -fit$resid)
 
-## create a copy that could be modified
+## create a copy that can be modified
 xd.boot <- xd
 
 ## Fit ROI on a bootstrap sample
@@ -175,5 +178,8 @@ boot <- replicate(nboot, Fboot())
 
 ## Evaluate the standard deviation of the bootstrap sample.
 boot.se <- apply(boot, 1, sd)
+round(boot.se[1:3],3)
 
+## Standard error of the direct regression model
+round(fit$pred.se[1:3],3)
 

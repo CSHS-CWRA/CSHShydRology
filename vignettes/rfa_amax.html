@@ -12,7 +12,7 @@
 
 
 
-<title>At-site flood frequency analysis using annual maximums</title>
+<title>At-site flood frequency analysis using annual maxima</title>
 
 
 
@@ -274,25 +274,25 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 
-<h1 class="title toc-ignore">At-site flood frequency analysis using annual maximums</h1>
+<h1 class="title toc-ignore">At-site flood frequency analysis using annual maxima</h1>
 
 
 
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>This document shows how to use <code>CSHShydRology</code> to perform at-site flood frequency analysis using annual maximums of river discharge. The procedure is illustrated using daily streamflow data from the Saint-John River at Fort Kent (NB).</p>
+<p>This document shows how to use <code>CSHShydRology</code> to perform at-site flood frequency analysis using annual maxima of river discharge. The procedure is illustrated using daily streamflow data from the Saint-John River at Fort Kent (NB). The dataset <code>flowStJohn</code> has two columns: <code>date</code> and <code>flow</code>. In column <code>flow</code> contains numerical value corresponding to daily river discharges and the variable <code>date</code> representing the day it was recorded. Note that the columns <code>date</code> is part of the class <code>Date</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(CSHShydRology)</a>
 <a class="sourceLine" id="cb1-2" title="2"><span class="kw">data</span>(<span class="st">&quot;flowStJohn&quot;</span>)</a></code></pre></div>
-<p>First we need to extract the annual maximums, which are store in a dataset <code>flowStJohn</code> having two columns: <code>date</code> and <code>flow</code>. This extraction can be done using the function <code>ExtractAmax</code>. Here, incomplete years of data (less than 365 days) are removed. In total, the function identifies 88 annual maximums.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## Extract the annual maximums</span></a>
+<p>The annual maxima may be already available in the form of a vector of data, but it can also be extracted from a time series of daily values. For this example, we need to extract the annual maxima. This extraction can be done using the function <code>ExtractAmax</code>. Here, incomplete years of data (less than 365 days) are removed. The argument <code>tol</code> can be adjusted to lower values to allow some missing values each year. In total, the function identifies 88 annual maxima.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## Extract the annual maxima</span></a>
 <a class="sourceLine" id="cb2-2" title="2">anData &lt;-<span class="st"> </span><span class="kw">ExtractAmax</span>(flow <span class="op">~</span><span class="st"> </span>date, flowStJohn, <span class="dt">tol =</span> <span class="dv">365</span>)</a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="kw">nrow</span>(anData)</a></code></pre></div>
 <pre><code>## [1] 88</code></pre>
-<p>The annual maximums are assumed to be independent and identically distributed. To verify the likelihood of these hypothesis tests should performed to look for potential trends (Mann-Kendall) or change points (Pettitt). Risk is commonly measured in terms of return period <span class="math inline">\(T\)</span>, which characterizes the average waiting time between two extreme events, which is equivalent to evaluate the flood quantile associated with the probability <span class="math inline">\(p = 1-1/T\)</span>.</p>
+<p>The annual maxima are assumed to be independent and identically distributed. To verify the likelihood of these hypothesis tests should performed to look for potential trends (Mann-Kendall) or change points (Pettitt). Risk is commonly measured in terms of return period <span class="math inline">\(T\)</span>, which characterizes the average waiting time between two extreme events, which is equivalent to evaluate the flood quantile associated with the probability <span class="math inline">\(p = 1-1/T\)</span>.</p>
 </div>
 <div id="estimation-of-the-flood-quantiles" class="section level2">
 <h2>Estimation of the flood quantiles</h2>
-<p>Different distributions can be considered to model the annual maximums. Nevertheless, according to extreme value theory the distribution of sample maximums should converge to a Generalized Extreme Value (GEV) distribution as the size of the sample increase <span class="math display">\[
+<p>Different distributions can be considered to model the annual maxima. Nevertheless, according to extreme value theory the distribution of sample maxima should converge to a Generalized Extreme Value (GEV) distribution as the size of the sample increase <span class="math display">\[
 F(x) = \exp\left\{ - \left[ 1 - \kappa \left(\frac{x-\xi}{\alpha} \right) 
   \right]^{1/\kappa} \right\}.
 \]</span> where <span class="math inline">\(\xi\)</span> is a location parameter, <span class="math inline">\(\alpha &gt; 0\)</span> is a scale parameter and <span class="math inline">\(\kappa\)</span> is a shape parameter. The GEV distribution can be fitted using the <code>FitAmax</code> function. The example below used the maximum likelihood method to estimate the<br />
@@ -316,10 +316,14 @@ three parameters of the GEV distribution.</p>
 ## Lmoments:
 ##     l1  lcv     lsk    lkt
 ## 1 2390 0.17 0.05924 0.1399</code></pre>
-<p>Alternatively, the L-moment method can be specified with argument <code>method = &#39;lmom&#39;</code>. By default, <code>FitAmax</code> evaluates the covariance matrix of the estimated parameters. This is derived analytically for the maximum likelihood method, while for the L-moment method a parametric bootstrap is needed. Note, that the evaluation of the covariance matrix can be turn off by passing the arguments <code>varcov = FALSE</code>.</p>
+<p>Alternatively, the L-moment method can be specified by passing the argument <code>method = &#39;lmom&#39;</code>. By default, <code>FitAmax</code> evaluates the covariance matrix of the estimated parameters. This is derived analytically for the maximum likelihood method, while for the L-moment method a parametric bootstrap is needed. Note, that the evaluation of the covariance matrix can be turned off by passing the arguments <code>varcov = FALSE</code>.</p>
 <p>The flood quantile of the GEV distribution are evaluated according to <span class="math display">\[
-x_T = \mu + \frac{\alpha}{\xi}\left[ 1+\log(1/T)^\kappa \right] .
-\]</span> These quantities are provided by the function <code>predict</code>. The example below indicates how to obtain the flood quantile of return periods 10 and 100 years. The standard deviation of the flood quantiles is estimated using the Delta method, as requested by the argument <code>se = TRUE</code>. When the argument <code>ci = &#39;delta&#39;</code> is passed, confidence intervals are obtained by adding and substrating a value proportional to the standard deviation.</p>
+x_p = 
+\begin{cases}
+\mu - \frac{\alpha}{\kappa}\left[ y_p^\kappa-1 \right]  &amp; \kappa \neq 0\\
+\mu - \alpha \log y_p  &amp; \kappa = 0\\
+\end{cases}
+\]</span> where <span class="math inline">\(y_p = -\log(p)\)</span>. These quantities are provided by the function <code>predict</code>. The example below indicates how to obtain the flood quantile of return periods 10 and 100 years. The standard deviation of the flood quantiles is estimated using the Delta method, as requested by the argument <code>se = TRUE</code>. When the argument <code>ci = &#39;delta&#39;</code> is passed, confidence intervals are obtained by adding and substrating a value proportional to the standard deviation.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="co">## Flood quantiles of 10 and 100 return periods</span></a>
 <a class="sourceLine" id="cb6-2" title="2"><span class="kw">predict</span>(fitMle, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>,.<span class="dv">99</span>), <span class="dt">se =</span> <span class="ot">TRUE</span>, <span class="dt">ci =</span> <span class="st">&#39;delta&#39;</span>, <span class="dt">alpha =</span> <span class="fl">.1</span>)</a></code></pre></div>
 <pre><code>##          pred       se    lower    upper
@@ -336,29 +340,33 @@ x_T = \mu + \frac{\alpha}{\xi}\left[ 1+\log(1/T)^\kappa \right] .
 <a class="sourceLine" id="cb8-8" title="8"><span class="co">## Structure of the output</span></a>
 <a class="sourceLine" id="cb8-9" title="9"><span class="kw">names</span>(out)</a></code></pre></div>
 <pre><code>## [1] &quot;pred&quot; &quot;para&quot; &quot;qua&quot;</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw">print</span>(out<span class="op">$</span>pred)</a></code></pre></div>
+<pre><code>##          pred    lower    upper
+## 0.90 3353.148 3129.629 3587.919
+## 0.99 4215.448 3769.194 4795.671</code></pre>
 </div>
 <div id="verification-of-the-model" class="section level2">
 <h2>Verification of the model</h2>
-<p>The return level plot provides a visual assessment of the fitted distribution by comparing the sample and theoritical flood quantiles. For convinience, the x-axis is expressed in term of the return periods. Below, the graphic shows that the estimated flood quantiles have a good agreement.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">## Return level plot</span></a>
-<a class="sourceLine" id="cb10-2" title="2"><span class="kw">plot</span>(fitMle, <span class="dt">ci =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<p>The return level plot provides a visual assessment of the fitted distribution by comparing the sample and theoretical flood quantiles. For convinience, the x-axis is expressed in term of the return periods. Below, the graphic shows that the estimated flood quantiles have a good agreement.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="co">## Return level plot</span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="kw">plot</span>(fitMle, <span class="dt">ci =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <p>Another diagnostic is the goodness of fit test of Anderson-Darling that verifies if the observations were likely to be generated by a GEV distribution. A p-value superior for instance 0.05 indicates that the hypothesis of a GEV cannot be rejected at this significant level.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">## Anderson-Darling test of goodness of fit</span></a>
-<a class="sourceLine" id="cb11-2" title="2"><span class="kw">GofTest</span>(fitLmm, <span class="dt">nsim =</span> <span class="dv">1000</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">## Anderson-Darling test of goodness of fit</span></a>
+<a class="sourceLine" id="cb13-2" title="2"><span class="kw">GofTest</span>(fitLmm, <span class="dt">nsim =</span> <span class="dv">1000</span>)</a></code></pre></div>
 <pre><code>## 
 ## Goodness-of-fit test
 ##  
 ## Test = Anderson-Darling 
 ## Distribution = gev
 ## statistic : 0.2591 
-## p-value : 0.48</code></pre>
+## p-value : 0.484</code></pre>
 </div>
 <div id="selection-of-the-best-distribution" class="section level2">
 <h2>Selection of the best distribution</h2>
 <p>The GEV distribution is not the only distribution available to carry out flood frequency analysis. Common alternatives are the shifted log-normal distribution (<code>&#39;ln3&#39;</code>), the Generalized logistic distribution (<code>&#39;glo&#39;</code>) and the Pearson type III distribution (<code>&#39;pe3&#39;</code>). These distribution can also be fitted by the function <code>FitAmax</code> as shown below.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co">## Fitting of the Log-normal distribution</span></a>
-<a class="sourceLine" id="cb13-2" title="2"><span class="kw">FitAmax</span>(anData<span class="op">$</span>flow, <span class="st">&#39;ln3&#39;</span>, <span class="dt">varcov =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">## Fitting of the Log-normal distribution</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="kw">FitAmax</span>(anData<span class="op">$</span>flow, <span class="st">&#39;ln3&#39;</span>, <span class="dt">varcov =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>## 
 ## At-site frequency analysis
 ## 
@@ -373,24 +381,24 @@ x_T = \mu + \frac{\alpha}{\xi}\left[ 1+\log(1/T)^\kappa \right] .
 ##     l1  lcv     lsk    lkt
 ## 1 2390 0.17 0.05924 0.1399</code></pre>
 <p>When more than one distribution is passed, a best distribution is selected using the Akaike Information Criterion (AIC). Here, all candidates have similar AIC, which indicates that all distributions represent reasonable choices.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">## Candidates distribution</span></a>
-<a class="sourceLine" id="cb15-2" title="2">candidates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;gev&#39;</span>,<span class="st">&#39;glo&#39;</span>,<span class="st">&#39;ln3&#39;</span>,<span class="st">&#39;pe3&#39;</span>)</a>
-<a class="sourceLine" id="cb15-3" title="3"></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="co">## Function that computes the AIC for a given distribution</span></a>
-<a class="sourceLine" id="cb15-5" title="5">FAIC &lt;-<span class="st"> </span><span class="cf">function</span>(d)</a>
-<a class="sourceLine" id="cb15-6" title="6">   <span class="kw">AIC</span>(<span class="kw">FitAmax</span>(anData<span class="op">$</span>flow, d, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>))</a>
-<a class="sourceLine" id="cb15-7" title="7"></a>
-<a class="sourceLine" id="cb15-8" title="8"><span class="co">## AIC of all distributions</span></a>
-<a class="sourceLine" id="cb15-9" title="9"><span class="kw">sapply</span>(candidates, FAIC)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co">## Candidates distribution</span></a>
+<a class="sourceLine" id="cb17-2" title="2">candidates &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;gev&#39;</span>,<span class="st">&#39;glo&#39;</span>,<span class="st">&#39;ln3&#39;</span>,<span class="st">&#39;pe3&#39;</span>)</a>
+<a class="sourceLine" id="cb17-3" title="3"></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="co">## Function that computes the AIC for a given distribution</span></a>
+<a class="sourceLine" id="cb17-5" title="5">FAIC &lt;-<span class="st"> </span><span class="cf">function</span>(d)</a>
+<a class="sourceLine" id="cb17-6" title="6">   <span class="kw">AIC</span>(<span class="kw">FitAmax</span>(anData<span class="op">$</span>flow, d, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>))</a>
+<a class="sourceLine" id="cb17-7" title="7"></a>
+<a class="sourceLine" id="cb17-8" title="8"><span class="co">## AIC of all distributions</span></a>
+<a class="sourceLine" id="cb17-9" title="9"><span class="kw">sapply</span>(candidates, FAIC)</a></code></pre></div>
 <pre><code>##      gev      glo      ln3      pe3 
 ## 1411.247 1412.612 1411.144 1411.133</code></pre>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="co">## Automatic selection of the distribution</span></a>
-<a class="sourceLine" id="cb17-2" title="2"><span class="kw">FitAmax</span>(anData<span class="op">$</span>flow, candidates, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>)<span class="op">$</span>distr</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co">## Automatic selection of the distribution</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="kw">FitAmax</span>(anData<span class="op">$</span>flow, candidates, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>)<span class="op">$</span>distr</a></code></pre></div>
 <pre><code>## [1] &quot;pe3&quot;</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>This document showed how to evaluate flood quantiles using annual maximum of river discharge. Initially, annual maximums (<code>ExtractAmax</code>) were extracted and a GEV distribution was fitted (<code>FitAmax</code>). The AIC criteria was then used to identify if there will be a better distributions among a small group of candidates. The function to obtain the flood quantiles and their uncertainties (<code>predict</code>) was finally presented. To assess the outcomes of the model, the return level plot (<code>plot</code>) was presented as a way to visualize the quality of the fitting and a goodness of fit test was discussed (<code>GofTest</code>). For a more in depth introduction the readers are referred to Coles (2001) and Hosking and Wallis (1997).</p>
+<p>This document showed how to evaluate flood quantiles using annual maximum of river discharge. Initially, annual maxima (<code>ExtractAmax</code>) were extracted and a GEV distribution was fitted (<code>FitAmax</code>). The AIC criteria was then used to identify if there will be a better distributions among a small group of candidates. The function to obtain the flood quantiles and their uncertainties (<code>predict</code>) was finally presented. To assess the outcomes of the model, the return level plot (<code>plot</code>) was presented as a way to visualize the quality of the fitting and a goodness of fit test was discussed (<code>GofTest</code>). For a more in depth introduction the readers are referred to Coles (2001) and Hosking and Wallis (1997).</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>

@@ -1,5 +1,5 @@
 ---
-title: "Prediction of flood quantiles at ungauged sites"
+title: "Regional flood frequency analysis at gauged sites"
 output: 
     rmarkdown::html_vignette
 vignette: >
@@ -11,11 +11,11 @@ vignette: >
 ## Introduction
 
 This document shows how to use `CSHShydRology` to perform regional 
-flood frequency analysis using pooling groups and the index-flood model.
+flood frequency analysis (RFA) using pooling groups and the index-flood model.
 The methodology is presented using 45 hydrometric sites located in the Atlantic 
 provinces of Canada. 
 The dataset `flowAtlantic` contains the annual maximums of river discharge `ams`
-and some catchment descriptors: drainage area, mean annual precipitation. 
+and the catchment descriptors: drainage area, mean annual precipitation. 
 
 ```{r}
 library(CSHShydRology)
@@ -26,17 +26,17 @@ info <- flowAtlantic$info
 
 ## Measure of similarity
 
-For this analysis, pooling groups are formed as the nearest sites of a target
+For this analysis, pooling groups are formed as the nearest sites to a target
 site from which regional information will be transfered. 
 Different measures of similarity exist to identify the members of a pooling
 group.
-Here we will used a measure of similarity based on the seasonality of the annual 
+Here we will use a measure of similarity based on the seasonality of the annual 
 maximums that characterizes the flood regime of the site of interest.
-This follow the recommendation of Mostofi Zadeh 
+This follows the recommendation of Mostofi Zadeh 
 et al. (2019) that showed that the seasonality based on annual maximum discharges 
-should be preferred for regional frequency analysis based threshold modeling.
+should be preferred for RFA based on threshold modeling.
 
-An angular value (in radian) can be attributed to the moment when a flood is 
+An angular value (in radians) can be attributed to the moment when a flood is 
 observed 
 $$
 \theta_i = \mathrm{(Julian \,date)}_i\left( \frac{2\pi}{365}\right).
@@ -51,11 +51,11 @@ $$
 \end{align}
 $$
 Nevertheless, these summary statistics are easier to interpret in polar 
-coordinates where $\theta$ represents the average moment of occurrence for the annual
+coordinates where $\theta$ represents the average date of occurrence for the annual
 maximum discharges and $r$ represent its regularity during the year.
-In particular, values of $r$ close to 1 entails that the maximum discharge
-occurs almost the same day every year, while values close to 0 imply that the 
-maximum discharge could be observed at any moment of the years.
+In particular, values of $r$ close to 1 indicate that the maximum discharge
+occurs at almost the same day every year, while values close to 0 imply that the 
+maximum discharge could be observed at any time of the year.
 
 $$
 \begin{align}
@@ -77,8 +77,9 @@ head(st)
 ```
 
 Next, the distance between sites can be evaluated using the Eucledean distance
-between cartesian or polar coordinates. The function `DistSeason` compute the distance between pairs $(r_j,\theta_j)$ and
-$(r_k, \theta_k)$ according to
+between cartesian or polar coordinates. 
+The function `DistSeason` computes the distance between pairs $(r_j,\theta_j)$ 
+and $(r_k, \theta_k)$ according to
 
 $$
 h_{i,j} =\sqrt{\|r_j-r_k \|^2 + \left(\frac{\|\theta_j-\theta_k\|}{\pi}\right)^2}
@@ -100,7 +101,7 @@ colnames(distance.st2) <- rownames(distance.st2) <- sname
 
 
 The graphic below shows the seasonal statistics of the Atlantic rivers. 
-A k-means algorithm is used to divide the sites in three regions based on 
+A k-means algorithm is used to divide the sites into three regions based on 
 regularity and timing.
 
 
@@ -115,7 +116,7 @@ points(st, pch = 16, col = regime)
 
 ## Pooling groups
 
-The example below first used the function `DataWide`, to construct a matrix of 
+The example below first uses the function `DataWide`, to construct a matrix of 
 the data where sites are represented by columns and years by rows.
 Next, nearest sites to the target `01AK007` are extracted.
 Here, the target is assumed to be the site with distance 0.
@@ -134,6 +135,54 @@ distance.target <- distance.st2[colnames(xd),'01AK007']
 xd.target <- FindNearest(xd, distance = distance.target, 25)
 ```
 
+The study of Mostofi Zadeh and Burn (2019) used the concept of super regions to
+to improve the quality of the pooling group.
+This implies to form pooling groups inside a set of sites that was already 
+restricted by a second measure of similarity.
+Alternatively to the measure of similarity based on the seasonality of the annual
+maxima, the Euclidean distance between is also often used to form pooling group.
+In particular, they obtained good results using as descriptors the drainage area
+and the mean annnual precipitation, which are surrogate for catchment scale and
+climate.
+Both measures of similarity bring complementary information that can be relevant 
+in the delineation of homogenous regions.
+
+The example below show how to split the available sites using a
+hierarchical clustering algorithm before forming the pooling groups.
+
+```{r}
+## Compute the Euclidean distance
+phy <- scale(log(info[,c('area','map')]))
+
+## Make sure that the order of the sites match with the wide dataset
+rownames(phy) <- info$id
+phy <- phy[colnames(xd),]
+
+## Split the sites using clustering techniques
+phy.cluster <- hclust(dist(phy),method = 'ward.D')
+super <- cutree(phy.cluster, 2)
+
+## Find the pooling group for '01AK007' inside the super region
+xd.super <- FindNearest(xd[,super], distance = distance.target[super], 15)
+```
+
+Another approach is to consider a super regions in the from of a neighborhood of 
+the target, which can be done directly using `FindNearest`.
+For instance, the example below finds first the 30 nearest sites according to 
+the Euclidean distance.
+Next, the 15 nearest sites are selected according to the seasonality measure.
+
+```{r}
+## Euclidean distance with target
+distance.phy <- as.matrix(dist(phy))
+
+## Extract a pooling group with super regions
+xd.super <- FindNearest(xd, distance = distance.target, n = 15,
+                        super.distance = distance.phy[,'01AK007'],
+                        super.n = 30)
+
+```
+
 ## Index-flood model
 
 The index-flood model is frequently used to evaluate flood quantile $Q_T$ 
@@ -142,14 +191,14 @@ pooling group.
 This model assumes that all at-site distributions are proportional to the same
 regional growth curve up to a scale factor $\mu$.
 This scale factor is usually taken as the sample mean.
-Therefore, the estimated flood quantile have the form
+Therefore, the estimated flood quantiles have the form
 $$
 Q_T = \mu \times q_T
 $$
 where $q_T$ is the flood quantile of the region growth curve.
 Most of the time, the regional growth curve is estimated using the L-moment 
-algorithm that takes that derived the regional parameter from the average of 
-the sample L-moments of the sites in the pooling groups. 
+algorithm that derives the regional parameters from the average of 
+the sample L-moments of the sites in the pooling group. 
 A best distribution is then selected by identifying the distribution where the 
 L-moments are the most coherent with the sample estimates.
 See Burn (1990) and Hosking and Wallis (1997) for a more in depth
@@ -170,8 +219,8 @@ print(fit.target)
 
 A complementary tool to the Z-score is the L-moment ratio diagram 
 that illustrates the L-skewness and the L-kurtosis of all sites.
-It can be seen in the figure below that the average (red dot) is located near 
-the theoretical line of the GEV.
+It can be seen in the figure below that the poolin group average (red dot) 
+is located near the theoretical line of the GEV.
 
 
 ```{r fig.height=5, fig.width=6}
@@ -183,9 +232,9 @@ plot(fit.target)
 To assess the hypothesis of the index-flood model, the degree of homogeneity of
 the pooling group must be verified.
 Accordingly, for a homogenous group each at-site L-coefficient of
-variation $V$ or LCV should be close to their regional value.
-Therefore, a large 
-dispersion of the LCV provide evidences that the pooling groups is not homogenous. 
+variation $V$ or LCV should be close to the regional value.
+Therefore, a large dispersion of the LCV provides evidence that the 
+pooling group is not homogenous. 
 To this end, a common heterogeneity measure is
 $$
 H = \frac{V-\mu_V}{\sigma_V}
@@ -193,13 +242,13 @@ $$
 where values $H < 1$ can be interpreted as acceptably homogenous, $1\leq H<2$ 
 possibly heterogenous and $H \geq 2$ definitely heterogenous.
 
-A pooling group may be found overall heterogeneous only because it contents few 
-heterogenous elements. 
-In turns, each site can be removed from the pooling group and the one that best
-improve the heterogeneity measure $H$ should be permanently removed. 
-This process can be repeated until a homogenous pooling group is found or that
+A pooling group may be found overall heterogeneous only because it contains a few 
+heterogenous sites. 
+In turn, each site can be removed from the pooling group and the one that best
+improves the heterogeneity measure $H$ should be permanently removed. 
+This process can be repeated until a homogenous pooling group is found or
 a given stopping criteria is reached.
-The function `PoolRemove` search for the heterogenous sites, removes them and 
+The function `PoolRemove` searches for the heterogenous sites, removes them and 
 updates the regional growth curve.
 In the present situation, two sites are removed to obtain a homogenous pooling 
 group.
@@ -215,18 +264,18 @@ fit.target2$stat[1]
 
 ## Intersite correlation
 
-Inference for the L-moment algorithm require parametric bootstrap.
-Snow accumulation or large rainfall system generate floods 
+Inference for the L-moment algorithm requires parametric bootstrap.
+Snow accumulation and subsequent melting or large rainfall systems generate floods 
 that affect multiple sites simultaneously, which creates spatial dependence 
 among sites. 
 This will result in more uncertainties about the estimated flood quantiles 
 in comparison to independent data. 
 To account for intersite correlation, a multivariate Normal distribution is used 
-to simulate at spatially distributed data that are later transformed to 
+to simulate spatially distributed data that are later transformed to 
 the proper at-site distributions.
 
 The spearman correlation $\rho_{i,j}$ between pairs of the i-th and j-th sites 
-measure the degree of association between series of flood events.
+measures the degree of association between series of flood events.
 This measure is well suited to quantify the intersite correlations between 
 paired observations as it is invariant to the at-site distributions.
 The relation
@@ -235,11 +284,11 @@ $$
 $$
 links the correlation coefficients $\theta_{i,j}$ of the 
 multivariate Normal distribution to the spearman correlation coefficients.
-However, corrections should be done to ensure that the final covariance matrix
+However, corrections may be necessary to ensure that the final covariance matrix
 is positive definite (Higham, 2002).
 
 
-The function `Intersite` can be used to estimate the parameter of the
+The function `Intersite` can be used to estimate the parameters of the
 multivariate normal distribution.
 The output is a list containing among others the correlation coefficient `corr`
 and their corrected value `model`.
@@ -268,7 +317,8 @@ where the nugget effect $\tau \in [0,1]$ that represents a discontinuity at the
 origin $h = 0$ and the range parameter $\gamma > 0$ that controls the decay of 
 the correlation with respect to the distance are estimated by weighted least 
 squares with weights proportional to the number of paired observations.
-Note that it is important in the example below that the order of the column in the matrix of data and distance matched.
+Note that it is important in the example below that the order of the columns in 
+the matrix of data and distance match.
 
 
 ```{r fig.height=5, fig.width=6}
@@ -291,8 +341,10 @@ theta <- icor2$corr[lower.tri(icor2$corr)]
 theta.model <- icor2$model[lower.tri(icor2$corr)]
 h <- geo.target[lower.tri(icor2$corr)]
 
-plot(h, theta, pch = '.', cex = 2)
-points(h, theta.model, col = 'red', pch = 16)
+plot(h, theta, cex = .5, xlab = 'distance', ylab = 'Spatial correlation')
+
+hid <- order(h)
+lines(h[hid], theta.model[hid], col = 'red', lwd = 2)
 
 ```
 
@@ -300,21 +352,264 @@ points(h, theta.model, col = 'red', pch = 16)
 ## Flood quantiles
 
 Flood quantiles can be obtained from the function `predict`. 
-The example below obtains the flood quantiles of 10 and 100 years return 
+The example below obtains the flood quantiles of 10 and 100 year return 
 periods with different models of intersite correlations.
 The argument `corr` is the correlation matrix of a multivariate Normal 
 distribution used for the parametric bootstrap. 
 A single value can also be passed, in which case a constant coefficient of 
 correlation is used.
-When, the function `Intersite` evaluates the correlation matrix 
+When the function `Intersite` evaluates the correlation matrix 
 empirically, it computes the average coefficient of correlation (`para`).
 
 ```{r}
 ## Using exponential model
-predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor2$model)
+hat <- predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor2$model)
+print(round(hat,1))
 
 ## Using constant coefficient of correlation
-predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$para)
+hat <- predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$para)
+print(round(hat,1))
+```
+
+## RFA using likelihood techniques
+
+The previous section use the L-moment approach to regional parameters of an 
+index-flood model.
+One may have noticed that this approach does not consider the spatial dependence
+between sites for the estimation of the regional parameters.
+A similar and alternative approach  would be to use composite likelihood 
+(Padoan et al. 2010) that optimize a likelihood-based criteria using 
+probabilities associated to events of lower dimensions.  
+In particular, consider $L_i$ that represents the likelihood of  
+the ith site of $n$ sites.
+The independent likelihood $\Pi_{i=1} L_i$, which corresponds
+to the full likelihood sites if the sites were independent, contain most of the
+relevant information about the marginals and can be maximized to estimate the 
+marginal distribution of the regional model without providing a full 
+characterization of the dependence structure.
+
+In the example below an index-flood model is fitted to the pooling groups 
+previously delineated for annual maxima. The at-site means are used as scale factors and 
+the regional parameters are estimated using the independent likelihood approach.
+
+
+```{r}
+xw <- xd[,sitenames(fit.target2)]
+fit <- FitPoolMle(xw, distr = 'gev', type = 'mean')
+print(fit)
+
+cat('\nFlood quantiles for station 01AK007\n')
+predict(fit, index = fit$index[1])
+```
+
+The function `FitPoolMle` also consider other regional models.
+The first regional model assumed that shape parameter is a regional parameter 
+and that the other parameters are site-specific. 
+For the GEV distribution for instance, the location and scale are site-specific
+and the model has only one regional parameter.
+This regional model is invoked when `type = 'shape'`. 
+As done with the index-flood model, standardizing the observation 
+by the at-site mean, imposed a constant coefficient of variation. 
+Such property is not enforced by this regional model, which makes it more flexible, but also more complex. 
+For a station $i$ having a distribution GEV, GLO, GNO or PE3 with 3 parameters : 
+the location $\xi_i$, the scale $\alpha_i$ and the shape $\kappa_i$;
+a similar behavior as the index-flood model can be imposed by the regional mode 
+$$
+\begin{align}
+\xi_i &= \xi_i \\
+\alpha_i &= \theta \xi_i\\
+\kappa_i &= \kappa
+\end{align},
+$$
+when `type = 'cv'`. 
+The estimation of these two regional models is carried out in the example below
+for the annual maxima of the studied pooling group. 
+Both leads to a shape parameter of roughly -0.95.
+For the second model the regional `cv` parameter that relates the location and 
+scale parameter is 0.343.
+In it interesting to notice that the same ratio between the regional scale and
+location parameter for the index-flood model is very similar with 0.346.
+
+```{r}
+FitPoolMle(xw, distr = 'gev', type = 'shape')
+FitPoolMle(xw, distr = 'gev', type = 'cv')
+
+```
+
+The independent likelihood is a measure of the overall goodness of fit for the 
+at-site distributions. 
+This can be used to select a criterion for choosing a best distribution among the 
+four distributions GEV, GLO, GNO and PE3 because all in the same type of 
+regional models they all have the same number of parameters. 
+However, it is not possible to use such criterion to choose between two different types of regional models for the same reason.
+
+Fr the previous regional models, Inference can be performed using bootstraps.
+This can be done using the function `simulate` and `FitPoolMargin` to create  parametric bootstrap samples based on at-site estimate, where intersite 
+correlation can be included if required. 
+Here a small sample is considered for illustration.
+
+
+```{r}
+## Create bootstrap
+fit.margin <- FitPoolMargin(xw, 'gev', method = 'lmom')
+boot <- simulate(fit.margin, nsim = 30, corr = 0.3)
+
+```
+
+The code below fits the three available regional models, extracts the
+flood quantiles of 10 year return period and compute their standard deviations.
+
+```{r}
+## Fit the regional models on the samples
+ffun <- function(z, type) FitPoolMle(z, distr = 'gev', type = type)
+fboot.mean <- lapply(boot, ffun, type = 'mean')
+fboot.cv <- lapply(boot, ffun, type = 'cv')
+fboot.shp <- lapply(boot, ffun, type = 'shape')
+
+## Boostrap samples of the flood quantiles
+qboot.mean <- sapply(fboot.mean, predict, p = .9)
+qboot.cv <- sapply(fboot.cv, predict, p = .9)
+qboot.shp <- sapply(fboot.shp, predict, p = .9)
+
+## Evaluate the standard deviation
+mean.sd <- apply(qboot.mean, 1, sd)
+cv.sd <- apply(qboot.cv, 1, sd)
+shp.sd <- apply(qboot.shp, 1, sd)
+
+```
+
+The overall uncertainty of the regional model can serve as a criterion for choosing among these regional models. 
+The example below standardizes the standard deviations across sites by dividing 
+them by their at-site estimates.
+In the end, the overall criterion is obtained by taking the means of all standardized
+standard deviations.
+This example shows that the 'shape' model leads to overall larger uncertainty 
+than the other models. 
+The 'cv' model is the found to be one with less uncertainty.
+
+```{r}
+
+hat <- predict(fit.margin, .9)
+
+print(
+  cbind(
+    Index.flood = mean(mean.sd/hat),
+    Lik.cv = mean(cv.sd/hat), 
+    Lik.shp = mean(shp.sd/hat)),
+  digits = 3) 
+
+```
+## RFA using peaks over threshold
+
+The functions provided in this package also allow to carry out regional flood
+frequency analysis based on the peaks over threshold (POT) approach, where the
+exceedances are modeled according to a Generalized Pareto distribution (GPA).
+The same initial pooling group are considered as they are based on the 
+seasonality of the annual maximum floods.
+On the other hand, the POT approach requires the selection of an appropriate 
+threshold for each site inside the target region. 
+We do not cover here that aspect and refer the reader to the vignette dedicated
+to this topic (`rfa_pot`) for more information.
+
+The code below create a synthetic dataset of exceedances, where the 
+model parameters are loosely based on the asymptotic
+the correspondence between the GPA and 
+the GEV distribution for the previous target regions.
+Note that in this example the intersite correlation is not considered.
+
+
+```{r}
+set.seed(1)
+
+## Station
+stations <- colnames(xd.target)
+
+## Number of peaks
+npeak <- apply(xd.target, 2, function(z) rpois(1,sum(is.finite(z))))
+
+## GEV parameter
+para <- FitPoolMargin(xd.target, 'gev')$para
+
+## Loose correspondance
+u <- apply(xd.target, 2, quantile, 0.1, na.rm = TRUE)
+alpha <- para[2,] + para[3,] * (u - para[1,])
+kap <- para[3,]
+
+
+## Create the random sample in the long format
+Fz <- function(m,n,a,k){
+  x <- rgpa(n,a,k)
+  data.frame(station = m, year = seq_along(x), value = x)
+}
+
+xs <- mapply(Fz, stations, npeak, alpha, kap, SIMPLIFY = FALSE)
+xs <- do.call(rbind, xs)
+rownames(xs) <- NULL
+
+```
+
+The regional analysis with POT follow the same steps as using annual maxima.
+First the data must be transformed to a wide format.
+The argument `order.time` can be set to `FALSE` as the order of the observations
+is not considered. 
+If the pooling group is not already formed, it can be created using the function
+`FindNearest` as previously done.
+
+For estimation, it is possible to choose between a two or three parameters GPA.
+When the lower bound is set to zero, a two parameter GPA can be requested by
+setting the argument `type = 'pot'`. 
+The third parameter is necessary in some occasions where the exceedances 
+have  a nonzero lower bound.
+In this case, the distribution simply must be set to `distr = 'gpa'`.
+Afterwards, the verification of the homogeneity and the estimation of the 
+parameter is performed using the same functions as using annual maxima.
+
+
+```{r}
+## Transform to wide format
+xs.target <- DataWide(value ~ station + year, xs, order.time = FALSE)
+
+## Fit regional growth curve using 3 parameter
+fit.target <- FitRegLmom(xs.target, distr = 'gpa')
+print(fit.target)
+
+## Fit regional growth curve using 2 parameter
+fit.target <- FitRegLmom(xs.target, type = 'pot')
+print(fit.target)
+
+# Create a homogenous group
+fit.target <- PoolRemove(fit.target)
+```
+
+For a threshold model, the flood quantile of T-year event is defined as the 
+quantile of the GPA distribution associated with the probability 
+$p_\lambda = (1-1/\{\lambda T\})$, where $\lambda$ represent an average
+number of peaks per year.
+For the exceedances we simulated, thresholds were not specified for the 
+pooling group. 
+Therefore, we will assume that we have estimated $\hat\lambda = 2.2$ 
+for the target site based on the exceedances rate.
+The flood quantiles are then obtained from the function `predict` using the 
+probability $p_{\hat \lambda}$.
+The confidence interval returned by `predict` doesn't account for the 
+uncertainty associated with the estimation of $\hat\lambda$. 
+However, variability generated by the estimation of the exceedance rate, which 
+is usually relatively small in comparison with the other parameters (Coles, 2001).
+
+```{r}
+
+## Average number of exceedances at target
+lambda <- 2.2
+
+## return periods of interest
+period <- c(5, 50)
+
+## Associated probabilities
+prob <- 1 - 1/(lambda * period)
+
+## Estimate flood quantiles for POT
+hat <- predict(fit.target, prob, ci = TRUE)
+print(round(hat,1))
 ```
 
 ## Conclusion
@@ -322,7 +617,7 @@ predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$para)
 In this document we showed how to perform a regional flood frequency analysis 
 using similarity based seasonal statistics and pooling groups.
 First seasonal statistics were evaluated (`SeasonStat`) as well as the
-the pairwise distance (`DistSeason`) of the sites in the seasonal space.
+pairwise distance (`DistSeason`) of the sites in the seasonal space.
 The annual maximums were then reorganized in a matrix with sites in columns
 and years in rows (`DataWide`).
 Next, the nearest sites to a target were identified (`FindNearest`) and 
@@ -333,6 +628,9 @@ The most heterogenous sites were then removed in a stepwise manner
 To account for the intersite correlation that could lead to an underestimation
 of the true uncertainty of the flood quantiles, a model for the 
 intersite correlation was initially estimated (`Intersite`).
+Afterwards, the function `FitPoolMle` based on likelihood techniques is presented as an alternative estimation to the L-moment approach.
+Finally, further indications were provided to show how the same routines can be used to perform RFA using peaks over threshold. 
+
 
 ## References
 
@@ -343,6 +641,9 @@ intersite correlation was initially estimated (`Intersite`).
 * Burn, D. H. (1997). Catchment similarity for regional flood frequency analysis 
   using seasonality measures. Journal of Hydrology, 202(1–4), 212–230.
   https://doi.org/10.1016/S0022-1694(97)00068-1
+  
+* Coles, S. (2001). An introduction to statistical modeling of extreme values. 
+  Springer Verlag.
 
 * Durocher, M., Burn, D. H., & Mostofi Zadeh, S. (2018). A nationwide regional 
   flood frequency analysis at ungauged sites using ROI/GLS with copulas and 
@@ -356,9 +657,19 @@ intersite correlation was initially estimated (`Intersite`).
   
 * Hosking, J. R. M., & Wallis, J. R. (1997). Regional frequency analysis: an 
   approach based on L-moments. Cambridge Univ Pr.
+  
+* Mostofi Zadeh, S., & Burn, D. H. (2019). A Super Region Approach to Improve 
+  Pooled Flood Frequency Analysis. Canadian Water Resources Journal / 
+  Revue Canadienne Des Ressources Hydriques, 
+  https://doi.org/10.1080/07011784.2018.1548946
 
 * Mostofi Zadeh, S., Durocher, M., Burn, D. H., & Ashkar, F. (2019). Pooled flood 
   frequency analysis: a comparison based on peaks-over-threshold and annual 
-  maximum series. Hydrological Sciences Journal, 0(ja), null.
+  maximum series. Hydrological Sciences Journal,
   https://doi.org/10.1080/02626667.2019.1577556
+  
+* Padoan, S. A., Ribatet, M., & Sisson, S. A. (2010). Likelihood-Based Inference
+  for Max-Stable Processes. Journal of the American Statistical Association,
+  105(489), 263–277. https://doi.org/10.1198/jasa.2009.tm08577
+
 

@@ -51,6 +51,9 @@ expect_true(all(is.finite(vcov(f))))
 expect_equal(dim(vcov(f)), c(3,3))
 expect_equal(S(AIC(f)), 1000.39)
 
+## verify labels
+expect_equal(colnames(f$varcov), names(f$para))
+
 
 ## Verify the automatic selection
 f <- FitAmax(xgev, distr = c('gev','glo','gno','pe3'), method = 'mle')

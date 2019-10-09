@@ -3,7 +3,7 @@ library(CSHShydRology)
 data("flowStJohn")
 
 ## ------------------------------------------------------------------------
-## Extract the annual maximums
+## Extract the annual maxima
 anData <- ExtractAmax(flow ~ date, flowStJohn, tol = 365)
 nrow(anData)
 
@@ -25,6 +25,8 @@ out <- predict(fitLmm, q = c(.9,.99), ci = 'boot',
 
 ## Structure of the output
 names(out)
+
+print(out$pred)
 
 ## ---- fig.height= 4,fig.width=6------------------------------------------
 ## Return level plot

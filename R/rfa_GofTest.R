@@ -71,20 +71,34 @@ GofTest.amax <- function(object, method = 'ad', nsim = 1000, ...){
   ## Simulate boostrap sample
   n <- length(object$data)
   opara <- lmomco::vec2par(object$para, object$distr)
-  xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
+  
+  if(nsim > 1)
+    xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
 
   ## Compute the test statistics for the data and the bootstrap samples
   if(method == 'ad'){
     stat <- AdStat(object$data, para = opara)
-    boot <- apply(xboot, 2, AdStat, type = object$distr,
+  
+    if(nsim >1){
+      boot <- apply(xboot, 2, AdStat0, type = object$distr,
                                     method = object$method, ...)
-    pv <- mean(boot > stat, na.rm = TRUE)
+      pv <- mean(boot > stat, na.rm = TRUE)
+    
+    } else {
+      pv <- NA 
+    }
 
   } else if(method == 'shapiro') {
     stat <- ShapiroStat(object$data, para = opara)
-    boot <- apply(xboot, 2, ShapiroStat, type = object$distr,
-                  method = object$method, ...)
-    pv <- mean(boot < stat, na.rm = TRUE)
+    
+    if(nsim > 1 ){
+      boot <- apply(xboot, 2, ShapiroStat0, type = object$distr,
+                    method = object$method, ...)
+      pv <- mean(boot < stat, na.rm = TRUE)
+      
+    } else {
+      pv <- NA 
+    }
   }
 
   ans <- list(stat = stat,
@@ -92,14 +106,14 @@ GofTest.amax <- function(object, method = 'ad', nsim = 1000, ...){
               distr = object$distr,
               method = method)
 
-  class(ans) <- 'amaxGof'
+  class(ans) <- 'goftest'
 
   ## return
   ans
 }
 
 #' @export
-print.amaxGof <- function(x, ...){
+print.goftest <- function(x, ...){
 
   if(x$method %in% c('ad','adtab'))
     methodName <- 'Anderson-Darling'
@@ -115,66 +129,65 @@ print.amaxGof <- function(x, ...){
 }
 
 ## function to compute the statistics of the Anderson-Darling test
-AdStat <- function(x, type = NULL, method = NULL, para = NULL, ...){
-
-  ## Estimate the parameters if necessary
-  if(is.null(para)){
-    if(method == 'lmom'){
-      para <- lmomco::lmom2par(lmomco::lmoms(x), type, ...)
-    } else if(method == 'mle'){
-      para <- suppressWarnings(lmomco::mle2par(x,type, ...))
-     } else if(method == 'fgpa1d'){
-      para <- fgpa1d(x)
-      para <- lmomco::vec2par(c(0,para), 'gpa')
-    } else if(method == 'fgpa2d'){
-      para <- fgpa2d(x)
-      para <- lmomco::vec2par(c(0,para), 'gpa')
-    } else if(method == 'fgpaLmom'){
-      para <- fgpaLmom(x)
-      para <- lmomco::vec2par(c(0,para), 'gpa')
-    }
-  }
-
+AdStat <- function(x, para){
   n <- length(x)
   u <- sort(lmomco::plmomco(x,para))
   w <- (2*(1:n)-1)/n
   ans <- n + sum(w * log(u)) + sum((2-w)*log(1-u))
 
-  return(-ans)
+  return(-ans) 
+}
+
+## function to compute the statistics of the Anderson-Darling test 
+## after fitting the data
+AdStat0 <- function(x, type = NULL, method = NULL, ...){
+  para <- .FitMethod(x, method, type, ...)
+  return(AdStat(x,para))
 }
 
 ## Function to compute the statistics of the modified Shapiro-Wilk test
-ShapiroStat <- function(x, type = NULL, method = NULL, para = NULL, ...){
-  ## Estimate the parameters if necessary
-  if(is.null(para)){
-    if(method == 'lmom')
-      para <- lmomco::lmom2par(lmomco::lmoms(x), type, ...)
-    else if(method == 'mle')
-      para <- suppressWarnings(lmomco::mle2par(x,type, ...))
-    else if(method == 'fgpa1d'){
-      para <- fgpa1d(x)
-      para <- lmomco::vec2par(c(0,para), 'gpa')
-    } else if(method == 'fgpa2d'){
-      para <- fgpa2d(x)
-      para <- lmomco::vec2par(c(0,para), 'gpa')
-    } else if(method == 'fgpaLmom'){
-      para <- fgpaLmom(x)
-      para <- lmomco::vec2par(c(0,para), 'gpa')
-    }
-  }
-
+ShapiroStat <- function(x, para){
   z <- qnorm(lmomco::plmomco(x,para))
   shapiro.test(z)$statistic
 }
 
+ShapiroStat0 <- function(x, type = NULL, method = NULL, ...){
+  para <- .FitMethod(x, method, type, ...)
+  return(ShapiroStat(x,para))
+}
 
+## Low level Function that fit a distribution based on method on argument
+.FitMethod <- function(x, method, type, ...){
+  
+  ## Select the right fitting method
+  if(method == 'lmom'){
+    para <- lmomco::lmom2par(lmomco::lmoms(x), type, ...)
+  } else if(method == 'mle'){
+    para <- suppressWarnings(lmomco::mle2par(x,type, ...))
+  } else if(method == 'fgpa.mle'){
+    para <- fgpa1d(x)
+  } else if(method == 'fgpa.mle2'){
+    para <- fgpa2d(x)
+  } else if(method == 'fgpa.lmom'){
+    para <- fgpaLmom(x)
+  } else if(method == 'fgpa.mom'){
+    para <- fgpaMom(x)
+  }
+  
+  if(substr(method,1,5) == 'fgpa.' )
+    para <- lmomco::vec2par(c(0,para), 'gpa')
+  
+  return(para)
+}
+
+#' @importFrom lmomco vec2par rlmomco
 #' @export
 #' @rdname GofTest
 GofTest.fpot <- function(object, method = 'adtab', nsim = 1000, ...){
 
-  opara <- lmomco::vec2par(c(0,object$estimate), 'gpa')
+  opara <- vec2par(c(0,object$estimate), 'gpa')
   n <- length(object$excess)
-
+  
   ## Case Anderson-Darling using a table
   if(method == 'adtab'){
     stat <- AdStat(object$excess, para = opara)
@@ -183,34 +196,33 @@ GofTest.fpot <- function(object, method = 'adtab', nsim = 1000, ...){
   ## Case anderson darling using boostrap
   } else if(method == 'ad'){
 
-    if(object$method == 'lmom')
-      fitMethod <- 'fgpaLmom'
-    else if(object$method == 'mle')
-      fitMethod <- 'fgpa1d'
-    else if(object$method == 'mle2')
-      fitMethod <- 'fgpa2d'
-
     stat <- AdStat(object$excess, para = opara)
 
-    xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
-    boot <- apply(xboot, 2, AdStat, type = 'gpa', method = fitMethod)
-    pv <- mean(boot > stat, na.rm = TRUE)
+    if(nsim > 1){
+      xboot <- replicate(nsim, rlmomco(n,opara))
+      boot <- apply(xboot, 2, AdStat0, type = 'gpa', 
+                  method = paste0('fgpa.',object$method))
+      pv <- mean(boot > stat, na.rm = TRUE)
+    
+    } else {
+      pv <- NA 
+    }
 
   ## modified shapiro-wilk using boostrap
   } else if(method == 'shapiro'){
 
-    if(object$method == 'lmom')
-      fitMethod <- 'fgpaLmom'
-    else if(object$method == 'mle')
-      fitMethod <- 'fgpa1d'
-    else if(object$method == 'mle2')
-      fitMethod <- 'fgpa2d'
-
     stat <- ShapiroStat(object$excess, para = opara)
 
-    xboot <- replicate(nsim, lmomco::rlmomco(n,opara))
-    boot <- apply(xboot, 2, ShapiroStat, type = 'gpa', method = fitMethod)
-    pv <- mean(boot < stat, na.rm = TRUE)
+    if(nsim > 1){
+      xboot <- replicate(nsim, rlmomco(n,opara))
+      boot <- apply(xboot, 2, ShapiroStat0, type = 'gpa', 
+                  method = paste0('fgpa.',object$method))
+      pv <- mean(boot < stat, na.rm = TRUE)
+
+    } else {
+      pv <- NA 
+    }
+
   }
 
   ans <- list(stat = stat,
@@ -218,13 +230,28 @@ GofTest.fpot <- function(object, method = 'adtab', nsim = 1000, ...){
               distr = 'gpa',
               method = method)
 
-  class(ans) <- 'amaxGof'
+  class(ans) <- 'goftest'
 
   return(ans)
 }
 
 
-
+#' @export
+GofTest.nspot <- function(object, method = 'adtab', nsim = 1000, ...){
+  
+  ans <- list()
+  class(ans) <- 'fpot'
+  ans$estimate <- coef(object, 'kappa')
+  ans$excess <- residuals(object, 'scale')
+  
+  if(object$trend.method == 'reg-lmom')
+    ans$method <- 'lmom'
+  else
+    ans$method <- 'mle'
+  
+  return(GofTest(ans, method = method, nsim = nsim))
+  
+}
 
 #########################################################################
 # Anderson-Darling (AD) test for the Generalized Pareto distribution (GPA)

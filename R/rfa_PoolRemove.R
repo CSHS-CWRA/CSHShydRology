@@ -62,8 +62,13 @@ PoolRemove <-
            distr.fix = FALSE,
            verbose = TRUE){
 
+  ## allocate memory
   site.removed <- list()
-
+    
+  ## For POT analysis, the distribution must be GPA
+  if(obj$type == 'pot')
+    distr.fix <- TRUE
+      
   ## Select the criteria for evaluating the homogeneity
   r <- which(c('H1','H2','H3') == method)
 
@@ -162,16 +167,15 @@ PoolRemove0 <- function(obj, method, nsim, distr.fix){
 
   ## Estimate the new regional L-moments
   obj$rlmom <- lmomRFA::regavlmom(dd[-mid,])
+  
+  v <- lmomco::vec2lmom(obj$rlmom, lscale = FALSE)
 
-  ## Refit the growth curve with maybe new distribution
-  if (obj$type == 'amax'){
-    v <- lmomco::vec2lmom(obj$rlmom, lscale = FALSE)
+  ## Refit the growth curve with the new distribution
+  if (obj$type == 'pot'){
+    obj$para <- lmomco::lmom2par(v, 'gpa', xi = 0)$para
+  } else {
     obj$para <- lmomco::lmom2par(v, obj$distr)$para
-
-  } else if (obj$type == 'pot'){
-    k <- 1/obj$rlmom[2]-2
-    obj$para <- c(1 + k, k)
-  }
+  } 
 
   return(obj)
 }

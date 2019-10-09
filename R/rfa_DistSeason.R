@@ -8,7 +8,8 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param x,a Coordinates in the seasonal space: radius `x` and angle `a`.
+#' @param x,a Coordinates in the seasonal space. 
+#'  Can be a data.frame or vectors with radius `x` and angle `a`.
 #'
 #' @param form Formula and dataset providing the coordinates of the
 #'   seasonal space. Must be of the form `radius ~ angle`.
@@ -17,6 +18,8 @@
 #'   By default it is 1/pi, which bring angle in the interval [0,1]. 
 #'   
 #' @param ... Other parameters.
+#' 
+#' @seealso \link{SeasonStat}
 #'
 #' @references
 #'

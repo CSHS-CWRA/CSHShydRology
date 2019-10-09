@@ -21,6 +21,10 @@ expect_true(out$pvalue < .1)
 fit <- FitAmax(x, 'glo', method = 'mle', varcov = FALSE)
 GofTest(fit, method = 'ad', nsim = 5)
 
+## verify nsim = 0
+out <- GofTest(f, method = 'ad', nsim = 0)
+expect_true(is.na(out$stat))
+
 fit <- FitAmax(x, 'pe3', method = 'lmom', varcov = FALSE)
 GofTest(fit, method = 'shapiro', nsim = 5)
 
@@ -30,3 +34,8 @@ f <- FitPot(x , u = 0)
 out <- GofTest(f)
 expect_equal(signif(out$stat), 0.0116331)
 GofTest(f, method = 'ad', nsim = 5)
+
+
+## Verify the nsim = 10
+out <- GofTest(f, method = 'ad', nsim = 0)
+expect_true(is.na(out$stat))

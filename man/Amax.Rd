@@ -7,6 +7,27 @@
 \alias{qAmax}
 \alias{rAmax}
 \alias{lAmax}
+\alias{fAmax}
+\alias{pgev}
+\alias{qgev}
+\alias{dgev}
+\alias{rgev}
+\alias{fgev}
+\alias{pglo}
+\alias{qglo}
+\alias{dglo}
+\alias{rglo}
+\alias{fglo}
+\alias{ppe3}
+\alias{qpe3}
+\alias{dpe3}
+\alias{rpe3}
+\alias{fpe3}
+\alias{pgno}
+\alias{qgno}
+\alias{dgno}
+\alias{rgno}
+\alias{fgno}
 \title{Basic probability functions for distribution of annual maximums}
 \usage{
 dAmax(x, para, distr, log = FALSE)
@@ -18,6 +39,48 @@ qAmax(p, para, distr)
 rAmax(n, para, distr)
 
 lAmax(l, distr, ...)
+
+fAmax(x, distr, nmax = 3)
+
+pgev(x, xi, alf, kap)
+
+qgev(p, xi, alf, kap)
+
+dgev(x, xi, alf, kap, log = FALSE)
+
+rgev(n, xi, alf, kap)
+
+fgev(x, p0 = NULL, ...)
+
+pglo(x, xi, alf, kap)
+
+qglo(p, xi, alf, kap)
+
+dglo(x, xi, alf, kap, log = FALSE)
+
+rglo(n, xi, alf, kap)
+
+fglo(x, p0 = NULL, ...)
+
+ppe3(x, mu, sig, g)
+
+qpe3(p, mu, sig, g)
+
+dpe3(x, mu, sig, g, log = FALSE)
+
+rpe3(n, mu, sig, g)
+
+fpe3(x, p0 = NULL, ...)
+
+pgno(x, xi, alf, kap)
+
+qgno(p, xi, alf, kap)
+
+dgno(x, xi, alf, kap, log = FALSE)
+
+rgno(n, xi, alf, kap)
+
+fgno(x, p0 = NULL, ...)
 }
 \arguments{
 \item{x, q}{Vector of quantiles.}
@@ -41,6 +104,12 @@ lAmax(l, distr, ...)
 Density, distribution function, quantile function and random generation
 for various distribution used in the modeling annual maximums.
 }
+\details{
+The `f-functions` such as `fgev` a low-level functions that provide the 
+parameters estimated by the technique of maximum likelihood. 
+The likelihood is optimized by the function `optim` where the other arguments
+`...` are used to control the optimization process.
+}
 \examples{
 
 u <- runif(5)
@@ -53,7 +122,15 @@ sum(dAmax(x, c(100,30, 0), 'gev', log = TRUE))
 
 lAmax(c(100, .3, .2), 'gev', lscale = FALSE)
 
-
+x <- rgev(1000,100, 30, -.05)
+p <- pgev(x, 100, 30, -0.05)
+x <- qgev((1:1000)/1001, 100, 30, -0.05)
+d <- dgev(x, 100, 30, -0.05)
+f <- fgev(x)
+f <- fpe3(x, method = 'BFGS', control = list(maxit = 1000))
+}
+\seealso{
+\link{FitAmax}, \link{optim}.
 }
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>

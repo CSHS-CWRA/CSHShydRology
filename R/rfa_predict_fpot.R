@@ -19,6 +19,8 @@
 #'   
 #' @param nsim Number of bootstrap sample.
 #' 
+#' @param out.matrix Logical. Should the bootstrap sample be returned?
+#' 
 #' @param ... Other parameters.
 #' 
 #' @seealso \link{FitPot}
@@ -45,16 +47,14 @@ predict.fpot <-
            se = FALSE,
            ci = "none", 
            alpha = 0.05, 
-           nsim = 1000, 
+           nsim = 1000,
+           out.matrix = FALSE,
            ...){
 
-  ## Define the m-observation return level
-  lambda <- rt * object$unit * object$nexcess / object$ntot
-
   ## funtion that compute the return period
-  Fpred <- function(para){
+  Fpred <- function(para, lambda){
 
-    if(abs(para[2]) > 1e-8)
+    if(abs(para[2]) > sqrt(.Machine$double.eps))
       ans <- object$u + para[1]/para[2] * (1-lambda^(-para[2]) )
     else
       ans <- object$u + para[1] * log(lambda)
@@ -62,7 +62,8 @@ predict.fpot <-
     return(ans)
   }
 
-  hatRt <- Fpred(object$estimate)
+  lambda <- object$nexcess * rt * object$unit / object$ntot
+  hatRt <- Fpred(object$estimate, lambda)
 
   ## Standard error by delta method
   if(se | ci %in% c('delta','profile')){
@@ -88,23 +89,33 @@ predict.fpot <-
   if(ci == 'boot'){
 
     ## Resample
-    xboot <- replicate(nsim, 
-                       sample(object$excess, object$nexcess, replace = TRUE))
-
-    ## Refit and predict
+    nexcess <- rpois(nsim,object$nexcess)
+    Fsim <- function(l, p) rgpa(l, p[1], p[2])
+    xboot <- lapply(nexcess, Fsim, object$estimate)
+    
+    ## Define the m-observation return level
+    lambdas <- lapply(nexcess, '*', rt * object$unit / object$ntot) 
+    
     if(object$method == 'lmom')
-      fn <- function(z) Fpred(fgpaLmom(z))
+      fn <- fgpaLmom
+    else if(object$method == 'mom')
+      fn <- fgpaMom
     else if(object$method == 'mle2')
-      fn <- function(z) Fpred(fgpa2d(z))
+      fn <- fgpa2d
     else if (object$method == 'mle')
-      fn <- function(z) Fpred(fgpa1d(z))
-
-    pboot <- apply(xboot,2,fn)
+      fn <- fgpa1d
+    
+    pboot <- lapply(xboot, fn)
+    qboot <- mapply(Fpred, pboot, lambdas)
 
     ## Compute interval
-    bootci <- t(apply(pboot, 1, quantile, c(alpha/2, 1-alpha/2)))
+    bootci <- t(apply(qboot, 1, quantile, c(alpha/2, 1-alpha/2)))
     lb <- bootci[,1]
     ub <- bootci[,2]
+    
+    pboot <- do.call(rbind, pboot)
+    qboot <- t(qboot)
+    colnames(qboot) <- paste0('Q',rt)
 
   }
 
@@ -142,20 +153,18 @@ predict.fpot <-
         }
 
         ## Compute the profile likelihood
-        llik0 <- -goptimize(nllik, bnd0)$objective
+        suppressWarnings(llik0 <- -optimize(nllik, bnd0)$objective)
         return(2*(llikFull-llik0))
 
       }
 
       ## Lower bound
-      suppressWarnings(lb[ii] <-
-                goptimize(function(z) abs(Dfun(z) - khi),
-                         c(lb0[ii],hatRt[ii]))$minimum)
+      suppressWarnings(lb[ii] <- optimize(function(z) abs(Dfun(z) - khi),
+                                          c(lb0[ii],hatRt[ii]))$minimum)
 
       ## Upper bound
-      suppressWarnings(ub[ii] <-
-                         goptimize(function(z) abs(Dfun(z) - khi),
-                                  c(hatRt[ii], ub0[ii]))$minimum)
+      suppressWarnings(ub[ii] <- optimize(function(z) abs(Dfun(z) - khi),
+                                          c(hatRt[ii], ub0[ii]))$minimum)
 
     } # end for
 
@@ -181,28 +190,9 @@ predict.fpot <-
   } else {
     rownames(ans) <- as.character(rt)
   }
+  
+  if(out.matrix)
+    ans <- list(pred = ans, para = pboot, qua = qboot)
 
   return(ans)
-}
-
-
-#################################
-# One Dimensional Optimization
-#
-# Perform an initial search inside a grid of points before performing
-# standard optimization routine.
-#
-# param res Number of subdivisions.
-# param ... See basic function optimize
-
-goptimize <- function(fn, interval, res = 20, ...){
-
-  igrid <- seq(interval[1],interval[2], len = res)
-  id <- which.min(sapply(igrid,fn))
-
-  if(id == 1) bnd0 <- igrid[1:2]
-  else if(id == res) bnd0 <- igrid[c(res-1,res)]
-  else bnd0 <- igrid[c(id-1,id)]
-
-  return(optimize(fn, bnd0, ...))
 }

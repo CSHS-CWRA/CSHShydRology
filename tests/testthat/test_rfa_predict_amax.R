@@ -7,14 +7,17 @@ x <- ExtractAmax(flow~date,flowStJohn, tol = 355)
 
 fit <- FitAmax(x$flow,'gev', method = 'mle')
 
+plot(fit, ci = TRUE)
+
 rp <- 1-1/c(10,100)
-rlev <- predict(fit, q = rp)
+rlev <- predict(fit, p = rp)
 expect_equal(signif(rlev), c(3356.64, 4250.40))
 expect_is(rlev, 'numeric')
 
-out <- predict(fit, se = TRUE, ci = 'delta')
+out <- predict(fit, p =c(.9,.99), se = TRUE, ci = 'delta')
 expect_true(all(colnames(out) == c('pred','se','lower','upper')))
 expect_is(out, 'data.frame')
+expect_equal(rownames(out), c('0.90','0.99'))
 
 out <- predict(fit, se = FALSE, ci = 'delta')
 expect_true(all(colnames(out)== c('pred','lower','upper')))

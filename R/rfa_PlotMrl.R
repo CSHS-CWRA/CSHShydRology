@@ -48,9 +48,8 @@ PlotMrl <- function(form,x, u,
                     ylim = NULL, display = TRUE, ...){
 
   ## reorganize the data
-  x <- model.frame(form,x)
-  dt <- x[,2]
-  x <- x[,1]
+  dt <- eval(form[[3]], envir = x)
+  x <- eval(form[[2]], envir = x)
 
   u <- as.numeric(u)
 
@@ -61,7 +60,7 @@ PlotMrl <- function(form,x, u,
     if(is.null(declust))
       cid <- x > u[ii]
     else if(declust == 'run')
-      cid <- which.clusters(x, u[ii], r)
+      cid <- which.clusters(x, dt, u[ii], r)
     else if( declust == 'wrc')
       cid <- which.floodPeaks(x, dt, u[ii], r = r, rlow = rlow)
 

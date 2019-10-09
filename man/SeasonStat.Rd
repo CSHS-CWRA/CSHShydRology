@@ -51,6 +51,9 @@ Burn, D.H. (1997). Catchment similarity for regional flood frequency analysis
   using seasonality measures. Journal of Hydrology 202, 212-230.
   https://doi.org/10.1016/S0022-1694(97)00068-1
 }
+\seealso{
+\link{DistSeason}
+}
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>
 }

@@ -97,20 +97,26 @@ fgpa2d <- function(x, sol = FALSE, par0 = NULL, ...){
     par0 <- c(log(mean(x)),-.6931472)
 
   ## estimate the parameter
-  para <- optim( par0, nllik, ...)$par
+  para <- optim(par0, nllik, ...)$par
   para[1] <- exp(para[1])
   para[2] <- expit0(para[2])
 
   names(para) <- c('alpha','kappa')
 
   if(sol){
-    ans <- list(par = para, varcov = matrix(NA,2,2))
+
+    ## compute the covariance matrix using the Hessian
+    nllik <- function(para) -sum(dgpa(x,para[1], para[2], log = TRUE))
+    hs <- optimHess(para, nllik)
+    vc <- try(chol2inv(chol(hs)))
     
-    ## evaluate the covariance matrix
-    ans$varcov[2,2] <- 1-para[2]
-    ans$varcov[1,1] <- 2 * para[1]^2
-    ans$varcov[1,2] <- ans$varcov[2,1] <- para[1]
-    ans$varcov <- ans$varcov * ans$varcov[2,2] / length(x)
+    ## correct for positive-definite if necessary
+    if(class(vc) == 'try-error'){
+      hs <- as.matrix(Matrix::nearPD(hs, doSym = TRUE)$mat)
+      vc <- chol2inv(chol(hs))
+    }
+      
+    ans <- list(par = para, varcov = vc)
 
   } else {
     ans <- para
@@ -122,8 +128,22 @@ fgpa2d <- function(x, sol = FALSE, par0 = NULL, ...){
 #' @export
 #' @rdname fgpa
 fgpaLmom <- function(x){
-  lmom0 <- lmomco::lmoms(x, nmom = 3)
-  return(lmomco::lmom2par(lmom0,'gpa', xi = 0)$para[-1])
+  beta <- lmomco::pwm(x, nmom = 2)$betas
+  k <- beta[1]/(2*beta[2]-beta[1]) - 2
+  a <- beta[1] * (1 + k)
+  
+  return(c(alpha = a, kappa = k))
+}
+
+#' @export
+#' @rdname fgpa
+fgpaMom <- function(x){
+  m <- mean(x)
+  s2 <- var(x)
+  k <- 0.5 * (m^2 / s2 - 1)
+  a <- m * (1+k)
+  
+  return(c(alpha = a, kappa = k))
 }
 
 

@@ -145,11 +145,13 @@ FitRoi <-
     nk0 <- rep(nk[1],nrow(h))
   }
 
-  ## add a column to store weights and extract response
-  x <- get_all_vars(phy, x, .ww = 0)
+  ## extract response and design matrix
+  #x <- get_all_vars(phy, x, .ww = 0)
+  xmat <- model.matrix(phy,x)
+  xmat.new <- model.matrix(phy,xnew) 
   y0 <- eval(phy[[2]], envir = x)
   
-
+  ## Training indices
   train <- seq(nrow(x))
   valid <- seq(nrow(x)+1,nrow(crd))
 
@@ -158,11 +160,7 @@ FitRoi <-
   ##-------------------------
   
   ## allocate memory 
-  .ww <- NULL ## avoid global variable with no clear bind error forcheck
   pred <- rep(NA, length(valid))
-  
-  if(se)
-    predSe <- rep(NA, length(valid))
   
   for(ii in seq_along(valid)){
 
@@ -171,23 +169,16 @@ FitRoi <-
 
     ## Fit local linear model. With weight if necessary.
     if(ker){
-      x[nn,'.ww'] <- 1-(h[valid[ii],nn]/max(h[valid[ii],nn]))^2 
-      fit <- lm(phy, data = x[nn,], weights = .ww)
-
+      fit <- lm.wfit(xmat[nn,], y0[nn], 
+                     w = 1-(h[valid[ii],nn]/max(h[valid[ii],nn]))^2)
     } else{
-      fit <- lm(phy, data = x[nn,])
+      fit <- lm.fit(xmat[nn,], y = y0[nn])
     }
     
-    if(se){
-      out <- predict(fit, xnew[ii,], se.fit = TRUE)
-      pred[ii] <- out$fit
-      predSe[ii] <- out$se.fit
-    
-    } else{
-      pred[ii] <- predict(fit, xnew[ii,])
-    }
+    pred[ii] <- crossprod(xmat.new[ii,], fit$coefficients)
   }
 
+  
   ## Save the specification of the model provided when the function is called
   ans <- list(call = list(nk = nk,
                           npred = length(valid), 
@@ -208,10 +199,7 @@ FitRoi <-
 
     ## For all training set
     yhat <- rep(NA, length(train))
-    
-    if(se)
-      yhatSe <- rep(NA, length(train))
-    
+ 
     for(ii in train){
 
       ## Delineate a neighborhood
@@ -219,29 +207,19 @@ FitRoi <-
 
       ## Fit local linear model. With weight if necessary.
       if(ker){
-        x[nn,".ww"] <- 1-(h[ii,nn]/max(h[ii,nn]))^2
-        fit <- lm(phy, data = x[nn,], weights = .ww)
+        fit <- lm.wfit(xmat[nn,], y0[nn],
+                      w = 1-(h[ii,nn]/max(h[ii,nn]))^2)
       } else {
-        fit <- lm(phy, data = x[nn,])
+        fit <- lm.fit(xmat[nn,], y = y0[nn])
       }
       
-      ## Predict the linear model and its standard deviation (if necessary)
-      if(se){
-        out <- predict(fit, x[ii,], se.fit = TRUE)
-        yhat[ii] <- out$fit
-        yhatSe[ii] <- out$se.fit
-      
-      } else{
-        yhat[ii] <- predict(fit, x[ii,])
-      }
+      yhat[ii] <- crossprod(xmat[ii,], fit$coefficients)
+
     }
     
     ## Save results
     ans$fitted <- yhat
     
-    if(se)
-      ans$fitted.se <- yhatSe
-      
     ## compute residuals
     yres <- y0-yhat
     
@@ -256,9 +234,6 @@ FitRoi <-
     
     ## Save known component
     ans$phy <- pred
-    
-    if(se)
-      ans$phy.se <- predSe
     
     ## Extract the coordinates for the residuals
     crd2 <- data.frame(yres = c(yres, rep(0,length(pred))), crd2)
@@ -291,17 +266,11 @@ FitRoi <-
     ## Evaluate prediction
     ans$pred <- pred + out$var1.pred
     ans$krige <- out$var1.pred
-    
-    if(se)
-      ans$krige.se <- sqrt(out$var1.var)
       
   } else {
     
     ## kriging is not used
     ans$pred <- pred
-    
-    if(se)
-      ans$pred.se <- predSe
   }
 
   ## return

@@ -233,7 +233,11 @@ coef.reglmom <- function(object, distr = NULL, ...){
 print.reglmom <- function(x, ...){
 
   cat('\nRegional frequency analysis with pooling groups\n')
-  cat('\ntype:', x$type)
+  
+  if(x$type == 'pot')
+    cat('\ntype: POT')
+  
+  
   cat('\nNb. site:', nrow(x$lmom))
   cat('\nStation-year:', sum(x$nrec))
 

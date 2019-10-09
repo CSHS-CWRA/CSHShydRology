@@ -25,6 +25,8 @@
 #' @param nsim Number of simulations used to evaluate the covariance matrix
 #'   when using L-moment estimator.
 #'   
+#' @param k Penality terms for the AIC.
+#'   
 #' @param tol.gev Accepted difference between the AIC of the GEV and the best 
 #'   best distribution. If the difference is inferior to \code{tol.gev}, the 
 #'   GEV distribution is prefered.
@@ -50,6 +52,7 @@
 #'
 #' @seealso \link{predict.amax}, \link{GofTest}, \link{plot.amax}.
 #'
+#' @importFrom lmomco lmoms
 #' @export
 #'
 #' @examples
@@ -85,19 +88,20 @@ FitAmax <-
            method = 'lmom',
            varcov = TRUE,
            nsim = 1000,
+           k = 2,
            ...,
            tol.gev = 0){
 
   ## compute lmoments once
-  lmm <- lmomco::lmoms(x)
+  lmm <- lmoms(x)
 
   ## If there is only one distribution passed
   if(length(distr) == 1)
-    return(FitAmax0(x, distr = distr, lmm = lmm, 
+    return(.FitAmax(x, distr = distr, lmm = lmm, 
                     method = method, varcov = varcov, nsim = nsim, ...))
 
   ## Fit data and compute the AIC for each distribution
-  Fun <- function(z) try(FitAmax0(x, distr = z, lmm = lmm, 
+  Fun <- function(z) try(.FitAmax(x, distr = z, lmm = lmm, 
                                   method = method, varcov = varcov, 
                                   nsim = nsim, ...))
   fits <- lapply(distr, Fun)
@@ -124,7 +128,8 @@ FitAmax <-
 ## see FitAmax for more info
 ## lmm is an output of lmomco::lmom that can be passed to speed up
 ## multiple evaluations
-FitAmax0 <-
+#' @importFrom lmomco lmom2par mle2par dlmomco rlmomco
+.FitAmax <-
   function(x, distr = 'gev', method = 'lmom',
            varcov = TRUE, lmm = NULL, nsim = 1000){
 
@@ -142,15 +147,15 @@ FitAmax0 <-
 
   ## Compute the L-moments and associated parameters
   if(is.null(lmm))
-    lmm <- lmomco::lmoms(x)
+    lmm <- lmoms(x)
 
-  f <- lmomco::lmom2par(lmm,distr)
+  f <- lmom2par(lmm,distr)
 
   if(method == 'mle'){
 
     ## Fit the distribution by maximum likelihood
     suppressWarnings(
-      para <- try(lmomco::mle2par(x, distr, para.init = f, silent = TRUE,
+      para <- try(mle2par(x, distr, para.init = f, silent = TRUE,
                                   hessian = varcov)))
 
     ## If mle return an error, use the L-moment estimate
@@ -160,7 +165,7 @@ FitAmax0 <-
       method = 'lmom'
 
       ## compute the log-likelihood
-      llik <- sum(log(lmomco::dlmomco(x,para)))
+      llik <- sum(log(dlmomco(x,para)))
 
       warning('Maximum likelihood has fail')
 
@@ -190,10 +195,10 @@ FitAmax0 <-
     ## Compute the covariance matrix by boostrap if required
     if(varcov){
 
-      xboot <- replicate(nsim, lmomco::rlmomco(length(x), para))
+      xboot <- replicate(nsim, rlmomco(length(x), para))
 
-      pboot <- apply(xboot, 2, lmomco::lmoms)
-      pboot <- lapply(pboot,lmomco::lmom2par, distr)
+      pboot <- apply(xboot, 2, lmoms)
+      pboot <- lapply(pboot, lmom2par, distr)
       pboot <- sapply(pboot, getElement, 'para')
 
       varcov <- as.matrix(Matrix::nearPD(cov(t(pboot)))$mat)
@@ -202,10 +207,11 @@ FitAmax0 <-
       varcov <- NA
 
     ## compute the log-likelihood
-    llik <- sum(log(lmomco::dlmomco(x,para)))
+    llik <- sum(log(dlmomco(x,para)))
   }
 
-
+  if(!all(is.na(varcov)))
+    colnames(varcov) <- rownames(varcov) <- names(para$para)
 
   ## Return an amax object
   ans <- list(lmom = lmm$lambdas,

@@ -5,7 +5,8 @@
 \title{Prediction of flood quantiles of a given return period.}
 \usage{
 \method{predict}{fpot}(object, rt = c(2, 5, 10, 20, 50, 100),
-  se = FALSE, ci = "none", alpha = 0.05, nsim = 1000, ...)
+  se = FALSE, ci = "none", alpha = 0.05, nsim = 1000,
+  out.matrix = FALSE, ...)
 }
 \arguments{
 \item{object}{Output of \link{FitPot}.}
@@ -20,6 +21,8 @@ Delta method (\code{'delta'}), profile likelihood (\code{'profile'})
 and nonparametric bootstrap (\code{'boot'})}
 
 \item{nsim}{Number of bootstrap sample.}
+
+\item{out.matrix}{Logical. Should the bootstrap sample be returned?}
 
 \item{...}{Other parameters.}
 }

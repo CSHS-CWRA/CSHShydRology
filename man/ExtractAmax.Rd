@@ -4,6 +4,8 @@
 \alias{ExtractAmax}
 \alias{ExtractAmax.formula}
 \alias{ExtractAmax.default}
+\alias{ExtractMmax.default}
+\alias{ExtractMmax.formula}
 \title{Extracts the annual maximums of a daily time series}
 \usage{
 ExtractAmax(x, ...)
@@ -12,6 +14,10 @@ ExtractAmax(x, ...)
 
 \method{ExtractAmax}{default}(x, tol = 0, nlab = "n", ylab = "yy",
   ...)
+
+\method{ExtractMmax}{default}(x, tol = 28)
+
+\method{ExtractMmax}{formula}(form, x, tol = 28)
 }
 \arguments{
 \item{x}{Data. If no formula is passed, the first column must be the
@@ -29,7 +35,7 @@ the number of yearly observations and the year.
 If set to NULL the given column is not added.}
 }
 \description{
-Returns a dataset containing the annual maximums,
+Returns a dataset containing the annual (Monthly) maximums,
 the date and the number of observations during the year.
 }
 \examples{

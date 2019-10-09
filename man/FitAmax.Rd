@@ -5,7 +5,7 @@
 \title{At-site frequency analysis using annual maximums}
 \usage{
 FitAmax(x, distr = c("gev", "gno", "pe3", "glo"), method = "lmom",
-  varcov = TRUE, nsim = 1000, ..., tol.gev = 0)
+  varcov = TRUE, nsim = 1000, k = 2, ..., tol.gev = 0)
 }
 \arguments{
 \item{x}{Data.}
@@ -22,6 +22,8 @@ hessian matrix. For L-moments, non-parametric bootstrap is used.}
 
 \item{nsim}{Number of simulations used to evaluate the covariance matrix
 when using L-moment estimator.}
+
+\item{k}{Penality terms for the AIC.}
 
 \item{...}{Other parameters.}
 

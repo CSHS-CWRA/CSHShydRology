@@ -2,29 +2,36 @@
 % Please edit documentation in R/rfa_SearchThresh.R
 \name{SearchThresh}
 \alias{SearchThresh}
+\alias{SearchThreshNs}
 \title{Fit POT models for a list of candidate thresholds}
 \usage{
 SearchThresh(form, x, u, nmin = 20, verbose = TRUE, ...)
+
+SearchThreshNs(form, x, tau, nmin = 20, verbose = TRUE, ...)
 }
 \arguments{
-\item{x, form}{Dataset and formula passed to \link{FitPot}.}
+\item{x, form}{Dataset and formula passed to \link{FitPot} or \cite{FitNsPot}.}
 
-\item{u}{Vector of candidate thresholds.}
+\item{u, tau}{Vector of candidate thresholds.}
 
 \item{nmin}{Stopping condition verifying that a minimal number of peaks
 are extracted.}
 
 \item{verbose}{Logical. Should a progress bar be displayed.}
 
-\item{...}{Other arguments passed to \link{FitPot}.}
+\item{...}{Other arguments passed to \link{FitPot} or \cite{FitNsPot}.}
 }
 \description{
 The function \code{SearchThresh} returns a data frame containing
 key value for the automatic selection of a threshold and where each row
 corresponds to a candidate threshold.
 The result is extracted from several calls to the function \code{FitPot}.
+The function \code{SearchThreshNs} perform the similar search except that 
+it used the nonstationary model fitted by \cite{FitNsPot}.
 }
 \examples{
+
+data(flowStJohn)
 
 # Create a list of candidate threshold
 lstu <- which.floodPeaks(flow~date, flowStJohn, u =500, r = 14)
@@ -38,6 +45,17 @@ FindThresh(out, method = 'sgn', tol.sgn = 0.1)
 FindThresh(out, method = 'ppy', tol.ppy = 2)
 FindThresh(out, method = 'max')
 
+## Search for nonstationary model
+
+tau <- seq(.93, .98, .005)
+taus <- SearchThreshNs(flow~date, flowStJohn, tau = tau, trend = ~1, thresh = ~1,
+                      declust = 'wrc', r = 14)
+                      
+FindThresh(us, method = 'sgn-max')
+
+}
+\seealso{
+\link{FitPot}, \cite{FitNsPot}, \cite{FindThresh}
 }
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>
