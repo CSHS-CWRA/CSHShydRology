@@ -1,19 +1,112 @@
+##############################################################################
+#' Prediction of the nonstationary model for AMAX using regression.
+#' 
+#' Return the flood quantiles associatied to specifc level of 
+#' exceeding probability or reliability level. 
+#' The function \code{BootNsAmax} is used to obtain bootstrap samples of 
+#' the parameters and flood quantiles.
+#' 
+#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#'
+#' @param object Output form \link{FitNsAmax}.
+#' 
+#' @param p Exceeding probability associated to a quantile or reliability level.
+#'    
+#' @param newdata Covariates. If \code{NULL} the input data that served to fit 
+#'   the model is used
+#'   
+#' @param reliability Logical. Should the flood quantile associated with 
+#'   reliability level be returned. In that case, \code{newdata} must represent
+#'   the period of interest. See Durocher et al. (2019) for more details.
+#' 
+#' @param ... Other parameters.
+#' 
+#' @details 
+#' 
+#' The reliability is defined as the probability that there is no event that 
+#' will exceed as given design level for a specific period. 
+#' When \code{reliability = TRUE}, the elements \code{newdata} are used to define
+#' that period. For instance the last 30 years can be obtained by passing the
+#' the last 30 records of the fitted dataset. The reliability level is control 
+#' by \code{p} and is \code{p^s} where \code{s} is the size of \code{newdata}.
+#' 
+#' @references 
+#' 
+#' Durocher, M., Burn, D. H., & Ashkar, F. (2019). Comparison of estimation 
+#'   methods for a nonstationary index-flood model in flood frequency analysis 
+#'   using peaks over threshold [Preprint]. 
+#'   https://doi.org/10.31223/osf.io/rnepc
+#' 
+#' @seealso \link{FitNsAmaxMle}, \link{FitNsPot}, \link{predict.nsamax}.
+#'
 #' @export
-#' @rdname FitNsAmax
+#'
+#' @examples
+#' 
+#' data(flowStJohn)
+#' 
+#' amax <- ExtractAmax(flow~date, flowStJohn, tol = 365)
+#' 
+#' ## Recenter year to start at 1
+#' amax$year <- as.integer(amax$yy) - 1926
+#' 
+#' fit <- FitNsAmax(flow~year, amax, 'gev', type = 'mult')
+#' 
+#' ## Last 30 years
+#' ref.period <- 59:88
+#' 
+#' hat <- predict(fit, c(.5, .9))
+#' rel <- predict(fit, c(.5, .9), newdata = amax[ref.period,], reliability = TRUE)
+#' 
+#' ## Data cloud
+#' plot(flow~year, amax)
+#' 
+#' ## Time-depedent return level
+#' for(ii in 1:2) lines(hat[,ii], col = 'red')
+#' 
+#' ## Reliability levels for last 30 years
+#' for(ii in 1:2) lines(cbind(ref.period, rel[ii]), lwd = 3, col = 'blue')
+#' 
+#' ## Using boostrap to evaluate the model uncertainty
+#' bs <- BootNsAmax(fit, c(.5, .9), nsim = 50, 
+#'                  newdata = amax[ref.period,], reliability = TRUE)
+#' summary(bs)
+#' 
+#' ## Return a single simulation of the model
+#' simulate(fit)
+#' 
 predict.nsamax <- 
   function(object, 
            p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
            newdata = NULL,
-           reliability = FALSE){
+           reliability = FALSE, ...){
     
   if(is.null(newdata))
     newdata <- object$data
     
   if(!reliability){
     ans <- .predict.nsamax.rt(object, p, newdata)
+    
+    if(ncol(ans) == 1){
+      ans <- as.vector(ans)
+      names(ans) <- rownames(newdata)
+      
+    } else if(nrow(ans) == 1){
+      ans <- as.vector(ans)
+      names(ans) <- round(p,3)
+      
+    } else {
+      colnames(ans) <- round(p,3)
+      rownames(ans) <- rownames(newdata)
+    }
+    
   } else {
     ans <- .predict.nsamax.rel(object, p, newdata)
+    names(ans) <- round(p,3)
+    
   }
+  
+
   
   return(ans)  
 }
@@ -21,7 +114,7 @@ predict.nsamax <-
 .predict.nsamax.rel <- function(object, p, newdata){
  
   ## Evaluate trend
-  xmat <- model.matrix(object$formula, model.frame(object$formula, newdata))
+  xmat <- model.matrix(attr(object$data,'terms'), newdata)
   mu <- as.numeric(xmat %*% object$beta)
   
   if(object$type == 'mult')
@@ -59,7 +152,7 @@ predict.nsamax <-
            p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
            newdata = NULL){
     
-  xmat.new <- model.matrix(object$formula, newdata)
+  xmat.new <- model.matrix(attr(object$data,'terms'), newdata)
   
   if(object$type == 'mult'){
       zhat <- lmomco::qlmomco(p,object$para)
@@ -71,90 +164,6 @@ predict.nsamax <-
       yhat <- as.numeric(xmat.new %*% object$beta)
       ans <- outer(yhat, zhat, '+')
   }
-  
-  return(ans)
-}
-
-
-#' @export
-#' @rdname FitNsAmax
-BootNsAmax <- 
-  function(object,
-           p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-           newdata = NULL,
-           reliability = FALSE,
-           nsim = 1000, 
-           alpha = 0.95, 
-           verbose = TRUE){
-  
-  if(is.null(newdata))
-    newdata <- object$data  
-  
-  paras <- matrix(0, nsim, length(object$para$para))
-  betas <- matrix(0, nsim, length(object$beta))
-  
-  if(reliability){
-    quas <- matrix(0, nsim, length(p))
-  } else {
-    quas <- array(0, dim = c(nrow(newdata), length(p), nsim))
-  }
-  
-  xjj <- object$data
-  
-  if(verbose)
-    bar <- txtProgressBar()
-  
-  for(jj in 1:nsim){
-    
-    if(verbose)
-      setTxtProgressBar(bar, jj / nsim)
-    
-    ## Simulate a bootstrap sample
-    xjj[,1] <- simulate(object)
-    
-    ## Fit the model
-    fit <- FitNsAmax(form = object$formula, x = xjj,
-                     distr = object$para$type, type = object$type) 
-    
-    paras[jj,] <- fit$para$para
-    betas[jj,] <- fit$beta
-    
-    if(reliability){
-      quas[jj,] <- predict(fit, p, newdata, TRUE)
-    } else{
-      quas[,,jj] <- predict(fit, p, newdata, FALSE)
-    }
-  }    
-  
-  colnames(paras) <- names(fit$para$para)
-  colnames(betas) <- names(fit$beta)
-  colnames(quas) <- as.character(round(p,3))
-  
-  ans <- list(para = paras,
-              beta = betas,
-              qua = quas)
-  
-  class(ans) <- 'bootns'
-  
-  return(ans)
-}
-
-#' @export
-#' @rdname FitNsAmax
-summary.bootns <- function(object, variable = 'para', alpha = 0.05){
- 
-  if(variable == 'qua' & length(dim(object$qua)) == 3 ){
-    id <- 1:2
-  } else{
-    id <- 2
-  }
-      
-  vmu <- apply(object[[variable]], id, mean)
-  vse <- apply(object[[variable]], id, sd)
-  vlb <- apply(object[[variable]], id, quantile, alpha/2)
-  vub <- apply(object[[variable]], id, quantile, 1-alpha/2)
-  
-  ans <- data.frame(mean = vmu, se = vse, lower = vlb, upper = vub)
   
   return(ans)
 }

@@ -12,6 +12,8 @@
 #'   See \link{predict.amax} with argument Delta method.
 #'   
 #' @param main,ylab,xlab Graphical parameters. See \code{\link{par}}.
+#' 
+#' @param xlim,ylim Limits of the graphic.
 #'
 #' @param col.ci,lty.ci,lwd.ci Graphical parameters determining the 
 #'   confidence intervals.

@@ -1,4 +1,4 @@
-#' Fitting a regional model by maximum likelihood methods.
+#' Fitting a regional model by likelihood techniques.
 #' 
 #' Return the fitting regional of a multiple sites based on likelihood 
 #' techniques.
@@ -13,9 +13,9 @@
 #' 
 #' @param index A scale factor to standardize each sites. 
 #' 
-#' @param p0 Initial parameter estimates. 
+#' @param para0 Initial parameter estimates. 
 #' 
-#' @param ... Further arguments pass to the \link{optim} function.
+#' @param ... Other parameters to pass to the \link{optim} function.
 #'
 #' @return
 #' 
@@ -33,7 +33,7 @@
 #' 
 #' * Padoan, S. A., Ribatet, M., & Sisson, S. A. (2010). Likelihood-Based 
 #' Inference for Max-Stable Processes. Journal of the American Statistical 
-#' Association, 105(489), 263–277. https://doi.org/10.1198/jasa.2009.tm08577
+#' Association, 105(489), 263-277. https://doi.org/10.1198/jasa.2009.tm08577
 #' 
 #' @details 
 #' 
@@ -70,7 +70,7 @@
 #' same type of model should be used.
 #' 
 #' 
-#' @seealso \link{FitMargin} and \link{predict.poolmle}.
+#' @seealso \link{FitPoolMargin} and \link{predict.poolmle}.
 #' @export
 #'
 #' @examples
@@ -89,15 +89,16 @@
 #' print(fit.gev$llik)
 #' print(fit.gno$llik)
 #' 
+#' ## Return all the parameters of the marginal distribution.
+#' coef(fit.gev)
+#' 
 #' ## Exemple of index-flood model estimated by MLE
-#' fit <- FitPoolMle(xw, 'gev', type = 'mean')
+#' fit <- FitPoolMle(xw, 'gev', type = 'cv')
 #' print(fit)
 #' 
-#' ## Return all the parameters of the marginal distribution.
-#' coef(fit)
 #' 
 FitPoolMle <- function(x, distr = 'gev', type = 'mean', 
-                       index = NULL, p0 = NULL, ...){
+                       index = NULL, para0 = NULL, ...){
   
   ## Verify the choice of the selected distribution
   if(!(distr %in% c('gpa', 'gev', 'glo', 'gno', 'pe3')))
@@ -118,14 +119,14 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   if(type == 'mean'){
     suppressWarnings(
       ans <- .FitPoolMle.mean(x = xl, distr = distr, index = index,
-                                   p0 = p0, dfun = dfun, ...))
+                                   para0 = para0, dfun = dfun, ...))
   } else if(type == 'cv'){
     
     if(distr == 'gpa')
       stop('A 3 parameters distribution must be used with this regional model')
     
     suppressWarnings(
-      ans <- .FitPoolMle.cv(x = xl, distr = distr, p0 = p0, dfun = dfun, ...))
+      ans <- .FitPoolMle.cv(x = xl, distr = distr, para0 = para0, dfun = dfun, ...))
     
   } else if(type == 'shape' & distr == 'gpa'){
     suppressWarnings(
@@ -134,7 +135,7 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   } else if(type == 'shape' & distr != 'gpa'){
 
     suppressWarnings(
-      ans <- .FitPoolMle.shape(x = xl, distr = distr, p0 = p0, dfun = dfun, ...))
+      ans <- .FitPoolMle.shape(x = xl, distr = distr, para0 = para0, dfun = dfun, ...))
   }
   
   ## Format the output
@@ -148,7 +149,7 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   return(ans)
 }
 
-.FitPoolMle.mean <- function(x, distr, index = NULL, p0, dfun, ...){
+.FitPoolMle.mean <- function(x, distr, index = NULL, para0, dfun, ...){
   
   ## If not provided, extract the index-flood for each site
   if(is.null(index)){
@@ -174,19 +175,19 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   }
     
   ## If not provided, provide starting parameters
-  if(is.null(p0) & distr == 'gpa'){
-    p0 <- c(-1.2, -.1)
-  } else if(is.null(p0)){
-    p0 <- lmomco::lmom2par(lmomco::vec2lmom(c(1,.3,.23)), distr)$para
-    p0[2] <- log(p0[2])
+  if(is.null(para0) & distr == 'gpa'){
+    para0 <- c(-1.2, -.1)
+  } else if(is.null(para0)){
+    para0 <- lmomco::lmom2par(lmomco::vec2lmom(c(1,.3,.23)), distr)$para
+    para0[2] <- log(para0[2])
   }
   
   ## Estimation of the parameters
-  sol <- try(optim(p0, nllik.ind, ...), silent = TRUE)
+  sol <- try(optim(para0, nllik.ind, ...), silent = TRUE)
   
   if(class(sol) == 'try-error'){
-    p0[2] <- -p0[2] 
-    sol <- optim(p0, nllik.ind, ...)
+    para0[2] <- -para0[2] 
+    sol <- optim(para0, nllik.ind, ...)
   }
   
   if(sol$convergence != 0)
@@ -250,13 +251,13 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   return(ans)
 }
 
-.FitPoolMle.cv <- function(x, distr, dfun, p0 = NULL, ...){
+.FitPoolMle.cv <- function(x, distr, dfun, para0 = NULL, ...){
   
   ## extract the index-flood for each site
   cv <- mean( sapply(x,sd) / sapply(x, mean))
   rg <- lapply(x,range)
   
-  ## Function that return the 
+  ## Function that return the negative log-likelihood of one site
   nllik.site <- function(loc, z, scl, shp){
     -sum(dfun(z, loc, loc * exp(scl), shp, log = TRUE))
   }
@@ -271,16 +272,16 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
     sum(mapply(nllik.site, loc = loc, z = x,  MoreArgs = plst))
   }
   
-  if(is.null(p0))
-    p0 <- c(log(cv), -.1)
+  if(is.null(para0))
+    para0 <- c(log(cv), -.1)
   
   ## Estimate the parameters
-  sol <- try(optim(p0, nllik.reg, ...), silent = TRUE)
-  sol <- optim(p0, nllik.reg)
+  sol <- try(optim(para0, nllik.reg, ...), silent = TRUE)
+  sol <- optim(para0, nllik.reg)
   
   if(class(sol) == 'try-error' ){
-    p0[2] <- .1
-    sol <- try(optim(p0, nllik.reg, ...), silent = TRUE)
+    para0[2] <- .1
+    sol <- try(optim(para0, nllik.reg, ...), silent = TRUE)
   }
   
   if(sol$convergence != 0)
@@ -301,19 +302,20 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   return(ans)
 }
 
-.FitPoolMle.shape <- function(x, distr, dfun, p0 = NULL, ...){
+
+.FitPoolMle.shape <- function(x, distr, dfun, para0 = NULL, ...){
   
   paras <- as.data.frame(sapply(x,fAmax, distr))
   paras <- paras[-3,]
   paras[2,] <- log(paras[2,])
   
-  ## Function that return the 
+  ## Function that return the negative log-likelihood of one site
   nllik.site <- function(p, z, shp){
     -sum(dfun(z, p[1], exp(p[2]), shp, log = TRUE))
   }
   
   Fp <- function(z, p, shp){
-   optim(nllik.site, p = p, z = z , shp = shp)$par
+   optim(nllik.site, par = p, z = z , shp = shp)$par
   }
   
   nllik.reg <- function(shp){
@@ -323,20 +325,20 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
   }
   
   ## Find an initial set of shape parameter
-  if(is.null(p0))
+  if(is.null(para0))
     ini.seq <- seq(-.5,.5,.05)
   else
-    ini.seq <- seq(p0[1],p0[2],p0[3])
+    ini.seq <- seq(para0[1],para0[2],para0[3])
   
   suppressWarnings(
     ini <- lapply(ini.seq, function(z) try(nllik.reg(z), silent = TRUE)))
   
   ini.id <- which(sapply(ini,class) != 'try-error')
   
-  p0 <- range(ini.seq[ini.id])
+  para0 <- range(ini.seq[ini.id])
   
   ## Estimate the parameters
-  sol <- optimize(nllik.reg, p0)
+  sol <- optimize(nllik.reg, para0)
   
   index <- mapply(Fp, p = paras, z = x, 
                 MoreArgs = list(shp = sol$minimum))
@@ -355,12 +357,12 @@ FitPoolMle <- function(x, distr = 'gev', type = 'mean',
 
 
 #' @export
-print.poolmle <- function(x){
+print.poolmle <- function(x, ...){
   cat('\nRegional model for pooling groups\n')
   
   cat('\nType: ', x$type, sep = '')
   cat('\nNumber of sites:', length(x$index))
-  cat('\nInd. loglik:', format(x$llik, digits = 4))
+  cat('\nInd. loglik:', round(x$llik, digits = 2))
   
   cat('\nDistribution:', x$distr)
   cat('\nParameters\n')
@@ -368,18 +370,19 @@ print.poolmle <- function(x){
   
 }
 
-
-coef.poolmle <-function(object){
+#' @export
+coef.poolmle <-function(object, ...){
  
   nsite <- object$dim[2]
   
   if(object$type == 'mean'){
     ans <- replicate(nsite, object$para)
+    
   } else if(object$type == 'cv'){
     
     ans <- rbind(object$index, 
-                 object$index * object$para[2], 
-                 object$para[2])
+                 object$index * object$para[1], 
+                 object$para[1])
     
   } else if(object$type == 'shape'){
     ans <- rbind(object$index, object$para)

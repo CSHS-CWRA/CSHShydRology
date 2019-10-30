@@ -7,7 +7,7 @@ vignette: >
   \usepackage[utf8]{inputenc}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
-  chunk_output_type: console
+  chunk_output_type: inline
 ---
 
 ## Introduction
@@ -38,8 +38,8 @@ In total, the function identifies 88 annual maxima.
 
 ```{r}
 ## Extract the annual maxima
-anData <- ExtractAmax(flow ~ date, flowStJohn, tol = 365)
-nrow(anData)
+an <- ExtractAmax(flow ~ date, flowStJohn, tol = 365)
+nrow(an)
 ```
 
 The annual maxima are assumed to be independent and identically distributed.
@@ -67,7 +67,7 @@ The example below used the maximum likelihood method to estimate the
 three parameters of the GEV distribution. 
 
 ```{r}
-fitMle <- FitAmax(anData$flow, 'gev', method = 'mle')
+fitMle <- FitAmax(an$flow, 'gev', method = 'mle')
 print(fitMle)
 ```
 
@@ -112,11 +112,11 @@ samples be returned.
 
 ```{r}
 ## Fitting using L-moments
-fitLmm <- FitAmax(anData$flow, 'gev', method = 'lmom', varcov = FALSE)
+fitLmm <- FitAmax(an$flow, 'gev', method = 'lmom', varcov = FALSE)
 
 ## Prediction using bootstrap
 out <- predict(fitLmm, q = c(.9,.99), ci = 'boot', 
-               nsim = 1000, out.matrix = TRUE)
+               nsim = 500, out.matrix = TRUE)
 
 ## Structure of the output
 names(out)
@@ -145,7 +145,7 @@ cannot be rejected at this significant level.
 
 ```{r}
 ## Anderson-Darling test of goodness of fit
-GofTest(fitLmm, nsim = 1000)
+GofTest(fitLmm, nsim = 500)
 ```
 
 ## Selection of the best distribution
@@ -159,7 +159,7 @@ These distribution can also be fitted by the function `FitAmax` as shown below.
 
 ```{r}
 ## Fitting of the Log-normal distribution
-FitAmax(anData$flow, 'ln3', varcov = FALSE)
+FitAmax(an$flow, 'ln3', varcov = FALSE)
 ```
 
 When more than one distribution is passed, a best distribution is selected 
@@ -173,13 +173,260 @@ candidates <- c('gev','glo','ln3','pe3')
 
 ## Function that computes the AIC for a given distribution
 FAIC <- function(d)
-   AIC(FitAmax(anData$flow, d, method = 'mle'))
+   AIC(FitAmax(an$flow, d, method = 'mle'))
 
 ## AIC of all distributions
 sapply(candidates, FAIC)
 
 ## Automatic selection of the distribution
-FitAmax(anData$flow, candidates, method = 'mle')$distr
+FitAmax(an$flow, candidates, method = 'mle')$distr
+```
+
+## Nonstationary frequency analysis
+
+Until this point, it was assumed that the exceeding probability of annual flood
+events were constant in time. 
+More precisely, we were assuming that the observations $x(t)$ at time $t$ were following a 
+stationary stochastic process $X(t)$ that is not affected by time shift, _i.e._ $X(t) = X(t+s)$ for any $s$.  
+In many situations, this assumption does not represent the reality of the studied 
+phenomenon, which forces the consideration of nonstationary processes.
+We consider here two nonstationary models where a stationary process $Z(t)$ 
+is combined with either an additive $a(t)$ or a multiplicative trend $m(t)$,
+$$
+\begin{align}
+X(t) & = Z(t) + a(t) & \mathrm{(Add)}\\
+X(t) & = Z(t) \times m(t) & \mathrm{(Mult)}\\
+\end{align}.
+$$
+Both types of trend is relevant in different situations. For the additive trend, the variance 
+remains constant, even though the mean is evolving in
+time.
+On the other hand, both the mean and the variance increase or decrease
+in accordance with the multiplicative trend, while preserving the coefficient of variation at any time.
+The figure below illustrates the time series created by applying these two trends on the annual maximum flows.
+
+```{r}
+## Add a trend
+flow.sd <- sd(an$flow)
+an$flow.add <- an$flow + seq(-1,1, len = nrow(an)) * flow.sd
+an$flow.mult<- an$flow * seq(.7,1.3, len = nrow(an))
+
+## Recenter years to 1970
+an$yy <- as.integer(an$yy)
+
+```
+
+```{r, fig.height= 5, fig.width=7}
+plot(flow~yy, an, type = 'l', ylim = c(500,5500), col = 'black')
+lines(flow.add ~ yy, an, col = 'red', lty = 2)
+lines(flow.mult ~ yy, an, col = 'blue', lty = 2)
+legend('topleft', horiz = TRUE, col = c(1:2,4), lty = c(1,2,2),
+       legend = c('Original', 'Add', 'Mult'))
+```
+
+One procedure to estimate the nonstationary models consists in estimating first the trend by regression and then fitting a distribution on de-trended data.
+This is the procedure followed by the function `FitNsAmax`.
+The estimated additive trend denoted $\widehat a(t)$ is obtained by fitting 
+a regression model by least squares. 
+Afterwards, the parameters of $Z(t)$ are estimated from 
+the de-trended observations $x(t)-\widehat m(t)$ using L-moments.
+Similarly, the multiplicative trend $\widehat m(t)$ is derived from
+the log-linear model 
+
+$$
+\log\{x(t)\} = \log\{m(t)\} + \log\{ z(t)\} = m(t)^\ast + \epsilon(t)
+$$
+
+and the application of the L-moments estimator on $x(t)/\widehat m(t)$.
+Once the nonstationary model is fitted, exceeding probabilities and flood quantiles $x_p$ are evaluated using the formula 
+$$
+\Pr\left\{ Z(t) > x_p - \widehat a(t)  \right\}.
+$$
+for the additive trend and 
+$$
+\Pr\left\{ Z(t) > \frac{x_p}{\widehat m(t)}  \right\}.
+$$
+for the multiplicative trend.
+
+In the nonstationary framework, the probability of exceeding a specific event 
+time specific and so, the notion of return period in terms of an expected 
+waiting time must be generalized.
+Although such  a generalization exist, it is not a practical approach because 
+it require the extrapolation of a trend over a long period of time.
+For example, to estimate a 100-year event we need to evaluate a trend on more 
+than 100 years in the future, which is impossible to do accuratly.
+Nevertheless, it is still common in practice to call $x_p(t)$ a $T$-year event.
+
+Another way of looking at flood risks is in terms of a number of exceeding events. 
+Reliability is defined as the probability that no event exceeds 
+a given design level during a finite period of time.
+At the opposite, the risk of failure corresponds to the probability that at least one exceeding event occurs.
+Let's denote $p_i(x_R)$ the probability of not exceeding $x_R$ at year $t_i$.
+Assuming that the stationary process $Z(t)$ is not serially correlated,
+the reliability of the design level $x_R$ over a period $t_1, \ldots, t_s$ is 
+$$
+R = \prod_{i=1}^s p_i(x_R).
+$$
+
+This can be solved numerically to identify a flood of a given reliability level $R$.
+It should be noted that in the stationary framework, the reliability of an event 
+of probability $p$ over $s$ years is $R = p^s$.
+For instance, for $T=20$ and $N = 30$ we have a reliability of $0.95^{30} \approx 0.215$, which at the opposite implies that we have a probability of failure of
+$0.785$. 
+For the rest of the document, we will use this relationship to define a design
+level of return period $T$ as an event with reliability $p^s$.
+Accordingly, $p$ is the geometric mean of the $p_i(x_R)$ and therefore
+the design level of return period $T$ is a central measure for the flood quantiles
+$x_p(t)$ of the same return period.
+
+The example below fits three additive trends using `FitNsAmax`.
+The function `fitted` and `predict` are used to extract 
+10-year flood events.
+In addition, design level of the same return period are evaluated for the period starting on 1985 and ending on 2014 (30 years).
+The first model is a simple linear model, the second model follows represent a change point occurring in 1965 and the third model uses a spline function to approximate the combination of a long-term trend with periodic oscillations.
+
+
+```{r}
+fit.lin <- FitNsAmax(flow.add ~ yy, an, distr = 'gev', type = 'add')
+print(fit.lin)
+```
+
+```{r}
+## Other non linear trends
+an$stp <- as.integer(an$yy>1965)
+fit.stp <- FitNsAmax(flow.add ~ stp, an, distr = 'gev', type = 'add')
+
+library(splines)
+fit.ns <- FitNsAmax(flow.add ~ ns(yy, df = 7), an, distr = 'gev', type = 'add')
+```
+
+The figure below summarizes the output of the three nonstationary models.
+One can see that the time-varying 10-year flood events corresponds to vertical 
+translation of the additive trend. 
+The design levels of the last 30 years, illustrated by the ticker line, 
+is found to be similar across all models, even thought the three trends 
+appear to be relatively different. 
+
+```{r , fig.height= 5, fig.width=8}
+an85 <- (an$yy>1985) 
+prob <- c(0.9)
+plot(flow.add~yy, an, type = 'l',
+     xlab = 'Year',
+     ylab = 'Flow')
+
+Fgraph <- function(fit, col){
+  hat <- predict(fit, prob, newdata = an)
+  rhat <- predict(fit, prob, newdata = an[an85,], reliability = TRUE)
+
+  lines(an$yy, fitted(fit), col = col, lty = 2)
+  lines(an$yy, hat, col = col)
+  lines(cbind(an[an85,'yy'], rhat), col = col, lwd=3)
+}
+
+Fgraph(fit.lin, 'red')
+Fgraph(fit.stp, 'darkgreen')
+Fgraph(fit.ns, 'blue')
+
+legend('topleft', 
+       legend = c('Trend', 'Quantile', 'Reliability'),
+       col = c('darkgrey','darkgrey','darkgrey'), 
+       lty = c(2,1,1), 
+       lwd = c(1,1,3))
+
+legend('top', horiz = TRUE, 
+       legend = c( 'Linear', 'Step', 'Spline'),
+       col = c( 'red', 'darkgreen','blue'), 
+       lty = c(1,1), 
+       lwd = c(1,1))
+
+```
+
+Inference about the nonstationary model is carried out by parametric bootstraps 
+to ensure that the total variability estimated included the uncertainty 
+associated with both the regression model and the fitted distribution.
+The function `BootNsAmax` is used to simplify that process as shown in the 
+example below.
+
+```{r}
+hat <- BootNsAmax(fit.lin, p = prob, reliability = TRUE, nsim = 500, verbose = FALSE)
+summary(hat, variable = 'para')
+summary(hat, variable = 'qua')
+```
+
+An alternative to the procedure using regression to estimate deterministic trends, 
+nonstationarity can be modeled by considering time-varying parameter of the
+stochastic process. For the distribution GEV, GLO, GNO and PE3, there are three parameters that respectively represent location $\xi(t)$, scale $\alpha(t)$ and shape $\kappa(t)$.
+Similarly to the previous approach, we can consider the two following models
+
+$$
+\begin{array}{ll}
+
+\begin{cases}
+\xi(t) = b(t)\\
+\alpha(t) = \alpha\\
+\kappa(t) = \kappa
+\end{cases} &,
+
+\begin{cases}
+\xi(t) = b(t)\\
+\alpha(t) = \alpha \times b(t)\\
+\kappa(t) = \kappa
+\end{cases}
+
+\end{array}
+$$
+
+where $b(t)$ is time-varying function. The first model has a similar behavior to the additive trend model as only the location of the distribution changes. 
+The results of second model should be similar to the use of a multiplicative trend as
+the location and the scale are related by a constant factor.
+
+The function `FitNsAmaxMle` fits these nonstationary models using the maximum 
+likelihood technique.
+We illustrate it uses on the data that were created by incorporating the multiplicative 
+trend. The results are compared the regression-based with the parameter-based model.
+We also considered the GNO distribution to illustrate the capacity of `FitNsAmax`.
+The figure below shows the dashed represent the trends as either the location 
+parameters or the mean of the nonstationary models. 
+Notice that both model lead to similar 10-year design level and that the difference
+between the trends and the 10-year flood events is growing to preserve the 
+location-scale relationship. 
+
+```{r}
+fit.mult <- FitNsAmax(flow.mult ~ poly(yy, 3), an, distr = 'gno', type = 'mult')
+fit.mle <- FitNsAmaxMle(flow.mult ~ poly(yy, 3), an, distr = 'gno', type = 'mult', 
+                        control = list(maxit = 5000))
+```
+
+```{r fig.height= 5, fig.width=8}
+
+plot(flow.add~yy, an, type = 'l',
+     xlab = 'Year (ref = 1970)',
+     ylab = 'Flow')
+
+Fgraph(fit.mult, 'red')
+
+## MLE model
+hat <- predict(fit.mle, prob)
+loc <- predict(fit.mle, type = 'location')
+rhat <- predict(fit.mle, prob, newdata = an[an85,], type = 'reliability')
+
+col <- 'blue'
+lines(an$yy, loc, col = col, lty = 2)
+lines(an$yy, hat, col = col)
+lines(cbind(an[an85,'yy'], rhat), col = col, lwd=3)
+
+legend('topleft', 
+       legend = c('Location', 'Quantile', 'Reliability'),
+       col = c('darkgrey','darkgrey','darkgrey'), 
+       lty = c(2,1,1), 
+       lwd = c(1,1,3))
+
+legend('top', horiz = TRUE, 
+       legend = c( 'Regression', 'Stochastic'),
+       col = c( 'red', 'blue'), 
+       lty = c(1,1), 
+       lwd = c(1,1))
+
 ```
 
 ## Conclusion
@@ -205,4 +452,10 @@ Coles, S., 2001. An introduction to statistical modeling of extreme values.
 
 Hosking, J.R.M., Wallis, J.R., 1997. Regional frequency analysis: an approach 
   based on L-moments. Cambridge Univ Pr.
+
+Vogel, R. M., Yaindl, C., & Walter, M. (2011). Nonstationarity: Flood
+  Magnification and Recurrence Reduction Factors in the United States1. 
+  JAWRA Journal of the American Water Resources Association, 47(3), 
+  464–474. https://doi.org/10.1111/j.1752-1688.2011.00541.x
+
  

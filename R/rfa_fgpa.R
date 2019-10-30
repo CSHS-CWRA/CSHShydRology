@@ -3,12 +3,7 @@
 #'
 #' Low level functions for estimating of the generalized Pareto
 #' distribution(GPA) with two parameters. Can use
-#' either maximum likelihood or the method of L-moments.
-#' The algorithm of \code{fgpa2d} is using
-#' \code{optim} to directly optimize the log-likelihood (bivariate), while
-#' the algorithm of \code{fgpa1d} is using a transformation to use
-#' a univariate optimization routine. Additionally, \code{fgpa2d} constraint
-#' the shape parameter between -.5 and 1.
+#' either maximum likelihood, moment-based or L-moment-based methods.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
@@ -19,11 +14,19 @@
 #' @param sol Does solution from \code{optim} be returned.
 #'   In case of \code{fgpa1d}, it returns the variance covariance matrix.
 #'
-#' @param par0 Initial parameter.
+#' @param para0 Initial parameter.
 #'
 #' @param ... aditional arguments to pass to \code{\link{optim}}
 #'
-#' @section Reference:
+#' @details 
+#' 
+#' The algorithm of \code{fgpa2d} is using
+#' \code{optim} to directly optimize the log-likelihood (bivariate), while
+#' the algorithm of \code{fgpa1d} is using a transformation to use
+#' a univariate optimization routine. Additionally, \code{fgpa2d} constraint
+#' the shape parameter between -.5 and 1.
+#'
+#' @references 
 #'
 #' Davison AC, Smith RL. (1990) Models for Exceedances over High Thresholds.
 #'   Journal of the Royal Statistical Society Series B (Methodological).
@@ -40,6 +43,7 @@
 #' x <- rgpa(1000, 1, -.2)
 #' fgpa1d(x)
 #' fgpa2d(x)
+#' fgpaMom(x)
 #' fgpaLmom(x)
 #'
 fgpa1d <- function(x, sol = FALSE){
@@ -81,8 +85,9 @@ fgpa1d <- function(x, sol = FALSE){
 
 #' @export
 #' @rdname fgpa
-fgpa2d <- function(x, sol = FALSE, par0 = NULL, ...){
+fgpa2d <- function(x, sol = FALSE, para0 = NULL, ...){
 
+  ## constaint parameter by using transformation
   logit0 <- function(z) logit((z+.5)/1.5)
   expit0 <- function(z) expit(z)*1.5 -.5
 
@@ -90,14 +95,14 @@ fgpa2d <- function(x, sol = FALSE, par0 = NULL, ...){
   nllik <- function(para) -sum(dgpa(x,exp(para[1]),
                                     expit0(para[2]), log = TRUE))
 
-  if(!is.null(par0)){
-    par0[1] <- log(par0[1])
-    par0[2] <- logit0(par0[2])
+  if(!is.null(para0)){
+    para0[1] <- log(para0[1])
+    para0[2] <- logit0(para0[2])
   } else
-    par0 <- c(log(mean(x)),-.6931472)
+    para0 <- c(log(mean(x)),-.6931472)
 
   ## estimate the parameter
-  para <- optim(par0, nllik, ...)$par
+  para <- optim(para0, nllik, ...)$par
   para[1] <- exp(para[1])
   para[2] <- expit0(para[2])
 
@@ -146,12 +151,7 @@ fgpaMom <- function(x){
   return(c(alpha = a, kappa = k))
 }
 
-
-########################################################################
-# Logit function
-#
-# Return the logit of a functon or its inverse.
-#
+## Logistic function and its inverse
 logit <- function(x) 
   log(x/(1-x))
 

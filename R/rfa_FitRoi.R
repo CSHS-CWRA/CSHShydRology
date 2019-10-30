@@ -89,12 +89,13 @@
 #'  tid <- !vid
 #'
 #'  # formula of the relationship between flood quantile and descriptors
-#'  fphy <- log(y) ~ area + map + poly(wb,3) + poly(stream,3)
+#'  fphy <- log(y) ~ area + map + stream + wb + I(wb^2) + I(stream^2)
 #'  fsimilarity <- ~ area + map
 #'
 #'  ## Fit a local regression model
 #'  fit <- FitRoi(x = xdf[tid,], xnew = xdf[vid,], nk = 60,
 #'                phy = fphy, similarity = fsimilarity)
+#'  
 #'  print(fit)
 #'  response <- log(xdf[vid,'y']) 
 #'  sd(response - fit$pred)
@@ -146,9 +147,9 @@ FitRoi <-
   }
 
   ## extract response and design matrix
-  #x <- get_all_vars(phy, x, .ww = 0)
-  xmat <- model.matrix(phy,x)
-  xmat.new <- model.matrix(phy,xnew) 
+  xd <- model.frame(phy, x)
+  xmat <- model.matrix(attr(xd, 'terms'), xd)
+  xmat.new <- model.matrix(attr(xd, 'terms'), xnew) 
   y0 <- eval(phy[[2]], envir = x)
   
   ## Training indices
@@ -172,10 +173,10 @@ FitRoi <-
       fit <- lm.wfit(xmat[nn,], y0[nn], 
                      w = 1-(h[valid[ii],nn]/max(h[valid[ii],nn]))^2)
     } else{
-      fit <- lm.fit(xmat[nn,], y = y0[nn])
+      fit <- .lm.fit(xmat[nn,], y = y0[nn])
     }
     
-    pred[ii] <- crossprod(xmat.new[ii,], fit$coefficients)
+    pred[ii] <- as.numeric(xmat.new[ii,] %*% fit$coefficients)
   }
 
   
@@ -210,7 +211,7 @@ FitRoi <-
         fit <- lm.wfit(xmat[nn,], y0[nn],
                       w = 1-(h[ii,nn]/max(h[ii,nn]))^2)
       } else {
-        fit <- lm.fit(xmat[nn,], y = y0[nn])
+        fit <- .lm.fit(xmat[nn,], y = y0[nn])
       }
       
       yhat[ii] <- crossprod(xmat[ii,], fit$coefficients)
@@ -276,85 +277,4 @@ FitRoi <-
   ## return
   class(ans) <- 'roi'
   return(ans)
-}
-
-#' @export
-#' @rdname FitRoi
-print.roi <- function(x, ...){
- cat('\n\nRegion of Influence (ROI)\n')
- cat('\nNumber of sites:', x$call$nsite)
- cat('\nNumber of targets:', x$call$npred)
-
- cat('\n\nRegression:')
- cat('\n  Physic:', format(x$call$phy))
- cat('\n  size:', sort(unique(x$call$nk)))
- cat('\n  Similarity', format(x$call$similarity))
- cat('\n  Kernel:', format(x$call$ker))
-
- if(!is.null(x$model)){
-   cat('\n\nKriging:')
-   cat('\n  Coord:', format(x$call$kriging),'\n\n')
-   print(as.data.frame(x$model)[,1:4])
- }
-
-}
-
-#' @export
-#' @rdname FitRoi
-predict.roi <- function(object, x, fold = 5, ...){
-  
-  ## Organize the cross-validation group info
-  if(length(fold) == 1){
-    k <- 1:fold
-    fold <- sample(rep_len(k, nrow(x)))
-    
-  } else{
-    k <- sort(unique(fold))
-  }
-    
-  ## allocate memory
-  ans <- rep(0, nrow(x))
-  
-  for(ii in k){
-    
-    if(sum(fold != ii) <= object$call$nk)
-      stop('Requires more observations')
-      
-    ## For each cross-validation group
-    validSet <- which(fold == ii)
-    
-    if(is.null(object$call$kriging)){
-      
-      ## Fit model without kriging
-      hat <- FitRoi(x = x[-validSet,], 
-                  xnew = x[validSet,] , 
-                  nk = object$call$nk,
-                  phy = object$call$phy,
-                  similarity = object$call$similarity)
-      
-      
-    } else {
-      
-      ## Fit model with kriging
-      hat <- FitRoi(x = x[-validSet,], 
-                    xnew = x[validSet,], 
-                    nk = object$call$nk,
-                    phy = object$call$phy,
-                    similarity = object$call$similarity,
-                    kriging = object$call$kriging, 
-                    model = object$model)
-    }
-    
-    ans[validSet] <- hat$pred
-  }
-  
-  return(ans)
-}
-
-#' @export
-#' @rdname FitRoi
-residuals.roi <- function(object, x, fold = 5, ...){
-  response <- eval(object$call$phy[[2]], envir = x)
-  return(predict(object, x = x, fold = fold) - response)
-  
 }

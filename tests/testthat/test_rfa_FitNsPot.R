@@ -1,5 +1,7 @@
-
-library(CSHShydRology)
+###############################################################################
+## Test function FitNsPot
+## Martin Durocher <mduroche@@uwaterloo.ca>
+##############################################################################
 rm(list = ls())
 
 fit0 <- FitNsPot(flow~date, x = flowStJohn, tau = .95, 
@@ -70,32 +72,35 @@ expect_equal(names(rel), paste0('q',rt0))
 expect_equal(class(rel), 'numeric')
 
 ## verify that boot
-out0 <- BootNsPot(fit, rt = c(10,100), newdata = xyy, reliability = FALSE,
-                  by.year = TRUE)
+out0 <- BootNsPot(fit, rt = c(10,100), nsim = 5, x = flowStJohn, reliability = FALSE)
+
+out0 <- BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
+                  newdata = xyy, reliability = FALSE)
 
 round(summary(out0), 3)
 
-out0 <- BootNsPot(fit, rt = c(10,100), newdata = xyy, reliability = FALSE)
+out0 <- BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
+                  newdata = xyy, reliability = FALSE)
 
-out <- BootNsPot(fit, rt = c(10,100), newdata = xyy, reliability = TRUE,
-                 by.year = TRUE)
+out <- BootNsPot(fit, rt = c(10,100), x = flowStJohn,
+                 newdata = xyy, reliability = TRUE)
 
-summary(out, 'para')%>% round(3)
-summary(out, 'qua')%>% round(3)
+summary(out, 'para')
+summary(out, 'qua')
 
 fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95, trend.method = 'mle',
                 trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
-predict(fit, reliability = TRUE)
+out <- predict(fit, reliability = TRUE)
 
-out <- BootNsPot(fit, rt = c(10,100), newdata = xyy, reliability = TRUE,
-                 by.year = TRUE)
+out <- BootNsPot(fit, rt = c(10,100), x = flowStJohn,
+                 newdata = xyy, reliability = TRUE)
 summary(out, 'qua')
 ##############################################################################
-fit <- FitNsPot(flow~date, x = xyy, tau = .95, declust = 'wrc', r = 14)
+fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95, declust = 'wrc', r = 14)
 
 xyy<- data.frame(flow =0, date = as.Date(paste(1985:2014, 7, 15, sep = '-')))
 
-predict(fit, c(10,100), xyy, reliability = TRUE)
+predict(fit, rt = c(10,100), newdata = xyy, reliability = TRUE)
 
 form <- flow~date
 x <- flowStJohn

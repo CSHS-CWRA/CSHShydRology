@@ -10,10 +10,13 @@ xd0 <- with(flowUngauged,
              map    = scale(log(map)))
   )
 
+rownames(xd0) <- flowUngauged$site
+
 ## ------------------------------------------------------------------------
 ## Project the coordinates
 coord <- cmdscale(GeoDist(~lon+lat,flowUngauged))
 colnames(coord) <- c('lon','lat')
+rownames(coord) <- flowUngauged$site
 
 xd0 <- cbind(xd0, coord)
 
@@ -75,13 +78,15 @@ plot(cv0, crit = 'mad')
 set.seed(392)
 kf <- sample(rep_len(1:5, nrow(xd)))
 
+formula.phy <- log(q100) ~ area + map + stream + wb
+
 ## Perform cross-validation with all descriptors
 cv0 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
 ## Formula without wb and stream
-formula.phy2 <- log(q100) ~ area + map 
+formula.phy2 <- log(q100) ~ area + map
 
 cv1 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy2, similarity = formula.dist,
@@ -170,16 +175,13 @@ Fboot <- function(){
   boot.resid <- sample(resid.mdl, nrow(xd), replace = TRUE)
   xd.boot$q100 <- exp(lq100[,boot.jj] + boot.resid)
   
-  return(FitRoi(x = xd.boot, xnew = target, nk = 50, 
-              phy = formula.phy, similarity = formula.dist)$pred) 
+  FitRoi(x = xd.boot, xnew = target, nk = 70, 
+              phy = formula.phy, similarity = formula.dist)$pred
 }
 
 boot <- replicate(nboot, Fboot())
+rownames(boot) <- rownames(target)
 
-## Evaluate the standard deviation of the bootstrap sample.
-boot.se <- apply(boot, 1, sd)
-round(boot.se[1:3],3)
+apply(boot, 1, sd)
 
-## Standard error of the direct regression model
-round(fit$pred.se[1:3],3)
 

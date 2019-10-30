@@ -11,8 +11,12 @@
 #'
 #' @param x Dataset in the wide format
 #'
-#' @param method Estimation method. Can be either \code{'emp'} for estimating
-#'   the empirical matrix or \code{'exp'} for fitting power exponential model.
+#' @param type Model type. Can be either \code{'emp'} for estimating
+#'   the empirical correlation matrix or \code{'exp'} 
+#'   for fitting power exponential model.
+#'   
+#' @param method Measure of association used to evaluate dependence. 
+#'   Either \code{'spearman'} or \code{'kendall'}.
 #'
 #' @param distance Matrix of distances. Necessary when using \code{'exp'}.
 #'
@@ -29,11 +33,12 @@
 #'
 #' @param distance.max  Maximal distance to consider for paired observations
 #'   in the fitting of the power exponential model.
+#'   
+#' @param distance.bin Number of equally space bins used in the fitting of the
+#'   of the power exponential model.
 #'
 #' @param start Initial parameter for optimization with the \code{exp} method.
 #'   It must have the form \code{(nugget, range)}.
-#'
-#' @param para Paramter of the power exponential model.
 #' 
 #' @param ... Other parameters.
 #'
@@ -58,7 +63,7 @@
 #' @export
 #'
 #' @examples
-#'
+#' \dontrun{
 #' data(flowAtlantic)
 #' 
 #' ## Organize annual maximums
@@ -75,41 +80,52 @@
 #' h <- h[colnames(xmat), colnames(xmat)]
 #'
 #' ## estimate intersite correlation using a model
-#' isite <- Intersite(xmat, distance = h, method = 'exp')
+#' isite <- Intersite(xmat, distance = h, type = 'exp')
 #' print(isite)
-#' plot(isite, xmat, h)
 #' 
 #' ## Evaluate emprirical correlation matrix
 #' isite <- Intersite(xmat[,1:5])
 #' print(isite)
 #' round(isite$model,2)
-#' 
+#' }
 #' 
 Intersite <-
   function(x,
-           method = 'emp',
+           type = 'emp',
+           method = 'spearman',
            distance = NULL,
-           nmin = 0,
+           nmin = 5,
            na.sub = 'avg',
            defpos = TRUE,
            smooth = 1,
            distance.max = Inf,
+           distance.bin = 15,
            start = NULL){
 
 
   if(!is.matrix(x))
     stop('Must be a matrix with sites in columns')
 
-  corr <- cor(x, use = 'pairwise.complete.obs', method = 'spearman')
-  corr <- 2*sin(pi/6*corr)
-
-  ## Flag sites with too few pairwise observations
+  ## Compute correlation coefficient derived from Spearman's rho or Kendall tau
+  corr <- cor(x, use = 'pairwise.complete.obs', method = method)
+  
+  if(method == 'spearman'){
+    corr <- 2*sin(pi/6*corr)
+  } else if(method == 'kendall'){
+    corr <- sin(pi/2*corr)
+  } else {
+    stop('Must choose a valid measure of association.') 
+  }
+    
+  ## Compute the number of paired observations for each site
   nmat <- crossprod(!is.na(x))
+  
+  ## Flag sites with too few pairwise observations
   cid <- (nmat < nmin)
   if (any(cid))
     corr[cid] <- NA
 
-  if (method == 'exp'){
+  if (type == 'exp'){
     ## --------------------------------------------
     ## Fit power exponential model for correlation
     ## --------------------------------------------
@@ -128,46 +144,55 @@ Intersite <-
 
     ## extract pairs
     pcor <- corr[lower.tri(corr)]
-    ph <- distance[lower.tri(distance)]
+    pdist <- distance[lower.tri(distance)]
     w <- nmat[lower.tri(nmat)]
 
     ## remove NA
     pid <- !is.na(pcor)
     pcor <- pcor[pid]
-    ph <- ph[pid]
+    pdist <- pdist[pid]
     w <- w[pid]
 
-    ## remove pairs too far apart
-    pid <- (ph <= distance.max)
+    ## remove pairs too far
+    pid <- (pdist <= distance.max)
     pcor <- pcor[pid]
-    ph <- ph[pid]
+    pdist <- pdist[pid]
     w <- w[pid]
 
+    ## binning
+    brks <- quantile(pdist, seq(0,1, len = distance.bin + 1))
+    brks.bin <- as.integer(cut(pdist, brks))
+    
+    pdist.mean <- tapply(pdist, brks.bin, mean)
+    pcor.mean <- tapply(pcor, brks.bin, mean)
+    w.sum <- tapply(pcor, brks.bin, sum)
+    
     ## Define power exponential model
-    Fpow <- function(p,h){
+    Fcor <- function(p,h){
       ## ensure positiveness
-      p[1] <- exp(p[1])/(1+exp(p[1]))
+      p[1] <- exp(p[1])/(1 + exp(p[1]))
       p[2] <- exp(p[2])
 
       return(p[1] * exp(-3*( h / p[2])^smooth))
     }
-
+    
     ## Define MSE of the correlation fit
-    Fobj <- function(p,h) sum(w*(pcor - Fpow(p,h))^2)
+    Fobj <- function(p) sum(w.sum *(pcor.mean - Fcor(p, pdist.mean))^2)
 
-    ## Optimize the MSE
+    ## Set a starting value
     if(is.null(start)){
-      start = c(2.2,log(mean(ph)))
+      start = c(2.2,log(mean(pdist)))
     } else{
       start = c(log(start[1]/(1-start)), log(start[2]))
     }
 
-    sol <- optim(start, Fobj, h = ph)
+    ## Optimize the MSE
+    sol <- optim(start, Fobj)
 
     rmse <- sqrt(sol$value)
 
     ## Create the new smooth correlation matrix base on fitted model
-    corr.model <- Fpow(sol$par,distance)
+    corr.model <- Fcor(sol$par,distance)
     diag(corr.model) <- 1
 
     ## Extract the parameters of the correlation model
@@ -176,10 +201,9 @@ Intersite <-
               smooth)
 
     names(para) <- c('nugget','range','smooth')
-    type <- 'exp'
 
 
-  } else if(method == 'emp') {
+  } else if(type == 'emp') {
 
     ##-----------------------------------------------------------##
     ## Correct the empirical correlation matrix
@@ -214,41 +238,33 @@ Intersite <-
   }
 
   ## Final output
-  ans <- list(method = method,
+  ans <- list(type = type,
+              method = method,
               corr = corr,
               model = corr.model,
               para = para,
               rmse = rmse)
+  
+  if(type == 'exp'){
+    ans$bin <- data.frame(x = pdist.mean, 
+                          y = pcor.mean,
+                          w = w.sum)
+  }
 
   class(ans) <- 'isite'
 
   return(ans)
 }
 
-#' @export
-#' @rdname Intersite
-print.isite <- function(x, ...){
-  cat('\nIntersite-correlation\n')
-  cat('\nMethod:', x$method)
-  cat('\nNb. sites:', ncol(x$corr))
 
-  if(x$method == 'exp'){
-    cat('\nRMSE:', format(x$rmse, digits = 4))
-    cat('\nParameter:\n')
-    print(x$para, digits = 4)
 
-  } else if(x$method == 'emp'){
-    cat('\nAverage:', round(x$para[1],3))
-  }
-}
-
-#' @export
-#' @rdname Intersite
-IntersiteMdl <- function(para, distance){
-
- distance <- as.matrix(distance)
- corr <- para[1] * exp(-3*( distance / para[2])^para[3])
- diag(corr) <- 1
-
- return(corr)
-}
+# @export
+# @rdname Intersite
+#IntersiteMdl <- function(para, distance){
+#
+# distance <- as.matrix(distance)
+# corr <- para[1] * exp(-3*( distance / para[2])^para[3])
+# diag(corr) <- 1
+#
+# return(corr)
+#}

@@ -29,7 +29,9 @@ Imports:
     lmomRFA,
     numDeriv,
     mnormt,
-    Matrix
+    Matrix,
+    boot,
+    quantreg
 Suggests: 
     knitr,
     testthat, 

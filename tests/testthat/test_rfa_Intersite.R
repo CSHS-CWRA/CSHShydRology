@@ -40,9 +40,9 @@ levels(sim$site) <- lvl
 
 smat <- DataWide(value ~ site + time, sim)
 
-ifit <- Intersite(smat, method = 'emp')
+ifit <- Intersite(smat, type = 'emp')
 
-expect_equal(ifit$method, 'emp')
+expect_equal(ifit$type, 'emp')
 
 expect_equal(colnames(ifit$corr), lvl)
 expect_equal(rownames(ifit$corr), lvl)
@@ -73,33 +73,33 @@ sim1 <- do.call(rbind, sby)
 
 ## If there is no common pairwise records
 x1 <- DataWide(value ~ site + time, sim1)
-ifit <- Intersite(x1, method = 'emp')
+ifit <- Intersite(x1, type = 'emp')
 expect_true(is.na(ifit$corr[1,2]))
 
 ## if there is less than 100 pairwise records
-ifit <- Intersite(x1, method = 'emp', nmin = 100)
+ifit <- Intersite(x1, type = 'emp', nmin = 100)
 expect_true(is.na(ifit$corr[5,1]))
 
 ## impute zero
-ifit <- Intersite(x1, method = 'emp', nmin = 100,
+ifit <- Intersite(x1, type = 'emp', nmin = 100,
                   na.sub = 'zero', defpos = FALSE)
 
 expect_equal(ifit$model[5,1], 0)
 
 ## impute avg (default)
-ifit <- Intersite(x1, method = 'emp', nmin = 100,
+ifit <- Intersite(x1, type = 'emp', nmin = 100,
                   defpos = FALSE)
 
 expect_equal(ifit$model[5,1], ifit$para[1])
 
 ## correct for definite positivness
-ifit <- Intersite(x1, method = 'emp', nmin = 100,
+ifit <- Intersite(x1, type = 'emp', nmin = 100,
                   na.sub = 'zero')
 
 chol(ifit$model)
 
 ## ------------------------
-## Case method = exp
+## Case type = exp
 ## ------------------------
 
 ## Fit the model and verify that a warning is issue if the label don't match
@@ -107,12 +107,12 @@ rownames(h20) <- colnames(h20) <- paste0(lvl,'0')
 
 x0 <- DataWide(value ~ site + time, sim)
 
-expect_warning(Intersite(x0, method = 'exp', distance = h20))
+expect_warning(Intersite(x0, type = 'exp', distance = h20))
 
 rownames(h20) <- colnames(h20) <- lvl
-ifit <- Intersite(x0, method = 'exp',  distance = h20)
+ifit <- Intersite(x0, type = 'exp',  distance = h20)
 
-expect_equal(ifit$method, 'exp')
+expect_equal(ifit$type, 'exp')
 
 expect_equal(names(ifit$para),c('nugget', 'range', 'smooth'))
 mad <- max(abs(ifit$para - c(0,3,1)))
@@ -123,4 +123,13 @@ expect_true(mad < 0.02)
 
 mad <- mean(abs(as.vector(corr.mat - ifit$corr)))
 expect_true(mad < 0.02)
+
+##############################################
+## Verify that kendall tau works
+##############################################
+
+smat0 <- smat[1:500,]
+ifitk <- Intersite(smat0, type = 'emp', method = 'kendall')
+ifits <- Intersite(smat0, type = 'emp', method = 'spearman')
+expect_true(abs(ifitk$para-ifitk$para) < 0.05)
 

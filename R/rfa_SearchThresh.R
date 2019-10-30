@@ -16,6 +16,8 @@
 #' 
 #' @param nmin Stopping condition verifying that a minimal number of peaks
 #'   are extracted.
+#'   
+#' @param newdata Dataset of the covariates at the predicted dates.
 #' 
 #' @param verbose Logical. Should a progress bar be displayed.
 #' 
@@ -44,10 +46,13 @@
 #' ## Search for nonstationary model
 #' 
 #' tau <- seq(.93, .98, .005)
+#' yr <- which.day(flowStJohn$date, '0715')
+#' nd <- flowStJohn[yr,]
+#' 
 #' taus <- SearchThreshNs(flow~date, flowStJohn, tau = tau, trend = ~1, thresh = ~1,
-#'                       declust = 'wrc', r = 14)
+#'                       declust = 'wrc', r = 14, newdata = nd)
 #'                       
-#' FindThresh(us, method = 'sgn-max')
+#' FindThresh(taus, method = 'sgn-max')
 #'
 SearchThresh <- function(form, x, u, nmin = 20, verbose = TRUE, ...){
 
@@ -101,62 +106,10 @@ SearchThresh <- function(form, x, u, nmin = 20, verbose = TRUE, ...){
   }
 
   ans <- as.data.frame(ans)
+  
+  ## Compute the false discovery rate for the remaining points
+  Fun <- function(z) min(p.adjust(ans$ad[z:length(ans$ad)], 'fdr'))
+  ans$fdr <- sapply(seq_along(ans$ad), Fun)
 
   return(ans)
-}
-
-##############################################################################
-
-#' @export
-#' @rdname SearchThresh
-SearchThreshNs <- 
-  function(form, x, tau,
-           nmin = 20, verbose = TRUE, ...){
-
-  tau <- sort(unique(tau))
-
-  if(length(tau) < 2)
-    stop('More than one threshold must be specified.')
-
-  ntau <- length(tau)
-
-  ans <- matrix(NA, ntau, 12)
-  rt <- c(2,5,10,20,50,100)
-  rt.name <- paste0('q',rt)
-  colnames(ans) <- c('tau', 'n', 'ppy', 'mrl', 'kappa', rt.name,'ad')
-  
-  resp <- eval(form[[2]], x) 
-
-  bar <- txtProgressBar()
-  for(ii in 1:ntau){
-
-    if(verbose)
-      setTxtProgressBar(bar, ii/ntau)
-
-    fit0 <- try(FitNsPot(form, x, tau = tau[ii], ...))
-
-    ## If there was
-    if(!is.nspot(fit0))
-      next
-
-    suppressWarnings(gof0 <- GofTest(fit0)$pvalue)
-
-    pred0 <- predict(fit0, rt = rt, reliability = TRUE)
-
-    ans[ii,] <- c(tau[ii],                            # threshold
-                  length(fit0$peak),                  # number of excess
-                  length(fit0$peak)/fit0$nyear,       # Peaks per year
-                  mean(residuals(fit0, 'thresh')),    # Mean residual life
-                  fit0$kappa,                         # parameter
-                  pred0,                              # flood quantiles
-                  gof0)                               # AD p-value
-
-    if(length(fit0$peak) < nmin){
-      nu <- ii
-      ans <- ans[1:nu,]
-      break
-    }
-  }
-
-  return(as.data.frame(ans))
 }

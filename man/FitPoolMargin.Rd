@@ -15,6 +15,8 @@ FitPoolMargin(x, distr, method = "lmom", method.optim = "BFGS", ...)
 
 \item{method.optim, }{... Further arguments pass to \link{optim} when 
 maximum likelihood method is used}
+
+\item{...}{Other parameters.}
 }
 \value{
 \item{para}{Matrix of the estimated parameters.}

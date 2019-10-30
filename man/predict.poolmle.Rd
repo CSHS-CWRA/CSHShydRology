@@ -5,18 +5,19 @@
 \title{Prediction of the flood quantile for regional model}
 \usage{
 \method{predict}{poolmle}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  index = NULL)
+  index = NULL, ...)
 }
 \arguments{
-\item{object}{Output from \link{}.}
+\item{object}{Output from \link{FitPoolMle}.}
 
 \item{p}{Probabilities.}
 
 \item{index}{Site specific parameters.}
+
+\item{...}{Other parameters.}
 }
 \description{
-Methods to return the flood quantiles of given probabilities and perform
-inference using bootstrap.
+Return the flood quantiles of given probabilities.
 }
 \examples{
 
@@ -38,5 +39,6 @@ summary(pboot)
 Fz <- function(z) predict(z, c(.9,.99), index = z$index[1])
 qboot <- sapply(fboot, Fz)
 summary(t(qboot))
+
 
 }

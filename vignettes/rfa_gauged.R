@@ -96,22 +96,36 @@ colnames(distance.geo) <- rownames(distance.geo) <- sname
 geo.target <- distance.geo[sid,sid]
 
 
-## Fit the exponential model
-icor2 <- Intersite(xd[,sid], method = 'exp',
+## Fit the power exponential model 
+Finter <- function(sm){
+  Intersite(xd[,sid], type = 'exp',
                    distance = geo.target, 
-                   distance.max = 300)
+                   distance.max = 500,
+                   distance.bin = 15, smooth = sm)  
+}
 
-print(icor2)
+print(icor2 <- Finter(1))
 
-## Display the results
-theta <- icor2$corr[lower.tri(icor2$corr)]
-theta.model <- icor2$model[lower.tri(icor2$corr)]
-h <- geo.target[lower.tri(icor2$corr)]
 
-plot(h, theta, cex = .5, xlab = 'distance', ylab = 'Spatial correlation')
+## Plot correlation cloud
+tri <-lower.tri(icor2$corr)
+theta <- icor2$corr[tri]
+h <- geo.target[tri]
 
+plot(h, theta, col = 'grey', pch = '+',
+     xlab = 'distance', ylab = 'Spatial correlation')
+
+points(icor2$bin, pch = 16, col = 'black', cex = 1.5)
+
+## Plot POW with p = 1
 hid <- order(h)
-lines(h[hid], theta.model[hid], col = 'red', lwd = 2)
+theta <- icor2$model[tri]
+lines(h[hid], theta[hid], col = 'red', lwd = 2)
+
+## Plot POW with p = 2
+theta <- Finter(2)$model[tri]
+lines(h[hid], theta[hid], col = 'blue', lwd = 2)
+
 
 
 ## ------------------------------------------------------------------------
@@ -132,14 +146,16 @@ cat('\nFlood quantiles for station 01AK007\n')
 predict(fit, index = fit$index[1])
 
 ## ------------------------------------------------------------------------
-FitPoolMle(xw, distr = 'gev', type = 'shape')
-FitPoolMle(xw, distr = 'gev', type = 'cv')
-
+print(fit.shp <- FitPoolMle(xw, distr = 'gev', type = 'shape'))
+print(fit.cv <- FitPoolMle(xw, distr = 'gev', type = 'cv'))
 
 ## ------------------------------------------------------------------------
 ## Create bootstrap
-fit.margin <- FitPoolMargin(xw, 'gev', method = 'lmom')
-boot <- simulate(fit.margin, nsim = 30, corr = 0.3)
+fit.margin <- FitPoolMargin(xw, 'gev', method = 'mle', 
+                            method.optim = 'Nelder-Mead', 
+                            control = list(maxit = 5000))
+
+boot <- simulate(fit.margin, nsim = 20, corr = 0.3)
 
 
 ## ------------------------------------------------------------------------
@@ -148,6 +164,7 @@ ffun <- function(z, type) FitPoolMle(z, distr = 'gev', type = type)
 fboot.mean <- lapply(boot, ffun, type = 'mean')
 fboot.cv <- lapply(boot, ffun, type = 'cv')
 fboot.shp <- lapply(boot, ffun, type = 'shape')
+
 
 ## Boostrap samples of the flood quantiles
 qboot.mean <- sapply(fboot.mean, predict, p = .9)
@@ -159,9 +176,7 @@ mean.sd <- apply(qboot.mean, 1, sd)
 cv.sd <- apply(qboot.cv, 1, sd)
 shp.sd <- apply(qboot.shp, 1, sd)
 
-
-## ------------------------------------------------------------------------
-
+## Extract at-site estimate
 hat <- predict(fit.margin, .9)
 
 print(
@@ -230,4 +245,25 @@ prob <- 1 - 1/(lambda * period)
 ## Estimate flood quantiles for POT
 hat <- predict(fit.target, prob, ci = TRUE)
 print(round(hat,1))
+
+## ------------------------------------------------------------------------
+## Fitting
+xs.lik <- xs.target[,sitenames(fit.target)]
+fit.lik <- FitPoolMle(xs.lik, distr = 'gpa', type = 'mean')
+hat <- predict(fit.lik, p = prob, index = fit.lik$index[1])
+
+## Bootstrap
+fit.margin <- FitPoolMargin(xw, 'gpa', method = 'mle')
+boot <- simulate(fit.margin, nsim = 50, corr = 0)
+Fz <- function(z) {
+  f <- FitPoolMle(z, distr = 'gpa', type = 'mean')
+  predict(f, p = prob, index = f$index[1])
+}
+
+pboot <- sapply(boot, Fz)
+
+## Uncertainty
+se <- apply(pboot, 1, sd)
+round(cbind(pred = hat, se = se), 3)
+
 

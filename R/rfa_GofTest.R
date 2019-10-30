@@ -64,10 +64,6 @@ GofTest <- function(object, ...) UseMethod('GofTest', object)
 #' @rdname GofTest
 GofTest.amax <- function(object, method = 'ad', nsim = 1000, ...){
 
-  ## Verification that GML was not used when fitting
-  if(object$method == 'gml')
-    stop('The test is not available for Generalized maximum likelihood')
-
   ## Simulate boostrap sample
   n <- length(object$data)
   opara <- lmomco::vec2par(object$para, object$distr)
@@ -79,7 +75,7 @@ GofTest.amax <- function(object, method = 'ad', nsim = 1000, ...){
   if(method == 'ad'){
     stat <- AdStat(object$data, para = opara)
   
-    if(nsim >1){
+    if(nsim > 1){
       boot <- apply(xboot, 2, AdStat0, type = object$distr,
                                     method = object$method, ...)
       pv <- mean(boot > stat, na.rm = TRUE)
@@ -110,22 +106,6 @@ GofTest.amax <- function(object, method = 'ad', nsim = 1000, ...){
 
   ## return
   ans
-}
-
-#' @export
-print.goftest <- function(x, ...){
-
-  if(x$method %in% c('ad','adtab'))
-    methodName <- 'Anderson-Darling'
-  else if(x$method == 'shapiro')
-    methodName <- 'Modified Shapiro-Wilk'
-
-  cat('\nGoodness-of-fit test\n',
-        '\nTest =', methodName,
-        '\nDistribution =', x$distr)
-
-  cat('\nstatistic :', round(x$stat,4),
-        '\np-value :', round(x$pvalue,4), '\n\n')
 }
 
 ## function to compute the statistics of the Anderson-Darling test
@@ -244,10 +224,13 @@ GofTest.nspot <- function(object, method = 'adtab', nsim = 1000, ...){
   ans$estimate <- coef(object, 'kappa')
   ans$excess <- residuals(object, 'scale')
   
-  if(object$trend.method == 'reg-lmom')
+  if(object$method == 'reg-lmom'){
     ans$method <- 'lmom'
-  else
+  }else if(object$method == 'reg-mom'){
+    ans$method <- 'lmom'
+  }else if(object$method == 'reg-mle'){
     ans$method <- 'mle'
+  }
   
   return(GofTest(ans, method = method, nsim = nsim))
   

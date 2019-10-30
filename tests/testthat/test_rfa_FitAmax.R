@@ -45,6 +45,7 @@ expect_equal(dim(vcov(f)), c(3,3))
 expect_equal(S(AIC(f)), 1000.42)
 expect_true(all(is.finite(coef(f))))
 
+logLik(f)
 
 f <- FitAmax(xgev,'gev', method = 'mle', varcov = TRUE)
 expect_true(all(is.finite(vcov(f))))
@@ -87,4 +88,5 @@ expect_error(FitAmax(xgev, distr = 'gev'))
 
 xgev[1] <- Inf
 expect_error(FitAmax(xgev, distr = 'gev'))
+
 

@@ -1,5 +1,6 @@
 ###############################################################################
 ## Test function FitNsAmax
+## Martin Durocher <mduroche@@uwaterloo.ca>
 ##############################################################################
 rm(list = ls())
 library(lmomco)
@@ -34,7 +35,7 @@ obj <- FitNsAmax(flow ~ date, x, 'gev', type = 'mult')
 obj <- FitNsAmax(form, x, distr = 'gev', type = 'add')
 
 ## verify the structure of the output
-expect_true(is.nsamax(obj))
+expect_true(class(obj) %in% 'nsamax')
 
 oname <- c("formula","data","beta","fitted","type","para")
 expect_equal(names(obj), oname)
@@ -183,7 +184,6 @@ fita <- FitNsAmaxMle(flow ~ date, x, 'gno', type = 'add', method = 'BFGS')
 fita <- FitNsAmaxMle(flow ~ date, x, 'pe3', type = 'add', method = 'BFGS')
 fita <- FitNsAmaxMle(flow ~ date, x, 'gev', type = 'add', method = 'BFGS')
 
-plot(fita)
 print(fit)
 
 plot(form,x, ylim = c(50,250))
@@ -210,6 +210,7 @@ rel <- predict(fit, p = c(.8,.98),
 for(ii in 1:6)
   lines(dd0, rep(rel[ii],length(dd0)), col = 'magenta')
 
-out <- BootNsAmax.mle(fit, newdata = x[sset,], reliability = TRUE, 
+out <- BootNsAmaxMle(fit,  newdata = x[sset,], reliability = TRUE, nsim = 5,
                       method = 'BFGS')
 
+expect_equivalent(colnames(out$para), names(fit$para))

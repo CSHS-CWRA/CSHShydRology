@@ -4,7 +4,9 @@
 \alias{plot.isite}
 \title{Plot of the pairwise intersite correlation.}
 \usage{
-\method{plot}{isite}(x, xmat, distance, xlab = NULL, ylab = NULL, ...)
+\method{plot}{isite}(x, xmat, distance, xlab = NULL, ylab = NULL,
+  pch = "+", col = "grey", bin.pch = 16, bin.cex = 1.5,
+  bin.col = "black", ...)
 }
 \arguments{
 \item{x}{Output from \code{Intersite}.}
@@ -15,7 +17,11 @@
 
 \item{xlab, ylab}{Label of the xy-axis.}
 
-\item{...}{Other parameters.}
+\item{col, pch}{Graphical parameters for the individual points.}
+
+\item{bin.pch, bin.col, bin.cex}{Graphical parameters for the bins.}
+
+\item{...}{Other graphical parameters passed to \link{plot}.}
 }
 \description{
 Produce a graphic of the pairwise intersite correlation coefficient with 
@@ -23,12 +29,15 @@ respect to the distance.
 }
 \examples{
 
-#' Data(flowAtlantic)
-
 ## Organize annual maximums
 ams <- flowAtlantic$ams
 ams$year <- format(ams$date, '\%Y')
 xmat <- DataWide(ams ~ id + year, ams)
+
+## estimate empirical correlation
+isite <- Intersite(xmat, type = 'emp')
+print(isite)
+plot(isite)
 
 ## Compute distance between sites
 coord <- flowAtlantic$info[, c('lon','lat')]
@@ -39,7 +48,7 @@ h <- GeoDist(coord)
 h <- h[colnames(xmat), colnames(xmat)]
 
 ## estimate intersite correlation using a model
-isite <- Intersite(xmat, distance = h, method = 'exp')
+isite <- Intersite(xmat, distance = h, type = 'exp')
 print(isite)
 plot(isite, xmat, h)
 

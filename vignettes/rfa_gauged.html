@@ -426,10 +426,13 @@ H = \frac{V-\mu_V}{\sigma_V}
 <div id="intersite-correlation" class="section level2">
 <h2>Intersite correlation</h2>
 <p>Inference for the L-moment algorithm requires parametric bootstrap. Snow accumulation and subsequent melting or large rainfall systems generate floods that affect multiple sites simultaneously, which creates spatial dependence among sites. This will result in more uncertainties about the estimated flood quantiles in comparison to independent data. To account for intersite correlation, a multivariate Normal distribution is used to simulate spatially distributed data that are later transformed to the proper at-site distributions.</p>
-<p>The spearman correlation <span class="math inline">\(\rho_{i,j}\)</span> between pairs of the i-th and j-th sites measures the degree of association between series of flood events. This measure is well suited to quantify the intersite correlations between paired observations as it is invariant to the at-site distributions. The relation <span class="math display">\[
-\theta_{i,j} = 2 \sin\left(\rho_{i,j}\frac{\pi}{6}\right)
-\]</span> links the correlation coefficients <span class="math inline">\(\theta_{i,j}\)</span> of the multivariate Normal distribution to the spearman correlation coefficients. However, corrections may be necessary to ensure that the final covariance matrix is positive definite (Higham, 2002).</p>
-<p>The function <code>Intersite</code> can be used to estimate the parameters of the multivariate normal distribution. The output is a list containing among others the correlation coefficient <code>corr</code> and their corrected value <code>model</code>. The function <code>sitename</code> is used to extract the names of the sites in a pooling group.</p>
+<p>The Spearman <span class="math inline">\(\rho_{i,j}\)</span> and the Kendall <span class="math inline">\(\tau_{i,j}\)</span> coefficient between pairs of the i-th and j-th sites are twe measures that evaluate the degree of association between series of flood events. These measure are well suited to quantify the intersite correlations between paired observations as they are invariant to the at-site distributions. The relations <span class="math display">\[
+\begin{align}
+\theta_{i,j} &amp;= 2 \sin\left(\frac{\pi}{6}\rho_{i,j}\right)\\
+\theta_{i,j} &amp;= \sin\left(\frac{\pi}{2}\tau_{i,j}\right)
+\end{align}
+\]</span> links the correlation coefficients <span class="math inline">\(\theta_{i,j}\)</span> of the multivariate Normal distribution to the two measures of associations. However, corrections may be necessary to ensure that the final covariance matrix is positive definite (Higham, 2002).</p>
+<p>The function <code>Intersite</code> can be used to estimate the parameters of the multivariate normal distribution. The output is a list containing among others the correlation coefficient <code>corr</code> and their corrected value <code>model</code>. The function <code>sitename</code> is used to extract the names of the sites in a pooling group, which is useful to know which sites have been selected.</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">sid &lt;-<span class="st"> </span><span class="kw">sitenames</span>(fit.target2)</a>
 <a class="sourceLine" id="cb18-2" title="2">icor &lt;-<span class="st"> </span><span class="kw">Intersite</span>(xd[,sid])</a>
 <a class="sourceLine" id="cb18-3" title="3"><span class="kw">round</span>(icor<span class="op">$</span>model[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],<span class="dv">2</span>)</a></code></pre></div>
@@ -437,44 +440,57 @@ H = \frac{V-\mu_V}{\sigma_V}
 ## 01AK007    1.00    0.87    0.26
 ## 01AL002    0.87    1.00    0.43
 ## 01AP002    0.26    0.43    1.00</code></pre>
-<p>The strength of the dependence may depend on the distance between sites. In this case, an exponential model can be fitted by the function <code>Intersite</code> if a distance is provided. The exponential model has the form</p>
+<p>The strength of the dependence may depend on the distance between sites. In this case, an exponential model can be fitted by the function <code>Intersite</code>. The exponential model has the form</p>
 <p><span class="math display">\[
 \widehat{\theta}_{i,j} = \begin{cases}
 (1-\tau) \exp\left(-3 \left|\frac{h}{\gamma}\right|^p \right) &amp; h &gt; 0  \\
 1 &amp; h = 0\\
 \end{cases}
-\]</span> where the nugget effect <span class="math inline">\(\tau \in [0,1]\)</span> that represents a discontinuity at the origin <span class="math inline">\(h = 0\)</span> and the range parameter <span class="math inline">\(\gamma &gt; 0\)</span> that controls the decay of the correlation with respect to the distance are estimated by weighted least squares with weights proportional to the number of paired observations. Note that it is important in the example below that the order of the columns in the matrix of data and distance match.</p>
+\]</span> where the nugget effect <span class="math inline">\(\tau \in [0,1]\)</span> represents a discontinuity at the origin <span class="math inline">\(h = 0\)</span> and the range parameter <span class="math inline">\(\gamma &gt; 0\)</span> controls the decay of the correlation with respect to the distance. Additionally, th smooth parameter <span class="math inline">\(p\)</span> can be used to modfied the shape of the the function. The paare estimated by weighted least squares with weights proportional to the number of paired observations. Note that it is important in the example below that the order of the columns in the matrix of data and distance match.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">## Compute the distance</span></a>
 <a class="sourceLine" id="cb20-2" title="2">distance.geo &lt;-<span class="st"> </span><span class="kw">GeoDist</span>(<span class="op">~</span>lon<span class="op">+</span>lat, info)</a>
 <a class="sourceLine" id="cb20-3" title="3"><span class="kw">colnames</span>(distance.geo) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.geo) &lt;-<span class="st"> </span>sname</a>
 <a class="sourceLine" id="cb20-4" title="4">geo.target &lt;-<span class="st"> </span>distance.geo[sid,sid]</a>
 <a class="sourceLine" id="cb20-5" title="5"></a>
 <a class="sourceLine" id="cb20-6" title="6"></a>
-<a class="sourceLine" id="cb20-7" title="7"><span class="co">## Fit the exponential model</span></a>
-<a class="sourceLine" id="cb20-8" title="8">icor2 &lt;-<span class="st"> </span><span class="kw">Intersite</span>(xd[,sid], <span class="dt">method =</span> <span class="st">&#39;exp&#39;</span>,</a>
-<a class="sourceLine" id="cb20-9" title="9">                   <span class="dt">distance =</span> geo.target, </a>
-<a class="sourceLine" id="cb20-10" title="10">                   <span class="dt">distance.max =</span> <span class="dv">300</span>)</a>
-<a class="sourceLine" id="cb20-11" title="11"></a>
-<a class="sourceLine" id="cb20-12" title="12"><span class="kw">print</span>(icor2)</a></code></pre></div>
+<a class="sourceLine" id="cb20-7" title="7"><span class="co">## Fit the power exponential model </span></a>
+<a class="sourceLine" id="cb20-8" title="8">Finter &lt;-<span class="st"> </span><span class="cf">function</span>(sm){</a>
+<a class="sourceLine" id="cb20-9" title="9">  <span class="kw">Intersite</span>(xd[,sid], <span class="dt">type =</span> <span class="st">&#39;exp&#39;</span>,</a>
+<a class="sourceLine" id="cb20-10" title="10">                   <span class="dt">distance =</span> geo.target, </a>
+<a class="sourceLine" id="cb20-11" title="11">                   <span class="dt">distance.max =</span> <span class="dv">500</span>,</a>
+<a class="sourceLine" id="cb20-12" title="12">                   <span class="dt">distance.bin =</span> <span class="dv">15</span>, <span class="dt">smooth =</span> sm)  </a>
+<a class="sourceLine" id="cb20-13" title="13">}</a>
+<a class="sourceLine" id="cb20-14" title="14"></a>
+<a class="sourceLine" id="cb20-15" title="15"><span class="kw">print</span>(icor2 &lt;-<span class="st"> </span><span class="kw">Finter</span>(<span class="dv">1</span>))</a></code></pre></div>
 <pre><code>## 
 ## Intersite-correlation
 ## 
-## Method: exp
+## Model: exp
+## Method: spearman
 ## Nb. sites: 23
-## RMSE: 15.33
+## RMSE: 0.4667
 ## Parameter:
 ##   nugget    range   smooth 
-##   0.2496 436.1266   1.0000</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co">## Display the results</span></a>
-<a class="sourceLine" id="cb22-2" title="2">theta &lt;-<span class="st"> </span>icor2<span class="op">$</span>corr[<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)]</a>
-<a class="sourceLine" id="cb22-3" title="3">theta.model &lt;-<span class="st"> </span>icor2<span class="op">$</span>model[<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)]</a>
-<a class="sourceLine" id="cb22-4" title="4">h &lt;-<span class="st"> </span>geo.target[<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)]</a>
+##   0.2426 467.8442   1.0000</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co">## Plot correlation cloud</span></a>
+<a class="sourceLine" id="cb22-2" title="2">tri &lt;-<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)</a>
+<a class="sourceLine" id="cb22-3" title="3">theta &lt;-<span class="st"> </span>icor2<span class="op">$</span>corr[tri]</a>
+<a class="sourceLine" id="cb22-4" title="4">h &lt;-<span class="st"> </span>geo.target[tri]</a>
 <a class="sourceLine" id="cb22-5" title="5"></a>
-<a class="sourceLine" id="cb22-6" title="6"><span class="kw">plot</span>(h, theta, <span class="dt">cex =</span> <span class="fl">.5</span>, <span class="dt">xlab =</span> <span class="st">&#39;distance&#39;</span>, <span class="dt">ylab =</span> <span class="st">&#39;Spatial correlation&#39;</span>)</a>
-<a class="sourceLine" id="cb22-7" title="7"></a>
-<a class="sourceLine" id="cb22-8" title="8">hid &lt;-<span class="st"> </span><span class="kw">order</span>(h)</a>
-<a class="sourceLine" id="cb22-9" title="9"><span class="kw">lines</span>(h[hid], theta.model[hid], <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<a class="sourceLine" id="cb22-6" title="6"><span class="kw">plot</span>(h, theta, <span class="dt">col =</span> <span class="st">&#39;grey&#39;</span>, <span class="dt">pch =</span> <span class="st">&#39;+&#39;</span>,</a>
+<a class="sourceLine" id="cb22-7" title="7">     <span class="dt">xlab =</span> <span class="st">&#39;distance&#39;</span>, <span class="dt">ylab =</span> <span class="st">&#39;Spatial correlation&#39;</span>)</a>
+<a class="sourceLine" id="cb22-8" title="8"></a>
+<a class="sourceLine" id="cb22-9" title="9"><span class="kw">points</span>(icor2<span class="op">$</span>bin, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>)</a>
+<a class="sourceLine" id="cb22-10" title="10"></a>
+<a class="sourceLine" id="cb22-11" title="11"><span class="co">## Plot POW with p = 1</span></a>
+<a class="sourceLine" id="cb22-12" title="12">hid &lt;-<span class="st"> </span><span class="kw">order</span>(h)</a>
+<a class="sourceLine" id="cb22-13" title="13">theta &lt;-<span class="st"> </span>icor2<span class="op">$</span>model[tri]</a>
+<a class="sourceLine" id="cb22-14" title="14"><span class="kw">lines</span>(h[hid], theta[hid], <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb22-15" title="15"></a>
+<a class="sourceLine" id="cb22-16" title="16"><span class="co">## Plot POW with p = 2</span></a>
+<a class="sourceLine" id="cb22-17" title="17">theta &lt;-<span class="st"> </span><span class="kw">Finter</span>(<span class="dv">2</span>)<span class="op">$</span>model[tri]</a>
+<a class="sourceLine" id="cb22-18" title="18"><span class="kw">lines</span>(h[hid], theta[hid], <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="flood-quantiles" class="section level2">
 <h2>Flood quantiles</h2>
@@ -483,8 +499,8 @@ H = \frac{V-\mu_V}{\sigma_V}
 <a class="sourceLine" id="cb23-2" title="2">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target2, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.99</span>), <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">corr =</span> icor2<span class="op">$</span>model)</a>
 <a class="sourceLine" id="cb23-3" title="3"><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</a></code></pre></div>
 <pre><code>##       pred   se lower upper
-## 0.90  89.7  7.6  76.6 105.8
-## 0.99 142.3 27.3 100.4 214.0</code></pre>
+## 0.90  89.7  7.6  76.6 105.9
+## 0.99 142.3 27.3 100.4 213.6</code></pre>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb25-1" title="1"><span class="co">## Using constant coefficient of correlation</span></a>
 <a class="sourceLine" id="cb25-2" title="2">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target2, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.99</span>), <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">corr =</span> icor<span class="op">$</span>para)</a>
 <a class="sourceLine" id="cb25-3" title="3"><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</a></code></pre></div>
@@ -494,10 +510,9 @@ H = \frac{V-\mu_V}{\sigma_V}
 </div>
 <div id="rfa-using-likelihood-techniques" class="section level2">
 <h2>RFA using likelihood techniques</h2>
-<p>The previous section use the L-moment approach to regional parameters of an index-flood model. One may have noticed that this approach does not consider the spatial dependence between sites for the estimation of the regional parameters. A similar and alternative approach would be to use composite likelihood (Padoan et al. 2010) that optimize a likelihood-based criteria using probabilities associated to events of lower dimensions.<br />
-In particular, consider <span class="math inline">\(L_i\)</span> that represents the likelihood of<br />
-the ith site of <span class="math inline">\(n\)</span> sites. The independent likelihood <span class="math inline">\(\Pi_{i=1} L_i\)</span>, which corresponds to the full likelihood sites if the sites were independent, contain most of the relevant information about the marginals and can be maximized to estimate the marginal distribution of the regional model without providing a full characterization of the dependence structure.</p>
-<p>In the example below an index-flood model is fitted to the pooling groups previously delineated for annual maxima. The at-site means are used as scale factors and the regional parameters are estimated using the independent likelihood approach.</p>
+<p>The previous section use the L-moment approach to estimate regional parameters of an index-flood model. It should be pointed out that this procedure consider spatial dependence in evaluation of the uncertainty, but not during the estimation of the regional parameters. If the main interest is the at-site distribution, an alternative estimation method would be to use composite likelihood (Padoan et al. 2010), which consists in optimizing a likelihood-based criterion based on events of low dimensions.<br />
+In particular, consider <span class="math inline">\(L_i\)</span> the likelihood of the ith site of <span class="math inline">\(n\)</span> sites. The independent likelihood <span class="math inline">\(\Pi_{i=1} L_i\)</span> defined as the product of the at-site likelihood corresponds to the full likelihood of a regional model where the sites are spatially independent. This likelihood function contains most of the information about the at-site distribution and can be maximized to estimate regional parameters without providing a full characterization of the dependence structure.</p>
+<p>The example below fit an index-flood model for the sites found in the studied pooling groups. As before, the observation are standardized by the at-site means, but the regional parameters are estimated using the independent likelihood of the regional distribution.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1">xw &lt;-<span class="st"> </span>xd[,<span class="kw">sitenames</span>(fit.target2)]</a>
 <a class="sourceLine" id="cb27-2" title="2">fit &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a>
 <a class="sourceLine" id="cb27-3" title="3"><span class="kw">print</span>(fit)</a></code></pre></div>
@@ -506,7 +521,7 @@ the ith site of <span class="math inline">\(n\)</span> sites. The independent li
 ## 
 ## Type: mean
 ## Number of sites: 23
-## Ind. loglik: -394.6
+## Ind. loglik: -394.59
 ## Distribution: gev
 ## Parameters
 ##       xi    alpha    kappa 
@@ -517,106 +532,114 @@ the ith site of <span class="math inline">\(n\)</span> sites. The independent li
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" title="1"><span class="kw">predict</span>(fit, <span class="dt">index =</span> fit<span class="op">$</span>index[<span class="dv">1</span>])</a></code></pre></div>
 <pre><code>##       0.5       0.8       0.9      0.95      0.98      0.99 
 ##  54.53513  74.94342  89.49865 104.29670 124.74695 141.09104</code></pre>
-<p>The function <code>FitPoolMle</code> also consider other regional models. The first regional model assumed that shape parameter is a regional parameter and that the other parameters are site-specific. For the GEV distribution for instance, the location and scale are site-specific and the model has only one regional parameter. This regional model is invoked when <code>type = &#39;shape&#39;</code>. As done with the index-flood model, standardizing the observation by the at-site mean, imposed a constant coefficient of variation. Such property is not enforced by this regional model, which makes it more flexible, but also more complex. For a station <span class="math inline">\(i\)</span> having a distribution GEV, GLO, GNO or PE3 with 3 parameters : the location <span class="math inline">\(\xi_i\)</span>, the scale <span class="math inline">\(\alpha_i\)</span> and the shape <span class="math inline">\(\kappa_i\)</span>; a similar behavior as the index-flood model can be imposed by the regional mode <span class="math display">\[
+<p>The composite likelihood approach also allows more flexible models that can be set with the argument <code>type</code>. The first alternative (<code>type = &#39;shape&#39;</code>) that will be called the shape regional model (SRM) assumed that the shape parameter is constant across sites and that the other parameters are site-specific. For the GPA, the SRM implies that a scale parameter is estimated for each site and for the 3 parameter distributions, the location and scale parameters are site-specific. The SRM model is more flexible, but has <span class="math inline">\(2n+1\)</span> parameters to estimate where <span class="math inline">\(n\)</span> is the number of sites.</p>
+<p>The index-flood model standardizes the observations by the at-site means, which imposed a constant coefficient of variation. This property is not respected for the SRM. Apart for the GPA, the considered distributions have for each site <span class="math inline">\(i\)</span> the location <span class="math inline">\(\xi_i\)</span>, scale <span class="math inline">\(\alpha_i\)</span> and shape <span class="math inline">\(\kappa_i\)</span>. The model below provide a similar behavior as the index-flood model by linking the location and the scale parameters. <span class="math display">\[
 \begin{align}
-\xi_i &amp;= \xi_i \\
-\alpha_i &amp;= \theta \xi_i\\
+\xi_i &amp;= \xi \\
+\alpha_i &amp;= \beta \xi_i\\
 \kappa_i &amp;= \kappa
 \end{align},
-\]</span> when <code>type = &#39;cv&#39;</code>. The estimation of these two regional models is carried out in the example below for the annual maxima of the studied pooling group. Both leads to a shape parameter of roughly -0.95. For the second model the regional <code>cv</code> parameter that relates the location and scale parameter is 0.343. In it interesting to notice that the same ratio between the regional scale and location parameter for the index-flood model is very similar with 0.346.</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;shape&#39;</span>)</a></code></pre></div>
+\]</span> This regional model will be annoted CVRM and requires that <code>type = &#39;cv&#39;</code>. Take note that this model has significantly less parameters than the previous model with <span class="math inline">\(n+2\)</span> parameters. Considering that the at-site means are empirical estimates and that the mean of the regional distribution is fixed, this represent the same degree of freedom as the index-flood model. One advantage that the CVRM has in comparison with the index-flood model is that the site-specific parameter is jointly estimated with the regional parameters.</p>
+<p>In the example below, the estimation of SRM and CVRM is carried out for the studied pooling group. Both leads to a shape parameter of roughly -0.95, which is similar to the -0.08 obtained with the index-flood model. For CVRM, the regional <code>cv</code> parameter <span class="math inline">\(\beta\)</span> that relates the location parameter with the scale parameter is 0.343. In it interesting to see that the ratio between the regional scale and location parameter for the index-flood model is very similar with a value of 0.346.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb33-1" title="1"><span class="kw">print</span>(fit.shp &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;shape&#39;</span>))</a></code></pre></div>
 <pre><code>## 
 ## Regional model for pooling groups
 ## 
 ## Type: shape
 ## Number of sites: 46
-## Ind. loglik: -5257
+## Ind. loglik: -5256.74
 ## Distribution: gev
 ## Parameters
 ##    kappa 
 ## -0.09753</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;cv&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" title="1"><span class="kw">print</span>(fit.cv &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;cv&#39;</span>))</a></code></pre></div>
 <pre><code>## 
 ## Regional model for pooling groups
 ## 
 ## Type: cv
 ## Number of sites: 23
-## Ind. loglik: -5273
+## Ind. loglik: -5273.08
 ## Distribution: gev
 ## Parameters
 ##       cv    kappa 
 ##  0.34278 -0.09412</code></pre>
-<p>The independent likelihood is a measure of the overall goodness of fit for the at-site distributions. This can be used to select a criterion for choosing a best distribution among the four distributions GEV, GLO, GNO and PE3 because all in the same type of regional models they all have the same number of parameters. However, it is not possible to use such criterion to choose between two different types of regional models for the same reason.</p>
-<p>Fr the previous regional models, Inference can be performed using bootstraps. This can be done using the function <code>simulate</code> and <code>FitPoolMargin</code> to create parametric bootstrap samples based on at-site estimate, where intersite correlation can be included if required. Here a small sample is considered for illustration.</p>
+<p>The independent likelihood represent a measure of goodness-of-fit that focus on the at-site distributions. This can be used to select a best distribution among the four distributions GEV, GLO, GNO and PE3, because they have the same number of parameters. However, for the same reason it is not possible to use such criterion to choose between two different types of regional models.</p>
+<p>As with the L-moment approach, inference can be performed using parametric bootstraps. One possible implementation of the this procedure is illustrated in the code below and makes use of the function <code>FitPoolMargin</code> and <code>simulate</code> that respectively fit every at-site distribution separately and create bootstrap samples following a specific intersite correlation structure. We use here a relatively small sample of size 20 for illustration purposes.</p>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" title="1"><span class="co">## Create bootstrap</span></a>
-<a class="sourceLine" id="cb37-2" title="2">fit.margin &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xw, <span class="st">&#39;gev&#39;</span>, <span class="dt">method =</span> <span class="st">&#39;lmom&#39;</span>)</a>
-<a class="sourceLine" id="cb37-3" title="3">boot &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit.margin, <span class="dt">nsim =</span> <span class="dv">30</span>, <span class="dt">corr =</span> <span class="fl">0.3</span>)</a></code></pre></div>
-<p>The code below fits the three available regional models, extracts the flood quantiles of 10 year return period and compute their standard deviations.</p>
+<a class="sourceLine" id="cb37-2" title="2">fit.margin &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xw, <span class="st">&#39;gev&#39;</span>, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>, </a>
+<a class="sourceLine" id="cb37-3" title="3">                            <span class="dt">method.optim =</span> <span class="st">&#39;Nelder-Mead&#39;</span>, </a>
+<a class="sourceLine" id="cb37-4" title="4">                            <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxit =</span> <span class="dv">5000</span>))</a>
+<a class="sourceLine" id="cb37-5" title="5"></a>
+<a class="sourceLine" id="cb37-6" title="6">boot &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit.margin, <span class="dt">nsim =</span> <span class="dv">20</span>, <span class="dt">corr =</span> <span class="fl">0.3</span>)</a></code></pre></div>
+<p>Afterwards, the three regional models considered by <code>FitPoolMle</code> are used to extracts the flood quantiles of 10 year return period for each bootstrap samples.</p>
 <div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" title="1"><span class="co">## Fit the regional models on the samples</span></a>
 <a class="sourceLine" id="cb38-2" title="2">ffun &lt;-<span class="st"> </span><span class="cf">function</span>(z, type) <span class="kw">FitPoolMle</span>(z, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> type)</a>
 <a class="sourceLine" id="cb38-3" title="3">fboot.mean &lt;-<span class="st"> </span><span class="kw">lapply</span>(boot, ffun, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a>
 <a class="sourceLine" id="cb38-4" title="4">fboot.cv &lt;-<span class="st"> </span><span class="kw">lapply</span>(boot, ffun, <span class="dt">type =</span> <span class="st">&#39;cv&#39;</span>)</a>
 <a class="sourceLine" id="cb38-5" title="5">fboot.shp &lt;-<span class="st"> </span><span class="kw">lapply</span>(boot, ffun, <span class="dt">type =</span> <span class="st">&#39;shape&#39;</span>)</a>
 <a class="sourceLine" id="cb38-6" title="6"></a>
-<a class="sourceLine" id="cb38-7" title="7"><span class="co">## Boostrap samples of the flood quantiles</span></a>
-<a class="sourceLine" id="cb38-8" title="8">qboot.mean &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.mean, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</a>
-<a class="sourceLine" id="cb38-9" title="9">qboot.cv &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.cv, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</a>
-<a class="sourceLine" id="cb38-10" title="10">qboot.shp &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.shp, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</a>
-<a class="sourceLine" id="cb38-11" title="11"></a>
-<a class="sourceLine" id="cb38-12" title="12"><span class="co">## Evaluate the standard deviation</span></a>
-<a class="sourceLine" id="cb38-13" title="13">mean.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.mean, <span class="dv">1</span>, sd)</a>
-<a class="sourceLine" id="cb38-14" title="14">cv.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.cv, <span class="dv">1</span>, sd)</a>
-<a class="sourceLine" id="cb38-15" title="15">shp.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.shp, <span class="dv">1</span>, sd)</a></code></pre></div>
-<p>The overall uncertainty of the regional model can serve as a criterion for choosing among these regional models. The example below standardizes the standard deviations across sites by dividing them by their at-site estimates. In the end, the overall criterion is obtained by taking the means of all standardized standard deviations. This example shows that the ‘shape’ model leads to overall larger uncertainty than the other models. The ‘cv’ model is the found to be one with less uncertainty.</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" title="1">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.margin, <span class="fl">.9</span>)</a>
-<a class="sourceLine" id="cb39-2" title="2"></a>
-<a class="sourceLine" id="cb39-3" title="3"><span class="kw">print</span>(</a>
-<a class="sourceLine" id="cb39-4" title="4">  <span class="kw">cbind</span>(</a>
-<a class="sourceLine" id="cb39-5" title="5">    <span class="dt">Index.flood =</span> <span class="kw">mean</span>(mean.sd<span class="op">/</span>hat),</a>
-<a class="sourceLine" id="cb39-6" title="6">    <span class="dt">Lik.cv =</span> <span class="kw">mean</span>(cv.sd<span class="op">/</span>hat), </a>
-<a class="sourceLine" id="cb39-7" title="7">    <span class="dt">Lik.shp =</span> <span class="kw">mean</span>(shp.sd<span class="op">/</span>hat)),</a>
-<a class="sourceLine" id="cb39-8" title="8">  <span class="dt">digits =</span> <span class="dv">3</span>) </a></code></pre></div>
+<a class="sourceLine" id="cb38-7" title="7"></a>
+<a class="sourceLine" id="cb38-8" title="8"><span class="co">## Boostrap samples of the flood quantiles</span></a>
+<a class="sourceLine" id="cb38-9" title="9">qboot.mean &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.mean, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</a>
+<a class="sourceLine" id="cb38-10" title="10">qboot.cv &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.cv, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</a>
+<a class="sourceLine" id="cb38-11" title="11">qboot.shp &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.shp, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</a>
+<a class="sourceLine" id="cb38-12" title="12"></a>
+<a class="sourceLine" id="cb38-13" title="13"><span class="co">## Evaluate the standard deviation</span></a>
+<a class="sourceLine" id="cb38-14" title="14">mean.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.mean, <span class="dv">1</span>, sd)</a>
+<a class="sourceLine" id="cb38-15" title="15">cv.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.cv, <span class="dv">1</span>, sd)</a>
+<a class="sourceLine" id="cb38-16" title="16">shp.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.shp, <span class="dv">1</span>, sd)</a>
+<a class="sourceLine" id="cb38-17" title="17"></a>
+<a class="sourceLine" id="cb38-18" title="18"><span class="co">## Extract at-site estimate</span></a>
+<a class="sourceLine" id="cb38-19" title="19">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.margin, <span class="fl">.9</span>)</a>
+<a class="sourceLine" id="cb38-20" title="20"></a>
+<a class="sourceLine" id="cb38-21" title="21"><span class="kw">print</span>(</a>
+<a class="sourceLine" id="cb38-22" title="22">  <span class="kw">cbind</span>(</a>
+<a class="sourceLine" id="cb38-23" title="23">    <span class="dt">Index.flood =</span> <span class="kw">mean</span>(mean.sd<span class="op">/</span>hat),</a>
+<a class="sourceLine" id="cb38-24" title="24">    <span class="dt">Lik.cv =</span> <span class="kw">mean</span>(cv.sd<span class="op">/</span>hat), </a>
+<a class="sourceLine" id="cb38-25" title="25">    <span class="dt">Lik.shp =</span> <span class="kw">mean</span>(shp.sd<span class="op">/</span>hat)),</a>
+<a class="sourceLine" id="cb38-26" title="26">  <span class="dt">digits =</span> <span class="dv">3</span>) </a></code></pre></div>
 <pre><code>##      Index.flood Lik.cv Lik.shp
-## [1,]      0.0699 0.0611  0.0824</code></pre>
+## [1,]      0.0691 0.0612  0.0822</code></pre>
+<p>The overall uncertainty of the regional model can serve as a criterion for choosing among the regional models. The example below standardizes the standard deviation of the flood quantile by the at-site estimates to obtain a coefficient of variation for the flood quantile (QCV). The average QCV assess the global uncertainty associated with the regional model. The results below shows that the SRM leads the largest uncertainty and at the opposite the CVRM model has the lowest uncertainty.</p>
 </div>
 <div id="rfa-using-peaks-over-threshold" class="section level2">
 <h2>RFA using peaks over threshold</h2>
 <p>The functions provided in this package also allow to carry out regional flood frequency analysis based on the peaks over threshold (POT) approach, where the exceedances are modeled according to a Generalized Pareto distribution (GPA). The same initial pooling group are considered as they are based on the seasonality of the annual maximum floods. On the other hand, the POT approach requires the selection of an appropriate threshold for each site inside the target region. We do not cover here that aspect and refer the reader to the vignette dedicated to this topic (<code>rfa_pot</code>) for more information.</p>
 <p>The code below create a synthetic dataset of exceedances, where the model parameters are loosely based on the asymptotic the correspondence between the GPA and the GEV distribution for the previous target regions. Note that in this example the intersite correlation is not considered.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb41-2" title="2"></a>
-<a class="sourceLine" id="cb41-3" title="3"><span class="co">## Station</span></a>
-<a class="sourceLine" id="cb41-4" title="4">stations &lt;-<span class="st"> </span><span class="kw">colnames</span>(xd.target)</a>
-<a class="sourceLine" id="cb41-5" title="5"></a>
-<a class="sourceLine" id="cb41-6" title="6"><span class="co">## Number of peaks</span></a>
-<a class="sourceLine" id="cb41-7" title="7">npeak &lt;-<span class="st"> </span><span class="kw">apply</span>(xd.target, <span class="dv">2</span>, <span class="cf">function</span>(z) <span class="kw">rpois</span>(<span class="dv">1</span>,<span class="kw">sum</span>(<span class="kw">is.finite</span>(z))))</a>
-<a class="sourceLine" id="cb41-8" title="8"></a>
-<a class="sourceLine" id="cb41-9" title="9"><span class="co">## GEV parameter</span></a>
-<a class="sourceLine" id="cb41-10" title="10">para &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xd.target, <span class="st">&#39;gev&#39;</span>)<span class="op">$</span>para</a>
-<a class="sourceLine" id="cb41-11" title="11"></a>
-<a class="sourceLine" id="cb41-12" title="12"><span class="co">## Loose correspondance</span></a>
-<a class="sourceLine" id="cb41-13" title="13">u &lt;-<span class="st"> </span><span class="kw">apply</span>(xd.target, <span class="dv">2</span>, quantile, <span class="fl">0.1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb41-14" title="14">alpha &lt;-<span class="st"> </span>para[<span class="dv">2</span>,] <span class="op">+</span><span class="st"> </span>para[<span class="dv">3</span>,] <span class="op">*</span><span class="st"> </span>(u <span class="op">-</span><span class="st"> </span>para[<span class="dv">1</span>,])</a>
-<a class="sourceLine" id="cb41-15" title="15">kap &lt;-<span class="st"> </span>para[<span class="dv">3</span>,]</a>
-<a class="sourceLine" id="cb41-16" title="16"></a>
-<a class="sourceLine" id="cb41-17" title="17"></a>
-<a class="sourceLine" id="cb41-18" title="18"><span class="co">## Create the random sample in the long format</span></a>
-<a class="sourceLine" id="cb41-19" title="19">Fz &lt;-<span class="st"> </span><span class="cf">function</span>(m,n,a,k){</a>
-<a class="sourceLine" id="cb41-20" title="20">  x &lt;-<span class="st"> </span><span class="kw">rgpa</span>(n,a,k)</a>
-<a class="sourceLine" id="cb41-21" title="21">  <span class="kw">data.frame</span>(<span class="dt">station =</span> m, <span class="dt">year =</span> <span class="kw">seq_along</span>(x), <span class="dt">value =</span> x)</a>
-<a class="sourceLine" id="cb41-22" title="22">}</a>
-<a class="sourceLine" id="cb41-23" title="23"></a>
-<a class="sourceLine" id="cb41-24" title="24">xs &lt;-<span class="st"> </span><span class="kw">mapply</span>(Fz, stations, npeak, alpha, kap, <span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb41-25" title="25">xs &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, xs)</a>
-<a class="sourceLine" id="cb41-26" title="26"><span class="kw">rownames</span>(xs) &lt;-<span class="st"> </span><span class="ot">NULL</span></a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" title="1"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb40-2" title="2"></a>
+<a class="sourceLine" id="cb40-3" title="3"><span class="co">## Station</span></a>
+<a class="sourceLine" id="cb40-4" title="4">stations &lt;-<span class="st"> </span><span class="kw">colnames</span>(xd.target)</a>
+<a class="sourceLine" id="cb40-5" title="5"></a>
+<a class="sourceLine" id="cb40-6" title="6"><span class="co">## Number of peaks</span></a>
+<a class="sourceLine" id="cb40-7" title="7">npeak &lt;-<span class="st"> </span><span class="kw">apply</span>(xd.target, <span class="dv">2</span>, <span class="cf">function</span>(z) <span class="kw">rpois</span>(<span class="dv">1</span>,<span class="kw">sum</span>(<span class="kw">is.finite</span>(z))))</a>
+<a class="sourceLine" id="cb40-8" title="8"></a>
+<a class="sourceLine" id="cb40-9" title="9"><span class="co">## GEV parameter</span></a>
+<a class="sourceLine" id="cb40-10" title="10">para &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xd.target, <span class="st">&#39;gev&#39;</span>)<span class="op">$</span>para</a>
+<a class="sourceLine" id="cb40-11" title="11"></a>
+<a class="sourceLine" id="cb40-12" title="12"><span class="co">## Loose correspondance</span></a>
+<a class="sourceLine" id="cb40-13" title="13">u &lt;-<span class="st"> </span><span class="kw">apply</span>(xd.target, <span class="dv">2</span>, quantile, <span class="fl">0.1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb40-14" title="14">alpha &lt;-<span class="st"> </span>para[<span class="dv">2</span>,] <span class="op">+</span><span class="st"> </span>para[<span class="dv">3</span>,] <span class="op">*</span><span class="st"> </span>(u <span class="op">-</span><span class="st"> </span>para[<span class="dv">1</span>,])</a>
+<a class="sourceLine" id="cb40-15" title="15">kap &lt;-<span class="st"> </span>para[<span class="dv">3</span>,]</a>
+<a class="sourceLine" id="cb40-16" title="16"></a>
+<a class="sourceLine" id="cb40-17" title="17"></a>
+<a class="sourceLine" id="cb40-18" title="18"><span class="co">## Create the random sample in the long format</span></a>
+<a class="sourceLine" id="cb40-19" title="19">Fz &lt;-<span class="st"> </span><span class="cf">function</span>(m,n,a,k){</a>
+<a class="sourceLine" id="cb40-20" title="20">  x &lt;-<span class="st"> </span><span class="kw">rgpa</span>(n,a,k)</a>
+<a class="sourceLine" id="cb40-21" title="21">  <span class="kw">data.frame</span>(<span class="dt">station =</span> m, <span class="dt">year =</span> <span class="kw">seq_along</span>(x), <span class="dt">value =</span> x)</a>
+<a class="sourceLine" id="cb40-22" title="22">}</a>
+<a class="sourceLine" id="cb40-23" title="23"></a>
+<a class="sourceLine" id="cb40-24" title="24">xs &lt;-<span class="st"> </span><span class="kw">mapply</span>(Fz, stations, npeak, alpha, kap, <span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb40-25" title="25">xs &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, xs)</a>
+<a class="sourceLine" id="cb40-26" title="26"><span class="kw">rownames</span>(xs) &lt;-<span class="st"> </span><span class="ot">NULL</span></a></code></pre></div>
 <p>The regional analysis with POT follow the same steps as using annual maxima. First the data must be transformed to a wide format. The argument <code>order.time</code> can be set to <code>FALSE</code> as the order of the observations is not considered. If the pooling group is not already formed, it can be created using the function <code>FindNearest</code> as previously done.</p>
 <p>For estimation, it is possible to choose between a two or three parameters GPA. When the lower bound is set to zero, a two parameter GPA can be requested by setting the argument <code>type = &#39;pot&#39;</code>. The third parameter is necessary in some occasions where the exceedances have a nonzero lower bound. In this case, the distribution simply must be set to <code>distr = &#39;gpa&#39;</code>. Afterwards, the verification of the homogeneity and the estimation of the parameter is performed using the same functions as using annual maxima.</p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" title="1"><span class="co">## Transform to wide format</span></a>
-<a class="sourceLine" id="cb42-2" title="2">xs.target &lt;-<span class="st"> </span><span class="kw">DataWide</span>(value <span class="op">~</span><span class="st"> </span>station <span class="op">+</span><span class="st"> </span>year, xs, <span class="dt">order.time =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb42-3" title="3"></a>
-<a class="sourceLine" id="cb42-4" title="4"><span class="co">## Fit regional growth curve using 3 parameter</span></a>
-<a class="sourceLine" id="cb42-5" title="5">fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xs.target, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>)</a>
-<a class="sourceLine" id="cb42-6" title="6"><span class="kw">print</span>(fit.target)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" title="1"><span class="co">## Transform to wide format</span></a>
+<a class="sourceLine" id="cb41-2" title="2">xs.target &lt;-<span class="st"> </span><span class="kw">DataWide</span>(value <span class="op">~</span><span class="st"> </span>station <span class="op">+</span><span class="st"> </span>year, xs, <span class="dt">order.time =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb41-3" title="3"></a>
+<a class="sourceLine" id="cb41-4" title="4"><span class="co">## Fit regional growth curve using 3 parameter</span></a>
+<a class="sourceLine" id="cb41-5" title="5">fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xs.target, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>)</a>
+<a class="sourceLine" id="cb41-6" title="6"><span class="kw">print</span>(fit.target)</a></code></pre></div>
 <pre><code>## 
 ## Regional frequency analysis with pooling groups
 ## 
@@ -630,9 +653,9 @@ the ith site of <span class="math inline">\(n\)</span> sites. The independent li
 ## Parameter:
 ##       xi    alpha    kappa 
 ## -0.01697  1.00348 -0.01327</code></pre>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" title="1"><span class="co">## Fit regional growth curve using 2 parameter</span></a>
-<a class="sourceLine" id="cb44-2" title="2">fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xs.target, <span class="dt">type =</span> <span class="st">&#39;pot&#39;</span>)</a>
-<a class="sourceLine" id="cb44-3" title="3"><span class="kw">print</span>(fit.target)</a></code></pre></div>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb43-1" title="1"><span class="co">## Fit regional growth curve using 2 parameter</span></a>
+<a class="sourceLine" id="cb43-2" title="2">fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xs.target, <span class="dt">type =</span> <span class="st">&#39;pot&#39;</span>)</a>
+<a class="sourceLine" id="cb43-3" title="3"><span class="kw">print</span>(fit.target)</a></code></pre></div>
 <pre><code>## 
 ## Regional frequency analysis with pooling groups
 ## 
@@ -649,29 +672,51 @@ the ith site of <span class="math inline">\(n\)</span> sites. The independent li
 ## Parameter:
 ##       xi    alpha    kappa 
 ##  0.00000  0.95358 -0.04642</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb46-1" title="1"><span class="co"># Create a homogenous group</span></a>
-<a class="sourceLine" id="cb46-2" title="2">fit.target &lt;-<span class="st"> </span><span class="kw">PoolRemove</span>(fit.target)</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb45-1" title="1"><span class="co"># Create a homogenous group</span></a>
+<a class="sourceLine" id="cb45-2" title="2">fit.target &lt;-<span class="st"> </span><span class="kw">PoolRemove</span>(fit.target)</a></code></pre></div>
 <pre><code>## [1] &quot;n:25, h:2.3, t:1260&quot;</code></pre>
 <p>For a threshold model, the flood quantile of T-year event is defined as the quantile of the GPA distribution associated with the probability <span class="math inline">\(p_\lambda = (1-1/\{\lambda T\})\)</span>, where <span class="math inline">\(\lambda\)</span> represent an average number of peaks per year. For the exceedances we simulated, thresholds were not specified for the pooling group. Therefore, we will assume that we have estimated <span class="math inline">\(\hat\lambda = 2.2\)</span> for the target site based on the exceedances rate. The flood quantiles are then obtained from the function <code>predict</code> using the probability <span class="math inline">\(p_{\hat \lambda}\)</span>. The confidence interval returned by <code>predict</code> doesn’t account for the uncertainty associated with the estimation of <span class="math inline">\(\hat\lambda\)</span>. However, variability generated by the estimation of the exceedance rate, which is usually relatively small in comparison with the other parameters (Coles, 2001).</p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb48-1" title="1"><span class="co">## Average number of exceedances at target</span></a>
-<a class="sourceLine" id="cb48-2" title="2">lambda &lt;-<span class="st"> </span><span class="fl">2.2</span></a>
-<a class="sourceLine" id="cb48-3" title="3"></a>
-<a class="sourceLine" id="cb48-4" title="4"><span class="co">## return periods of interest</span></a>
-<a class="sourceLine" id="cb48-5" title="5">period &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">50</span>)</a>
-<a class="sourceLine" id="cb48-6" title="6"></a>
-<a class="sourceLine" id="cb48-7" title="7"><span class="co">## Associated probabilities</span></a>
-<a class="sourceLine" id="cb48-8" title="8">prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(lambda <span class="op">*</span><span class="st"> </span>period)</a>
-<a class="sourceLine" id="cb48-9" title="9"></a>
-<a class="sourceLine" id="cb48-10" title="10"><span class="co">## Estimate flood quantiles for POT</span></a>
-<a class="sourceLine" id="cb48-11" title="11">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target, prob, <span class="dt">ci =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb48-12" title="12"><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb47-1" title="1"><span class="co">## Average number of exceedances at target</span></a>
+<a class="sourceLine" id="cb47-2" title="2">lambda &lt;-<span class="st"> </span><span class="fl">2.2</span></a>
+<a class="sourceLine" id="cb47-3" title="3"></a>
+<a class="sourceLine" id="cb47-4" title="4"><span class="co">## return periods of interest</span></a>
+<a class="sourceLine" id="cb47-5" title="5">period &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">50</span>)</a>
+<a class="sourceLine" id="cb47-6" title="6"></a>
+<a class="sourceLine" id="cb47-7" title="7"><span class="co">## Associated probabilities</span></a>
+<a class="sourceLine" id="cb47-8" title="8">prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(lambda <span class="op">*</span><span class="st"> </span>period)</a>
+<a class="sourceLine" id="cb47-9" title="9"></a>
+<a class="sourceLine" id="cb47-10" title="10"><span class="co">## Estimate flood quantiles for POT</span></a>
+<a class="sourceLine" id="cb47-11" title="11">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target, prob, <span class="dt">ci =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb47-12" title="12"><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</a></code></pre></div>
 <pre><code>##       pred   se lower upper
 ## 0.909 40.4  7.7  29.6  57.7
 ## 0.991 78.3 28.4  37.6 185.9</code></pre>
+<p>The RFA using peaks over threshold can also be carried out using the independent likelihood approach. However, the CVRM cannot be used.</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb49-1" title="1"><span class="co">## Fitting</span></a>
+<a class="sourceLine" id="cb49-2" title="2">xs.lik &lt;-<span class="st"> </span>xs.target[,<span class="kw">sitenames</span>(fit.target)]</a>
+<a class="sourceLine" id="cb49-3" title="3">fit.lik &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xs.lik, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a>
+<a class="sourceLine" id="cb49-4" title="4">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.lik, <span class="dt">p =</span> prob, <span class="dt">index =</span> fit.lik<span class="op">$</span>index[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb49-5" title="5"></a>
+<a class="sourceLine" id="cb49-6" title="6"><span class="co">## Bootstrap</span></a>
+<a class="sourceLine" id="cb49-7" title="7">fit.margin &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xw, <span class="st">&#39;gpa&#39;</span>, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>)</a>
+<a class="sourceLine" id="cb49-8" title="8">boot &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit.margin, <span class="dt">nsim =</span> <span class="dv">50</span>, <span class="dt">corr =</span> <span class="dv">0</span>)</a>
+<a class="sourceLine" id="cb49-9" title="9">Fz &lt;-<span class="st"> </span><span class="cf">function</span>(z) {</a>
+<a class="sourceLine" id="cb49-10" title="10">  f &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(z, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</a>
+<a class="sourceLine" id="cb49-11" title="11">  <span class="kw">predict</span>(f, <span class="dt">p =</span> prob, <span class="dt">index =</span> f<span class="op">$</span>index[<span class="dv">1</span>])</a>
+<a class="sourceLine" id="cb49-12" title="12">}</a>
+<a class="sourceLine" id="cb49-13" title="13"></a>
+<a class="sourceLine" id="cb49-14" title="14">pboot &lt;-<span class="st"> </span><span class="kw">sapply</span>(boot, Fz)</a>
+<a class="sourceLine" id="cb49-15" title="15"></a>
+<a class="sourceLine" id="cb49-16" title="16"><span class="co">## Uncertainty</span></a>
+<a class="sourceLine" id="cb49-17" title="17">se &lt;-<span class="st"> </span><span class="kw">apply</span>(pboot, <span class="dv">1</span>, sd)</a>
+<a class="sourceLine" id="cb49-18" title="18"><span class="kw">round</span>(<span class="kw">cbind</span>(<span class="dt">pred =</span> hat, <span class="dt">se =</span> se), <span class="dv">3</span>)</a></code></pre></div>
+<pre><code>##        pred     se
+## 0.91 40.090 13.813
+## 0.99 77.908 19.458</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>
-<p>In this document we showed how to perform a regional flood frequency analysis using similarity based seasonal statistics and pooling groups. First seasonal statistics were evaluated (<code>SeasonStat</code>) as well as the pairwise distance (<code>DistSeason</code>) of the sites in the seasonal space. The annual maximums were then reorganized in a matrix with sites in columns and years in rows (<code>DataWide</code>). Next, the nearest sites to a target were identified (<code>FindNearest</code>) and an index flood model was fitted (<code>FitRegLmom</code>) using the L-moments algorithm. It was found that the pooling group of the target was not homogenous. The most heterogenous sites were then removed in a stepwise manner (<code>PoolRemove</code>) and the flood quantiles were finally estimated (<code>predict</code>). To account for the intersite correlation that could lead to an underestimation of the true uncertainty of the flood quantiles, a model for the intersite correlation was initially estimated (<code>Intersite</code>). Further indications were provided to show how the same routines can be used to perform RFA using peaks over threshold. Finally, function <code>FitPoolMle</code> based on likelihood techniques is presented as an alternative estimation to the L-moment approach.</p>
+<p>In this document we showed how to perform a regional flood frequency analysis using similarity based seasonal statistics and pooling groups. First seasonal statistics were evaluated (<code>SeasonStat</code>) as well as the pairwise distance (<code>DistSeason</code>) of the sites in the seasonal space. The annual maximums were reorganized in a matrix with sites in columns and years in rows (<code>DataWide</code>). Next, the nearest sites to a target were identified (<code>FindNearest</code>) and an index flood model was fitted (<code>FitRegLmom</code>) using the L-moments algorithm. It was found that the pooling group of the target was not homogenous. The most heterogenous sites were then removed in a stepwise manner (<code>PoolRemove</code>) and the flood quantiles were estimated (<code>predict</code>). Ignoring intersite correlation could leads to an underestimation of the true uncertainty of the flood quantiles. Dependence models based on the multivariate normal were estimated (<code>Intersite</code>) by considering either a constant coefficient of correlation or correlation function that slowly decay with the great-circle distance. Afterwards, the function <code>FitPoolMle</code> based on likelihood techniques is presented as an alternative estimation to the L-moment approach. Finally, further indications were provided to show how the same routines can be used to perform RFA using peaks over threshold.</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>

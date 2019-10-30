@@ -35,7 +35,7 @@ GofTest(fit)
 
 ## AD test using the method of moment and bootstrap. 
 fitm <- FitPot(rx, method = 'mom', varcov = FALSE) 
-GofTest(fit, method = 'ad', nsim = 500)
+GofTest(fitm, method = 'ad', nsim = 500)
 
 ## ---- fig.height = 4, fig.width = 6--------------------------------------
 ## List of candidate thresholds
@@ -120,10 +120,92 @@ legend('topleft', col = c('blue','red'), pch = 16:17,
 fit <- FitPot(flow~date, xd, u = 1000, declust = 'wrc', r = r0)
 print(fit)
 
-## ------------------------------------------------------------------------
+## ----fig.height=5, fig.width=6-------------------------------------------
 ## Predict flood quantile of return period 10 and 100 years
 predict(fit, rt = c(10,100), se = TRUE, ci = 'profile')
 
 ## Return level plot
 plot(fit, ci = TRUE)
+
+## ------------------------------------------------------------------------
+## Create trend in the data
+idm <- xd$flow > mean(xd$flow)
+xd$utrend <- xd$flow 
+xd$utrend[idm] <- xd$utrend[idm] + as.integer(xd$date[idm]) * 0.02
+  
+## Fit the model
+fit <- FitNsPot(utrend~ date, x = xd, tau = .95, declust = 'wrc', r = 14,
+                thresh = ~ date)
+plot(fit)
+
+
+## ------------------------------------------------------------------------
+## Count the number of peaks per years
+xn <- data.frame(date = fit$data[fit$peak,2])
+xn$year <- as.integer(format(xn$date, '%Y'))
+xn <- aggregate(date~year, xn, length)
+
+## Fitting a Poisson regression model
+ff <- glm(date~year, xn, family = quasipoisson())
+print(summary(ff)$coef, digit = 3)
+
+## ------------------------------------------------------------------------
+## Fit the model
+fit0 <- FitNsPot(flow~ date, x = xd, tau = .95, declust = 'wrc', r = 14,
+                trend = ~ 1)
+
+fit <- FitNsPot(flow ~ date, x = xd, tau = .95, declust = 'wrc', r = 14,
+                trend = ~ date)
+
+fit3 <- FitNsPot(flow~ date, x = xd, tau = .95, declust = 'wrc', r = 14,
+                trend = ~ poly(date,2))
+
+c(AIC(fit0), AIC(fit), AIC(fit3))
+plot(fit)
+
+
+## ------------------------------------------------------------------------
+yr <- which.day(flowStJohn$date, '0715')
+yr <- yr[59:88]
+
+## Extract the threshold and trend
+xf <- fitted(fit, newdata = flowStJohn[yr,])
+head(xf)
+
+## Graph of the 
+plot(fit, do.legend = FALSE)
+
+qua <- predict(fit, rt = c(10,50), newdata = flowStJohn)
+rel <- predict(fit, rt = c(10,50), newdata = flowStJohn[yr,],
+               reliability = TRUE)
+
+lines(flowStJohn$date, qua[,1], col = 'magenta', lwd = 2, lty = 2)
+arrows(min(xf$time), rel[1], max(xf$time), col = 'cyan', lwd = 3,
+       code = 3, length = .1 )
+
+legend('topleft', legend = c('Flood quantile','Design level'), 
+       col = c('magenta','cyan'), lty = c(2,1))
+
+## ------------------------------------------------------------------------
+hat <- BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
+                 reliability = TRUE, verbose = FALSE)
+summary(hat, variable = 'para')
+summary(hat, variable = 'qua')
+
+## ------------------------------------------------------------------------
+tau <- seq(.93, .98, .002)
+candidates.tau <- SearchThreshNs(flow~date, flowStJohn, tau = tau, 
+                       trend = ~ poly(date,3), thresh = ~ date, method = 'mle',
+                       declust = 'wrc', r = 14, newdata = flowStJohn[yr,])
+
+## First threshold with AD p-value > 0.25
+FindThresh(candidates.tau, method = 'sgn-max', ppy = c(1,3))[,cvars]
+
+
+## ---- fig.height = 8, fig.width = 8--------------------------------------
+layout(matrix(c(1,3,2,4),2,2))
+plot(ad~u, candidates.tau, type = 'l')
+plot(mrl~u, candidates.tau, type = 'l')
+plot(kappa~u, candidates.tau, type = 'l')
+plot(q50~u, candidates.tau, type = 'l')
 

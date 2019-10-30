@@ -38,9 +38,6 @@
 #'
 PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
 
-  u1 <- obj$u[which.min(abs(obj$ppy-1))]
-  u15 <- obj$u[which.min(abs(obj$ppy-1.5))]
-
   ## Filter the threshold with proper PPY
   if(!is.null(ppy)){
     pid <- x$ppy >= ppy[1] & x$ppy <= ppy[2]
@@ -61,7 +58,6 @@ PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
          ylab = 'Anderson-Darling (p-value)',
          xlab = 'Threshold')
     abline(h = c(0.05, 0.25), lty = 3)
-    abline(v = c(u15, u1), col = c('blue','red'))
   }
 
   ## ------------------------------------------------
@@ -78,7 +74,6 @@ PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
          xlab = 'Threshold')
     lines(obj$u, lb, lty = 3)
     lines(obj$u, ub, lty = 3)
-    abline(v = c(u15, u1), col = c('blue','red'))
   }
 
   ## ------------------------------------------------
@@ -95,7 +90,6 @@ PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
          xlab = 'Threshold')
     lines(obj$u, lb, lty = 3)
     lines(obj$u, ub, lty = 3)
-    abline(v = c(u15, u1), col = c('blue','red'))
   }
 
   ## ------------------------------------------------
@@ -112,7 +106,6 @@ PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
          xlab = 'Threshold')
     lines(obj$u, lb, lty = 3)
     lines(obj$u, ub, lty = 3)
-    abline(v = c(u15, u1), col = c('blue','red'))
   }
 
   ## ------------------------------------------------
@@ -137,7 +130,6 @@ PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
          xlab = 'Threshold')
     lines(obj$u, lb, lty = 3)
     lines(obj$u, ub, lty = 3)
-    abline(v = c(u15, u1), col = c('blue','red'))
   }
 
   ## ------------------------------------------------
@@ -162,7 +154,6 @@ PlotThresh <- function(obj, type = 'ad', ppy = NULL, ...){
       lines(obj$u, xq[,ii])
       text(obj$u[1], xq[1,ii], labels = toupper(qname0[ii]), pos = 3)
     }
-    abline(v = c(u15, u1), col = c('blue','red'))
   }
 
 }

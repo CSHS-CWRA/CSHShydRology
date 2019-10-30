@@ -2,21 +2,22 @@
 % Please edit documentation in R/rfa_FitNsPot.R
 \name{FitNsPot}
 \alias{FitNsPot}
-\title{Estimation of a nonstationary index-flood model for peaks over threshold for
-a single site.}
+\title{Estimation of a nonstationary POT model.}
 \usage{
 FitNsPot(form, x, tau, method = "reg-lmom", thresh = ~1, trend = ~1,
   trend.link = "identity", trend.start = NULL, trend.method = "BFGS",
   trend.control = list(), declust = "none", r = 1, rlow = 0.75,
-  unit = 365.25, sorted = FALSE, start = NULL, quiet = FALSE, ...)
+  unit = 365.25, quiet = FALSE)
 }
 \arguments{
-\item{form}{Formula describing the date and the response variable. 
+\item{form}{Formula defining the response variable and date. 
 Must be of the form \code{y ~ date}.}
 
 \item{x}{Data.}
 
 \item{tau}{Percentage of daily data above the threshold.}
+
+\item{method}{Estimation method. See the detail section.}
 
 \item{thresh}{Formula determining the threshold model. 
 Must be of the form \code{~ x1 + x2 + ...}.}
@@ -26,29 +27,40 @@ Same as \code{thresh}.}
 
 \item{trend.link}{Link function characterizing the mean excess.}
 
-\item{trend.start}{If necessary, starting values for the estimation of 
-the mean excess.}
+\item{trend.method, trend.control, trend.start}{Parameters pass to \link{optim}.
+In particular, \code{trend.start} is user provided starting values for the
+trend model when likelihood techniques are used.}
 
-\item{declust}{Type of declustering techniques used to extract peaks over 
-threshold. See \link{which.floodpeaks}}
+\item{declust, r, rlow}{Parameter for the declustering techniques. 
+See \link{which.floodPeaks}}
 
-\item{r, rlow}{Parameter of the declustering technique.}
+\item{unit}{Determine the period of reference for the risk. By default
+it uses 365.25 for daily data.}
+
+\item{quiet}{Logical. Should the warning message be removed.}
 }
 \description{
-Estimate the parameter of a nonstationary index-flood model by a stepwise
-method. First quantile regression is used to estimate 
+Return the estimate the parameter of a nonstationary POT model. 
+First quantile regression is used to estimate 
 a time-varying threshold. Second, a trend in the exceedances is determined
 using quasi-likelihood and finally, a L-moments are used for estimating 
 the shape parameter of the a Generalized Pareto Distribution.
 }
+\details{
+The \code{AIC} function of the nonstationary POT model assumed that the 
+threshold and the peaks are known. It can be used only to select the best 
+model for the mean excess (trend).
+}
 \examples{
 
 fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95,
-                trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
+                trend = ~ poly(date,3), thresh = ~ date, declust = 'wrc', r = 14)
 
 print(fit)
 plot(fit)
 
+## Perform the Goodness-of-fit on the standardized data.
+## note that 
 GofTest(fit)
 
 }

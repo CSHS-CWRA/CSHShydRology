@@ -53,6 +53,8 @@ xd0 <- with(flowUngauged,
              stream = scale(log(stream)),
              map    = scale(log(map)))
   )
+
+rownames(xd0) <- flowUngauged$site
 ```
 
 Additionally, classical multidimensional scaling is used to project the
@@ -63,6 +65,7 @@ The code below adds these new coordinates to the descriptors
 ## Project the coordinates
 coord <- cmdscale(GeoDist(~lon+lat,flowUngauged))
 colnames(coord) <- c('lon','lat')
+rownames(coord) <- flowUngauged$site
 
 xd0 <- cbind(xd0, coord)
 ```
@@ -73,8 +76,8 @@ sample L-moments.
 We use the function `lAmax` that links L-moments to the parameters of a given 
 distribution and `qAmax` to evaluate the flood quantiles of each site assuming
 a Generalized Extreme Value (GEV) distribution.
-Note below that the presence of the argument `scale = FALSE` that specifies 
-that the LCV is passed rather than the L-scale.
+The argument `scale = FALSE` is used to specify that the LCV is passed rather 
+than the L-scale.
 
 ```{r}
 ## Convert L-moments to parameter
@@ -171,8 +174,8 @@ abline(0,1)
 
 ## Cross-validation
 
-Cross-validation is a technique used to measure the prediction error of 
-a model by resampling.
+Cross-validation is used to measure the prediction error of a model by a 
+resampling technique.
 It is strongly suggested to use a similar approach to calibrate the argument `nk` 
 that defines the size of the regions of influence.
 The k-fold cross-validation strategy consists of dividing the gauged sites in k 
@@ -223,13 +226,15 @@ the predictive power of the model.
 set.seed(392)
 kf <- sample(rep_len(1:5, nrow(xd)))
 
+formula.phy <- log(q100) ~ area + map + stream + wb
+
 ## Perform cross-validation with all descriptors
 cv0 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
 ## Formula without wb and stream
-formula.phy2 <- log(q100) ~ area + map 
+formula.phy2 <- log(q100) ~ area + map
 
 cv1 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy2, similarity = formula.dist,
@@ -320,12 +325,8 @@ legend('topleft', horiz = TRUE,
 
 ## Bootstrapping
 
-The argument `se = TRUE` can be passed to `FitRoi` to return the 
-standard deviation for the regression part (`phy.se`) or the kriging part 
-(`krige.se`) of the model. 
-These outputs may be useful to assess the quality of the fitting, but they 
-don't give a proper evaluation of the total uncertainty.
-Indeed, errors must be propagated at each step of the procedure.
+The predicted value are not directly measure and
+the sampling errors must be propagated to the later steps of the procedure.
 Overall the model could be seen as having two error terms
 $$
 Y = f(\mathbf{s}) + \eta + \omega
@@ -380,13 +381,12 @@ lq100 <- log(replicate(nboot, Fsim()))
 
 ```
 
-A bootstrap sample of the total error is obtained then 
+A bootstrap sample of the total error is obtained  
 by adding the model residuals to the sample from the at-site analyses. 
-Note that if kriging is not required, the argument `fitted = TRUE` must be 
+Please note that if kriging is not required, the argument `fitted = TRUE` must be 
 passed to obtain the fitted values (and residual) of the ROI model at 
 the gauged sites.
-The example below shows that without bootstrap, the uncertainty of the
-flood quantiles is under-estimated.
+The example below shows how to obtain bootstrap samples.
 
 
 ```{r}
@@ -409,18 +409,15 @@ Fboot <- function(){
   boot.resid <- sample(resid.mdl, nrow(xd), replace = TRUE)
   xd.boot$q100 <- exp(lq100[,boot.jj] + boot.resid)
   
-  return(FitRoi(x = xd.boot, xnew = target, nk = 50, 
-              phy = formula.phy, similarity = formula.dist)$pred) 
+  FitRoi(x = xd.boot, xnew = target, nk = 70, 
+              phy = formula.phy, similarity = formula.dist)$pred
 }
 
 boot <- replicate(nboot, Fboot())
+rownames(boot) <- rownames(target)
 
-## Evaluate the standard deviation of the bootstrap sample.
-boot.se <- apply(boot, 1, sd)
-round(boot.se[1:3],3)
+apply(boot, 1, sd)
 
-## Standard error of the direct regression model
-round(fit$pred.se[1:3],3)
 ```
 
 

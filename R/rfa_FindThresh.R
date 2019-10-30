@@ -40,14 +40,18 @@
 #' The criteria \code{ppy}, initially filter all the candidates thresholds that 
 #' are not found in a given interval of average peaks per year. 
 #' With the \code{sgn} method an additional condition associated to a flood 
-#' quantile \code{qua} can be specified. 
+#' quantile \code{tol.qua} can be specified. 
 #' It imposes that the relative discrepancies between the candidate threshold 
 #' and a reference is respected in addition to the criteria with the p-value.
 #' This reference is the average of the flood quantiles of the 5 lowest 
 #' candidate thresholds in the set of candidates.
 #' Normally, lower thresholds should have reached stability and their choice can
 #' be controlled by the argument \code{ppy}.
-#'  
+#'
+#' The method \code{fdr} is a variation of the \code{sgn} method. 
+#' It verifies that the p-value of a given threshold is above a critical value 
+#' and also  that here after the GPA distribution is a proper distribution for 
+#' all the thresholds using false discovery rate (FDR) at the same significance level.
 #' 
 #' @references 
 #' 
@@ -114,10 +118,13 @@ FindThresh <-
   qref <- mean(x[nrow(x)-1:qnmin,qua])
   quadif <- abs(1-x[,qua]/qref)
 
+  ## Identify automatic thresholds
+  idf <- which(x$ad >= tol.sgn & x$fdr >= tol.sgn)[1]
   ids <- which(x$ad >= tol.sgn & quadif <= tol.qua)[1]
   idx <- which.max(x$ad)
   idp <- which.min(abs(x$ppy - tol.ppy))
 
+  rname <- method
 
   if(method == 'max'){
     id <- idx
@@ -132,6 +139,9 @@ FindThresh <-
     } else {
       id <- nrow(x)
     }
+    
+  } else if(method == 'fdr'){
+    id <- idf 
 
   } else if(method == 'sgn-max'){
     id <- min(idx, ids)
@@ -144,9 +154,18 @@ FindThresh <-
       id <- idp
     }
 
+  } else if(method == 'all'){
+    id <- c(ids,idf,idx,idp)
+    
+    rname <- c('sgn','fdr','max','ppy')
+    
   } else {
     stop('Not a valid automatic selection method.')
   }
-
-  return(x[id,])
+  
+  ans <- x[id,, drop = FALSE]
+  
+  rownames(ans) <- rname
+  
+  return(ans)
 }

@@ -10,7 +10,7 @@
 \usage{
 fgpa1d(x, sol = FALSE)
 
-fgpa2d(x, sol = FALSE, par0 = NULL, ...)
+fgpa2d(x, sol = FALSE, para0 = NULL, ...)
 
 fgpaLmom(x)
 
@@ -22,23 +22,32 @@ fgpaMom(x)
 \item{sol}{Does solution from \code{optim} be returned.
 In case of \code{fgpa1d}, it returns the variance covariance matrix.}
 
-\item{par0}{Initial parameter.}
+\item{para0}{Initial parameter.}
 
 \item{...}{aditional arguments to pass to \code{\link{optim}}}
 }
 \description{
 Low level functions for estimating of the generalized Pareto
 distribution(GPA) with two parameters. Can use
-either maximum likelihood or the method of L-moments.
+either maximum likelihood, moment-based or L-moment-based methods.
+}
+\details{
 The algorithm of \code{fgpa2d} is using
 \code{optim} to directly optimize the log-likelihood (bivariate), while
 the algorithm of \code{fgpa1d} is using a transformation to use
 a univariate optimization routine. Additionally, \code{fgpa2d} constraint
 the shape parameter between -.5 and 1.
 }
-\section{Reference}{
+\examples{
 
+x <- rgpa(1000, 1, -.2)
+fgpa1d(x)
+fgpa2d(x)
+fgpaMom(x)
+fgpaLmom(x)
 
+}
+\references{
 Davison AC, Smith RL. (1990) Models for Exceedances over High Thresholds.
   Journal of the Royal Statistical Society Series B (Methodological).
   52(3):393-442.
@@ -46,15 +55,6 @@ Davison AC, Smith RL. (1990) Models for Exceedances over High Thresholds.
 Hosking JRM (1990). L-Moments: Analysis and Estimation of Distributions Using
   Linear Combinations of Order Statistics. Journal of the Royal Statistical
   Society Series B (Methodological). 52(1):105-24.
-}
-
-\examples{
-
-x <- rgpa(1000, 1, -.2)
-fgpa1d(x)
-fgpa2d(x)
-fgpaLmom(x)
-
 }
 \author{
 Martin Durocher <mduroche@uwaterloo.ca>

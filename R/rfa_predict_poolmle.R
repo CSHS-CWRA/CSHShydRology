@@ -1,11 +1,14 @@
 #' Prediction of the flood quantile for regional model
 #' 
-#' Methods to return the flood quantiles of given probabilities and perform
-#' inference using bootstrap.
+#' Return the flood quantiles of given probabilities.
 #'
-#' @param object Output from \link{}.
+#' @param object Output from \link{FitPoolMle}.
+#' 
 #' @param p Probabilities.
+#' 
 #' @param index Site specific parameters.
+#' 
+#' @param ... Other parameters.
 #'
 #' @export
 #'
@@ -30,8 +33,11 @@
 #' qboot <- sapply(fboot, Fz)
 #' summary(t(qboot))
 #' 
-predict.poolmle <- function(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99), 
-                          index = NULL){
+#' 
+predict.poolmle <- 
+  function(object, 
+          p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99), 
+          index = NULL, ...){
   
   if(is.null(index)){
     index <- object$index
@@ -40,10 +46,13 @@ predict.poolmle <- function(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
   ## Compute the flood quantile
   if(object$type == 'mean'){
     ans <- .predict.poolmle.mean(index, object$para, p, object$distr)
+  
   } else if(object$type == 'cv'){
     ans <- .predict.poolmle.cv(index, object$para, p, object$distr)
+  
   } else if(object$type == 'shape' & object$distr == 'gpa'){
     ans <- .predict.poolmle.pot(index, object$para, p)
+  
   } else if(object$type == 'shape'){
     ans <- .predict.poolmle.shape(index, object$para, p, object$distr)
   }
@@ -58,7 +67,7 @@ predict.poolmle <- function(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
     names(ans) <- names(index)
     
   } else{
-    colnames(ans) <- round(p,2)
+    colnames(ans) <- round(p,3)
     
     if(is.vector(index))
       rownames(ans) <- names(index)
@@ -133,51 +142,3 @@ predict.poolmle <- function(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
   
 }
 
-#' @export
-#' @rdname FitPoolMle
-simulate.poolmle <- function(object, ...){
-  
-  nsite <- object$dim[2]
-  ntime <- object$dim[1]
-  
-  ans <- list(na = object$na,
-              dim = object$dim,
-              distr = object$distr)
-  
-  class(ans) <- 'poolmargin'
-  
-  ## Create a matrix of the marginal parameters
-  if(object$type == 'mean'){
-    para <- replicate(nsite, object$para)
-    colnames(para)<- names(object$index)
-    
-  } else if(object$type == 'cv'){
-    loc <- object$index
-    para <- rbind(loc,
-                  loc * object$para[1],
-                  object$para[2])
-    
-  } else if(object$type == 'shape'){
-    para <- rbind(object$index, object$para)
-  }
-  
-  ## Format the labels of the marginal parameters
-  if(object$distr == 'pe3'){
-    rownames(para) <- c('mu','sigma','gamma')
-  } else if(object$distr == 'gpa'){ 
-    rownames(para) <- c('alpha','kappa')
-  } else {
-    rownames(para) <- c('xi','alpha','kappa')
-  }
-  
-  ans$para <- para  
-  
-  out <- simulate(ans, ...)
-  
-  ## If the index-flood model is used, the simulation must be multiplied 
-  ## by the scale factor.
-  if(object$type == 'mean')
-    out1 <- lapply(out, function(z) t(apply(z,1,'*', object$index)))
-  
-  return(out)
-}

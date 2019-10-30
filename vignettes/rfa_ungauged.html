@@ -294,14 +294,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <a class="sourceLine" id="cb1-7" title="7">             <span class="dt">wb     =</span> <span class="kw">scale</span>(<span class="kw">log</span>(wb)),</a>
 <a class="sourceLine" id="cb1-8" title="8">             <span class="dt">stream =</span> <span class="kw">scale</span>(<span class="kw">log</span>(stream)),</a>
 <a class="sourceLine" id="cb1-9" title="9">             <span class="dt">map    =</span> <span class="kw">scale</span>(<span class="kw">log</span>(map)))</a>
-<a class="sourceLine" id="cb1-10" title="10">  )</a></code></pre></div>
+<a class="sourceLine" id="cb1-10" title="10">  )</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">rownames</span>(xd0) &lt;-<span class="st"> </span>flowUngauged<span class="op">$</span>site</a></code></pre></div>
 <p>Additionally, classical multidimensional scaling is used to project the site coordinates in a 2D space that tends to preserve the great-circle distance. The code below adds these new coordinates to the descriptors</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## Project the coordinates</span></a>
 <a class="sourceLine" id="cb2-2" title="2">coord &lt;-<span class="st"> </span><span class="kw">cmdscale</span>(<span class="kw">GeoDist</span>(<span class="op">~</span>lon<span class="op">+</span>lat,flowUngauged))</a>
 <a class="sourceLine" id="cb2-3" title="3"><span class="kw">colnames</span>(coord) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lon&#39;</span>,<span class="st">&#39;lat&#39;</span>)</a>
-<a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5">xd0 &lt;-<span class="st"> </span><span class="kw">cbind</span>(xd0, coord)</a></code></pre></div>
-<p>The dataset does not contain the annual maxima of each site but provides the sample L-moments. We use the function <code>lAmax</code> that links L-moments to the parameters of a given distribution and <code>qAmax</code> to evaluate the flood quantiles of each site assuming a Generalized Extreme Value (GEV) distribution. Note below that the presence of the argument <code>scale = FALSE</code> that specifies that the LCV is passed rather than the L-scale.</p>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">rownames</span>(coord) &lt;-<span class="st"> </span>flowUngauged<span class="op">$</span>site</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">xd0 &lt;-<span class="st"> </span><span class="kw">cbind</span>(xd0, coord)</a></code></pre></div>
+<p>The dataset does not contain the annual maxima of each site but provides the sample L-moments. We use the function <code>lAmax</code> that links L-moments to the parameters of a given distribution and <code>qAmax</code> to evaluate the flood quantiles of each site assuming a Generalized Extreme Value (GEV) distribution. The argument <code>scale = FALSE</code> is used to specify that the LCV is passed rather than the L-scale.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co">## Convert L-moments to parameter</span></a>
 <a class="sourceLine" id="cb3-2" title="2">para100 &lt;-<span class="st"> </span><span class="kw">apply</span>(flowUngauged[,<span class="kw">c</span>(<span class="st">&#39;l1&#39;</span>,<span class="st">&#39;lcv&#39;</span>,<span class="st">&#39;lsk&#39;</span>)], </a>
 <a class="sourceLine" id="cb3-3" title="3">                 <span class="dv">1</span>, lAmax, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">lscale =</span> <span class="ot">FALSE</span>)</a>
@@ -364,7 +367,7 @@ uniform weights where <span class="math inline">\(n_k\)</span> represents the nu
 </div>
 <div id="cross-validation" class="section level2">
 <h2>Cross-validation</h2>
-<p>Cross-validation is a technique used to measure the prediction error of a model by resampling. It is strongly suggested to use a similar approach to calibrate the argument <code>nk</code> that defines the size of the regions of influence. The k-fold cross-validation strategy consists of dividing the gauged sites in k groups of equal size. Typical values of k are 5 or 10. In turn, each group is treated as ungauged and predicted by the other sites. These predictions can be compared to the “known” flood quantiles by evaluating common criteria such as the Root Mean Square Error (RMSE) or the Mean Absolute Deviation (MAD). The function <code>CvRoi</code> performs cross-validation and returns<br />
+<p>Cross-validation is used to measure the prediction error of a model by a resampling technique. It is strongly suggested to use a similar approach to calibrate the argument <code>nk</code> that defines the size of the regions of influence. The k-fold cross-validation strategy consists of dividing the gauged sites in k groups of equal size. Typical values of k are 5 or 10. In turn, each group is treated as ungauged and predicted by the other sites. These predictions can be compared to the “known” flood quantiles by evaluating common criteria such as the Root Mean Square Error (RMSE) or the Mean Absolute Deviation (MAD). The function <code>CvRoi</code> performs cross-validation and returns<br />
 several evaluation criteria. Afterward, the function <code>head</code> can be used to return the three best <code>nk</code> according to a given criteria.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">## List of neigborhood sizes to try.</span></a>
 <a class="sourceLine" id="cb8-2" title="2">nk.lst &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">30</span>,<span class="dv">100</span>,<span class="dv">10</span>)</a>
@@ -393,20 +396,22 @@ several evaluation criteria. Afterward, the function <code>head</code> can be us
 <a class="sourceLine" id="cb11-2" title="2"><span class="kw">set.seed</span>(<span class="dv">392</span>)</a>
 <a class="sourceLine" id="cb11-3" title="3">kf &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">rep_len</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="kw">nrow</span>(xd)))</a>
 <a class="sourceLine" id="cb11-4" title="4"></a>
-<a class="sourceLine" id="cb11-5" title="5"><span class="co">## Perform cross-validation with all descriptors</span></a>
-<a class="sourceLine" id="cb11-6" title="6">cv0 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
-<a class="sourceLine" id="cb11-7" title="7">            <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
-<a class="sourceLine" id="cb11-8" title="8">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb11-9" title="9"></a>
-<a class="sourceLine" id="cb11-10" title="10"><span class="co">## Formula without wb and stream</span></a>
-<a class="sourceLine" id="cb11-11" title="11">formula.phy2 &lt;-<span class="st"> </span><span class="kw">log</span>(q100) <span class="op">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map </a>
-<a class="sourceLine" id="cb11-12" title="12"></a>
-<a class="sourceLine" id="cb11-13" title="13">cv1 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
-<a class="sourceLine" id="cb11-14" title="14">            <span class="dt">phy =</span> formula.phy2, <span class="dt">similarity =</span> formula.dist,</a>
-<a class="sourceLine" id="cb11-15" title="15">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb11-16" title="16"></a>
-<a class="sourceLine" id="cb11-17" title="17"><span class="co">## Compare the prediction power</span></a>
-<a class="sourceLine" id="cb11-18" title="18"><span class="kw">head</span>(<span class="kw">signif</span>(cv0,<span class="dv">3</span>), <span class="dt">crit =</span> <span class="st">&#39;mad&#39;</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb11-5" title="5">formula.phy &lt;-<span class="st"> </span><span class="kw">log</span>(q100) <span class="op">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map <span class="op">+</span><span class="st"> </span>stream <span class="op">+</span><span class="st"> </span>wb</a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">## Perform cross-validation with all descriptors</span></a>
+<a class="sourceLine" id="cb11-8" title="8">cv0 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
+<a class="sourceLine" id="cb11-9" title="9">            <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb11-10" title="10">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-11" title="11"></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">## Formula without wb and stream</span></a>
+<a class="sourceLine" id="cb11-13" title="13">formula.phy2 &lt;-<span class="st"> </span><span class="kw">log</span>(q100) <span class="op">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map</a>
+<a class="sourceLine" id="cb11-14" title="14"></a>
+<a class="sourceLine" id="cb11-15" title="15">cv1 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
+<a class="sourceLine" id="cb11-16" title="16">            <span class="dt">phy =</span> formula.phy2, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb11-17" title="17">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-18" title="18"></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="co">## Compare the prediction power</span></a>
+<a class="sourceLine" id="cb11-20" title="20"><span class="kw">head</span>(<span class="kw">signif</span>(cv0,<span class="dv">3</span>), <span class="dt">crit =</span> <span class="st">&#39;mad&#39;</span>)</a></code></pre></div>
 <pre><code>## 
 ## Cross-validation for Region of Influence (ROI)
 ## 
@@ -461,7 +466,7 @@ C(h) = C(0) -\tau \exp\left(-\theta h\right)
 </div>
 <div id="bootstrapping" class="section level2">
 <h2>Bootstrapping</h2>
-<p>The argument <code>se = TRUE</code> can be passed to <code>FitRoi</code> to return the standard deviation for the regression part (<code>phy.se</code>) or the kriging part (<code>krige.se</code>) of the model. These outputs may be useful to assess the quality of the fitting, but they don’t give a proper evaluation of the total uncertainty. Indeed, errors must be propagated at each step of the procedure. Overall the model could be seen as having two error terms <span class="math display">\[
+<p>The predicted value are not directly measure and the sampling errors must be propagated to the later steps of the procedure. Overall the model could be seen as having two error terms <span class="math display">\[
 Y = f(\mathbf{s}) + \eta + \omega
 \]</span> where <span class="math inline">\(\eta\)</span> is the sampling error and <span class="math inline">\(\omega\)</span> is the modeling error. This framework is used when using Generalized Least Squares (GLS) for estimating of total variance (Tasker and Stedinger, 1989; Durocher et al., 2018). In that context, the modeling error <span class="math inline">\(\omega\)</span> is assumed to have a constant variance for all sites. If the residuals of the fitted model are independent of the sampling errors, a residual of the total error can be generated by resampling independently each error term. Using this strategy a more accurate evaluation of the total uncertainty is provided by parametric bootstrap.</p>
 <p>The example below simulates the synthetic data using the function <code>RegSim</code> considering 50 years of data with a constant coefficient of corrrelation of 0.4 representing the intersite correlation between annual maxima. For each bootstrap sample, the at-site flood quantiles are evaluated using the method of L-moments. Here only a small sample size <code>nboot</code> is generated for illustration purpose.</p>
@@ -490,7 +495,8 @@ Y = f(\mathbf{s}) + \eta + \omega
 <a class="sourceLine" id="cb19-23" title="23"><span class="co">## Perform bootstrap for the at-site analysis</span></a>
 <a class="sourceLine" id="cb19-24" title="24"><span class="kw">set.seed</span>(<span class="dv">12</span>)</a>
 <a class="sourceLine" id="cb19-25" title="25">lq100 &lt;-<span class="st"> </span><span class="kw">log</span>(<span class="kw">replicate</span>(nboot, <span class="kw">Fsim</span>()))</a></code></pre></div>
-<p>A bootstrap sample of the total error is obtained then by adding the model residuals to the sample from the at-site analyses. Note that if kriging is not required, the argument <code>fitted = TRUE</code> must be passed to obtain the fitted values (and residual) of the ROI model at the gauged sites. The example below shows that without bootstrap, the uncertainty of the flood quantiles is under-estimated.</p>
+<p>A bootstrap sample of the total error is obtained<br />
+by adding the model residuals to the sample from the at-site analyses. Please note that if kriging is not required, the argument <code>fitted = TRUE</code> must be passed to obtain the fitted values (and residual) of the ROI model at the gauged sites. The example below shows how to obtain bootstrap samples.</p>
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">## Fit the model</span></a>
 <a class="sourceLine" id="cb20-2" title="2">fit &lt;-<span class="st"> </span><span class="kw">FitRoi</span>(<span class="dt">x =</span> xd, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">50</span>, </a>
 <a class="sourceLine" id="cb20-3" title="3">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
@@ -510,19 +516,24 @@ Y = f(\mathbf{s}) + \eta + \omega
 <a class="sourceLine" id="cb20-17" title="17">  boot.resid &lt;-<span class="st"> </span><span class="kw">sample</span>(resid.mdl, <span class="kw">nrow</span>(xd), <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb20-18" title="18">  xd.boot<span class="op">$</span>q100 &lt;-<span class="st"> </span><span class="kw">exp</span>(lq100[,boot.jj] <span class="op">+</span><span class="st"> </span>boot.resid)</a>
 <a class="sourceLine" id="cb20-19" title="19">  </a>
-<a class="sourceLine" id="cb20-20" title="20">  <span class="kw">return</span>(<span class="kw">FitRoi</span>(<span class="dt">x =</span> xd.boot, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">50</span>, </a>
-<a class="sourceLine" id="cb20-21" title="21">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist)<span class="op">$</span>pred) </a>
+<a class="sourceLine" id="cb20-20" title="20">  <span class="kw">FitRoi</span>(<span class="dt">x =</span> xd.boot, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">70</span>, </a>
+<a class="sourceLine" id="cb20-21" title="21">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist)<span class="op">$</span>pred</a>
 <a class="sourceLine" id="cb20-22" title="22">}</a>
 <a class="sourceLine" id="cb20-23" title="23"></a>
 <a class="sourceLine" id="cb20-24" title="24">boot &lt;-<span class="st"> </span><span class="kw">replicate</span>(nboot, <span class="kw">Fboot</span>())</a>
-<a class="sourceLine" id="cb20-25" title="25"></a>
-<a class="sourceLine" id="cb20-26" title="26"><span class="co">## Evaluate the standard deviation of the bootstrap sample.</span></a>
-<a class="sourceLine" id="cb20-27" title="27">boot.se &lt;-<span class="st"> </span><span class="kw">apply</span>(boot, <span class="dv">1</span>, sd)</a>
-<a class="sourceLine" id="cb20-28" title="28"><span class="kw">round</span>(boot.se[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],<span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.242 0.160 0.129</code></pre>
-<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb22-1" title="1"><span class="co">## Standard error of the direct regression model</span></a>
-<a class="sourceLine" id="cb22-2" title="2"><span class="kw">round</span>(fit<span class="op">$</span>pred.se[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],<span class="dv">3</span>)</a></code></pre></div>
-<pre><code>## [1] 0.140 0.082 0.052</code></pre>
+<a class="sourceLine" id="cb20-25" title="25"><span class="kw">rownames</span>(boot) &lt;-<span class="st"> </span><span class="kw">rownames</span>(target)</a>
+<a class="sourceLine" id="cb20-26" title="26"></a>
+<a class="sourceLine" id="cb20-27" title="27"><span class="kw">apply</span>(boot, <span class="dv">1</span>, sd)</a></code></pre></div>
+<pre><code>##    01AF007    01BQ001    02BB003    02ED024    02HA006    02LB022 
+## 0.23250881 0.14904539 0.11303648 0.10750722 0.11122058 0.17756569 
+##    02QA002    02YM004    03BF001    05AC030    05CC007    05DF004 
+## 0.11298122 0.14570692 0.12108911 0.20257963 0.17854254 0.19347941 
+##    05HD036    05LE008    05SA002    06DA004    07BA002    07CE002 
+## 0.14950907 0.14333434 0.47253500 0.15632455 0.17565622 0.14053322 
+##    07FB002    07GG002    07SA004    08EG012    08HE006    08KH019 
+## 0.09624538 0.15333961 0.20064070 0.15979121 0.28924148 0.10796211 
+##    08MB007    08NH120 
+## 0.12541217 0.15077336</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>

@@ -20,6 +20,8 @@ See \link{predict.amax} with argument Delta method.}
 \item{col.ci, lty.ci, lwd.ci}{Graphical parameters determining the 
 confidence intervals.}
 
+\item{xlim, ylim}{Limits of the graphic.}
+
 \item{...}{Other graphical parameters. See \code{\link{par}}.}
 }
 \description{

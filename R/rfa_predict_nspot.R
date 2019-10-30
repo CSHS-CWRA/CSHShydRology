@@ -1,21 +1,43 @@
 ##############################################################################
-#' Flood quantiles for the nonstationary index-flood model at one site
+#' Flood quantiles for the nonstationary POT model
 #' 
-#' Predict the return levels or design level of 
+#' Predict the return levels or design level of the nonstationary POT model.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param object Output form \cite{FitNsPot}
+#' @param object Output form \cite{FitNsPot}.
 #' 
 #' @param rt Vector of return period to estimate.
 #' 
-#' @param newdata Data when to estimate flood quantiles.
+#' @param newdata Dataset of the covariates at the predicted dates.
 #' 
 #' @param reliability Logical. Should the reliability be returned instead of the
 #'   flood quantiles.  
 #'   
-#' @param nsim Size of the bootstrap sample.
+#' @param reg.kappa Optional value to overwrite the shape parameter. Can be
+#'   used to obtain flood quantile using a regional estimate.
+#' 
+#' @param ... Other parameters.
 #'
+#' @details 
+#' 
+#' The reliability is defined as the probability that there is no event that 
+#' will exceed as given design level for a specific period. 
+#' When \code{reliability = TRUE}, the elements \code{newdata} are used to define
+#' that period. The reliability level is control 
+#' by \code{p} and is \code{p^s} where \code{s} is the size of \code{newdata}.
+#' As the data are daily, the exceeding probability for a given year could be
+#' approximated by the value of one days, for instance July 15th. 
+#' Therefore the reliability of the last 30 years could be approximated by the 
+#' reliability of the last 30 July 15th. Daily data can also be passed but at
+#' a greater computational cost. 
+#' 
+#' For the function \code{simulate}, if no dataset is passed to \code{newdata}, 
+#' the simulation is done at the date of the extracted peaks. 
+#' If a dataset is passed, for each date of the dataset the probability of being
+#' a peaks is determined based on the exceedance rate of the model and 
+#' follows an homogenous Poisson process.
+#' 
 #' @references 
 #' 
 #' Durocher, M., Burn, D. H., & Ashkar, F. (2019). Comparison of estimation 
@@ -35,59 +57,60 @@
 #' fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95,
 #'                 trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
 #' 
-#' plot(fit)
+#' plot(fit, legend = FALSE)
+#' 
+#' ## Create a datasets of the July 15th to use as annual values 
+#' id <- which.day(flowStJohn$date)
+#' xref <- flowStJohn[id, ]
 #' 
 #' ## Add the return levels to the graphics 
-#' qhat <- predict(fit, rt = c(10, 100))
-#' for(ii in 1:6) lines(flowStJohn$date, qhat[,ii], col = 'magenta')
+#' qhat <- predict(fit, rt = c(10, 100), newdata = xref)
 #' 
-#' ## Add the design level of the last 30 years
+#' for(ii in 1:2) lines(xref$date, qhat[,ii], col = 'magenta', lty = 2)
 #' 
-#' xref <- flowStJohn[flowStJohn$date > as.Date('1980-01-01'), ]
-#' qhat <- predict(fit, rt = c(10, 50), newdata = xref, reliability = TRUE)
-#' for(ii in 1:6) 
-#'   arrows(min(xref$date), qhat[ii], max(xref$date), lwd = 2, col = 'cyan',
+#' ## Compute the design level of the last 30 years
+#' xref30 <- xref[59:88,]
+#' qhat <- predict(fit, rt = c(10, 50), reliability = TRUE, newdata =xref30)
+#' 
+#' for(ii in 1:2) 
+#'   arrows(min(xref30$date), qhat[ii], max(xref30$date), 
+#'          lwd = 2, col = 'cyan',
 #'          code = 3, angle = 90, length = .05)
 #' 
-#' ## Assuming that a regional estimate of of the shape was available by other 
-#' ## methods.        
-#' predict(fit, rt = c(10, 100), reg.kappa = .3)
+#' ## evaluating the flood quantiles assuming that a regional estimate of 
+#' ## the shape was available.        
+#' predict(fit, rt = c(10, 100), newdata = xref30, reg.kappa = .3)
 #' 
 predict.nspot <- 
   function(object, 
            rt = c(2, 5, 10, 20, 50, 100), 
            newdata = NULL, 
            reliability = FALSE,
-           reg.kappa = NULL){
-  
-  if(is.null(newdata))
-    newdata <- object$data
+           reg.kappa = NULL, ...){
   
   if(is.null(reg.kappa)){
     para <- coef(object, 'kappa')
-  
   } else{
     para <- reg.kappa + c(1,0)
   }
-  
-  
-  ftd <- fitted(object, newdata)
-  p <- 1 - 1 / (object$ppy * rt)
-  
     
-  ############################
+  if(is.null(newdata)){
+    ftd <- fitted(object)
+  } else{
+    ftd <- fitted(object, newdata)
+  }
+ 
   ## quantile without trend ##
-  ############################
+  p <- 1 - 1 / (object$ppy * rt)
   qua <- qgpa(p, para[1], para[2])
   
-  if(object$trend == formula('~1') & object$threshold == formula('~1')){
-    ans <- qua * object$trend.beta + object$threshold.beta
+  if(ncol(object$trend$data) == 0 & ncol(object$threshold$data) == 0){
+    ans <- qua * object$trend$beta + object$threshold$beta
     names(ans) <- paste0('q',round(rt,2))
     return(ans)
   }
-  ###########################
-  ## quantile with trend   ##
-  ###########################
+
+  ## quantile with trend ##
   
   quas <- outer(ftd$trend, qua)
   quas <- apply(quas, 2, '+', ftd$thresh)
@@ -96,11 +119,11 @@ predict.nspot <-
     colnames(quas) <- paste0('q',round(rt,2))
     return(quas)
   }
-  #################
-  ## reliability ##
-  #################
+
   
-  lp <- log(p) * nrow(newdata)
+  ##----- reliability -------##
+
+  lp <- log(p) * nrow(ftd)
   
   Frel <- function(z, jj){
     u <- (z-ftd$thresh)/ftd$trend
@@ -119,130 +142,4 @@ predict.nspot <-
   
   names(rel) <- paste0('q',round(rt,2))
   return(rel)
-}
-
-#' @export
-#' @rdname predict.nspot
-BootNsPot <- function(object, rt, newdata = NULL, reliability = FALSE,
-                      nsim = 1000, verbose = TRUE, by.year = FALSE){
-  
-  if(is.null(newdata))
-    newdata <- object$data
-  
-  ## allocate memory
-  paras <- matrix(0, nsim, length(object$trend.beta)+1)
-  colnames(paras) <- c('kappa',names(object$trend.beta))
-  
-  if(reliability){
-    quas <- matrix(0, nsim, length(rt))
-  } else {
-    quas <- array(0, dim = c(nrow(newdata), length(rt), nsim))
-  }
-  
-  colnames(quas) <- paste0('Q',rt)
-  
-  if(verbose)
-    bar <- txtProgressBar()
-  
-  ## create a copy of the object
-  copy <- object
-  kap <- coef(object, 'kappa')
-  
-  for(ii in 1:nsim){
-    
-    if(verbose)
-      setTxtProgressBar(bar, ii /nsim)
-    
-    nn <- rpois(1,length(object$peak))
-    sid <- sort(sample.int(nrow(object$data),nn))
-    
-    ## Evaluate the trend at the sampled time
-    xd <- object$data[sid,]
-    ftd <- fitted(object, xd)
-    trend.xmat <- model.matrix(object$trend, xd)
-      
-    ## Create a bootstrap sample of exceedances
-    y.boot<- rgpa(nrow(xd), kap[1], kap[2]) * ftd$trend
-    
-    ############################################
-    ## Fit the trend of the boostrap sample
-    ############################################
-    if(object$method %in% c('reg-mle','reg-lmom')){
-      
-      trend.fit <- .FitNsPotGlm(trend.xmat, 
-                              y.boot, 
-                              object$trend.beta, 
-                              object$trend.link)
-    
-      copy$trend.beta <- paras[ii,-1] <- coef(trend.fit)
-      trend.fitted <- fitted(trend.fit)
-  
-      if(object$method == 'reg-mle'){
-        copy$kappa <- paras[ii,1] <- .FitNsPotKappaMle(y.boot / trend.fitted)
-    
-      } else if(object$method == 'reg-lmom'){
-        copy$kappa <- paras[ii,1] <- .FitNsPotKappa(y.boot / trend.fitted)
-      }
-    
-    } else{
-      
-       sol <- .FitNsPotMle(x = trend.xmat, y = y.boot, l = object$trend.link, 
-                        s = c(-.1, object$trend.beta[-1]), 
-                        object$trend.method, object$trend.control)
-    
-       copy$kappa <- sol$kappa
-       copy$trend.beta <- sol$beta
-      
-    }
-    
-    ## compute flood quantile
-    if(reliability){
-      quas[ii,] <- predict(copy,  rt, newdata, TRUE)
-    } else {
-      quas[,,ii] <- predict(copy,  rt, newdata, FALSE)
-    }
-    
-  }
-  
-  ans <- list(para = paras, qua = quas)
-  class(ans)<- c('bootns', 'bootnspot')
-  
-  return(ans)
-}
-
-#' @export
-simulate.nspot <- function(object, nsim = 1, newdata = NULL, ...){
-  
-  kap <- coef(object, 'kappa')
-  
-  ## Case we simulate at exactly specific time
-  if(!is.null(newdata)){
-    
-    fit <- fitted(object)
-    nc <- nrow(fit)
-    
-    ans <- apply(ans, 2, qgpa, kap[1], kap[2])
-    ans <- apply(ans, 2, '*', fit$trend)
-    ans <- apply(ans, 2, '+', fit$threshold)
-    
-                    
-  ## Case we simulate at time following a poisson process                
-  } else {
-  
-    Fsim <- function(ii){
-      nn <- rpois(1,length(object$peak))
-      sid <- sort(sample.int(nrow(object$data),nn))
-      fit <- fitted(object, newdata = object$data[sid,])
-      
-      sim <- rgpa(nn, kap[1], kap[2]) * fit$trend + fit$threshold
-      return(data.frame(id = ii, time = fit$time, sim = sim))
-    }
-    
-    ans <- lapply(1:nsim, Fsim)
-    ans <- do.call(rbind, ans)
-    
-  }
-  
-  rownames(ans) <- NULL
-  
 }

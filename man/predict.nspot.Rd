@@ -2,29 +2,46 @@
 % Please edit documentation in R/rfa_predict_nspot.R
 \name{predict.nspot}
 \alias{predict.nspot}
-\alias{BootNsPot}
-\title{Flood quantiles for the nonstationary index-flood model at one site}
+\title{Flood quantiles for the nonstationary POT model}
 \usage{
 \method{predict}{nspot}(object, rt = c(2, 5, 10, 20, 50, 100),
-  newdata = NULL, reliability = FALSE, reg.kappa = NULL)
-
-BootNsPot(object, rt, newdata = NULL, reliability = FALSE,
-  nsim = 1000, verbose = TRUE, by.year = FALSE)
+  newdata = NULL, reliability = FALSE, reg.kappa = NULL, ...)
 }
 \arguments{
-\item{object}{Output form \cite{FitNsPot}}
+\item{object}{Output form \cite{FitNsPot}.}
 
 \item{rt}{Vector of return period to estimate.}
 
-\item{newdata}{Data when to estimate flood quantiles.}
+\item{newdata}{Dataset of the covariates at the predicted dates.}
 
 \item{reliability}{Logical. Should the reliability be returned instead of the
 flood quantiles.}
 
-\item{nsim}{Size of the bootstrap sample.}
+\item{reg.kappa}{Optional value to overwrite the shape parameter. Can be
+used to obtain flood quantile using a regional estimate.}
+
+\item{...}{Other parameters.}
 }
 \description{
-Predict the return levels or design level of
+Predict the return levels or design level of the nonstationary POT model.
+}
+\details{
+The reliability is defined as the probability that there is no event that 
+will exceed as given design level for a specific period. 
+When \code{reliability = TRUE}, the elements \code{newdata} are used to define
+that period. The reliability level is control 
+by \code{p} and is \code{p^s} where \code{s} is the size of \code{newdata}.
+As the data are daily, the exceeding probability for a given year could be
+approximated by the value of one days, for instance July 15th. 
+Therefore the reliability of the last 30 years could be approximated by the 
+reliability of the last 30 July 15th. Daily data can also be passed but at
+a greater computational cost. 
+
+For the function \code{simulate}, if no dataset is passed to \code{newdata}, 
+the simulation is done at the date of the extracted peaks. 
+If a dataset is passed, for each date of the dataset the probability of being
+a peaks is determined based on the exceedance rate of the model and 
+follows an homogenous Poisson process.
 }
 \examples{
 
@@ -34,23 +51,29 @@ data(flowStJohn)
 fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95,
                 trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
 
-plot(fit)
+plot(fit, legend = FALSE)
+
+## Create a datasets of the July 15th to use as annual values 
+id <- which.day(flowStJohn$date)
+xref <- flowStJohn[id, ]
 
 ## Add the return levels to the graphics 
-qhat <- predict(fit, rt = c(10, 100))
-for(ii in 1:6) lines(flowStJohn$date, qhat[,ii], col = 'magenta')
+qhat <- predict(fit, rt = c(10, 100), newdata = xref)
 
-## Add the design level of the last 30 years
+for(ii in 1:2) lines(xref$date, qhat[,ii], col = 'magenta', lty = 2)
 
-xref <- flowStJohn[flowStJohn$date > as.Date('1980-01-01'), ]
-qhat <- predict(fit, rt = c(10, 50), newdata = xref, reliability = TRUE)
-for(ii in 1:6) 
-  arrows(min(xref$date), qhat[ii], max(xref$date), lwd = 2, col = 'cyan',
+## Compute the design level of the last 30 years
+xref30 <- xref[59:88,]
+qhat <- predict(fit, rt = c(10, 50), reliability = TRUE, newdata =xref30)
+
+for(ii in 1:2) 
+  arrows(min(xref30$date), qhat[ii], max(xref30$date), 
+         lwd = 2, col = 'cyan',
          code = 3, angle = 90, length = .05)
 
-## Assuming that a regional estimate of of the shape was available by other 
-## methods.        
-predict(fit, rt = c(10, 100), reg.kappa = .3)
+## evaluating the flood quantiles assuming that a regional estimate of 
+## the shape was available.        
+predict(fit, rt = c(10, 100), newdata = xref30, reg.kappa = .3)
 
 }
 \references{

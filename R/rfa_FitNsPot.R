@@ -1,22 +1,22 @@
 ###############################################################################
-#' Estimation of a nonstationary index-flood model for peaks over threshold for
-#' a single site.
+#' Estimation of a nonstationary POT model.
 #' 
-#' Estimate the parameter of a nonstationary index-flood model by a stepwise
-#' method. First quantile regression is used to estimate 
+#' Return the estimate the parameter of a nonstationary POT model. 
+#' First quantile regression is used to estimate 
 #' a time-varying threshold. Second, a trend in the exceedances is determined
 #' using quasi-likelihood and finally, a L-moments are used for estimating 
 #' the shape parameter of the a Generalized Pareto Distribution.
-#' 
 #'
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param form Formula describing the date and the response variable. 
+#' @param form Formula defining the response variable and date. 
 #'   Must be of the form \code{y ~ date}.  
 #' 
 #' @param x Data.
 #' 
-#' @param tau Percentage of daily data above the threshold. 
+#' @param tau Percentage of daily data above the threshold.
+#' 
+#' @param method Estimation method. See the detail section. 
 #' 
 #' @param thresh Formula determining the threshold model. 
 #'   Must be of the form \code{~ x1 + x2 + ...}.
@@ -26,13 +26,23 @@
 #' 
 #' @param trend.link Link function characterizing the mean excess.
 #' 
-#' @param trend.start If necessary, starting values for the estimation of 
-#'   the mean excess.
+#' @param trend.method,trend.control,trend.start Parameters pass to \link{optim}.
+#'   In particular, \code{trend.start} is user provided starting values for the
+#'   trend model when likelihood techniques are used.
 #' 
-#' @param declust Type of declustering techniques used to extract peaks over 
-#'   threshold. See \link{which.floodpeaks}
+#' @param declust,r,rlow Parameter for the declustering techniques. 
+#'   See \link{which.floodPeaks}
+#'   
+#' @param unit Determine the period of reference for the risk. By default
+#'   it uses 365.25 for daily data. 
+#'   
+#' @param quiet Logical. Should the warning message be removed.
 #' 
-#' @param r,rlow Parameter of the declustering technique. 
+#' @details
+#' 
+#' The \code{AIC} function of the nonstationary POT model assumed that the 
+#' threshold and the peaks are known. It can be used only to select the best 
+#' model for the mean excess (trend). 
 #' 
 #' @seealso \link{FitPot}, \link{SearchThresh}.
 #'
@@ -41,11 +51,13 @@
 #' @examples
 #' 
 #' fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95,
-#'                 trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
+#'                 trend = ~ poly(date,3), thresh = ~ date, declust = 'wrc', r = 14)
 #' 
 #' print(fit)
 #' plot(fit)
 #' 
+#' ## Perform the Goodness-of-fit on the standardized data.
+#' ## note that 
 #' GofTest(fit)
 #' 
 FitNsPot <- function(
@@ -63,24 +75,25 @@ FitNsPot <- function(
   r = 1,
   rlow = 0.75,
   unit = 365.25,
-  sorted = FALSE,
-  start = NULL,
-  quiet = FALSE,
-  ...){
+  quiet = FALSE){
   
   ## extract model element from formulas
-  x <- as.data.frame(x)
-  dd <- eval(form[[3]], envir = x)
+  x <- na.omit(as.data.frame(x))
+  dd <- model.frame(form, x)
+  nyear <- nrow(dd) / unit
   
-  ## If necessary make sure that the data are sorted according with
-  ## the time variable
-  if(!sorted)
-    x <- x[order(dd),]
+  ## If necessary make sure that the data are sorted in respect with
+  ## the date variable
+  if(is.unsorted(dd[,2])){
+    sid <- order(dd[,2])
+    x <- x[sid,]
+    dd <- dd[sid,]
+  }
   
-  nyear <- sum(is.finite(dd)) / unit
-  
-  y <- eval(form[[2]], envir = x)
-  thresh.xmat <- model.matrix(thresh, x)
+  ## Extract response variable and design matrix for threshold model
+  y <- model.response(dd)  
+  thresh.xd <- model.frame(thresh, x)
+  thresh.xmat <- model.matrix(attr(thresh.xd, 'term'), thresh.xd)
   
   ## Fit threshold using quantile regression and return corrected data
   thresh.fit <- quantreg::rq.fit(thresh.xmat, y, tau)
@@ -92,23 +105,26 @@ FitNsPot <- function(
   ## Extract peak information
   if(declust == 'none'){
     peak.id <- which(thresh.y > 0)
+  
   } else if(declust == 'wrc'){
-    peak.id <- which.floodPeaks(thresh.y+thresh.avg, dd, 
+    peak.id <- which.floodPeaks(thresh.y + thresh.avg, dd[,2], 
                                 u = thresh.avg, r = r , rlow = rlow)
   } else if(declust == 'run'){
-    peak.id <- which.floodPeaks(thresh.y, dd, u = 0, r = r)
+    peak.id <- which.floodPeaks(thresh.y, dd[,2], u = 0, r = r)
+  
   } else{
     stop('Must select a valid declustering technique.')
   }
       
   peak <- y[peak.id]
   trend.y <- thresh.y[peak.id]
-  trend.xmat <- model.matrix(trend, x[peak.id,])
+  trend.xd <- model.frame(trend, x[peak.id, , drop = FALSE])
+  trend.xmat <- model.matrix(attr(trend.xd,'term'), trend.xd)
   
   ## Exceedance rate
   ppy <- length(peak)/ nyear
   
-  if(method %in% c('reg-lmom', 'reg-mle')){
+  if(method %in% c('reg-lmom', 'reg-mle', 'reg-mom')){
     
     ## Fit a mean excess model
     trend.fit <- .FitNsPotGlm(trend.xmat, trend.y, trend.start, trend.link) 
@@ -119,8 +135,12 @@ FitNsPot <- function(
     ## Fit the kappa parameter
     if(method == 'reg-mle'){
       kappa <- .FitNsPotKappaMle(trend.y / trend.fitted)
-    } else{
-      kappa <- .FitNsPotKappa(trend.y / trend.fitted)
+    
+    } else if(method == 'reg-lmom'){
+      kappa <- fgpaLmom(trend.y / trend.fitted)[2]
+    
+    } else if(method == 'reg-mmom'){
+      kappa <- fgpaMom(trend.y / trend.fitted)[2]
     }  
       
   
@@ -147,39 +167,24 @@ FitNsPot <- function(
     
   }
   
+  threshold <- list(data = thresh.xd, beta = thresh.beta)
   
-  ## Return object
-  allvars <- unique(c(all.vars(form),all.vars(thresh),all.vars(trend)))
+  trend <- list(data = trend.xd, beta = trend.beta, link = trend.link, 
+                method = trend.method, control = trend.control)
   
-  ans <- list(data = x[,allvars],
+  ans <- list(data = dd,
               peak = peak.id,
               nyear = nyear,
               ppy = ppy,
               unit = unit,
-              formula = form,
               method = method,
-              threshold = thresh,
-              threshold.beta = thresh.beta,
+              threshold = threshold,
               trend = trend,
-              trend.beta = trend.beta,
-              trend.link = trend.link,
-              trend.method = trend.method,
-              trend.control = trend.control,
               kappa = kappa)
   
   class(ans) <- 'nspot'
     
   return(ans)
-}
-
-########################################################
-## Function to compute the kappa parameter assuming that
-## the mean is known and == 1. Use the probability weigthed
-## moment.
-########################################################
-.FitNsPotKappa <- function(x){
-  beta <- lmomco::pwm(x, nmom = 2)$betas
-  return(beta[1]/(2*beta[2]-beta[1]) - 2)
 }
 
 ########################################################
@@ -273,81 +278,6 @@ FitNsPot <- function(
 }
 
 #' @export
-coef.nspot <- function(object, type = 'all'){
-  
-  if(type == 'kappa')
-    ans <- object$kappa + c(1,0)
-  else if(type == 'all')
-    ans <- c(object$kappa, object$threshold.beta, object$trend.beta)
-
-  return(ans)
-}
-
-#' @export
-fitted.nspot <- function(object, newdata = NULL){
-  
-  if(is.null(newdata))
-    newdata <- object$data[object$peak,]
-  
-  ## Compute the threshold
-  thresh.xmat <- model.matrix(object$threshold, newdata)
-  thresh.y <- thresh.xmat %*% object$threshold.beta
-  
-  ## Compute the mean excess
-  trend.xmat <- model.matrix(object$trend, newdata)
-  trend.y <- trend.xmat %*% object$trend.beta
-  
-  mlink <- make.link(object$trend.link)
-  trend.y <- mlink$linkinv(trend.y)
-  
-  ## Compute the variable
-  y <- eval(object$formula[[2]], envir = newdata)
-  dd <- eval(object$formula[[3]], envir = newdata)
-  z <- (y - thresh.y)/trend.y
-  
-  return(data.frame(time = dd, 
-                    original = y, 
-                    threshold = thresh.y, 
-                    trend = trend.y, 
-                    scale = z))
-}
-
-#' @export
-residuals.nspot <- function(object, type = 'thresh'){
-  
-  cc <- fitted(object, object$data[object$peak,])
-  
-  if(type == 'scale'){
-    ans <- cc$scale
-  
-  } else if(type %in% c('thresh','threshold')){
-    ans <- cc$original - cc$threshold
-  
-  } else {
-    stop("The type of residuals must be : 'thresh' or 'scale'") 
-  }
-  
-  return(ans)
-}
-
-#' @export
-is.nspot <- function(object, ...) any(class(object) == 'nspot')
-
-
-#' @export
-plot.nspot <- function(x, ...){
-  
-  ## plot original data
-  plot(x$formula, x$data, type = 'l', ...)
-  
-  ## plotted fitted trend and threshold model
-  yhat <- fitted(x)
-  points(original~time, yhat)
-  lines(threshold~time, yhat, col = 'red', lwd = 2)
-  lines(trend+threshold~time, yhat, col = 'blue', lwd = 2)
-}
-
-#' @export
 print.nspot <- function(x, ...){
   cat('Nonstationary index-flood model\n')
   
@@ -357,10 +287,23 @@ print.nspot <- function(x, ...){
   cat('\n\nShape parameter:', round(x$kappa,3))
   
   cat('\n\nThreshold parameters:\n')
-  print(x$threshold.beta, digit = 4)
+  print(x$threshold$beta, digit = 4)
   
-  cat('\nTrend link:', x$trend.link)
+  cat('\nTrend link:', x$trend$link)
   cat('\nTrend parameters:\n')
-  print(x$trend.beta, digit = 4)
+  print(x$trend$beta, digit = 4)
   
+}
+
+#' @export
+logLik.nspot <- function(object, ...){
+  z <- residuals(object,'scale')
+  kap <- coef(object, 'kappa')
+  return(sum(dgpa(z, kap[1], kap[2], log = TRUE)))
+}
+
+#' @export
+AIC.nspot <- function(object, ..., k = 2){
+ np <- length(coef(object, 'trend'))
+ return(k * np - 2*logLik(object)) 
 }

@@ -45,13 +45,18 @@ returned.
 The criteria \code{ppy}, initially filter all the candidates thresholds that 
 are not found in a given interval of average peaks per year. 
 With the \code{sgn} method an additional condition associated to a flood 
-quantile \code{qua} can be specified. 
+quantile \code{tol.qua} can be specified. 
 It imposes that the relative discrepancies between the candidate threshold 
 and a reference is respected in addition to the criteria with the p-value.
 This reference is the average of the flood quantiles of the 5 lowest 
 candidate thresholds in the set of candidates.
 Normally, lower thresholds should have reached stability and their choice can
 be controlled by the argument \code{ppy}.
+
+The method \code{fdr} is a variation of the \code{sgn} method. 
+It verifies that the p-value of a given threshold is above a critical value 
+and also  that here after the GPA distribution is a proper distribution for 
+all the thresholds using false discovery rate (FDR) at the same significance level.
 }
 \examples{
 

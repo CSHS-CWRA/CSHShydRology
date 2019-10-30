@@ -274,16 +274,20 @@ To account for intersite correlation, a multivariate Normal distribution is used
 to simulate spatially distributed data that are later transformed to 
 the proper at-site distributions.
 
-The spearman correlation $\rho_{i,j}$ between pairs of the i-th and j-th sites 
-measures the degree of association between series of flood events.
-This measure is well suited to quantify the intersite correlations between 
-paired observations as it is invariant to the at-site distributions.
-The relation
+The Spearman $\rho_{i,j}$ and the Kendall $\tau_{i,j}$ coefficient
+between pairs of the i-th and j-th sites are twe measures 
+that evaluate the degree of association between series of flood events.
+These measure are well suited to quantify the intersite correlations between 
+paired observations as they are invariant to the at-site distributions.
+The relations
 $$
-\theta_{i,j} = 2 \sin\left(\rho_{i,j}\frac{\pi}{6}\right)
+\begin{align}
+\theta_{i,j} &= 2 \sin\left(\frac{\pi}{6}\rho_{i,j}\right)\\
+\theta_{i,j} &= \sin\left(\frac{\pi}{2}\tau_{i,j}\right)
+\end{align}
 $$
 links the correlation coefficients $\theta_{i,j}$ of the 
-multivariate Normal distribution to the spearman correlation coefficients.
+multivariate Normal distribution to the two measures of associations.
 However, corrections may be necessary to ensure that the final covariance matrix
 is positive definite (Higham, 2002).
 
@@ -293,7 +297,7 @@ multivariate normal distribution.
 The output is a list containing among others the correlation coefficient `corr`
 and their corrected value `model`.
 The function `sitename` is used to extract the names of the sites in a 
-pooling group.
+pooling group, which is useful to know which sites have been selected.
 
 
 ```{r}
@@ -303,8 +307,7 @@ round(icor$model[1:3,1:3],2)
 ```
 
 The strength of the dependence may depend on the distance between sites. 
-In this case, an exponential model can be fitted by the function `Intersite` 
-if a distance is provided. 
+In this case, an exponential model can be fitted by the function `Intersite`. 
 The exponential model has the form
 
 $$
@@ -313,9 +316,12 @@ $$
 1 & h = 0\\
 \end{cases}
 $$
-where the nugget effect $\tau \in [0,1]$ that represents a discontinuity at the 
-origin $h = 0$ and the range parameter $\gamma > 0$ that controls the decay of 
-the correlation with respect to the distance are estimated by weighted least 
+where the nugget effect $\tau \in [0,1]$ represents a discontinuity at the 
+origin $h = 0$ and the range parameter $\gamma > 0$ controls the decay of 
+the correlation with respect to the distance.
+Additionally, th smooth parameter $p$ can be used to modfied the shape of the 
+the function.
+The paare estimated by weighted least 
 squares with weights proportional to the number of paired observations.
 Note that it is important in the example below that the order of the columns in 
 the matrix of data and distance match.
@@ -329,22 +335,36 @@ colnames(distance.geo) <- rownames(distance.geo) <- sname
 geo.target <- distance.geo[sid,sid]
 
 
-## Fit the exponential model
-icor2 <- Intersite(xd[,sid], method = 'exp',
+## Fit the power exponential model 
+Finter <- function(sm){
+  Intersite(xd[,sid], type = 'exp',
                    distance = geo.target, 
-                   distance.max = 300)
+                   distance.max = 500,
+                   distance.bin = 15, smooth = sm)  
+}
 
-print(icor2)
+print(icor2 <- Finter(1))
 
-## Display the results
-theta <- icor2$corr[lower.tri(icor2$corr)]
-theta.model <- icor2$model[lower.tri(icor2$corr)]
-h <- geo.target[lower.tri(icor2$corr)]
 
-plot(h, theta, cex = .5, xlab = 'distance', ylab = 'Spatial correlation')
+## Plot correlation cloud
+tri <-lower.tri(icor2$corr)
+theta <- icor2$corr[tri]
+h <- geo.target[tri]
 
+plot(h, theta, col = 'grey', pch = '+',
+     xlab = 'distance', ylab = 'Spatial correlation')
+
+points(icor2$bin, pch = 16, col = 'black', cex = 1.5)
+
+## Plot POW with p = 1
 hid <- order(h)
-lines(h[hid], theta.model[hid], col = 'red', lwd = 2)
+theta <- icor2$model[tri]
+lines(h[hid], theta[hid], col = 'red', lwd = 2)
+
+## Plot POW with p = 2
+theta <- Finter(2)$model[tri]
+lines(h[hid], theta[hid], col = 'blue', lwd = 2)
+
 
 ```
 
@@ -373,25 +393,18 @@ print(round(hat,1))
 
 ## RFA using likelihood techniques
 
-The previous section use the L-moment approach to regional parameters of an 
-index-flood model.
-One may have noticed that this approach does not consider the spatial dependence
-between sites for the estimation of the regional parameters.
-A similar and alternative approach  would be to use composite likelihood 
-(Padoan et al. 2010) that optimize a likelihood-based criteria using 
-probabilities associated to events of lower dimensions.  
-In particular, consider $L_i$ that represents the likelihood of  
-the ith site of $n$ sites.
-The independent likelihood $\Pi_{i=1} L_i$, which corresponds
-to the full likelihood sites if the sites were independent, contain most of the
-relevant information about the marginals and can be maximized to estimate the 
-marginal distribution of the regional model without providing a full 
-characterization of the dependence structure.
+The previous section use the L-moment approach to estimate regional parameters of an index-flood model.
+It should be pointed out that this procedure consider spatial dependence in evaluation of the
+uncertainty, but not during the estimation of the regional parameters.
+If the main interest is the at-site distribution, an alternative estimation method would be to use composite likelihood (Padoan et al. 2010), which consists in optimizing a likelihood-based criterion based on events of low dimensions.  
+In particular, consider $L_i$ the likelihood of the ith site of $n$ sites.
+The independent likelihood $\Pi_{i=1} L_i$ defined as the product of the at-site likelihood 
+corresponds to the full likelihood of a regional model where the sites are spatially independent.
+This likelihood function contains most of the information about the at-site distribution and can be maximized to estimate regional parameters without providing a full characterization of the dependence structure.
 
-In the example below an index-flood model is fitted to the pooling groups 
-previously delineated for annual maxima. The at-site means are used as scale factors and 
-the regional parameters are estimated using the independent likelihood approach.
-
+The example below fit an index-flood model for the sites found in the studied pooling groups. 
+As before, the observation are standardized by the at-site means, but
+the regional parameters are estimated using the independent likelihood of the regional distribution.
 
 ```{r}
 xw <- xd[,sitenames(fit.target2)]
@@ -402,62 +415,72 @@ cat('\nFlood quantiles for station 01AK007\n')
 predict(fit, index = fit$index[1])
 ```
 
-The function `FitPoolMle` also consider other regional models.
-The first regional model assumed that shape parameter is a regional parameter 
-and that the other parameters are site-specific. 
-For the GEV distribution for instance, the location and scale are site-specific
-and the model has only one regional parameter.
-This regional model is invoked when `type = 'shape'`. 
-As done with the index-flood model, standardizing the observation 
-by the at-site mean, imposed a constant coefficient of variation. 
-Such property is not enforced by this regional model, which makes it more flexible, but also more complex. 
-For a station $i$ having a distribution GEV, GLO, GNO or PE3 with 3 parameters : 
-the location $\xi_i$, the scale $\alpha_i$ and the shape $\kappa_i$;
-a similar behavior as the index-flood model can be imposed by the regional mode 
+The composite likelihood approach also allows more flexible models that can be set
+with the argument `type`.
+The first alternative (`type = 'shape'`) that will be called the shape regional model (SRM) assumed 
+that the shape parameter is constant across sites and that the other parameters are site-specific. 
+For the GPA, the SRM implies that a scale parameter is estimated for each site and for the 3 parameter distributions, the location and scale parameters are site-specific.
+The SRM model is more flexible, but has $2n+1$ parameters to estimate where $n$ is the 
+number of sites.
+
+The index-flood model standardizes the observations by the at-site means, which imposed a constant coefficient of variation. 
+This property is not respected for the SRM. 
+Apart for the GPA, the considered distributions have for each site $i$ the 
+location $\xi_i$, scale $\alpha_i$ and shape $\kappa_i$.
+The model below provide a similar behavior as the index-flood model by linking 
+the location and the scale parameters.
 $$
 \begin{align}
-\xi_i &= \xi_i \\
-\alpha_i &= \theta \xi_i\\
+\xi_i &= \xi \\
+\alpha_i &= \beta \xi_i\\
 \kappa_i &= \kappa
 \end{align},
 $$
-when `type = 'cv'`. 
-The estimation of these two regional models is carried out in the example below
-for the annual maxima of the studied pooling group. 
-Both leads to a shape parameter of roughly -0.95.
-For the second model the regional `cv` parameter that relates the location and 
+This regional model will be annoted CVRM and requires that `type = 'cv'`. 
+Take note that this model has significantly less parameters than the previous model with 
+$n+2$ parameters. 
+Considering that the at-site means are empirical estimates and that the mean of 
+the regional distribution is fixed, this represent the same degree of freedom 
+as the index-flood model.
+One advantage that the CVRM has in comparison with the index-flood model is that 
+the site-specific parameter is jointly estimated with the regional parameters.
+
+In the example below, the estimation of SRM and CVRM is carried out for the studied pooling group. 
+Both leads to a shape parameter of roughly -0.95, which is similar to the -0.08 obtained with the index-flood model.
+For CVRM, the regional `cv` parameter $\beta$ that relates the location parameter with the 
 scale parameter is 0.343.
-In it interesting to notice that the same ratio between the regional scale and
-location parameter for the index-flood model is very similar with 0.346.
+In it interesting to see that the ratio between the regional scale and
+location parameter for the index-flood model is very similar with a value of 0.346.
 
 ```{r}
-FitPoolMle(xw, distr = 'gev', type = 'shape')
-FitPoolMle(xw, distr = 'gev', type = 'cv')
-
+print(fit.shp <- FitPoolMle(xw, distr = 'gev', type = 'shape'))
+print(fit.cv <- FitPoolMle(xw, distr = 'gev', type = 'cv'))
 ```
 
-The independent likelihood is a measure of the overall goodness of fit for the 
-at-site distributions. 
-This can be used to select a criterion for choosing a best distribution among the 
-four distributions GEV, GLO, GNO and PE3 because all in the same type of 
-regional models they all have the same number of parameters. 
-However, it is not possible to use such criterion to choose between two different types of regional models for the same reason.
+The independent likelihood represent a measure of goodness-of-fit that focus on the at-site distributions. 
+This can be used to select a best distribution among the four distributions GEV, GLO, GNO and PE3, because they have the same number of parameters. 
+However, for the same reason it is not possible to use such criterion to choose between two different types of regional models.
 
-Fr the previous regional models, Inference can be performed using bootstraps.
-This can be done using the function `simulate` and `FitPoolMargin` to create  parametric bootstrap samples based on at-site estimate, where intersite 
-correlation can be included if required. 
-Here a small sample is considered for illustration.
+As with the L-moment approach, inference can be performed using parametric bootstraps.
+One possible implementation of the this procedure is illustrated in the code 
+below and makes use of the function `FitPoolMargin` and `simulate` that 
+respectively fit every at-site distribution separately and create
+bootstrap samples following a specific intersite correlation structure. 
+We use here a relatively small sample of size 20 for illustration purposes.
 
 
 ```{r}
 ## Create bootstrap
-fit.margin <- FitPoolMargin(xw, 'gev', method = 'lmom')
-boot <- simulate(fit.margin, nsim = 30, corr = 0.3)
+fit.margin <- FitPoolMargin(xw, 'gev', method = 'mle', 
+                            method.optim = 'Nelder-Mead', 
+                            control = list(maxit = 5000))
+
+boot <- simulate(fit.margin, nsim = 20, corr = 0.3)
 
 ```
 
-The code below fits the three available regional models, extracts the
-flood quantiles of 10 year return period and compute their standard deviations.
+Afterwards, the three regional models considered by `FitPoolMle` are used to
+extracts the flood quantiles of 10 year return period for each bootstrap samples.
 
 ```{r}
 ## Fit the regional models on the samples
@@ -465,6 +488,7 @@ ffun <- function(z, type) FitPoolMle(z, distr = 'gev', type = type)
 fboot.mean <- lapply(boot, ffun, type = 'mean')
 fboot.cv <- lapply(boot, ffun, type = 'cv')
 fboot.shp <- lapply(boot, ffun, type = 'shape')
+
 
 ## Boostrap samples of the flood quantiles
 qboot.mean <- sapply(fboot.mean, predict, p = .9)
@@ -476,19 +500,7 @@ mean.sd <- apply(qboot.mean, 1, sd)
 cv.sd <- apply(qboot.cv, 1, sd)
 shp.sd <- apply(qboot.shp, 1, sd)
 
-```
-
-The overall uncertainty of the regional model can serve as a criterion for choosing among these regional models. 
-The example below standardizes the standard deviations across sites by dividing 
-them by their at-site estimates.
-In the end, the overall criterion is obtained by taking the means of all standardized
-standard deviations.
-This example shows that the 'shape' model leads to overall larger uncertainty 
-than the other models. 
-The 'cv' model is the found to be one with less uncertainty.
-
-```{r}
-
+## Extract at-site estimate
 hat <- predict(fit.margin, .9)
 
 print(
@@ -499,6 +511,14 @@ print(
   digits = 3) 
 
 ```
+
+The overall uncertainty of the regional model can serve as a criterion for choosing among the regional models. 
+The example below standardizes the standard deviation of the flood quantile by 
+the at-site estimates to obtain a coefficient of variation for the flood quantile (QCV).
+The average QCV assess the global uncertainty associated with the regional model.
+The results below shows that the SRM leads the largest uncertainty and 
+at the opposite the CVRM model has the lowest uncertainty.
+
 ## RFA using peaks over threshold
 
 The functions provided in this package also allow to carry out regional flood
@@ -612,24 +632,53 @@ hat <- predict(fit.target, prob, ci = TRUE)
 print(round(hat,1))
 ```
 
+The  RFA using peaks over threshold can also be carried out using the 
+independent likelihood approach. However, the CVRM cannot be used.
+
+```{r}
+## Fitting
+xs.lik <- xs.target[,sitenames(fit.target)]
+fit.lik <- FitPoolMle(xs.lik, distr = 'gpa', type = 'mean')
+hat <- predict(fit.lik, p = prob, index = fit.lik$index[1])
+
+## Bootstrap
+fit.margin <- FitPoolMargin(xw, 'gpa', method = 'mle')
+boot <- simulate(fit.margin, nsim = 50, corr = 0)
+Fz <- function(z) {
+  f <- FitPoolMle(z, distr = 'gpa', type = 'mean')
+  predict(f, p = prob, index = f$index[1])
+}
+
+pboot <- sapply(boot, Fz)
+
+## Uncertainty
+se <- apply(pboot, 1, sd)
+round(cbind(pred = hat, se = se), 3)
+
+```
+
 ## Conclusion
 
 In this document we showed how to perform a regional flood frequency analysis 
 using similarity based seasonal statistics and pooling groups.
 First seasonal statistics were evaluated (`SeasonStat`) as well as the
 pairwise distance (`DistSeason`) of the sites in the seasonal space.
-The annual maximums were then reorganized in a matrix with sites in columns
+The annual maximums were reorganized in a matrix with sites in columns
 and years in rows (`DataWide`).
 Next, the nearest sites to a target were identified (`FindNearest`) and 
 an index flood model was fitted (`FitRegLmom`) using the L-moments algorithm.
 It was found that the pooling group of the target was not homogenous. 
 The most heterogenous sites were then removed in a stepwise manner 
-(`PoolRemove`) and the flood quantiles were finally estimated (`predict`).
-To account for the intersite correlation that could lead to an underestimation
-of the true uncertainty of the flood quantiles, a model for the 
-intersite correlation was initially estimated (`Intersite`).
-Afterwards, the function `FitPoolMle` based on likelihood techniques is presented as an alternative estimation to the L-moment approach.
-Finally, further indications were provided to show how the same routines can be used to perform RFA using peaks over threshold. 
+(`PoolRemove`) and the flood quantiles were estimated (`predict`).
+Ignoring intersite correlation could leads to an underestimation
+of the true uncertainty of the flood quantiles.
+Dependence models based on the multivariate normal were estimated (`Intersite`) 
+by considering either a constant coefficient of correlation or correlation function
+that slowly decay with the great-circle distance.
+Afterwards, the function `FitPoolMle` based on likelihood techniques is presented 
+as an alternative estimation to the L-moment approach.
+Finally, further indications were provided to show how the same routines can 
+be used to perform RFA using peaks over threshold. 
 
 
 ## References

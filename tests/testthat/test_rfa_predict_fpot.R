@@ -42,5 +42,5 @@ expect_equal(dim(pp), c(6,3))
 
 ## verify profile confidence interval
 pp <- predict(fit, ci = 'boot', nsim = 10, out.matrix = TRUE)
-expect_equal(names(pp), c(6,3))
+expect_equal(names(pp), c('pred','para','qua'))
 
