@@ -255,16 +255,3 @@ Intersite <-
 
   return(ans)
 }
-
-
-
-# @export
-# @rdname Intersite
-#IntersiteMdl <- function(para, distance){
-#
-# distance <- as.matrix(distance)
-# corr <- para[1] * exp(-3*( distance / para[2])^para[3])
-# diag(corr) <- 1
-#
-# return(corr)
-#}

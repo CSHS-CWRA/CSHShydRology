@@ -227,10 +227,3 @@ FitAmax <-
   return(ans)
 }
 
-
-# @export
-#as.list.amax <- function(x, ...){
-#  class(x) <- 'list'
-#  return(x)
-#}
-
