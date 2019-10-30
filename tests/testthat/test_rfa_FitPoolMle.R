@@ -1,6 +1,7 @@
-#######################################
-## test
-#######################################
+######################################################
+## testing FitPoolMle functions
+## Martin Durocher <mduroche@uwaterloo.ca>
+#######################################################
 
 #library(testthat)
 #library(CSHShydRology)

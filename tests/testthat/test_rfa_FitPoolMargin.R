@@ -1,6 +1,7 @@
-#######################################
-## test
-#######################################
+######################################################
+## testing FitPoolMaring functions
+## Martin Durocher <mduroche@uwaterloo.ca>
+#######################################################
 
 #library(testthat)
 #library(CSHShydRology)
