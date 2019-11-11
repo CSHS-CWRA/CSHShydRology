@@ -1,9 +1,9 @@
-######################################################
-## testing SeasonStat
+###############################################################################
 ## Martin Durocher <mduroche@uwaterloo.ca>
-#######################################################
+##############################################################################
+context("Testing SeasonStat function")
 
-rm(list = ls())
+test_that("Verifying SeasonStat", {
 
 date.lst <- seq(as.Date('1950/1/1'),as.Date('2009/12/31'), 'days')
 
@@ -32,3 +32,5 @@ expect_equal(fit,SeasonStat(as.character(dd)))
 ## return an error if it is not a date
 expect_error(SeasonStat(1:5))
 expect_error(SeasonStat(month.name))
+
+})

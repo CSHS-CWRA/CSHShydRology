@@ -1,9 +1,11 @@
 ###############################################################################
-## Test function CvRoi
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ##############################################################################
+context("Testing CvRoi function")
 
-rm(list = ls())
+test_that("Verifying CvRoi", {
+pdf(file = NULL) 
+  
 attach(flowUngauged)
  
 ## Using multidimensional scaling for projecting coordinates
@@ -35,7 +37,8 @@ fkriging <- ~ lon + lat
 
 ## Perform cross-validation.
 out <- CvRoi(x = xdf, nk = seq(20,150, 10), fold = 5,
-                phy = fphy,  similarity = fsimilarity, model = 'Exp')
+             phy = fphy,  similarity = fsimilarity, model = 'Exp',
+             verbose = FALSE)
 
 ## verify output scale
 expect_true(all(out$mad < 0.5))
@@ -43,36 +46,39 @@ expect_true(all(out$nsh > 0.7))
 
 expect_equal(class(out), c('roicv', 'data.frame'))
 expect_equal(dim(out), c(14,7))
-print(out)
 
 ## verify that it is correctly sorted
-z <- head(out, 'nsh')[,'nsh']
+z <- head(out, 'nsh', verbose = FALSE)[,'nsh']
 expect_equal(z, sort(z,decreasing = TRUE))
 
-z <- head(out, 'mad')[,'mad']
+z <- head(out, 'mad', verbose = FALSE)[,'mad']
 expect_equal(z, sort(z))
 
 expect_equal(out$nk, seq(20,150, 10))
 plot(out, 'rmse', best.cex = .5, best.col = 'green', best.pch = 1, lty =3)
 plot(out, 'smad', ylab = '', xlab = '')
 
-## -----------------------------
+## ############################-
 ## modify formula
-## -----------------------------
+## ############################-
 
 fphy <- ly ~ area + map + poly(wb,3) + poly(stream,3)
 out <- CvRoi(x = xdf, nk = seq(40,60, 10), fold = 10,
-                phy = fphy,  similarity = fsimilarity, model = 'Exp')
+             phy = fphy,  similarity = fsimilarity, model = 'Exp',
+             verbose = FALSE)
 
 expect_true(all(out$mad < 0.5))
 expect_true(all(out$nsh > 0.7))
 
 fphy <- log(y) ~ area + map + wb + wb
 out <- CvRoi(x = xdf, nk = seq(40,60, 10), fold = 10,
-                phy = fphy,  similarity = fsimilarity, model = 'Exp')
+             phy = fphy,  similarity = fsimilarity, model = 'Exp',
+             verbose = FALSE)
 
 expect_true(all(out$mad < 0.5))
 expect_true(all(out$nsh > 0.7))
 
 
 detach(flowUngauged)
+
+})

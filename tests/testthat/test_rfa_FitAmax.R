@@ -1,9 +1,9 @@
 ######################################################
-## testing FitAmax
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
+context('Testing FitAmax function')
 
-rm(list = ls())
+test_that("Verifying FitAmax", {
 
 uu <- (1:100 - .5) /100
 xgev <- qAmax(uu, c(100,30,0), 'gev')
@@ -89,4 +89,5 @@ expect_error(FitAmax(xgev, distr = 'gev'))
 xgev[1] <- Inf
 expect_error(FitAmax(xgev, distr = 'gev'))
 
+})
 

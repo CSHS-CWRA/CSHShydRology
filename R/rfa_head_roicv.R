@@ -1,6 +1,6 @@
 #' @export
 #' @rdname CvRoi
-head.roicv <- function(x, crit = 'mad', ...){
+head.roicv <- function(x, crit = 'mad', verbose = TRUE, ...){
 
   lstCrit <- c('rmse','rrmse','nsh','mad','rmad','smad')
   bid <- which(crit == lstCrit)+1
@@ -12,10 +12,14 @@ head.roicv <- function(x, crit = 'mad', ...){
     best <- order(x[,bid])[1:3]
   }
   
-
-  cat('\nCross-validation for Region of Influence (ROI)\n')
-  cat('\nBest 3 sizes of neighborhood\n')
   ans <- as.matrix(x[best,])
-  print(ans)
+  
+  if(verbose){
+    cat('\nCross-validation for Region of Influence (ROI)\n')
+    cat('\nBest 3 sizes of neighborhood\n')
+    print(ans)
+  
+  }
 
+  invisible(ans)
 }

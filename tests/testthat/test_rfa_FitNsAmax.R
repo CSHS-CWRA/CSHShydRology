@@ -1,8 +1,13 @@
 ###############################################################################
-## Test function FitNsAmax
 ## Martin Durocher <mduroche@@uwaterloo.ca>
 ##############################################################################
-rm(list = ls())
+
+context('Testing FitNsAmax')
+
+test_that("Verifying FitNsAmax", {
+  
+pdf(file = NULL)
+  
 library(lmomco)
 
 ## built a sample
@@ -113,7 +118,7 @@ expect_true(qrel[2] <= max(ya[,2]))
 expect_true(qrel[2] >= min(ya[,2]))
 
 ## Verify that the simulate function works
-simulate(obj.add)
+null <- simulate(obj.add)
 
 ## Perform bootstrap and verify the output
 nsim0 <- 10
@@ -133,7 +138,7 @@ ss <- summary(boot.add)
 
 expect_equal(colnames(ss), c('mean','se','lower','upper'))
 
-summary(boot.add, 'beta')
+null <- summary(boot.add, 'beta')
 ss <- summary(boot.add, 'qua')
 
 expect_equal(dim(ss), c(ny, 24))
@@ -143,7 +148,9 @@ boot.add <- BootNsAmax(obj.add,
                        p = c(.35,.9), 
                        nsim = nsim0,
                        newdata = obj.add$data[91:100,],
-                       reliability = TRUE)
+                       reliability = TRUE,
+                       verbose = FALSE)
+
 ss <- summary(boot.add, 'qua')
 
 expect_equal(dim(ss), c(2,4))
@@ -157,7 +164,8 @@ b <- BootNsAmax(obj,
                 p = c(.35,.9), 
                 nsim = 100,
                 newdata = obj$data[81:88,],
-                reliability = TRUE)
+                reliability = TRUE,
+                verbose = FALSE)
 
 summary(b, 'qua')
 
@@ -184,8 +192,7 @@ fita <- FitNsAmaxMle(flow ~ date, x, 'gno', type = 'add', method = 'BFGS')
 fita <- FitNsAmaxMle(flow ~ date, x, 'pe3', type = 'add', method = 'BFGS')
 fita <- FitNsAmaxMle(flow ~ date, x, 'gev', type = 'add', method = 'BFGS')
 
-print(fit)
-
+#print(fit)
 plot(form,x, ylim = c(50,250))
 
 sset <- 10:100
@@ -211,6 +218,8 @@ for(ii in 1:6)
   lines(dd0, rep(rel[ii],length(dd0)), col = 'magenta')
 
 out <- BootNsAmaxMle(fit,  newdata = x[sset,], reliability = TRUE, nsim = 5,
-                      method = 'BFGS')
+                      method = 'BFGS', verbose = FALSE)
 
 expect_equivalent(colnames(out$para), names(fit$para))
+
+})

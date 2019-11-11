@@ -1,10 +1,12 @@
 ##############################################################################
-# Testing fitting FitRegLmom function
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #############################################################################
 
-library(lmomRFA)
-rm(list = ls())
+context("Testing FitRegLmom function")
+
+test_that("Verifying FitRegLmom", {
+
+require(lmomRFA)
 
 ## Import data for tests
 set.seed(0)
@@ -103,3 +105,4 @@ expect_false(any(fit1$para == fit2$para))
 expect_true(axd(fit1$para,para0) < 0.01)
 expect_true(axd(fit2$para,para0) < 0.01)
 
+})

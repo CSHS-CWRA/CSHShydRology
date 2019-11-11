@@ -9,7 +9,7 @@
 \title{Prediction at ungauged sites using region of influence and kriging}
 \usage{
 FitRoi(x, xnew, nk, phy, similarity, kriging = NULL, model = "Exp",
-  ker = TRUE, se = FALSE, fitted = FALSE)
+  ker = TRUE, fitted = FALSE)
 
 \method{predict}{roi}(object, x, fold = 5, ...)
 
@@ -39,8 +39,6 @@ Necessary for predicting residuals using spatial correlation.}
 
 \item{ker}{Should a (Epanechnikov) kernel be used in to weight
 local regression model. Otherwise uniform weights are used.}
-
-\item{se}{Logical. Should the standard error be returned.}
 
 \item{fitted}{Logical. Should the fitted value be returned. Useful to
 obtain fitted values at gauged sites from a ROI model when kriging is not
@@ -75,8 +73,6 @@ data(flowUngauged)
 coord <- flowUngauged[,c('lon','lat')]
 coord <- cmdscale(GeoDist(coord))
 colnames(coord) <- c('lon','lat')
-
-
 
 ## Transform data if necessary
 xdf <- with(flowUngauged, 

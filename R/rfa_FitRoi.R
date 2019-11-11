@@ -28,8 +28,6 @@
 #'
 #' @param ker Should a (Epanechnikov) kernel be used in to weight
 #'  local regression model. Otherwise uniform weights are used.
-#'  
-#' @param se Logical. Should the standard error be returned.
 #' 
 #' @param fold Number of group or group used to perform cross-validation.
 #' 
@@ -71,8 +69,6 @@
 #' coord <- flowUngauged[,c('lon','lat')]
 #' coord <- cmdscale(GeoDist(coord))
 #' colnames(coord) <- c('lon','lat')
-#' 
-#' 
 #'
 #' ## Transform data if necessary
 #' xdf <- with(flowUngauged, 
@@ -122,7 +118,6 @@ FitRoi <-
            kriging = NULL, 
            model = 'Exp', 
            ker = TRUE,
-           se = FALSE,
            fitted = FALSE){
 
   x <- as.data.frame(x)

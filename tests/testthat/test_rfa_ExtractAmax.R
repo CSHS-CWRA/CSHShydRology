@@ -1,9 +1,9 @@
 ######################################################
-## Testing ExtractAmax
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
+context('Testing ExtractAmax function')
 
-rm(list = ls())
+test_that("Verifying ExtractAmax", {
 
 ## Verify that the function return the right output
 x <- ExtractAmax(flow~date, flowStJohn)
@@ -93,3 +93,4 @@ expect_equal(colnames(a0), c('value', 'site', 'date','nn'))
 a0 <- ExtractAmax(value ~ site + date, xd1)
 expect_equal(colnames(a0), c('value', 'site', 'date', 'n', 'yy'))
 
+})

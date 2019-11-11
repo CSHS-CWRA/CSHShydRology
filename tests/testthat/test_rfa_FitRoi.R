@@ -1,9 +1,13 @@
 ###############################################################################
-## Test function FitRoi
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ##############################################################################
 
-rm(list = ls())
+context("Testing FitRoi function")
+
+test_that("Verifying FitRoi", {
+  
+pdf(file = NULL) 
+  
 attach(flowUngauged)
  
 ## Using multidimensional scaling for projecting coordinates
@@ -71,7 +75,7 @@ expect_equal(fit1$fitted + fit1$resid, log(xdf[tid,]$y))
 expect_true(sd(fit1$resid)< .5)
 
 
-print(fit1)
+#print(fit1)
 
 ##--------------------------
 ## Using kriging
@@ -143,3 +147,5 @@ expect_equal(length(out), nrow(xdf))
 
 
 detach(flowUngauged)
+
+})

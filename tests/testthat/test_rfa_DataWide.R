@@ -1,9 +1,9 @@
 ##############################################################################
-# Testing DataWide function
 # Martin Durocher <mduroche@@uwaterloo.ca>
 #############################################################################
+context('Testing DataWide function')
 
-rm(list = ls())
+test_that("Verifying DataWide", {
 
 ## basic test
 xini <- x0 <- data.frame(1:12, expand.grid(1:3,1:4)[,c(2,1)])
@@ -120,3 +120,5 @@ xmat0 <- matrix(c(2,4,7,10,
 
 cid <- !is.na(xmat)
 expect_true(all(xmat[cid] == xmat0[cid]))
+
+})

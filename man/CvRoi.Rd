@@ -10,7 +10,7 @@
 CvRoi(x, nk, phy, similarity, kriging = NULL, ker = TRUE,
   model = "Exp", fold = 5, verbose = TRUE)
 
-\method{head}{roicv}(x, crit = "mad", ...)
+\method{head}{roicv}(x, crit = "mad", verbose = TRUE, ...)
 
 \method{plot}{roicv}(x, crit = "mad", best.col = "red",
   best.pch = 16, best.cex = 1, ...)

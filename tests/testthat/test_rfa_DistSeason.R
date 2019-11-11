@@ -1,7 +1,9 @@
 ######################################################
-## testing DistSeason
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
+context('Testing DistSeason function')
+
+test_that("Verifying DistSeason", {
 
 nsite <- 1000
 scoord <- data.frame(angle = runif(nsite,0,2*pi),
@@ -27,3 +29,4 @@ d2 <-  sqrt(angMat^2+radMat^2)
 
 expect_equal(d1,d2)
 
+})

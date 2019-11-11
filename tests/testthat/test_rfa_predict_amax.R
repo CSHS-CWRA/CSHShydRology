@@ -1,7 +1,10 @@
-######################################################
-## testing predict.amax function
-#######################################################
-rm(list = ls())
+#########################################################
+## Martin Durocher <mduroche@uwaterloo.ca>
+#########################################################
+
+context("Testing predict.amax function")
+
+test_that("Verifying predict.amax", {
 
 x <- ExtractAmax(flow~date,flowStJohn, tol = 355)
 
@@ -34,3 +37,4 @@ boot <- predict(fit, rp, se = FALSE, ci = 'boot',
 expect_is(boot, 'list')
 expect_true(all(names(boot) == c('pred','para','qua')))
 
+})

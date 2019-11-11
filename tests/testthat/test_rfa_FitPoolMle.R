@@ -1,10 +1,10 @@
 ######################################################
-## testing FitPoolMle functions
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
-#library(testthat)
-#library(CSHShydRology)
+context("Testing FitPoolMle function")
+
+test_that("Verifying FitPoolMle", {
 
 ## Create a validation dataset
 u <- (1:100)/101
@@ -97,4 +97,6 @@ fit <- FitPoolMle(yw, 'gno', type = 'shape')
 
 fit <- FitPoolMle(yg, 'gpa', type = 'shape')
 expect_equal(names(fit$index), paste0('s',1:3))
-fit
+#fit
+
+})

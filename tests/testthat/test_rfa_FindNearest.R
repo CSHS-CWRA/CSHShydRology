@@ -1,9 +1,9 @@
 ##############################################################################
-# Testing FindNearest function
 # Martin Durocher <mduroche@@uwaterloo.ca>
 #############################################################################
+context('Testing FindNearest function')
 
-rm(list = ls())
+test_that("Verifying FindNearest", {
 
 ## create data
 x <- matrix(0:99, nrow = 10)
@@ -36,3 +36,4 @@ xs1 <- FindNearest(xs0, xs0[1,],3)
 
 expect_equal(x0,xs1)
 
+})

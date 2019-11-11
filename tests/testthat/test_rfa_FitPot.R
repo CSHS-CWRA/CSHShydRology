@@ -1,9 +1,10 @@
 ######################################################
-## testing FitPot and predict.fpot functions
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
-rm(list = ls())
+context("Testing FitPot function")
+
+test_that("Verifying FitPot", {
 
 uu <- (1:10000)/10001
 xd <- qgpa(uu, 1, -.2)
@@ -30,7 +31,7 @@ expect_equal(fit$ntot, 10000)
 expect_equal(fit$nexcess, length(fit$excess))
 
 ## verify basic functions
-print(fit)
+#print(fit)
 expect_equal(vcov(fit), fit$varcov) 
 expect_equal(coef(fit), fit$estimate)             
 expect_equal(signif(AIC(fit)),23993.1)
@@ -88,3 +89,5 @@ fit2 <- FitPot(flowStJohn$flow, flowStJohn$date, u = 1000,
               declust = 'wrc', r = 10, rlow = .6)
 
 expect_equal(fit1,fit2)
+
+})

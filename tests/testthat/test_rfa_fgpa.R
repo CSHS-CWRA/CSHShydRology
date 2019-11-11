@@ -1,9 +1,9 @@
 ##############################################################
-## Test the low level function to fit Generalized Pareto
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ###############################################################
+context('Testing low level functions for Generalized Pareto')
 
-rm(list = ls())
+test_that("Verifying fgpa", {
 
 x <- qgpa(seq(0.01,.99, l = 1001))
 
@@ -38,3 +38,4 @@ expect_equivalent(signif(fgpaLmom(x)), c(10.4274, -0.014396))
 expect_equivalent(signif(fgpa1d(x)), c(10.6948,  0.0108715))
 expect_equivalent(signif(fgpa2d(x)), c(10.6923,  0.0108057))
 
+})

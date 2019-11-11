@@ -8,7 +8,7 @@
 #'
 #' @param object An output from \link{FitRegLmom}.
 #'
-#' @param q Probability associated to the flood quantiles.
+#' @param p Probability associated to the flood quantiles.
 #'
 #' @param ci Logical. Should the confident intervals and the standard deviation
 #' be evaluated?
@@ -59,7 +59,7 @@
 #'
 predict.reglmom <-
   function(object,
-           q = c(.5, .8, .9, .95, .98 , .99),
+           p = c(.5, .8, .9, .95, .98 , .99),
            ci = FALSE,
            corr = 0,
            nsim = 1000,
@@ -90,22 +90,23 @@ predict.reglmom <-
                    nrec = object$nrec,
                    nrep = nsim,
                    fit = object$distr,
-                   f = q,
+                   f = p,
                    boundprob = c(alpha/2, 1-alpha/2))
 
     ## extract confident interval and standard deviation
     ans <- sitequantbounds(simq, rfit, sitenames = 1)
     colnames(ans) <- c('','pred', 'se', 'lower','upper')
-    rownames(ans) <- format(q, digits = 3)
-
-    ans <- as.matrix(ans)
+    rownames(ans) <- format(p, digits = 3)
+    class(ans) <- 'data.frame'
+    attr(ans,'boundprob') <- NULL
+    
     ans <- ans[,-1]
 
   } else {
     ## Compute the flood quantiles
-    ans <- indx * qfunc(q, object$para)
+    ans <- indx * qfunc(p, object$para)
   }
-
+  
   return(ans)
 }
 

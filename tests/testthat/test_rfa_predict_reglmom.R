@@ -1,9 +1,10 @@
 #########################################################
-## Verify the predict.reglmom function
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #########################################################
 
-rm(list = ls())
+context("Testing predict.reglmom function")
+
+test_that("Verifying predict.reglmom", {
 set.seed(48)
 
 ## Define evaluation functions
@@ -39,7 +40,7 @@ expect_equal(class(out), 'numeric')
 
 out <- predict(fit1,q0, ci = TRUE, nsim = 5)
 expect_equal(dim(out),c(2,4))
-expect_equal(class(out),'matrix')
+expect_equal(class(out),'data.frame')
 expect_equal(colnames(out),c('pred','se','lower','upper'))
 expect_equal(rownames(out), c('0.70','0.93'))
 
@@ -50,5 +51,7 @@ expect_true(rxd(predict(fit1, q1),hat1) < 0.01)
 expect_true(rxd(predict(fit1),hat2) < 0.01)
 
 out <- predict(fit1,q1, ci = TRUE, nsim = 5)
-expect_equal(class(out),'numeric')
+expect_equal(class(out),'data.frame')
 expect_equal(length(out), 4)
+
+})

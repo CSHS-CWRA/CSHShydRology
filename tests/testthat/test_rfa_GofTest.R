@@ -1,7 +1,10 @@
 #################################################
-## Test function GofTest
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ##################################################
+
+context("Testing GofTest function")
+
+test_that("Verifying GofTest", {
 
 set.seed(1)
 
@@ -39,3 +42,5 @@ GofTest(f, method = 'ad', nsim = 5)
 ## Verify the nsim = 10
 out <- GofTest(f, method = 'ad', nsim = 0)
 expect_true(is.na(out$pvalue))
+
+})

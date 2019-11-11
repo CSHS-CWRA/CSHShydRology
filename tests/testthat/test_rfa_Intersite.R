@@ -1,9 +1,12 @@
 ##############################################################################
-# Testing intersite function
 # Martin Durocher <mduroche@uwaterloo.ca>
 #############################################################################
 
-library(lmomRFA)
+context("Testing Intersite function")
+
+test_that("Verifying Intersite", {
+  
+require(lmomRFA)
 
 ## Set simulation data
 set.seed(0)
@@ -133,3 +136,4 @@ ifitk <- Intersite(smat0, type = 'emp', method = 'kendall')
 ifits <- Intersite(smat0, type = 'emp', method = 'spearman')
 expect_true(abs(ifitk$para-ifitk$para) < 0.05)
 
+})

@@ -1,7 +1,10 @@
 #################################################
-## Test basic functions for generalized pareto distribution
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ##################################################
+
+context("Testing GPA function")
+
+test_that("Verifying GPA", {
 
 ## qgpa and pgpa are inverse
 u <- seq(0.001,.999, l = 21)
@@ -48,3 +51,4 @@ set.seed(1)
 x <- pgpa(rgpa(5000,1,0),1,0)
 expect_lt(max(abs(sort(x-.5)/5000)), 1e-4)
 
+})

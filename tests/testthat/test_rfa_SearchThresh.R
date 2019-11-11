@@ -1,8 +1,12 @@
-######################################################
-## testing SearchThresh.R and FindThresh.R
+#########################################################
 ## Martin Durocher <mduroche@uwaterloo.ca>
-#######################################################
+#########################################################
 
+context("Testing SearchThresh and FindThresh function")
+
+test_that("Verifying SearchThresh + Find", {
+  
+  
 ## Modify the series to have a heavy tails
 xd <- flowStJohn
 u0 <- 1100
@@ -15,7 +19,8 @@ xd$flow[id0] <- u0 + y1
 
 ulst <- sort(unique(xd$flow[xd$flow]))[200:270]
 
-fit <- SearchThresh(flow~date, xd, u = ulst, declust = 'wrc', r = 14)
+fit <- SearchThresh(flow~date, xd, u = ulst, declust = 'wrc', r = 14,
+                    verbose = FALSE)
 
 cvars <- c('u','q10','ad','fdr', 'ppy')
 
@@ -52,7 +57,7 @@ expect_true(abs(out$ppy-2) < 0.05)
 taus <- seq(.92,.97, .001)
 fit <- SearchThreshNs(flow~date, xd, tau = taus, declust = 'wrc', r = 14,
                       trend = ~ date, thresh = ~date,
-                      method = 'reg-lmom')
+                      method = 'reg-lmom', verbose = FALSE)
 
 
 ##
@@ -80,5 +85,7 @@ expect_true(out$ad == 0.5)
 out <- FindThresh(fit, method = 'ppy', tol.ppy = 2)[,cvars]
 expect_true(abs(out$ppy-2) < 0.05)
 
-plot(ad~u, fit, type = 'b')
-lines(fdr~u, fit, col = 'red')
+#plot(ad~u, fit, type = 'b')
+#lines(fdr~u, fit, col = 'red')
+
+})

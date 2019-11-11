@@ -1,8 +1,10 @@
 ###############################################################################
-## Test function FitNsPot
 ## Martin Durocher <mduroche@@uwaterloo.ca>
 ##############################################################################
-rm(list = ls())
+
+context("Testing FitNsPot function")
+
+test_that("Verifying FitNsPot", {
 
 fit0 <- FitNsPot(flow~date, x = flowStJohn, tau = .95, 
                 trend = ~ 1, thresh = ~ 1, declust = 'wrc', r = 14)
@@ -72,35 +74,38 @@ expect_equal(names(rel), paste0('q',rt0))
 expect_equal(class(rel), 'numeric')
 
 ## verify that boot
-out0 <- BootNsPot(fit, rt = c(10,100), nsim = 5, x = flowStJohn, reliability = FALSE)
+out0 <- BootNsPot(fit, rt = c(10,100), nsim = 5, x = flowStJohn,
+                  reliability = FALSE, verbose = FALSE)
 
 out0 <- BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
-                  newdata = xyy, reliability = FALSE)
+                  newdata = xyy, reliability = FALSE, verbose = FALSE)
 
-round(summary(out0), 3)
+null <- round(summary(out0), 3)
 
 out0 <- BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
-                  newdata = xyy, reliability = FALSE)
+                  newdata = xyy, reliability = FALSE, verbose = FALSE)
 
 out <- BootNsPot(fit, rt = c(10,100), x = flowStJohn,
-                 newdata = xyy, reliability = TRUE)
+                 newdata = xyy, reliability = TRUE, verbose = FALSE)
 
-summary(out, 'para')
-summary(out, 'qua')
+null <- summary(out, 'para')
+sull <- summary(out, 'qua')
 
 fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95, trend.method = 'mle',
                 trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
 out <- predict(fit, reliability = TRUE)
 
 out <- BootNsPot(fit, rt = c(10,100), x = flowStJohn,
-                 newdata = xyy, reliability = TRUE)
-summary(out, 'qua')
+                 newdata = xyy, reliability = TRUE, verbose = FALSE)
+
+null <- summary(out, 'qua')
+
 ##############################################################################
 fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95, declust = 'wrc', r = 14)
 
 xyy<- data.frame(flow =0, date = as.Date(paste(1985:2014, 7, 15, sep = '-')))
 
-predict(fit, rt = c(10,100), newdata = xyy, reliability = TRUE)
+null <- predict(fit, rt = c(10,100), newdata = xyy, reliability = TRUE)
 
 form <- flow~date
 x <- flowStJohn
@@ -123,26 +128,26 @@ xx <- flowStJohn[-c(1:92),]
 tau <- seq(.93, .98, .002)
 
 us <- SearchThreshNs(flow~date, x = xx, tau = tau, trend = ~date, thresh = ~date, 
-                   declust = 'wrc', r = 14, method = 'reg-lmom', trend.control = list(maxit = 2000),
-                   trend.method = 'Nelder-Mead')
+                   declust = 'wrc', r = 14, method = 'reg-lmom', 
+                   trend.control = list(maxit = 2000),
+                   trend.method = 'Nelder-Mead', verbose = FALSE)
 
-FindThresh(us, method = 'sgn-max')
+null <- FindThresh(us, method = 'sgn-max')
 
 
-plot(kappa~ tau,us)
+#plot(kappa~ tau,us)
 
 xx <- flowStJohn[-c(1:92),]
 ff <- FitNsPot(flow~date, x = xx, tau = 0.958, trend = ~date, thresh = ~date, 
                declust = 'wrc', r = 14, method = 'mle', trend.control = list(maxit = 200))
-GofTest(ff)
-summary(residuals(ff,'scale'))
+null <- GofTest(ff)
+null <- summary(residuals(ff,'scale'))
 
 ff2 <- FitNsPot(flow~date, x = xx, tau = 0.958, trend = ~date, thresh = ~date, 
                declust = 'wrc', r = 14, method = 'reg-mle', trend.control = list(maxit = 200))
-GofTest(ff2)
-summary(residuals(ff2,'scale'))
+null <- GofTest(ff2)
+null <- summary(residuals(ff2,'scale'))
 
-
-
+})
 
 

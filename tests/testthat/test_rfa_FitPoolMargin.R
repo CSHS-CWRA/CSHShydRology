@@ -1,10 +1,10 @@
 ######################################################
-## testing FitPoolMaring functions
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
-#library(testthat)
-#library(CSHShydRology)
+context("Testing FitPoolMargin function")
+
+test_that("Verifying FitPoolMargin", {
 
 ## Create a validation dataset
 u <- (1:100)/101
@@ -99,3 +99,5 @@ sim <- simulate.poolmargin(fit, nsim = 30)
 
 expect_equal(class(sim), 'list')
 expect_equal(length(sim), 30)
+
+})

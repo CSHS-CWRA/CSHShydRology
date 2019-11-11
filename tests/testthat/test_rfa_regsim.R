@@ -1,10 +1,12 @@
-##############################################################################
-# Testing simulation function RegSim
-# Martin Durocher <mduroche@uwaterloo.ca>
-#############################################################################
+#########################################################
+## Martin Durocher <mduroche@uwaterloo.ca>
+#########################################################
 
-library(lmomRFA)
-rm(list = ls())
+context("Testing RegSim function")
+
+test_that("Verifying RegSim", {
+  
+require(lmomRFA)
 
 ## Import data for testing
 set.seed(0)
@@ -212,3 +214,4 @@ expect_error(RegSim(lmom5, distr = 'gev', nrec = 10, corr = corr.mod))
 ## Correlation must be positive definite
 expect_error(RegSim(lmom5.mod, distr = 'gev', nrec = 10, corr = -1))
 
+})

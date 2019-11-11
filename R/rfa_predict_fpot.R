@@ -109,6 +109,9 @@ predict.fpot <-
     qboot <- mapply(Fpred, pboot, lambdas)
 
     ## Compute interval
+    if(class(qboot) == 'numeric')
+      qboot <- t(qboot)
+    
     bootci <- t(apply(qboot, 1, quantile, c(alpha/2, 1-alpha/2)))
     lb <- bootci[,1]
     ub <- bootci[,2]

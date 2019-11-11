@@ -1,9 +1,10 @@
-######################################################
-## testing predict.fpot functions
+#########################################################
 ## Martin Durocher <mduroche@uwaterloo.ca>
-#######################################################
+#########################################################
 
-rm(list = ls())
+context("Testing predict.fpot function")
+
+test_that("Verifying predict.fpot", {
 
 uu <- (1:10000)/10001
 xd <- qgpa(uu, 1, -.1)
@@ -44,3 +45,8 @@ expect_equal(dim(pp), c(6,3))
 pp <- predict(fit, ci = 'boot', nsim = 10, out.matrix = TRUE)
 expect_equal(names(pp), c('pred','para','qua'))
 
+## verify that bootstrap work with only 
+pp <- predict(fit, rt = c(10,100), ci = 'boot', nsim = 10)
+pp <- predict(fit, rt = 10, ci = 'boot', nsim = 10)
+
+})
