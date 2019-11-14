@@ -159,7 +159,7 @@ lq100 <- log(replicate(nboot, Fsim()))
 ## Fit the model
 fit <- FitRoi(x = xd, xnew = target, nk = 50, 
               phy = formula.phy, similarity = formula.dist,
-              fitted = TRUE, se = TRUE) 
+              fitted = TRUE) 
 
 ## Extract model residuals assuming they are symmetrical.
 resid.mdl <- c(fit$resid, -fit$resid)

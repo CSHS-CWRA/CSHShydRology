@@ -5,7 +5,7 @@
 \title{Prediction of flood quantiles of a given return period.}
 \usage{
 \method{predict}{fpot}(object, rt = c(2, 5, 10, 20, 50, 100),
-  se = FALSE, ci = "none", alpha = 0.05, nsim = 1000,
+  se = FALSE, ci = "none", alpha = 0.05, nsim = 500,
   out.matrix = FALSE, ...)
 }
 \arguments{

@@ -109,6 +109,7 @@ null <- qgno(u0, xi0, alf0, -.1)
 #########################################################
 ## Verify the fitting f-functions
 
+set.seed(1)
 u0 <- (1:1000)/1001
 
 f0 <- c(100,30, -.05)
@@ -123,5 +124,13 @@ expect_true(all(abs(f-f0) < c(.05, .2, .01)))
 
 f <- fpe3(qpe3(u0, 100, 30, -.05))
 expect_true(all(abs(f-f0) < c(.05, .2, .01)))
+
+f <- fgum(qgev(u0, 100, 30,0))
+f0 <- c(100,30)
+expect_true(all(abs(f-f0) < c(.05, .2)))
+
+f <- fgam(qgamma(u0, 10, scale = 200))
+f0 <- c(10,200)
+expect_true(all(abs(f-f0) < c(.2, 3)))
 
 })#end testthat

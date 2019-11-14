@@ -5,6 +5,8 @@
 context("Testing predict.amax function")
 
 test_that("Verifying predict.amax", {
+  
+pdf(file = NULL)
 
 x <- ExtractAmax(flow~date,flowStJohn, tol = 355)
 

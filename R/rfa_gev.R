@@ -30,12 +30,10 @@ fgev <- function(x, p0 = NULL, ...){
     -sum(dgev(x,para[1],  exp(para[2]), para[3], log = TRUE))
   }
   
-  if(is.null(p0)){
-    m <- mean(x)
-    s <- sd(x)
-    p0 <- c(m + .58 * s , log(.52*s), -.1)
-  }
-    
+  if(is.null(p0))
+    p0 <- fAmax(x, 'gev')
+  
+  p0[2] <- log(p0[2]) + 1
   out <- try(optim(p0, nllik, ...), silent = TRUE)
   
   if(class(out) == 'try-error'){
@@ -54,7 +52,6 @@ fgev <- function(x, p0 = NULL, ...){
   return(ans)
  
 }
-
 
 #' @export
 #' @rdname Amax
@@ -114,3 +111,32 @@ qgev <- function (p, xi, alf, kap){
 #' @rdname Amax
 rgev <- function(n, xi, alf, kap)
   qgev(runif(n), xi, alf, kap)
+
+
+#' @export
+#' @rdname Amax
+fgum <- function(x, p0 = NULL, ...){
+  
+  x <- as.numeric(x)
+  
+  nllik <- function(para){
+    -sum(dgev(x,para[1],  exp(para[2]), 0, log = TRUE))
+  }
+  
+  if(is.null(p0))
+    p0 <- fAmax(x, 'gum')
+    
+  p0[2] <- log(p0[2])
+  out <- try(optim(p0, nllik, ...), silent = TRUE)
+  
+  if(out$convergence != 0)
+    warning('The solution may not have converged.')
+  
+  ans <- out$par
+  ans[2] <- exp(ans[2])
+  
+  names(ans) <- c('xi','alpha')
+  
+  return(ans)
+ 
+}

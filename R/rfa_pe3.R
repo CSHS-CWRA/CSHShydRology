@@ -98,14 +98,10 @@ fpe3 <- function(x, p0 = NULL, ...){
     -sum(dpe3(x,para[1],  exp(para[2]), para[3], log = TRUE))
   }
   
-  if(is.null(p0)){
-    #m <- mean(x)
-    #s <- sd(x)
-    #para <- c(m,s, -.1)
-    pw <- lmomco::pwm(x,3)
-    p0 <- lmomco::lmom2par(lmomco::pwm2lmom(pw), 'pe3')$para
-  }
-    
+  if(is.null(p0))
+    p0 <- fAmax(x, 'pe3')
+
+  p0[2] <- log(p0[2]) + 1
   out <- try(optim(p0, nllik, ...), silent = TRUE)
   
   if(class(out) == 'try-error'){
@@ -120,6 +116,33 @@ fpe3 <- function(x, p0 = NULL, ...){
   ans[2] <- exp(ans[2])
   
   names(ans) <- c('mu','sigma','gamma')
+  
+  return(ans)
+ 
+}
+
+#' @export
+#' @rdname Amax
+fgam <- function(x, p0 = NULL, ...){
+  
+  x <- as.numeric(x)
+  
+  nllik <- function(para){
+    -sum(dgamma(x, exp(para[1]),  scale = exp(para[2]), log = TRUE))
+  }
+  
+  if(is.null(p0))
+    p0 <- fAmax(x, 'gam')
+    
+  p0 <- log(p0)  
+  out <- try(optim(p0, nllik, ...), silent = TRUE)
+  
+  if(out$convergence != 0)
+    warning('The solution may not have converged.')
+  
+  ans <- exp(out$par)
+  
+  names(ans) <- c('alpha','beta')
   
   return(ans)
  

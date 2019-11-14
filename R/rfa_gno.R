@@ -30,12 +30,10 @@ fgno <- function(x, p0 = NULL, ...){
     -sum(dgno(x,para[1],  exp(para[2]), para[3], log = TRUE))
   }
   
-  if(is.null(p0)){
-    m <- mean(x)
-    s <- sd(x)
-    p0 <- c(m,s, -.1)
-  }
+  if(is.null(p0))
+    p0 <- fAmax(x, 'gno')
     
+  p0[2] <- log(p0[2])  
   out <- try(optim(p0, nllik, ...), silent = TRUE)
   
   if(class(out) == 'try-error'){
@@ -112,3 +110,13 @@ qgno <- function (p, xi, alf, kap){
 rgno <- function(n, xi, alf, kap)
   qgno(runif(n), xi, alf, kap)
 
+#' @export
+#' @rdname Amax
+fnor <- function(x){
+  x <- as.numeric(x)
+  mu <- sum(x)/length(x)
+  sigma <- sqrt(sum((x - mu)^2)/length(x))
+ 
+  return(c(mu = mu, sigma = sigma))
+  
+}

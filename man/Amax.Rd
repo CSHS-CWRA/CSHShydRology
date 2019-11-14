@@ -15,6 +15,7 @@
 \alias{pgev}
 \alias{qgev}
 \alias{rgev}
+\alias{fgum}
 \alias{dglo}
 \alias{fglo}
 \alias{pglo}
@@ -25,11 +26,13 @@
 \alias{pgno}
 \alias{qgno}
 \alias{rgno}
+\alias{fnor}
 \alias{ppe3}
 \alias{qpe3}
 \alias{dpe3}
 \alias{rpe3}
 \alias{fpe3}
+\alias{fgam}
 \title{Basic probability functions for distribution of annual maximums}
 \usage{
 dAmax(x, para, distr, log = FALSE)
@@ -56,6 +59,8 @@ qgev(p, xi, alf, kap)
 
 rgev(n, xi, alf, kap)
 
+fgum(x, p0 = NULL, ...)
+
 dglo(x, xi, alf, kap, log = FALSE)
 
 fglo(x, p0 = NULL, ...)
@@ -76,6 +81,8 @@ qgno(p, xi, alf, kap)
 
 rgno(n, xi, alf, kap)
 
+fnor(x)
+
 ppe3(x, mu, sig, g)
 
 qpe3(p, mu, sig, g)
@@ -85,6 +92,8 @@ dpe3(x, mu, sig, g, log = FALSE)
 rpe3(n, mu, sig, g)
 
 fpe3(x, p0 = NULL, ...)
+
+fgam(x, p0 = NULL, ...)
 }
 \arguments{
 \item{x, q}{Vector of quantiles.}

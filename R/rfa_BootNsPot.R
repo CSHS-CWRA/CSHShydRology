@@ -30,7 +30,7 @@ BootNsPot <-
            rt = c(2,5,10,20,50,100),
            newdata = NULL, 
            reliability = FALSE,
-           nsim = 1000, 
+           nsim = 500, 
            verbose = TRUE){
   
   if(is.null(newdata))

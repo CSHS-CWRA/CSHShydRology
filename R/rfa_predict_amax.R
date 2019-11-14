@@ -13,8 +13,9 @@
 #'   the delta method. The fitted model must
 #'
 #' @param ci Method to compute the confident interval. One of \code{'delta'}
-#' for the delta method, \code{'boot'} for parametric boostrap and \code{'norm'}
-#' for Monte-Carlo approximation assuming normality of the parameters.
+#' for the delta method, \code{'boot'} for parametric boostrap, 
+#' \code{'boot.balance'} for balanced bootstrap and \code{'norm'}
+#' for Monte-Carlo simulation assuming normally distributed parameters.
 #'
 #' @param alpha Probability outside the confident interval.
 #'
@@ -53,7 +54,7 @@ predict.amax <-
            se = FALSE, 
            ci = 'none',
            alpha = .05, 
-           nsim = 1000,
+           nsim = 500,
            out.matrix = FALSE, ...){
 
   n <- length(object$data)
@@ -67,23 +68,36 @@ predict.amax <-
   ans <- qfun(object$para, p)
 
   ## Compute confident intervals by resampling techniques
-  if(ci == 'boot'){
+  if(ci %in% c('boot', 'boot.balance')){
 
-    ## function that fit the data
-    ffun <- function(b){ 
-       tryCatch(FitAmax(b, distr = object$distr, method = object$method, 
-                           varcov = FALSE)$para,
-                error =  function(e) NULL)
+    if(ci == 'boot'){ 
+      xboot <- replicate(nsim, rAmax(n, object$para, object$distr), 
+                       simplify = FALSE)
+    } else if( ci == 'boot.balance'){
+      xboot <- split(sample(rep(x,nsim)), rep(1:nsim,n))
     }
-
-    p0 <- vec2par(object$para, object$distr)
-    xboot <- replicate(nsim, rlmomco(n,p0), simplify = FALSE)
     
-    pboot <- lapply(xboot, ffun)
-    pboot <- pboot[!sapply(pboot, is.null)]
+      
+    if(object$method == 'lmom'){
+      pboot <- t(sapply(xboot, fAmax, object$distr))
+      
+      ## MLE for major distributions
+    } else if(object$distr %in% c('gev','glo','gno','pe3','gum','nor','gam')){
+      
+      ffun <- getFromNamespace(paste0('f',object$distr), 'CSHShydRology')
+      
+      pboot <- suppressWarnings(t(sapply(xboot, ffun)))
 
-    pboot <- do.call(rbind, pboot)
+      ## MLE for other distributions
+    } else {
+      
+      pboot <- lapply(xboot, function(z) {
+        lmomco::mle2par(z,object$distr, silent = TRUE, hessian = FALSE)$para
+      })
 
+    }
+      
+    
   } else if(ci == 'norm'){
 
     ## Verify requirements for using the delta method

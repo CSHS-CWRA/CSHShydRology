@@ -47,7 +47,7 @@ predict.fpot <-
            se = FALSE,
            ci = "none", 
            alpha = 0.05, 
-           nsim = 1000,
+           nsim = 500,
            out.matrix = FALSE,
            ...){
 
@@ -83,10 +83,10 @@ predict.fpot <-
   if(ci == 'delta'){
      lb <- hatRt - qnorm(1-alpha/2) * hatSe
      ub <- hatRt + qnorm(1-alpha/2) * hatSe
-  }
+  
 
   ## Confident interval by nonparametric bootstrap
-  if(ci == 'boot'){
+  } else if(ci == 'boot'){
 
     ## Resample
     nexcess <- rpois(nsim,object$nexcess)
@@ -120,10 +120,10 @@ predict.fpot <-
     qboot <- t(qboot)
     colnames(qboot) <- paste0('Q',rt)
 
-  }
+  
 
   ## Confident interval by profile likelihood
-  if(ci == 'profile'){
+  } else if(ci == 'profile'){
 
     bnd0 <- c(-.5,1)
 

@@ -5,7 +5,7 @@
 \title{At-site frequency analysis using annual maximums}
 \usage{
 FitAmax(x, distr = c("gev", "gno", "pe3", "glo"), method = "lmom",
-  varcov = TRUE, nsim = 1000, k = 2, ..., tol.gev = 0)
+  varcov = TRUE, nsim = 500, k = 2, ..., tol.gev = 0)
 }
 \arguments{
 \item{x}{Data.}

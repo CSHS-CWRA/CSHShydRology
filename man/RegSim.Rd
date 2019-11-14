@@ -30,8 +30,8 @@ If only one value is passed in argument, the same is used for all sites.}
 If only one value is passed, the correlation is assumed
 the for every pair of sites.}
 
-\item{corr.sqrt}{Squared correlation matrix. Can be passed to speed up
-multiple calls.}
+\item{corr.sqrt}{Logical. The correlation matrix `corr` is the squared of 
+version. Can be passed to speed up multiple calls.}
 
 \item{lmom}{Logical. Is the argument `x` a matrix of L-moments or
 distribution parameters}

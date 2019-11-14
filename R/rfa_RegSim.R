@@ -24,8 +24,8 @@
 #'   If only one value is passed, the correlation is assumed
 #'   the for every pair of sites.
 #'
-#' @param corr.sqrt Squared correlation matrix. Can be passed to speed up
-#'    multiple calls.
+#' @param corr.sqrt Logical. The correlation matrix `corr` is the squared of 
+#'   version. Can be passed to speed up multiple calls.
 #'
 #' @param lmom Logical. Is the argument `x` a matrix of L-moments or
 #' distribution parameters

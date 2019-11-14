@@ -62,7 +62,7 @@ predict.reglmom <-
            p = c(.5, .8, .9, .95, .98 , .99),
            ci = FALSE,
            corr = 0,
-           nsim = 1000,
+           nsim = 500,
            alpha = 0.05,
            ...){
 

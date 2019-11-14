@@ -87,13 +87,22 @@ FitAmax <-
            distr = c('gev','gno', 'pe3', 'glo'),
            method = 'lmom',
            varcov = TRUE,
-           nsim = 1000,
+           nsim = 500,
            k = 2,
            ...,
            tol.gev = 0){
 
   ## compute lmoments once
   lmm <- lmoms(x)
+  
+  #################################################
+  ## Verify that all values are finite values
+  if(!all(is.finite(x)))
+    stop('There is one (or more) non finite values')
+
+  if(varcov & method == 'lmom' & nsim < 2)
+    stop('There is not enough simulations (nsim) to perform boostrap')
+  #################################################
 
   ## If there is only one distribution passed
   if(length(distr) == 1)
@@ -101,8 +110,13 @@ FitAmax <-
                     method = method, varcov = varcov, nsim = nsim, ...))
 
   ## Fit data and compute the AIC for each distribution
+  if(method == 'lmom')
+    varcov.search <- FALSE
+  else
+    varcov.search <- varcov
+  
   Fun <- function(z) try(.FitAmax(x, distr = z, lmm = lmm, 
-                                  method = method, varcov = varcov, 
+                                  method = method, varcov = varcov.search, 
                                   nsim = nsim, ...))
   fits <- lapply(distr, Fun)
   crit <- lapply(fits, function(z) try(AIC(z)))
@@ -121,8 +135,14 @@ FitAmax <-
   gid <- which(distr == 'gev')
   crit[gid] <- crit[gid] - tol.gev
 
+  ans <- fits[[which.min(crit)]]
+  
+  ## Compute the varcov if needed 
+  if(method == 'lmom' & varcov)
+    ans$varcov <- .VcovLmom(ans$para, ans$distr, length(x), nsim)
+  
   ## return
-  return(fits[[which.min(crit)]])
+  return(ans)
 }
 
 ## see FitAmax for more info
@@ -132,18 +152,6 @@ FitAmax <-
 .FitAmax <-
   function(x, distr = 'gev', method = 'lmom',
            varcov = TRUE, lmm = NULL, nsim = 1000){
-
-  #################################################
-  ## Verify that all values are finite values
-  if(!all(is.finite(x)))
-    stop('There is one (or more) non finite values')
-
-  if(varcov & method == 'lmom' & nsim < 2)
-    stop('There is not enough simulations (nsim) to perform boostrap')
-
-  ## Keep only the firs distribution passed
-  distr <- distr[1]
-  #################################################
 
   ## Compute the L-moments and associated parameters
   if(is.null(lmm))
@@ -192,19 +200,12 @@ FitAmax <-
   } else if(method == 'lmom'){
     para <- f
 
-    ## Compute the covariance matrix by boostrap if required
+    ## Compute the covariance matrix by bootstrap if required
     if(varcov){
-
-      xboot <- replicate(nsim, rlmomco(length(x), para))
-
-      pboot <- apply(xboot, 2, lmoms)
-      pboot <- lapply(pboot, lmom2par, distr)
-      pboot <- sapply(pboot, getElement, 'para')
-
-      varcov <- as.matrix(Matrix::nearPD(cov(t(pboot)))$mat)
-
-    } else
+      varcov <- .VcovLmom(f$para, distr, length(x), nsim)
+    } else {
       varcov <- NA
+    }
 
     ## compute the log-likelihood
     llik <- sum(log(dlmomco(x,para)))
@@ -227,3 +228,14 @@ FitAmax <-
   return(ans)
 }
 
+.VcovLmom <- function(para, distr, n, nsim){
+  ## Bootstrap estimate
+  xboot <- replicate(nsim, rAmax(n, para, distr))
+  pboot <- apply(xboot, 2, fAmax, distr)
+  cc <- cov(t(pboot))
+  
+  ## Correct it to obtain a positive-definite matrix
+  ans <- Matrix::nearPD(cc)
+  
+  return(as.matrix(ans$mat))
+}

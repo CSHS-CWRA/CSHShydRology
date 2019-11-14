@@ -5,7 +5,7 @@
 \title{Predict return levels}
 \usage{
 \method{predict}{amax}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  se = FALSE, ci = "none", alpha = 0.05, nsim = 1000,
+  se = FALSE, ci = "none", alpha = 0.05, nsim = 500,
   out.matrix = FALSE, ...)
 }
 \arguments{
@@ -18,8 +18,9 @@ a 100 years return period is equivalent to \code{p = 0.99}.}
 the delta method. The fitted model must}
 
 \item{ci}{Method to compute the confident interval. One of \code{'delta'}
-for the delta method, \code{'boot'} for parametric boostrap and \code{'norm'}
-for Monte-Carlo approximation assuming normality of the parameters.}
+for the delta method, \code{'boot'} for parametric boostrap, 
+\code{'boot.balance'} for balanced bootstrap and \code{'norm'}
+for Monte-Carlo simulation assuming normally distributed parameters.}
 
 \item{alpha}{Probability outside the confident interval.}
 

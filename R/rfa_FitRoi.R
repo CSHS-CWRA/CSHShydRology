@@ -42,11 +42,9 @@
 #' @return
 #'
 #' \item{pred}{Prediction at new sites.}
-#' \item{pred.se}{Standard deviation at new sites.}
 #' \item{phy}{Part of the prediction attributed to physical descriptor.}
-#' \item{phy.se}{Standard deviation associated with the physical descriptor.}
 #' \item{fitted}{Fitted values (training sites).}
-#' \item{fitted.se}{Standard deviation of the fitted values.}
+#' 
 #' \item{vgm}{Sample variogram.}
 #' \item{model}{Fitted variogram model.}
 #' 

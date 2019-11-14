@@ -156,12 +156,14 @@ FitPot.numeric <-
     ## Estimatate the parameters
     ans$estimate <- f(ans$excess)
 
-    ## Covariance matrix estimated by boostraps
+    ## Covariance matrix estimated by bootstraps
     if(varcov){
       ans$varcov <- matrix(NA,2,2)
 
-      xboot <- replicate(nsim,
-                         sample(ans$excess, length(ans$excess), replace = TRUE))
+      xboot <- replicate(nsim, rgpa(length(ans$excess), 
+                                    ans$estimate[1], 
+                                    ans$estimate[2]))
+
       pboot <- t(apply(xboot,2,f))
 
       ## Correct

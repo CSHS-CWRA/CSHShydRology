@@ -500,7 +500,7 @@ by adding the model residuals to the sample from the at-site analyses. Please no
 <div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">## Fit the model</span></a>
 <a class="sourceLine" id="cb20-2" title="2">fit &lt;-<span class="st"> </span><span class="kw">FitRoi</span>(<span class="dt">x =</span> xd, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">50</span>, </a>
 <a class="sourceLine" id="cb20-3" title="3">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
-<a class="sourceLine" id="cb20-4" title="4">              <span class="dt">fitted =</span> <span class="ot">TRUE</span>, <span class="dt">se =</span> <span class="ot">TRUE</span>) </a>
+<a class="sourceLine" id="cb20-4" title="4">              <span class="dt">fitted =</span> <span class="ot">TRUE</span>) </a>
 <a class="sourceLine" id="cb20-5" title="5"></a>
 <a class="sourceLine" id="cb20-6" title="6"><span class="co">## Extract model residuals assuming they are symmetrical.</span></a>
 <a class="sourceLine" id="cb20-7" title="7">resid.mdl &lt;-<span class="st"> </span><span class="kw">c</span>(fit<span class="op">$</span>resid, <span class="op">-</span>fit<span class="op">$</span>resid)</a>

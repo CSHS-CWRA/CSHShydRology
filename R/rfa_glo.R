@@ -29,12 +29,10 @@ fglo <- function(x, p0 = NULL, ...){
     -sum(dglo(x,para[1],  exp(para[2]), para[3], log = TRUE))
   }
   
-  if(is.null(p0)){
-    m <- mean(x)
-    s <- sd(x)
-    p0 <- c(m, log(1.81*s), -.1)
-  }
+  if(is.null(p0))
+    p0 <- fAmax(x, 'glo')
     
+  p0[2] <- log(p0[2]) + 1
   out <- try(optim(p0, nllik, ...), silent = TRUE)
   
   if(class(out) == 'try-error'){
