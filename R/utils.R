@@ -1,6 +1,6 @@
 #'@title  Generates the x axis for day of year
 #'
-#'@description  Used by \code{regime_plot}. This code deals only with the axis adjustments. Day of water year needs to be done separately
+#'@description  Used by \code{ch_regime_plot}. This code deals only with the axis adjustments. Day of water year needs to be done separately
 #'@param wyear Month to begin water year. Use \code{wyear = 1} for calendar year, \code{wyear = 10} for October 1.
 #'@author Paul Whitfield
 #'@keywords internal
@@ -52,7 +52,7 @@ axis_doy <- function(wyear = 1) {
 #' @export
 #' @keywords internal
 #'
-#' @seealso binned_MannWhitney, raster_trend
+#' @seealso \code{\link{ch_binned_MannWhitney}} \code{\link{ch_flow_raster_trend}}
 #'
 #' @examples
 #' doy <- c(1:365)
@@ -181,8 +181,8 @@ stack_EC <- function(data_values = NULL, data_codes = NULL) {
   data_codes_t <- t(data_codes)
   
   # now stack data frames to vectors
-  data_values <- as.vector(data_values_t, mode='numeric')
-  data_codes <- as.character(as.vector(data_codes_t, mode='character'))
+  data_values <- as.vector(data_values_t, mode = 'numeric')
+  data_codes <- as.character(as.vector(data_codes_t, mode = 'character'))
   
   df <- data.frame(data_values, data_codes)
   return(df)

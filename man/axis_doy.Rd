@@ -10,7 +10,7 @@ axis_doy(wyear = 1)
 \item{wyear}{Month to begin water year. Use \code{wyear = 1} for calendar year, \code{wyear = 10} for October 1.}
 }
 \description{
-Used by \code{regime_plot}. This code deals only with the axis adjustments. Day of water year needs to be done separately
+Used by \code{ch_regime_plot}. This code deals only with the axis adjustments. Day of water year needs to be done separately
 }
 \author{
 Paul Whitfield
