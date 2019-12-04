@@ -75,15 +75,16 @@ predict.reglmom <-
 
   if(ci){
 
-    ## extract the parameter of each site individually
+    ## extract the parameters of each site individually
     para <- coef(object)
 
-    ## Create a regfit object
-    dd <- as.regdata(cbind(1:nrow(object$lmom),object$nrec,object$lmom),FALSE)
-    rfit <- regfit(dd,object$distr)
+    if(object$type == 'amax'){
+      ## Create a regfit object
+      dd <- as.regdata(cbind(1:nrow(object$lmom),object$nrec,object$lmom),FALSE)
+      rfit <- regfit(dd,object$distr)
 
-    ## simulate flood quantile
-    simq <- regsimq(qfunc,
+      ## simulate flood quantile
+      simq <- regsimq(qfunc,
                    para = para,
                    cor = corr,
                    index = indx,
@@ -93,14 +94,34 @@ predict.reglmom <-
                    f = p,
                    boundprob = c(alpha/2, 1-alpha/2))
 
-    ## extract confident interval and standard deviation
-    ans <- sitequantbounds(simq, rfit, sitenames = 1)
-    colnames(ans) <- c('','pred', 'se', 'lower','upper')
-    rownames(ans) <- format(p, digits = 3)
-    class(ans) <- 'data.frame'
-    attr(ans,'boundprob') <- NULL
+      ## extract confident interval and standard deviation
+      ans <- sitequantbounds(simq, rfit, sitenames = 1)[,-1]
+      
+      colnames(ans) <- c('pred', 'se', 'lower','upper')
+      class(ans) <- 'data.frame'
+      attr(ans,'boundprob') <- NULL
     
-    ans <- ans[,-1]
+    } else if(object$type == 'pot'){
+      
+      ## Compute a bootstrap sample of the return levels
+      simq <- .SimulatePotQ(nsim, 
+                            p = p, 
+                            nr = object$nrec, 
+                            l1 = object$lmom[,1],
+                            k = para[,3])
+      
+      ## Summarize the bootstrap sample
+      ans <- data.frame(
+        pred = indx * qfunc(p, object$para),
+        se = apply(simq, 2, sd),
+        lower = apply(simq, 2, quantile, alpha/2),
+        upper = apply(simq, 2, quantile, 1-alpha/2))
+      
+      
+    }
+    
+    rownames(ans) <- format(p, digits = 3)
+    
 
   } else {
     ## Compute the flood quantiles
@@ -110,4 +131,47 @@ predict.reglmom <-
   return(ans)
 }
 
+
+## Function that simulate a regional POT model and return the 
+## regional shape parameter estimated using the L-moments
+## nsim: number of simulation
+## p : matrix with 3 cols: nrec, scale factor, shape
+.SimulatePotQ <- function(nsim, p, nr, l1, k){
+  
+  ## Function that simulate one site and return the LCV
+  SimLcv <- function(znr, zl1, zk) {
+    s <- replicate(nsim, zl1 * rgpa(n = rpois(n=1, lambda = znr), 1 + zk, zk))
+    
+    mu <- vapply(s, function(z) sum(z)/length(z), double(1))
+    s <- mapply('/', s, mu)
+    
+    n <- vapply(s,length, double(1))
+    l <- vapply(s,lmom::samlmu, nmom = 2, FUN.VALUE = double(2))
+    lcv <- l[2,]/l[1,]
+    return(cbind(n, mu, lcv))
+  }
+  
+  ## Simulate LCV for each site
+  lcv <- mapply(SimLcv, nr, l1, k, SIMPLIFY = FALSE)
+
+  ## extract weight based on record length, scale factor and LCV
+  indx <- lcv[[1]][,2]
+  w <- vapply(lcv, '[', ,1, FUN.VALUE = double(nsim))
+  lcv <- vapply(lcv,'[', ,3, FUN.VALUE = double(nsim))
+  
+  ## Compute the regional parameter
+  kap <- rowSums(w) / rowSums(w * lcv) - 2
+
+  ## Compute the return levels
+  q <- vapply(kap, function(z) qgpa(p, 1+z, z), double(length(p)))
+  
+  if(is.vector(q)){
+    q <- as.matrix(indx * q)
+  } else{
+    q <- apply(q, 1, '*', indx)
+  }
+ 
+  return(q)
+  
+}
 

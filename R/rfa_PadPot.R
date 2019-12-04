@@ -7,6 +7,7 @@
 #' @param x Data
 #' @param z Imputed value.
 #' @param tol Number of days to consider a year complete.
+#' @param ... Other parameters.
 #'
 #' @details 
 #' 
@@ -33,10 +34,12 @@
 PadPot <- function(x, ...) UseMethod('PadPot', x)
 
 #' @export
+#' @rdname PadPot
 PadPot.default <- function(x,...)
   PadPot(as.data.frame(x), ...)
 
 #' @export
+#' @rdname PadPot
 PadPot.formula <- function(form, x, ...){
   
   ## Extracting data from formula
@@ -53,7 +56,8 @@ PadPot.formula <- function(form, x, ...){
 }
 
 #' @export
-PadPot.data.frame <- function(x, z = 0, tol = 346){
+#' @rdname PadPot
+PadPot.data.frame <- function(x, z = 0, tol = 346, ...){
 
 	if(ncol(x) == 2){
 	  ans <- .PadPot(x, z, tol)

@@ -98,7 +98,7 @@ RegSim.matrix <-
     diag(corr) <- 1
   }
 
-    ## Create a matrix if only a scalar is passed as correlation
+  ## replicate record length is the same length is used
   if (length(nrec) == 1){
     nrec <- rep(nrec,nsite)
   }

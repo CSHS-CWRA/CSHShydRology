@@ -5,35 +5,25 @@
 context("Testing predict.reglmom function")
 
 test_that("Verifying predict.reglmom", {
-set.seed(48)
 
-## Define evaluation functions
-rxd <- function(x,y) max(abs(1-y/x))
-axd <- function(x,y) max(abs(y-x))
-rmad <- function(x,y) mean(abs(1-y/x))
-mad <- function(x,y) mean(abs(y-x))
+## create testing coordinates, distances and samples.  
+coord20 <- expand.grid(1:5,1:4)
 
-coord20 <- replicate(2,runif(20))
 h20 <- as.matrix(dist(coord20))
 colnames(coord20) <- c('lon','lat')
 
-para <- cbind(rep(100,20), 30, 0)
-sim20 <- RegSim(para, distr = 'gev', nrec = 1e4,
-                lscale = TRUE, lmom = FALSE)
+uu <- sapply(seq(0,.5, l = 20), function(z) sample((1:50-z)/(50-z+1)))
+sim20 <- apply(uu, 2, qgev, 100, 30, -.05)
 
-sim20 <- FindNearest(sim20, h20[2,],15)
-
+## Fit the pooling groups
+sim20 <- FindNearest(sim20, h20[2,], 15)
 fit1 <- FitRegLmom(sim20)
 
 q0 <- c(.7,.93)
-q1 <- .1
-q2 <- c(.5, .8, .9, .95, .98, .99)
-
-hat0 <- lmom::quagev(q0,c(100,30,0))
-hat1 <- lmom::quagev(q1,c(100,30,0))
-hat2 <- lmom::quagev(q2,c(100,30,0))
+q1 <- .99
 
 ## verify output format
+expect_equal(fit1$type, 'amax')
 out <- predict(fit1, q0)
 expect_equal(length(out), 2)
 expect_equal(class(out), 'numeric')
@@ -44,14 +34,34 @@ expect_equal(class(out),'data.frame')
 expect_equal(colnames(out),c('pred','se','lower','upper'))
 expect_equal(rownames(out), c('0.70','0.93'))
 
-
-## Verify prediction
-expect_true(rxd(predict(fit1, q0),hat0) < 0.01)
-expect_true(rxd(predict(fit1, q1),hat1) < 0.01)
-expect_true(rxd(predict(fit1),hat2) < 0.01)
+## Verify prediction does not change since last validation
+expect_equivalent(signif(predict(fit1, q0),6), c(131.165, 179.024))
+expect_equivalent(signif(predict(fit1, q1),6), 238.538)
 
 out <- predict(fit1,q1, ci = TRUE, nsim = 5)
 expect_equal(class(out),'data.frame')
 expect_equal(length(out), 4)
+
+out1 <- predict(fit1,q1)
+expect_equivalent(out[,1],out1)
+
+#####################
+## POT
+#####################
+
+x <- replicate(20,rgpa(40, .95, -.05))
+colnames(x) <- paste0('s',1:20)
+
+fit <- FitRegLmom(x, type = 'pot')
+
+expect_equal(fit$type, 'pot')
+
+out <- predict(fit, 1-1/(2.5*c(100)), ci = TRUE)
+out <- predict(fit, ci = TRUE)
+
+expect_equal(names(out), c('pred','se','lower','upper'))
+
+out2 <- predict(fit)
+expect_equal(out2, out[,1])
 
 })

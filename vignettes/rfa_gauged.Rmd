@@ -532,7 +532,7 @@ We do not cover here that aspect and refer the reader to the vignette dedicated
 to this topic (`rfa_pot`) for more information.
 
 The code below create a synthetic dataset of exceedances, where the 
-model parameters are loosely based on the asymptotic
+model parameters are based on the asymptotic
 the correspondence between the GPA and 
 the GEV distribution for the previous target regions.
 Note that in this example the intersite correlation is not considered.
@@ -550,7 +550,7 @@ npeak <- apply(xd.target, 2, function(z) rpois(1,sum(is.finite(z))))
 ## GEV parameter
 para <- FitPoolMargin(xd.target, 'gev')$para
 
-## Loose correspondance
+## Shape parameter
 u <- apply(xd.target, 2, quantile, 0.1, na.rm = TRUE)
 alpha <- para[2,] + para[3,] * (u - para[1,])
 kap <- para[3,]
@@ -590,15 +590,15 @@ parameter is performed using the same functions as using annual maxima.
 xs.target <- DataWide(value ~ station + year, xs, order.time = FALSE)
 
 ## Fit regional growth curve using 3 parameter
-fit.target <- FitRegLmom(xs.target, distr = 'gpa')
-print(fit.target)
+fit.target.amax <- FitRegLmom(xs.target, distr = 'gpa')
+print(fit.target.amax)
 
 ## Fit regional growth curve using 2 parameter
 fit.target <- FitRegLmom(xs.target, type = 'pot')
 print(fit.target)
 
 # Create a homogenous group
-fit.target <- PoolRemove(fit.target)
+fit.target <- PoolRemove(fit.target, verbose = FALSE)
 ```
 
 For a threshold model, the flood quantile of T-year event is defined as the 
@@ -628,10 +628,11 @@ period <- c(5, 50)
 prob <- 1 - 1/(lambda * period)
 
 ## Estimate flood quantiles for POT
-hat <- predict(fit.target, prob, ci = TRUE)
+hat <- predict(fit.target.amax, prob, ci = TRUE, nsim = 2000)
 print(round(hat,1))
 ```
-
+In practical context, the threshold that was substracted to obtained the 
+exceedances must be added to retrieve the final flood quantiles. 
 The  RFA using peaks over threshold can also be carried out using the 
 independent likelihood approach. However, the CVRM cannot be used.
 
@@ -643,12 +644,13 @@ hat <- predict(fit.lik, p = prob, index = fit.lik$index[1])
 
 ## Bootstrap
 fit.margin <- FitPoolMargin(xw, 'gpa', method = 'mle')
-boot <- simulate(fit.margin, nsim = 50, corr = 0)
+
 Fz <- function(z) {
   f <- FitPoolMle(z, distr = 'gpa', type = 'mean')
   predict(f, p = prob, index = f$index[1])
 }
 
+boot <- simulate(fit.margin, nsim = 500, corr = 0)
 pboot <- sapply(boot, Fz)
 
 ## Uncertainty

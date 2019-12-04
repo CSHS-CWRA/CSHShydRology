@@ -5,7 +5,7 @@ print.reglmom <- function(x, ...){
   cat('\nRegional frequency analysis with pooling groups\n')
   
   if(x$type == 'pot')
-    cat('\ntype: POT')
+    cat('\nType: POT')
   
   
   cat('\nNb. site:', nrow(x$lmom))

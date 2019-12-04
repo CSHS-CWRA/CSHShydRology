@@ -2,12 +2,23 @@
 % Please edit documentation in R/rfa_PadPot.R
 \name{PadPot}
 \alias{PadPot}
+\alias{PadPot.default}
+\alias{PadPot.formula}
+\alias{PadPot.data.frame}
 \title{Return a padded time series for peaks over threshold model.}
 \usage{
 PadPot(x, ...)
+
+\method{PadPot}{default}(x, ...)
+
+\method{PadPot}{formula}(form, x, ...)
+
+\method{PadPot}{data.frame}(x, z = 0, tol = 346, ...)
 }
 \arguments{
 \item{x}{Data}
+
+\item{...}{Other parameters.}
 
 \item{form}{Formula}
 
@@ -27,7 +38,12 @@ Similarly, the formula must be of the form \code{value ~ date} or
 }
 \examples{
 
-xd <- PadPot(flow ~ date, flowStJohn)
+## Will remove 1926 that is incomplete
+xd <- PadPot(flow ~ date, flowStJohn, tol = 365)
+head(xd)
+
+## Will pad 1926 that is "complete"
+xd <- PadPot(flow ~ date, flowStJohn, tol = 1)
 head(xd)
 
 
