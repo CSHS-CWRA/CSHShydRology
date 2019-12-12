@@ -69,37 +69,24 @@ predict.reglmom <-
   ## The index-flood is the L1 of the target site
   indx <- object$lmom[1,1]
 
-
   ## Extract quantile function
   qfunc <- getFromNamespace(paste0('qua',object$distr), 'lmom')
+  
+  ## Evaluate flood quantiles
+  hat <- indx * qfunc(p, object$para)
 
   if(ci){
 
-    ## extract the parameters of each site individually
     para <- coef(object)
-
+    
     if(object$type == 'amax'){
-      ## Create a regfit object
-      dd <- as.regdata(cbind(1:nrow(object$lmom),object$nrec,object$lmom),FALSE)
-      rfit <- regfit(dd,object$distr)
-
-      ## simulate flood quantile
-      simq <- regsimq(qfunc,
-                   para = para,
-                   cor = corr,
-                   index = indx,
-                   nrec = object$nrec,
-                   nrep = nsim,
-                   fit = object$distr,
-                   f = p,
-                   boundprob = c(alpha/2, 1-alpha/2))
-
-      ## extract confident interval and standard deviation
-      ans <- sitequantbounds(simq, rfit, sitenames = 1)[,-1]
-      
-      colnames(ans) <- c('pred', 'se', 'lower','upper')
-      class(ans) <- 'data.frame'
-      attr(ans,'boundprob') <- NULL
+    ## Extract the parameters of each site individually
+    pfunc <- getFromNamespace(paste0('pel',object$distr), 'lmom')
+        
+    simq <- .SimulateAmaxQ(nsim = nsim, p = p, corr = corr,
+                           nr = object$nrec, 
+                           para = para, 
+                           pfunc = pfunc, qfunc = qfunc)
     
     } else if(object$type == 'pot'){
       
@@ -107,40 +94,116 @@ predict.reglmom <-
       simq <- .SimulatePotQ(nsim, 
                             p = p, 
                             nr = object$nrec, 
-                            l1 = object$lmom[,1],
+                            indx = object$lmom[,1],
                             k = para[,3])
+
+    }
+    
+    ## Evaluate RMSE
+    if(ncol(simq) == 1){
+      res <- simq - hat
+    } else{
+      res <- t(apply(simq, 1, '-', hat))
+    }
+    
+    rmse <- sqrt(colSums(res^2)/nrow(res))  
       
-      ## Summarize the bootstrap sample
-      ans <- data.frame(
-        pred = indx * qfunc(p, object$para),
-        se = apply(simq, 2, sd),
+    ## Summarize the bootstrap sample
+    ans <- data.frame(
+        pred = hat,
+        rmse = rmse,
         lower = apply(simq, 2, quantile, alpha/2),
         upper = apply(simq, 2, quantile, 1-alpha/2))
-      
-      
-    }
+
     
     rownames(ans) <- format(p, digits = 3)
     
 
   } else {
-    ## Compute the flood quantiles
-    ans <- indx * qfunc(p, object$para)
+    ans <- hat
   }
   
   return(ans)
 }
 
+## Function that simulate a regional AMAX model and return the 
+## flood quantiles of the target site using the L-moments
+## nsim: number of simulation
+## p : Exceeding probability
+## nr: record length
+## para: matrix of the at-site parameter (in rows)
+## pfunc: Function that estimate parameter based on L-moments
+## qfunc: Function that estimate flood quantiles
+.SimulateAmaxQ <- function(nsim, p, nr, para, corr, qfunc, pfunc){
+
+  nsite <- nrow(para)
+  nmax <- max(nr)
+  npara <- ncol(para)
+  para.lst <- lapply(1:nsite, function(jj) para[jj,])
+  
+  ## Decompose the correlation matrix if necessary
+  if(all(corr == 0)){
+    nocorr <- TRUE
+    
+  } else {
+    
+    if(length(corr) == 1){
+      corr <- matrix(corr, nsite, nsite)
+      diag(corr) <- 1
+    }
+
+    nocorr <- FALSE
+    cc <- chol(corr)  
+  }
+  
+  ## Simulate the flood quantiles
+  qua <- replicate(nsim, {
+    
+    if(nocorr){
+      ## Simulate directly uniform variable
+      u <- lapply(nr, runif)
+    } else {
+      ## Simulate from multivariate normal
+      z <- matrix(rnorm(nsite * nmax), nsite, nmax)
+      z <- pnorm(crossprod(cc, z))
+      u <- lapply(1:nsite, function(j) z[j, 1:nr[j]])
+    }
+    
+    ## Transform marginal, compute the index and scale the data
+    xlist <- mapply(qfunc, u, para.lst, SIMPLIFY = FALSE)
+    mu <- vapply(xlist, function(z) sum(z)/length(z), FUN.VALUE = double(1))
+    xlist <- mapply("/", xlist, mu, SIMPLIFY = FALSE)
+       
+    ## Evaluate the flood quantiles 
+    xmom <- vapply(xlist, .samlmu, nmom = npara, FUN.VALUE = double(npara))
+    rmom <- apply(xmom, 1, weighted.mean, w = nr)
+    qfunc(p, pfunc(rmom)) * mu[1]
+
+  })
+  
+  if(is.vector(qua))
+    ans <- as.matrix(qua)
+  else{
+    ans <- t(qua)
+  }
+
+  return(ans)
+}
+
+
 
 ## Function that simulate a regional POT model and return the 
-## regional shape parameter estimated using the L-moments
-## nsim: number of simulation
-## p : matrix with 3 cols: nrec, scale factor, shape
-.SimulatePotQ <- function(nsim, p, nr, l1, k){
+## regional flood quantiles using the L-moments
+## nsim: number of simulations
+## p : exceeding probability
+## nr: record length
+## indx: target average
+## k: at-site shape parameter
+.SimulatePotQ <- function(nsim, p, nr, indx, k){
   
   ## Function that simulate one site and return the LCV
-  SimLcv <- function(znr, zl1, zk) {
-    s <- replicate(nsim, zl1 * rgpa(n = rpois(n=1, lambda = znr), 1 + zk, zk))
+  SimLcv <- function(znr, zindx, zk) {
+    s <- replicate(nsim, zindx * rgpa(n = rpois(n=1, lambda = znr), 1 + zk, zk))
     
     mu <- vapply(s, function(z) sum(z)/length(z), double(1))
     s <- mapply('/', s, mu)
@@ -152,12 +215,12 @@ predict.reglmom <-
   }
   
   ## Simulate LCV for each site
-  lcv <- mapply(SimLcv, nr, l1, k, SIMPLIFY = FALSE)
+  lcv <- mapply(SimLcv, nr, indx, k, SIMPLIFY = FALSE)
 
   ## extract weight based on record length, scale factor and LCV
   indx <- lcv[[1]][,2]
-  w <- vapply(lcv, '[', ,1, FUN.VALUE = double(nsim))
-  lcv <- vapply(lcv,'[', ,3, FUN.VALUE = double(nsim))
+  w <- vapply(lcv, '[', , 1, FUN.VALUE = double(nsim))
+  lcv <- vapply(lcv,'[', , 3, FUN.VALUE = double(nsim))
   
   ## Compute the regional parameter
   kap <- rowSums(w) / rowSums(w * lcv) - 2
@@ -174,4 +237,5 @@ predict.reglmom <-
   return(q)
   
 }
+
 

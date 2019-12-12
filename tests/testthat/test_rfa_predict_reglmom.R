@@ -23,22 +23,17 @@ q0 <- c(.7,.93)
 q1 <- .99
 
 ## verify output format
-expect_equal(fit1$type, 'amax')
-out <- predict(fit1, q0)
-expect_equal(length(out), 2)
-expect_equal(class(out), 'numeric')
-
 out <- predict(fit1,q0, ci = TRUE, nsim = 5)
 expect_equal(dim(out),c(2,4))
 expect_equal(class(out),'data.frame')
-expect_equal(colnames(out),c('pred','se','lower','upper'))
+expect_equal(colnames(out),c('pred','rmse','lower','upper'))
 expect_equal(rownames(out), c('0.70','0.93'))
 
 ## Verify prediction does not change since last validation
 expect_equivalent(signif(predict(fit1, q0),6), c(131.165, 179.024))
 expect_equivalent(signif(predict(fit1, q1),6), 238.538)
 
-out <- predict(fit1,q1, ci = TRUE, nsim = 5)
+out <- predict(fit1, q1, ci = TRUE, nsim = 5)
 expect_equal(class(out),'data.frame')
 expect_equal(length(out), 4)
 
@@ -59,7 +54,7 @@ expect_equal(fit$type, 'pot')
 out <- predict(fit, 1-1/(2.5*c(100)), ci = TRUE)
 out <- predict(fit, ci = TRUE)
 
-expect_equal(names(out), c('pred','se','lower','upper'))
+expect_equal(names(out), c('pred','rmse','lower','upper'))
 
 out2 <- predict(fit)
 expect_equal(out2, out[,1])

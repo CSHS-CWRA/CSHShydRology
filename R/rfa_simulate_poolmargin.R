@@ -1,4 +1,5 @@
 #' @export
+#' @rdname simulate.poolmle
 simulate.poolmargin <- function(object, nsim = 1, seed = NULL, corr = 0, ...){
   
   if(!is.null(seed))

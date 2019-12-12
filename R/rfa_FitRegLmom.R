@@ -63,6 +63,7 @@
 #'   and annual maximum series. Hydrological Sciences Journal 0, null.
 #'   https://doi.org/10.1080/02626667.2019.1577556
 #'
+#' @import lmomRFA
 #' @export
 #'
 #' @examples
@@ -128,12 +129,11 @@ FitRegLmom <-
   ## ------------------------------ ##
 
   ## record length
-  f <- function(z) sum(!is.na(z))
-  nrec <- apply(x,2, f)
+  nrec <- apply(x,2, function(z) sum(!is.na(z)))
 
   ## compute the regional lmoments
-  dd <- lmomRFA::as.regdata(data.frame(rownames(lmom), nrec, lmom), FALSE)
-  rlmom <- lmomRFA::regavlmom(dd)
+  dd <- as.regdata(data.frame(rownames(lmom), nrec, lmom), FALSE)
+  rlmom <- regavlmom(dd)
 
   names(rlmom) <- lmom.name
 
@@ -149,7 +149,7 @@ FitRegLmom <-
   ## If necessary evaluate the statistics H and Z
   if (diagnostic){
 
-    tst <- lmomRFA::regtst(dd, diagnostic.nsim)
+    tst <- regtst(dd, diagnostic.nsim)
 
     stat <- c(tst$H, tst$Z)
     names(stat) <- c('H1','H2','H3','Zglo','Zgev','Zgno','Zpe3','Zgpa')

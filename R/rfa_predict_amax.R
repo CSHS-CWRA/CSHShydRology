@@ -74,7 +74,7 @@ predict.amax <-
       xboot <- replicate(nsim, rAmax(n, object$para, object$distr), 
                        simplify = FALSE)
     } else if( ci == 'boot.balance'){
-      xboot <- split(sample(rep(x,nsim)), rep(1:nsim,n))
+      xboot <- split(sample(rep(object$data,nsim)), rep(1:nsim,n))
     }
     
       

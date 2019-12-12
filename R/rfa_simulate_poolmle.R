@@ -5,6 +5,8 @@
 #' @param object Output from \link{FitPoolMle}. 
 #' @param nsim Number of simulations.
 #' @param seed Seed for random number generator.
+#' @param corr Correlation matrix of an underlying multivariate normal distribution.
+#'   If a scalar is passed, a constant coefficient is used.
 #' @param ... Other parameters.
 #'
 #' @export

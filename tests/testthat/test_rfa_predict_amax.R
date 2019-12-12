@@ -39,4 +39,10 @@ boot <- predict(fit, rp, se = FALSE, ci = 'boot',
 expect_is(boot, 'list')
 expect_true(all(names(boot) == c('pred','para','qua')))
 
+boot <- predict(fit, rp, se = FALSE, ci = 'boot.balance',
+                 nsim = 5, out.matrix = TRUE)
+
+expect_is(boot, 'list')
+expect_true(all(names(boot) == c('pred','para','qua')))
+
 })
