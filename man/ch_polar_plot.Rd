@@ -4,8 +4,13 @@
 \alias{ch_polar_plot}
 \title{Polar plot of daily streamflows}
 \usage{
-ch_polar_plot(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black",
-  "gray50"), lfill = c("yellow", "green"), lsig = c("red", "blue"))
+ch_polar_plot(
+  bmw,
+  lcol1 = c("black", "gray50"),
+  lcol2 = c("black", "gray50"),
+  lfill = c("yellow", "green"),
+  lsig = c("red", "blue")
+)
 }
 \arguments{
 \item{bmw}{output from binned_MannWhitney}

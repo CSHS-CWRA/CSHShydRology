@@ -21,11 +21,17 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
-    curl
+    curl,
+    RSAGA,
+    ggplot2,
+    ggspatial,
+    raster,
+    sf,
+    dplyr
 Suggests: 
     knitr,
     testthat, 
     rmarkdown
 VignetteBuilder: knitr
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
