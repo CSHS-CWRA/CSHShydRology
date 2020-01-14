@@ -1,6 +1,6 @@
 #' Create Catchment Polygons
 #'
-#' generates a grid of contributing area for each dem grid cell
+#' Generates a grid of contributing area for each dem grid cell
 #'
 #' @param dem Raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
