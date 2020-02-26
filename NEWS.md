@@ -1,3 +1,6 @@
+# CSHShydRology 1.1.0
+* Renamed all functions to have the prefix "ch"
+
 # CSHShydRology 1.0.0
 * First official version
 * Contains functions by Paul Whitfield and Rob Chlumsky
