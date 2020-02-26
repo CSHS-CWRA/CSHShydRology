@@ -4,10 +4,19 @@
 \alias{plot.fpot}
 \title{Return level plot for peaks over threshold}
 \usage{
-\method{plot}{fpot}(x, main = "Return level plot",
-  xlab = "Return period (year)", ylab = "Flood quantiles",
-  ci = FALSE, col.ci = 2, lty.ci = 2, lwd.ci = 1, xlim = NULL,
-  ylim = NULL, ...)
+\method{plot}{fpot}(
+  x,
+  main = "Return level plot",
+  xlab = "Return period (year)",
+  ylab = "Flood quantiles",
+  ci = FALSE,
+  col.ci = 2,
+  lty.ci = 2,
+  lwd.ci = 1,
+  xlim = NULL,
+  ylim = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{Output from \link{FitPot}.}

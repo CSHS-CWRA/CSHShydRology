@@ -6,8 +6,7 @@
 \alias{simulate.poolmle}
 \title{Simulation of a pooling group models}
 \usage{
-\method{simulate}{poolmargin}(object, nsim = 1, seed = NULL,
-  corr = 0, ...)
+\method{simulate}{poolmargin}(object, nsim = 1, seed = NULL, corr = 0, ...)
 
 \method{simulate}{poolmle}(object, nsim = 1, seed = NULL, ...)
 }

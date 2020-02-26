@@ -25,12 +25,21 @@ FitPot(x, ...)
 
 \method{FitPot}{formula}(form, x, ...)
 
-\method{FitPot}{numeric}(x, dt = NULL, u = 0, method = "mle",
-  declust = "none", r = 1, rlow = 0.75, nsim = 1000,
-  varcov = TRUE, unit = 365.25, ...)
+\method{FitPot}{numeric}(
+  x,
+  dt = NULL,
+  u = 0,
+  method = "mle",
+  declust = "none",
+  r = 1,
+  rlow = 0.75,
+  nsim = 1000,
+  varcov = TRUE,
+  unit = 365.25,
+  ...
+)
 
-\method{coef}{fpot}(object, rate = FALSE, ci = FALSE, alpha = 0.05,
-  ...)
+\method{coef}{fpot}(object, rate = FALSE, ci = FALSE, alpha = 0.05, ...)
 
 \method{logLik}{fpot}(object, ...)
 

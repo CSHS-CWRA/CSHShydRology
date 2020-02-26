@@ -21,6 +21,8 @@
 #'
 #' @param alpha Probability outside the confidence intervals.
 #' 
+#' @param out.matrix Logical. Should the bootstrap samples be returned.
+#' 
 #' @param ... Other parameters.
 #' 
 #' @seealso \link{FitRegLmom}, \link{Intersite}.
@@ -64,6 +66,7 @@ predict.reglmom <-
            corr = 0,
            nsim = 500,
            alpha = 0.05,
+           out.matrix = FALSE,
            ...){
 
   ## The index-flood is the L1 of the target site
@@ -75,29 +78,41 @@ predict.reglmom <-
   ## Evaluate flood quantiles
   hat <- indx * qfunc(p, object$para)
 
-  if(ci){
+  if(ci | out.matrix){
 
     para <- coef(object)
     
     if(object$type == 'amax'){
-    ## Extract the parameters of each site individually
-    pfunc <- getFromNamespace(paste0('pel',object$distr), 'lmom')
+      
+      ## Extract the parameters of each site individually
+      pfunc <- getFromNamespace(paste0('pel',object$distr), 'lmom')
         
-    simq <- .SimulateAmaxQ(nsim = nsim, p = p, corr = corr,
+      sim <- .SimulateAmaxQ(nsim = nsim, p = p, corr = corr,
                            nr = object$nrec, 
                            para = para, 
                            pfunc = pfunc, qfunc = qfunc)
     
+      pid <- seq(ncol(para)+1)
+      cname <- c('IF', colnames(para))
+    
     } else if(object$type == 'pot'){
       
-      ## Compute a bootstrap sample of the return levels
-      simq <- .SimulatePotQ(nsim, 
+    ## Compute a bootstrap sample of the return levels
+      sim <- .SimulatePotQ(nsim, 
                             p = p, 
                             nr = object$nrec, 
                             indx = object$lmom[,1],
                             k = para[,3])
+      
+      pid <- 1:2
+      cname <- c('IF','kap')
 
     }
+    
+    simp <- sim[ , pid]
+    colnames(simp) <- cname
+    simq <- as.matrix(sim[ , -pid])
+  
     
     ## Evaluate RMSE
     if(ncol(simq) == 1){
@@ -121,6 +136,10 @@ predict.reglmom <-
 
   } else {
     ans <- hat
+  }
+  
+  if(out.matrix){
+    ans <- list(pred = ans, qua = simq, para = simp)
   }
   
   return(ans)
@@ -157,7 +176,7 @@ predict.reglmom <-
   }
   
   ## Simulate the flood quantiles
-  qua <- replicate(nsim, {
+  out <- replicate(nsim, {
     
     if(nocorr){
       ## Simulate directly uniform variable
@@ -177,17 +196,13 @@ predict.reglmom <-
     ## Evaluate the flood quantiles 
     xmom <- vapply(xlist, .samlmu, nmom = npara, FUN.VALUE = double(npara))
     rmom <- apply(xmom, 1, weighted.mean, w = nr)
-    qfunc(p, pfunc(rmom)) * mu[1]
-
+    pp <- pfunc(rmom)
+    qq <- qfunc(p, pp) * mu[1]
+    c(mu[1],pp,qq)
+    
   })
-  
-  if(is.vector(qua))
-    ans <- as.matrix(qua)
-  else{
-    ans <- t(qua)
-  }
 
-  return(ans)
+  return(t(out))
 }
 
 
@@ -234,7 +249,9 @@ predict.reglmom <-
     q <- apply(q, 1, '*', indx)
   }
  
-  return(q)
+  ans <- cbind(indx, kap, q)
+  
+  return(ans)
   
 }
 

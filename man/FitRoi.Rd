@@ -8,8 +8,17 @@
 \alias{residuals.roi}
 \title{Prediction at ungauged sites using region of influence and kriging}
 \usage{
-FitRoi(x, xnew, nk, phy, similarity, kriging = NULL, model = "Exp",
-  ker = TRUE, fitted = FALSE)
+FitRoi(
+  x,
+  xnew,
+  nk,
+  phy,
+  similarity,
+  kriging = NULL,
+  model = "Exp",
+  ker = TRUE,
+  fitted = FALSE
+)
 
 \method{predict}{roi}(object, x, fold = 5, ...)
 

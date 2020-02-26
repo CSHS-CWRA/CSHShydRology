@@ -12,8 +12,7 @@
 \usage{
 which.floodPeaks(x, ...)
 
-\method{which.floodPeaks}{numeric}(x, dt = NULL, u, r = 1,
-  rlow = 0.75, ini = "wrc", ...)
+\method{which.floodPeaks}{numeric}(x, dt = NULL, u, r = 1, rlow = 0.75, ini = "wrc", ...)
 
 \method{which.floodPeaks}{formula}(form, x, u, ...)
 

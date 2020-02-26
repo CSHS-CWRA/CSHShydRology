@@ -4,8 +4,13 @@
 \alias{predict.nsamax}
 \title{Prediction of the nonstationary model for AMAX using regression.}
 \usage{
-\method{predict}{nsamax}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  newdata = NULL, reliability = FALSE, ...)
+\method{predict}{nsamax}(
+  object,
+  p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  newdata = NULL,
+  reliability = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{Output form \link{FitNsAmax}.}

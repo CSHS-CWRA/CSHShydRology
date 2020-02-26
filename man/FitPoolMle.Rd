@@ -4,8 +4,7 @@
 \alias{FitPoolMle}
 \title{Fitting a regional model by likelihood techniques.}
 \usage{
-FitPoolMle(x, distr = "gev", type = "mean", index = NULL,
-  para0 = NULL, ...)
+FitPoolMle(x, distr = "gev", type = "mean", index = NULL, para0 = NULL, ...)
 }
 \arguments{
 \item{x}{Data with times in rows and sites in columns.}

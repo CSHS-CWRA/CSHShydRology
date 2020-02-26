@@ -4,9 +4,16 @@
 \alias{predict.amax}
 \title{Predict return levels}
 \usage{
-\method{predict}{amax}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  se = FALSE, ci = "none", alpha = 0.05, nsim = 500,
-  out.matrix = FALSE, ...)
+\method{predict}{amax}(
+  object,
+  p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  se = FALSE,
+  ci = "none",
+  alpha = 0.05,
+  nsim = 500,
+  out.matrix = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{Output from  \code{\link{FitAmax}}}

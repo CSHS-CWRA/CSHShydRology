@@ -7,8 +7,7 @@
 \usage{
 SearchThresh(form, x, u, nmin = 20, verbose = TRUE, ...)
 
-SearchThreshNs(form, x, tau, nmin = 20, verbose = TRUE,
-  newdata = NULL, ...)
+SearchThreshNs(form, x, tau, nmin = 20, verbose = TRUE, newdata = NULL, ...)
 }
 \arguments{
 \item{x, form}{Dataset and formula passed to \link{FitPot} or \cite{FitNsPot}.}

@@ -5,9 +5,19 @@
 \alias{print.isite}
 \title{Estimating intersite correlation}
 \usage{
-Intersite(x, type = "emp", method = "spearman", distance = NULL,
-  nmin = 5, na.sub = "avg", defpos = TRUE, smooth = 1,
-  distance.max = Inf, distance.bin = 15, start = NULL)
+Intersite(
+  x,
+  type = "emp",
+  method = "spearman",
+  distance = NULL,
+  nmin = 5,
+  na.sub = "avg",
+  defpos = TRUE,
+  smooth = 1,
+  distance.max = Inf,
+  distance.bin = 15,
+  start = NULL
+)
 
 \method{print}{isite}(x, ...)
 }

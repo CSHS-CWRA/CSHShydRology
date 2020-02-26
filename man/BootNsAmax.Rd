@@ -4,9 +4,15 @@
 \alias{BootNsAmax}
 \title{Bootstrap sample of the nonstationary AMAX model}
 \usage{
-BootNsAmax(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  newdata = NULL, reliability = FALSE, nsim = 500, alpha = 0.95,
-  verbose = TRUE)
+BootNsAmax(
+  object,
+  p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  newdata = NULL,
+  reliability = FALSE,
+  nsim = 500,
+  alpha = 0.95,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{object}{Output form \link{FitNsAmax}.}

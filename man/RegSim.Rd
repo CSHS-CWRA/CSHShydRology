@@ -8,8 +8,17 @@
 \usage{
 RegSim(x, ...)
 
-\method{RegSim}{matrix}(x, distr, nrec, corr = 0, corr.sqrt = FALSE,
-  lmom = TRUE, lscale = FALSE, long = FALSE, ...)
+\method{RegSim}{matrix}(
+  x,
+  distr,
+  nrec,
+  corr = 0,
+  corr.sqrt = FALSE,
+  lmom = TRUE,
+  lscale = FALSE,
+  long = FALSE,
+  ...
+)
 
 \method{RegSim}{reglmom}(x, n = 1, corr = 0, margin = "atsite", ...)
 }

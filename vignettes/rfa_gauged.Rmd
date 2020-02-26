@@ -391,6 +391,10 @@ hat <- predict(fit.target2, q = c(.9, .99), ci = TRUE, corr = icor$para)
 print(round(hat,1))
 ```
 
+Please note that the argument `out.matrix = TRUE` can be used to return the bootstrap samples of the index-flood at the target site, the parameters of the regional distribution and the flood quantiles. 
+This data can be used among others to evaluate the variability of the model parameters. 
+
+
 ## RFA using likelihood techniques
 
 The previous section use the L-moment approach to estimate regional parameters of an index-flood model.

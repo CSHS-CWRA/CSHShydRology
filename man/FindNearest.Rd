@@ -4,8 +4,7 @@
 \alias{FindNearest}
 \title{Find the nearest sites}
 \usage{
-FindNearest(x, distance, n, super.distance = NULL, super.n = NULL,
-  row = FALSE)
+FindNearest(x, distance, n, super.distance = NULL, super.n = NULL, row = FALSE)
 }
 \arguments{
 \item{x}{Dataset with sites in columns and time in row.}

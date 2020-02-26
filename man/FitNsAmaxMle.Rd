@@ -5,9 +5,18 @@
 \alias{print.nsamax.mle}
 \title{Nonstationary model for annual maxima fitted by maximum likelihood}
 \usage{
-FitNsAmaxMle(form, x, distr, type = "add", varcov = TRUE,
-  method = "BFGS", control = NULL, para0 = NULL, quiet = FALSE,
-  ...)
+FitNsAmaxMle(
+  form,
+  x,
+  distr,
+  type = "add",
+  varcov = TRUE,
+  method = "BFGS",
+  control = NULL,
+  para0 = NULL,
+  quiet = FALSE,
+  ...
+)
 
 \method{print}{nsamax.mle}(x, ...)
 }

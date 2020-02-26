@@ -4,8 +4,16 @@
 \alias{PoolRemove}
 \title{Remove heterogenous sites from a pooling group}
 \usage{
-PoolRemove(obj, method = "H1", tol = 2, nmin = 15, ntot.min = 0,
-  nsim = 1000, distr.fix = FALSE, verbose = TRUE)
+PoolRemove(
+  obj,
+  method = "H1",
+  tol = 2,
+  nmin = 15,
+  ntot.min = 0,
+  nsim = 1000,
+  distr.fix = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{obj}{An output from \link{FitRegLmom}.}

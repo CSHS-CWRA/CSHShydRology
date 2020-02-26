@@ -4,8 +4,16 @@
 \alias{predict.reglmom}
 \title{Flood quantiles estimates}
 \usage{
-\method{predict}{reglmom}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  ci = FALSE, corr = 0, nsim = 500, alpha = 0.05, ...)
+\method{predict}{reglmom}(
+  object,
+  p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  ci = FALSE,
+  corr = 0,
+  nsim = 500,
+  alpha = 0.05,
+  out.matrix = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{An output from \link{FitRegLmom}.}
@@ -22,6 +30,8 @@ for all pairs}
 the confident intervals.}
 
 \item{alpha}{Probability outside the confidence intervals.}
+
+\item{out.matrix}{Logical. Should the bootstrap samples be returned.}
 
 \item{...}{Other parameters.}
 }

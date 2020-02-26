@@ -4,9 +4,17 @@
 \alias{plot.amax}
 \title{Return level plot for annual maxima}
 \usage{
-\method{plot}{amax}(x, main = "Return level plot",
-  xlab = "Return period (year)", ylab = "Flood quantiles",
-  ci = FALSE, col.ci = 2, lty.ci = 2, lwd.ci = 1, ...)
+\method{plot}{amax}(
+  x,
+  main = "Return level plot",
+  xlab = "Return period (year)",
+  ylab = "Flood quantiles",
+  ci = FALSE,
+  col.ci = 2,
+  lty.ci = 2,
+  lwd.ci = 1,
+  ...
+)
 }
 \arguments{
 \item{x}{Output from \link{FitAmax}.}
