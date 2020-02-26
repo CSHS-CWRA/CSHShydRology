@@ -4,9 +4,15 @@
 \alias{ch_flow_raster_trend}
 \title{Raster plot and simple trends of observed streamflows}
 \usage{
-ch_flow_raster_trend(date, flow, step = 5, stationID = "",
-  title = "", missing = FALSE, colours = c("lightblue", "cyan",
-  "blue", "slateblue", "darkblue", "red"))
+ch_flow_raster_trend(
+  date,
+  flow,
+  step = 5,
+  stationID = "",
+  title = "",
+  missing = FALSE,
+  colours = c("lightblue", "cyan", "blue", "slateblue", "darkblue", "red")
+)
 }
 \arguments{
 \item{date}{A numeric vector of the date as an \R date. Must be same length as the \code{flow}}

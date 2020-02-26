@@ -43,7 +43,7 @@ expect_equivalent(out[,1],out1)
 ## Output the bootstrap sample
 
 out <- predict(fit1, q1, ci = TRUE, nsim = 5, out.matrix = TRUE)
-out <- predict(fit1, ci = TRUE, nsim = 2000, out.matrix = TRUE)
+out <- predict(fit1, ci = TRUE, nsim = 7, out.matrix = TRUE)
 
 expect_true(is(out,'list'))
 expect_equal(names(out), c('pred','qua','para'))
