@@ -20,7 +20,15 @@ FitRegLmom(
 
 \method{coef}{reglmom}(object, distr = NULL, ...)
 
-\method{plot}{reglmom}(x, ...)
+\method{plot}{reglmom}(
+  x,
+  xlab = "L-Skew",
+  ylab = "L-kur",
+  line.distr = c("glo", "gev", "gno", "pe3", "gpa"),
+  legend.do = TRUE,
+  legend.args = NULL,
+  ...
+)
 
 \method{print}{reglmom}(x, ...)
 
