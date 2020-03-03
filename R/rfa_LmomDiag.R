@@ -1,5 +1,4 @@
 #' @export
-#' 
 LmomDiag <- function(distr = c('glo','gev','gno','pe3','gpa'), 
                      x = seq(-1,1, len = 50), plot = TRUE){
   
