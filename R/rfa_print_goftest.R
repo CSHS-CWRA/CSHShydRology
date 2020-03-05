@@ -7,9 +7,9 @@ print.goftest <- function(x, ...){
     methodName <- 'Modified Shapiro-Wilk'
 
   cat('\nGoodness-of-fit test\n',
-        '\nTest =', methodName,
-        '\nDistribution =', x$distr)
+        '\nTest :', methodName,
+        '\nDistribution :', x$distr)
 
-  cat('\nstatistic :', round(x$stat,4),
+  cat('\nStatistic :', round(x$stat,4),
         '\np-value :', round(x$pvalue,4), '\n\n')
 }
