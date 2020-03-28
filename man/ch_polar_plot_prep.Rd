@@ -4,10 +4,22 @@
 \alias{ch_polar_plot_prep}
 \title{Creates a data structure to be passed to \code{ch_polar_plot}.}
 \usage{
-ch_polar_plot_prep(station, plot_title, step, x0, x1, stat, prob, test_s,
-  variable = "discharge", bin_method = "unstated",
-  test_method = "unstated", lline1 = "Period 1", lline2 = "Period 2",
-  pvalue = 0.05)
+ch_polar_plot_prep(
+  station,
+  plot_title,
+  step,
+  x0,
+  x1,
+  stat,
+  prob,
+  test_s,
+  variable = "discharge",
+  bin_method = "unstated",
+  test_method = "unstated",
+  lline1 = "Period 1",
+  lline2 = "Period 2",
+  pvalue = 0.05
+)
 }
 \arguments{
 \item{station}{Typically a station number}

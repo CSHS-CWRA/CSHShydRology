@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+
+<title>Prediction of flood quantiles at ungauged sites</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Prediction of flood quantiles at ungauged sites</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This document shows how to use <code>CSHShydRology</code> to predict flood quantiles at ungauged sites, which need to be predicted based on available catchment descriptors. There are two general approaches, the quantile regression techniques (QRT) and the parameter regression techniques (PRT). In the former approach, at-site analyses are carried out on gauged sites to obtain at-site estimates of the flood quantiles. Afterwards, the flood quantiles of the target site are derived from the at-site estimates using a regression model. The second approach (PRT) predicts instead the parameters of the target distribution based on at-site estimates of the parameters. For this second approach, statistics, like L-moments, could replace the parameters (Durocher et al., 2019; Laio et al., 2011). Both methods were shown to lead to similar results and the final choice depends on practical considerations. (Ahn and Palmer, 2016; Haddad and Rahman, 2012). Here the QRT approach is adopted to predict a 100 year return period using a combination on local regression and kriging. Note that the prediction of each parameter (or L-moment) would follow the same steps.</p>
+</div>
+<div id="data-preparation" class="section level2">
+<h2>Data preparation</h2>
+<p>For this example, we are working with a group 562 stations across Canada where relevant information is found in the dataset <code>flowUngauged</code>. The instructions below prepare the main dataset containing 4 catchment descriptors: drainage area (<code>area</code>), percentage of waterbodies (<code>wb</code>), stream density (<code>stream</code>) and mean annual precipitation (<code>map</code>). These descriptors are initially transformed and scaled.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(CSHShydRology)</a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="kw">data</span>(flowUngauged)</a>
+<a class="sourceLine" id="cb1-3" title="3"></a>
+<a class="sourceLine" id="cb1-4" title="4"><span class="co">## Transform data if necessary.</span></a>
+<a class="sourceLine" id="cb1-5" title="5">xd0 &lt;-<span class="st"> </span><span class="kw">with</span>(flowUngauged, </a>
+<a class="sourceLine" id="cb1-6" title="6">  <span class="kw">data.frame</span>(<span class="dt">area   =</span> <span class="kw">scale</span>(<span class="kw">log</span>(area)),</a>
+<a class="sourceLine" id="cb1-7" title="7">             <span class="dt">wb     =</span> <span class="kw">scale</span>(<span class="kw">log</span>(wb)),</a>
+<a class="sourceLine" id="cb1-8" title="8">             <span class="dt">stream =</span> <span class="kw">scale</span>(<span class="kw">log</span>(stream)),</a>
+<a class="sourceLine" id="cb1-9" title="9">             <span class="dt">map    =</span> <span class="kw">scale</span>(<span class="kw">log</span>(map)))</a>
+<a class="sourceLine" id="cb1-10" title="10">  )</a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="kw">rownames</span>(xd0) &lt;-<span class="st"> </span>flowUngauged<span class="op">$</span>site</a></code></pre></div>
+<p>Additionally, classical multidimensional scaling is used to project the site coordinates in a 2D space that tends to preserve the great-circle distance. The code below adds these new coordinates to the descriptors</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="co">## Project the coordinates</span></a>
+<a class="sourceLine" id="cb2-2" title="2">coord &lt;-<span class="st"> </span><span class="kw">cmdscale</span>(<span class="kw">GeoDist</span>(<span class="op">~</span>lon<span class="op">+</span>lat,flowUngauged))</a>
+<a class="sourceLine" id="cb2-3" title="3"><span class="kw">colnames</span>(coord) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;lon&#39;</span>,<span class="st">&#39;lat&#39;</span>)</a>
+<a class="sourceLine" id="cb2-4" title="4"><span class="kw">rownames</span>(coord) &lt;-<span class="st"> </span>flowUngauged<span class="op">$</span>site</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6">xd0 &lt;-<span class="st"> </span><span class="kw">cbind</span>(xd0, coord)</a></code></pre></div>
+<p>The dataset does not contain the annual maxima of each site but provides the sample L-moments. We use the function <code>lAmax</code> that links L-moments to the parameters of a given distribution and <code>qAmax</code> to evaluate the flood quantiles of each site assuming a Generalized Extreme Value (GEV) distribution. The argument <code>scale = FALSE</code> is used to specify that the LCV is passed rather than the L-scale.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="co">## Convert L-moments to parameter</span></a>
+<a class="sourceLine" id="cb3-2" title="2">para100 &lt;-<span class="st"> </span><span class="kw">apply</span>(flowUngauged[,<span class="kw">c</span>(<span class="st">&#39;l1&#39;</span>,<span class="st">&#39;lcv&#39;</span>,<span class="st">&#39;lsk&#39;</span>)], </a>
+<a class="sourceLine" id="cb3-3" title="3">                 <span class="dv">1</span>, lAmax, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">lscale =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="co">## Estimate at-site flood quantiles</span></a>
+<a class="sourceLine" id="cb3-6" title="6">F100 &lt;-<span class="st"> </span><span class="cf">function</span>(z) <span class="kw">qAmax</span>(<span class="fl">0.99</span>, z, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>)</a>
+<a class="sourceLine" id="cb3-7" title="7">qua100 &lt;-<span class="st"> </span><span class="kw">apply</span>(para100, <span class="dv">2</span>, F100)</a>
+<a class="sourceLine" id="cb3-8" title="8">xd0 &lt;-<span class="st"> </span><span class="kw">cbind</span>(xd0, <span class="dt">q100 =</span> qua100)</a></code></pre></div>
+<p>For the rest of the document, we put aside 26 sites that are considered ungauged and used the other sites to predict them.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co">## Create a set of ungauged sites</span></a>
+<a class="sourceLine" id="cb4-2" title="2">id &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">501</span>,<span class="dv">20</span>)</a>
+<a class="sourceLine" id="cb4-3" title="3">xd &lt;-<span class="st"> </span>xd0[<span class="op">-</span>id, ]</a>
+<a class="sourceLine" id="cb4-4" title="4">target &lt;-<span class="st"> </span>xd0[id,]</a></code></pre></div>
+</div>
+<div id="region-of-influence" class="section level2">
+<h2>Region of influence</h2>
+<p>The prediction of the flood quantiles at ungauged sites is done by the function <code>FitRoi</code>. We denote <span class="math inline">\(i = 0\)</span> the target site and <span class="math inline">\(i= 1, 2, \ldots, n\)</span> the gauged sites. First, a measure of similarity is needed to define weights that represents the importance of each gauged site to the prediction of the target. In this case, the measure of similarity is defined as the Euclidean distance <span class="math display">\[
+h_{i,j} = \left\| \mathbf{s}_i-\mathbf{s}_j\right\|
+\]</span> between attributes <span class="math inline">\(\mathbf{s_j}\)</span>. The latter could be catchment descriptors, coordinates or a mix of both. For simplicity, it will be assumed that the gauged sites are sorted such that the distances with the target <span class="math inline">\(h_{0,i} = h_i \leq h_{i+1}\)</span> are increasing. Accordingly, the weights are taken as<br />
+<span class="math display">\[
+w_i = \begin{cases} 
+1 - (h_i/h_{n_k})^2 &amp; i &lt; n_k \\
+0 &amp; i\geq n_k
+\end{cases},
+\]</span> which is proportional to an Epechnikov kernel where the bandwidth is the <span class="math inline">\(n_k\)</span>-th nearest site. This create a neighborhood, or region of influence (ROI) where only the sites <span class="math inline">\(i &lt; n_k\)</span> are contributing to the estimation of the target.</p>
+<p>At a target site, the flood quantiles are predicted by a linear model <span class="math display">\[
+\log(Y) = \mathbf{X}\beta + \epsilon
+\]</span> where <span class="math inline">\(\beta\)</span> is a vector of parameters, <span class="math inline">\(Y\)</span> represents the at-site estimates, <span class="math inline">\(\mathbf{X}\)</span> is a design matrix of the descriptors and <span class="math inline">\(\epsilon\)</span> is an error term. Note that the descriptors in <span class="math inline">\(\mathbf{X}\)</span> may differ from the attributes used to define the measure of similarity (<span class="math inline">\(\mathbf{s}_i\)</span>). The estimates of the parameters <span class="math inline">\(\widehat \beta\)</span> are given by weighted least squares<br />
+<span class="math display">\[
+\widehat \beta = \left( \mathbf{X}&#39; W \mathbf{X}\right)^{-1}
+\mathbf{X}&#39;W \mathbf{y}
+\]</span> where <span class="math inline">\(W=(w_1,\dots, w_n)\)</span> is a diagonal matrix of weights. The example below shows how to fit the local regression model on the ungauged sites. Note that the argument <code>ker = FALSE</code> can be passed to use<br />
+uniform weights where <span class="math inline">\(n_k\)</span> represents the number of sites with non zero weights.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co">## Define the ROI model</span></a>
+<a class="sourceLine" id="cb5-2" title="2">formula.phy &lt;-<span class="st"> </span><span class="kw">log</span>(q100) <span class="op">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map <span class="op">+</span><span class="st"> </span>stream <span class="op">+</span><span class="st"> </span>wb</a>
+<a class="sourceLine" id="cb5-3" title="3">formula.dist &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map <span class="op">+</span><span class="st"> </span>stream <span class="op">+</span><span class="st"> </span>wb</a>
+<a class="sourceLine" id="cb5-4" title="4"></a>
+<a class="sourceLine" id="cb5-5" title="5"><span class="co">## Fit the model</span></a>
+<a class="sourceLine" id="cb5-6" title="6">fit &lt;-<span class="st"> </span><span class="kw">FitRoi</span>(<span class="dt">x =</span> xd, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">30</span>, </a>
+<a class="sourceLine" id="cb5-7" title="7">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist) </a>
+<a class="sourceLine" id="cb5-8" title="8"><span class="kw">print</span>(fit)</a></code></pre></div>
+<pre><code>## 
+## 
+## Region of Influence (ROI)
+## 
+## Number of sites: 536
+## Number of targets: 26
+## 
+## Regression:
+##   Physic: log(q100) ~ area + map + stream + wb
+##   size: 30
+##   Similarity ~area + map + stream + wb
+##   Kernel: TRUE</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="co">## Graphics of the predicted versus known flood quantiles at ungauged sites</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="kw">plot</span>(<span class="kw">log</span>(target<span class="op">$</span>q100),fit<span class="op">$</span>pred,</a>
+<a class="sourceLine" id="cb7-3" title="3">     <span class="dt">xlab =</span> <span class="st">&#39;At-site flood quantiles (log)&#39;</span>,</a>
+<a class="sourceLine" id="cb7-4" title="4">     <span class="dt">ylab =</span> <span class="st">&#39;Predicted flood quantiles (log)&#39;</span>)</a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="kw">abline</span>(<span class="dv">0</span>,<span class="dv">1</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="cross-validation" class="section level2">
+<h2>Cross-validation</h2>
+<p>Cross-validation is used to measure the prediction error of a model by a resampling technique. It is strongly suggested to use a similar approach to calibrate the argument <code>nk</code> that defines the size of the regions of influence. The k-fold cross-validation strategy consists of dividing the gauged sites in k groups of equal size. Typical values of k are 5 or 10. In turn, each group is treated as ungauged and predicted by the other sites. These predictions can be compared to the “known” flood quantiles by evaluating common criteria such as the Root Mean Square Error (RMSE) or the Mean Absolute Deviation (MAD). The function <code>CvRoi</code> performs cross-validation and returns<br />
+several evaluation criteria. Afterward, the function <code>head</code> can be used to return the three best <code>nk</code> according to a given criteria.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="co">## List of neigborhood sizes to try.</span></a>
+<a class="sourceLine" id="cb8-2" title="2">nk.lst &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">30</span>,<span class="dv">100</span>,<span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb8-3" title="3"><span class="kw">set.seed</span>(<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb8-4" title="4"></a>
+<a class="sourceLine" id="cb8-5" title="5"><span class="co">## Perform cross-validation</span></a>
+<a class="sourceLine" id="cb8-6" title="6">cv0 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> <span class="dv">5</span>,</a>
+<a class="sourceLine" id="cb8-7" title="7">            <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb8-8" title="8">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb8-9" title="9"></a>
+<a class="sourceLine" id="cb8-10" title="10"><span class="co">## output results</span></a>
+<a class="sourceLine" id="cb8-11" title="11"><span class="kw">head</span>(<span class="kw">signif</span>(cv0,<span class="dv">3</span>), <span class="dt">crit =</span> <span class="st">&#39;mad&#39;</span>)</a></code></pre></div>
+<pre><code>## 
+## Cross-validation for Region of Influence (ROI)
+## 
+## Best 3 sizes of neighborhood
+##   nk  rmse rrmse   nsh   mad   rmad  smad
+## 5 70 0.541 0.131 0.862 0.421 0.0887 0.644
+## 4 60 0.541 0.131 0.862 0.422 0.0887 0.643
+## 6 80 0.543 0.132 0.861 0.423 0.0890 0.642</code></pre>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="co">## Mean absolute deviation with respect to &#39;nk&#39;</span></a>
+<a class="sourceLine" id="cb10-2" title="2"><span class="kw">plot</span>(cv0, <span class="dt">crit =</span> <span class="st">&#39;mad&#39;</span>)</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p>Cross-validation can also be used to select relevant catchment descriptors. By default, the output of <code>CvRoi</code> varies as the groups are created randomly. Specific cross-validation groups can be passed as an argument to ensure that concurrent models are evaluated using the same design. The second example below shows that the descriptors <code>wb</code> and <code>stream</code> improve the predictive power of the model.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co">## Create cross-validation groups</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">set.seed</span>(<span class="dv">392</span>)</a>
+<a class="sourceLine" id="cb11-3" title="3">kf &lt;-<span class="st"> </span><span class="kw">sample</span>(<span class="kw">rep_len</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">5</span>, <span class="kw">nrow</span>(xd)))</a>
+<a class="sourceLine" id="cb11-4" title="4"></a>
+<a class="sourceLine" id="cb11-5" title="5">formula.phy &lt;-<span class="st"> </span><span class="kw">log</span>(q100) <span class="op">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map <span class="op">+</span><span class="st"> </span>stream <span class="op">+</span><span class="st"> </span>wb</a>
+<a class="sourceLine" id="cb11-6" title="6"></a>
+<a class="sourceLine" id="cb11-7" title="7"><span class="co">## Perform cross-validation with all descriptors</span></a>
+<a class="sourceLine" id="cb11-8" title="8">cv0 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
+<a class="sourceLine" id="cb11-9" title="9">            <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb11-10" title="10">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-11" title="11"></a>
+<a class="sourceLine" id="cb11-12" title="12"><span class="co">## Formula without wb and stream</span></a>
+<a class="sourceLine" id="cb11-13" title="13">formula.phy2 &lt;-<span class="st"> </span><span class="kw">log</span>(q100) <span class="op">~</span><span class="st"> </span>area <span class="op">+</span><span class="st"> </span>map</a>
+<a class="sourceLine" id="cb11-14" title="14"></a>
+<a class="sourceLine" id="cb11-15" title="15">cv1 &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
+<a class="sourceLine" id="cb11-16" title="16">            <span class="dt">phy =</span> formula.phy2, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb11-17" title="17">            <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb11-18" title="18"></a>
+<a class="sourceLine" id="cb11-19" title="19"><span class="co">## Compare the prediction power</span></a>
+<a class="sourceLine" id="cb11-20" title="20"><span class="kw">head</span>(<span class="kw">signif</span>(cv0,<span class="dv">3</span>), <span class="dt">crit =</span> <span class="st">&#39;mad&#39;</span>)</a></code></pre></div>
+<pre><code>## 
+## Cross-validation for Region of Influence (ROI)
+## 
+## Best 3 sizes of neighborhood
+##   nk  rmse rrmse   nsh   mad   rmad  smad
+## 3 50 0.541 0.128 0.862 0.423 0.0884 0.642
+## 4 60 0.542 0.130 0.862 0.423 0.0886 0.642
+## 5 70 0.542 0.130 0.861 0.423 0.0887 0.642</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="kw">head</span>(<span class="kw">signif</span>(cv1,<span class="dv">3</span>), <span class="dt">crit =</span> <span class="st">&#39;mad&#39;</span>)</a></code></pre></div>
+<pre><code>## 
+## Cross-validation for Region of Influence (ROI)
+## 
+## Best 3 sizes of neighborhood
+##   nk  rmse rrmse   nsh   mad   rmad  smad
+## 1 30 0.560 0.137 0.852 0.438 0.0926 0.630
+## 2 40 0.561 0.138 0.851 0.439 0.0929 0.629
+## 3 50 0.567 0.140 0.849 0.442 0.0937 0.626</code></pre>
+<p>If other criteria than those included in <code>CvRoi</code> are desired, it is also possible to perform the cross-validation sheme and keep the predicted value (or residuals) using the function <code>predict</code> (<code>residuals</code>).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="co">## Evaluate the predictions and residuals from the cross-validation for a given </span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="co">## ROI model</span></a>
+<a class="sourceLine" id="cb15-3" title="3"></a>
+<a class="sourceLine" id="cb15-4" title="4">fit &lt;-<span class="st"> </span><span class="kw">FitRoi</span>(<span class="dt">x =</span> xd, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">50</span>, </a>
+<a class="sourceLine" id="cb15-5" title="5">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist) </a>
+<a class="sourceLine" id="cb15-6" title="6"></a>
+<a class="sourceLine" id="cb15-7" title="7">hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, xd, <span class="dt">fold =</span> kf)</a>
+<a class="sourceLine" id="cb15-8" title="8">res &lt;-<span class="st"> </span><span class="kw">residuals</span>(fit, xd, <span class="dt">fold =</span> kf)</a>
+<a class="sourceLine" id="cb15-9" title="9"></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="co">## Median of relative absolute error</span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="kw">median</span>(<span class="kw">abs</span>(res<span class="op">/</span>hat))</a></code></pre></div>
+<pre><code>## [1] 0.06524113</code></pre>
+</div>
+<div id="kriging" class="section level2">
+<h2>Kriging</h2>
+<p>A regression model provides a useful way to describe the relation between the flood quantiles and physical catchment descriptors. However, important characteristics of the basins may not be available and so, spatial correlation among the residuals may remain if the missing information is spatially distributed (Durocher et al., 2019). Therefore, a spatial predictor could be used to correct the initial regression model by further predicting the residuals. This is often called regression-kriging. Considering <span class="math inline">\(\mathbf{z} = \mathbf{y}-g(\mathbf{X})\)</span>, the residuals of the local regression, the simple kriging estimator, is the linear predictor <span class="math inline">\(z_0 = \mathbf{a}&#39;\mathbf{z}\)</span> that minimizes the predicted variance and is given by <span class="math display">\[
+\mathbf{a} = \Sigma^{-1}\sigma
+\]</span> where <span class="math inline">\(\sigma\)</span> is the covariance matrix of <span class="math inline">\(\mathbf{z}\)</span> and <span class="math inline">\(\sigma = \mathrm{cov}(\mathbf{z},z_0)\)</span>. This requires the estimation of a covariance model, which is disscussed in textbooks about geostatistics, like Schabenberger and Gotway (2014). One model of covariance with respect to the distance <span class="math inline">\(h &gt; 0\)</span> is the exponential model <span class="math display">\[
+C(h) = C(0) -\tau \exp\left(-\theta h\right)
+\]</span> where <span class="math inline">\(\theta&gt; 0\)</span> is a parameter that characterizes the rate at which the covariance decreases with respect to <span class="math inline">\(h\)</span> and <span class="math inline">\(\tau \in \left[0,C(0)\right]\)</span> is a nugget effect that creates a discontinuity at <span class="math inline">\(h = 0\)</span>.</p>
+<p>The function <code>FitRoi</code> and <code>CvRoi</code> can directly perform the kriging on the residuals by passing a set of coordinates to the argument <code>kriging</code>. The example below shows that the addition of the spatial component improves the prediction power of the model.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">formula.krig &lt;-<span class="st"> </span><span class="er">~</span><span class="st"> </span>lon <span class="op">+</span><span class="st"> </span>lat</a>
+<a class="sourceLine" id="cb17-2" title="2"></a>
+<a class="sourceLine" id="cb17-3" title="3">cvk &lt;-<span class="st"> </span><span class="kw">CvRoi</span>(<span class="dt">x =</span> xd, <span class="dt">nk =</span> nk.lst, <span class="dt">fold =</span> kf,</a>
+<a class="sourceLine" id="cb17-4" title="4">            <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb17-5" title="5">            <span class="dt">kriging =</span> formula.krig, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="co">## Effect of kriging of the prediction of flood quantiles.</span></a>
+<a class="sourceLine" id="cb18-2" title="2"><span class="kw">plot</span>(cvk, <span class="dt">ylim =</span> <span class="kw">c</span>(<span class="fl">0.38</span>, <span class="fl">0.45</span>))</a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="kw">lines</span>(mad<span class="op">~</span>nk, cv0, <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>)</a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="kw">legend</span>(<span class="st">&#39;topleft&#39;</span>, <span class="dt">horiz =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb18-5" title="5">       <span class="dt">legend =</span> <span class="kw">c</span>(<span class="st">&#39;with&#39;</span>,<span class="st">&#39;without&#39;</span>),</a>
+<a class="sourceLine" id="cb18-6" title="6">       <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&#39;black&#39;</span>,<span class="st">&#39;red&#39;</span>), <span class="dt">lty =</span> <span class="kw">rep</span>(<span class="dv">1</span>,<span class="dv">2</span>))</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="bootstrapping" class="section level2">
+<h2>Bootstrapping</h2>
+<p>The predicted value are not directly measure and the sampling errors must be propagated to the later steps of the procedure. Overall the model could be seen as having two error terms <span class="math display">\[
+Y = f(\mathbf{s}) + \eta + \omega
+\]</span> where <span class="math inline">\(\eta\)</span> is the sampling error and <span class="math inline">\(\omega\)</span> is the modeling error. This framework is used when using Generalized Least Squares (GLS) for estimating of total variance (Tasker and Stedinger, 1989; Durocher et al., 2018). In that context, the modeling error <span class="math inline">\(\omega\)</span> is assumed to have a constant variance for all sites. If the residuals of the fitted model are independent of the sampling errors, a residual of the total error can be generated by resampling independently each error term. Using this strategy a more accurate evaluation of the total uncertainty is provided by parametric bootstrap.</p>
+<p>The example below simulates the synthetic data using the function <code>RegSim</code> considering 50 years of data with a constant coefficient of corrrelation of 0.4 representing the intersite correlation between annual maxima. For each bootstrap sample, the at-site flood quantiles are evaluated using the method of L-moments. Here only a small sample size <code>nboot</code> is generated for illustration purpose.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="co">## Size of the bootstrap sample. It is chosen very low to speed up</span></a>
+<a class="sourceLine" id="cb19-2" title="2"><span class="co">## the computation. Much larger values, like 1000, should be consider in </span></a>
+<a class="sourceLine" id="cb19-3" title="3"><span class="co">## practice.</span></a>
+<a class="sourceLine" id="cb19-4" title="4">nboot &lt;-<span class="st"> </span><span class="dv">30</span></a>
+<a class="sourceLine" id="cb19-5" title="5"></a>
+<a class="sourceLine" id="cb19-6" title="6"><span class="co">## Empirical L-moments</span></a>
+<a class="sourceLine" id="cb19-7" title="7">lmm &lt;-<span class="st"> </span>flowUngauged[<span class="op">-</span>id, <span class="kw">c</span>(<span class="st">&#39;l1&#39;</span>,<span class="st">&#39;lcv&#39;</span>,<span class="st">&#39;lsk&#39;</span>)]</a>
+<a class="sourceLine" id="cb19-8" title="8"></a>
+<a class="sourceLine" id="cb19-9" title="9"><span class="co">## Function that returns the flood quantiles of 100 year return period</span></a>
+<a class="sourceLine" id="cb19-10" title="10"><span class="co">## for one site.</span></a>
+<a class="sourceLine" id="cb19-11" title="11">Fqua &lt;-<span class="st"> </span><span class="cf">function</span>(z){</a>
+<a class="sourceLine" id="cb19-12" title="12">  l &lt;-<span class="st"> </span>lmom<span class="op">::</span><span class="kw">samlmu</span>(z) </a>
+<a class="sourceLine" id="cb19-13" title="13">  p &lt;-<span class="st"> </span>lmom<span class="op">::</span><span class="kw">pelgev</span>(l)</a>
+<a class="sourceLine" id="cb19-14" title="14">  <span class="kw">return</span>(lmom<span class="op">::</span><span class="kw">quagev</span>(.<span class="dv">99</span>,p))</a>
+<a class="sourceLine" id="cb19-15" title="15">}</a>
+<a class="sourceLine" id="cb19-16" title="16"></a>
+<a class="sourceLine" id="cb19-17" title="17"><span class="co">## Function that simulates a dataset and returns flood quantiles for all sites</span></a>
+<a class="sourceLine" id="cb19-18" title="18">Fsim &lt;-<span class="st"> </span><span class="cf">function</span>(){</a>
+<a class="sourceLine" id="cb19-19" title="19">  xs &lt;-<span class="st"> </span><span class="kw">RegSim</span>(lmm, <span class="st">&#39;gev&#39;</span>, <span class="dt">nrec =</span> <span class="dv">50</span>, <span class="dt">corr =</span> <span class="fl">.4</span>)</a>
+<a class="sourceLine" id="cb19-20" title="20">  <span class="kw">return</span>(<span class="kw">apply</span>(xs, <span class="dv">2</span>, Fqua))</a>
+<a class="sourceLine" id="cb19-21" title="21">}</a>
+<a class="sourceLine" id="cb19-22" title="22"></a>
+<a class="sourceLine" id="cb19-23" title="23"><span class="co">## Perform bootstrap for the at-site analysis</span></a>
+<a class="sourceLine" id="cb19-24" title="24"><span class="kw">set.seed</span>(<span class="dv">12</span>)</a>
+<a class="sourceLine" id="cb19-25" title="25">lq100 &lt;-<span class="st"> </span><span class="kw">log</span>(<span class="kw">replicate</span>(nboot, <span class="kw">Fsim</span>()))</a></code></pre></div>
+<p>A bootstrap sample of the total error is obtained<br />
+by adding the model residuals to the sample from the at-site analyses. Please note that if kriging is not required, the argument <code>fitted = TRUE</code> must be passed to obtain the fitted values (and residual) of the ROI model at the gauged sites. The example below shows how to obtain bootstrap samples.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb20-1" title="1"><span class="co">## Fit the model</span></a>
+<a class="sourceLine" id="cb20-2" title="2">fit &lt;-<span class="st"> </span><span class="kw">FitRoi</span>(<span class="dt">x =</span> xd, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">50</span>, </a>
+<a class="sourceLine" id="cb20-3" title="3">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist,</a>
+<a class="sourceLine" id="cb20-4" title="4">              <span class="dt">fitted =</span> <span class="ot">TRUE</span>) </a>
+<a class="sourceLine" id="cb20-5" title="5"></a>
+<a class="sourceLine" id="cb20-6" title="6"><span class="co">## Extract model residuals assuming they are symmetrical.</span></a>
+<a class="sourceLine" id="cb20-7" title="7">resid.mdl &lt;-<span class="st"> </span><span class="kw">c</span>(fit<span class="op">$</span>resid, <span class="op">-</span>fit<span class="op">$</span>resid)</a>
+<a class="sourceLine" id="cb20-8" title="8"></a>
+<a class="sourceLine" id="cb20-9" title="9"><span class="co">## create a copy that can be modified</span></a>
+<a class="sourceLine" id="cb20-10" title="10">xd.boot &lt;-<span class="st"> </span>xd</a>
+<a class="sourceLine" id="cb20-11" title="11"></a>
+<a class="sourceLine" id="cb20-12" title="12"><span class="co">## Fit ROI on a bootstrap sample</span></a>
+<a class="sourceLine" id="cb20-13" title="13">Fboot &lt;-<span class="st"> </span><span class="cf">function</span>(){</a>
+<a class="sourceLine" id="cb20-14" title="14">  </a>
+<a class="sourceLine" id="cb20-15" title="15">  <span class="co">## sample residual of sampling and modeling errors.</span></a>
+<a class="sourceLine" id="cb20-16" title="16">  boot.jj &lt;-<span class="st"> </span><span class="kw">sample.int</span>(nboot, <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb20-17" title="17">  boot.resid &lt;-<span class="st"> </span><span class="kw">sample</span>(resid.mdl, <span class="kw">nrow</span>(xd), <span class="dt">replace =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb20-18" title="18">  xd.boot<span class="op">$</span>q100 &lt;-<span class="st"> </span><span class="kw">exp</span>(lq100[,boot.jj] <span class="op">+</span><span class="st"> </span>boot.resid)</a>
+<a class="sourceLine" id="cb20-19" title="19">  </a>
+<a class="sourceLine" id="cb20-20" title="20">  <span class="kw">FitRoi</span>(<span class="dt">x =</span> xd.boot, <span class="dt">xnew =</span> target, <span class="dt">nk =</span> <span class="dv">70</span>, </a>
+<a class="sourceLine" id="cb20-21" title="21">              <span class="dt">phy =</span> formula.phy, <span class="dt">similarity =</span> formula.dist)<span class="op">$</span>pred</a>
+<a class="sourceLine" id="cb20-22" title="22">}</a>
+<a class="sourceLine" id="cb20-23" title="23"></a>
+<a class="sourceLine" id="cb20-24" title="24">boot &lt;-<span class="st"> </span><span class="kw">replicate</span>(nboot, <span class="kw">Fboot</span>())</a>
+<a class="sourceLine" id="cb20-25" title="25"><span class="kw">rownames</span>(boot) &lt;-<span class="st"> </span><span class="kw">rownames</span>(target)</a>
+<a class="sourceLine" id="cb20-26" title="26"></a>
+<a class="sourceLine" id="cb20-27" title="27"><span class="kw">apply</span>(boot, <span class="dv">1</span>, sd)</a></code></pre></div>
+<pre><code>##    01AF007    01BQ001    02BB003    02ED024    02HA006    02LB022 
+## 0.23250881 0.14904539 0.11303648 0.10750722 0.11122058 0.17756569 
+##    02QA002    02YM004    03BF001    05AC030    05CC007    05DF004 
+## 0.11298122 0.14570692 0.12108911 0.20257963 0.17854254 0.19347941 
+##    05HD036    05LE008    05SA002    06DA004    07BA002    07CE002 
+## 0.14950907 0.14333434 0.47253500 0.15632455 0.17565622 0.14053322 
+##    07FB002    07GG002    07SA004    08EG012    08HE006    08KH019 
+## 0.09624538 0.15333961 0.20064070 0.15979121 0.28924148 0.10796211 
+##    08MB007    08NH120 
+## 0.12541217 0.15077336</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this document we showed how the function <code>FitRoi</code> can be used to fit local regression-kriging model to estimate flood quantiles at ungauged sites. The selection of the descriptors and the size of the region of influence were further calibrated using the function <code>CvRoi</code>. Finally, a bootstrap strategy was proposed to estimate the variance of the total error.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<p>Ahn, K.-H., &amp; Palmer, R. (2016). Regional flood frequency analysis using spatial proximity and basin characteristics: Quantile regression vs.  parameter regression technique. Journal of Hydrology, 540, 515-526. <a href="https://doi.org/10.1016/j.jhydrol.2016.06.047" class="uri">https://doi.org/10.1016/j.jhydrol.2016.06.047</a></p>
+<p>Durocher, M., Burn, D. H., Zadeh, S. M., &amp; Ashkar, F. (2019). Estimating flood quantiles at ungauged sites using nonparametric regression methods with spatial components. Hydrological Sciences Journal, 64(9), 1056-1070. <a href="https://doi.org/10.1080/02626667.2019.1620952" class="uri">https://doi.org/10.1080/02626667.2019.1620952</a></p>
+<p>Durocher, M., Burn, D. H., &amp; Mostofi Zadeh, S. (2018). A nationwide regional flood frequency analysis at ungauged sites using ROI/GLS with copulas and super regions. Journal of Hydrology, 567, 191-202. <a href="https://doi.org/10.1016/j.jhydrol.2018.10.011" class="uri">https://doi.org/10.1016/j.jhydrol.2018.10.011</a></p>
+<p>Haddad, K., &amp; Rahman, A. (2012). Regional flood frequency analysis in eastern Australia: Bayesian GLS regression-based methods within fixed region and ROI framework - Quantile Regression vs. Parameter Regression Technique. Journal of Hydrology, 430-431, 142-161. <a href="https://doi.org/10.1016/j.jhydrol.2012.02.012" class="uri">https://doi.org/10.1016/j.jhydrol.2012.02.012</a></p>
+<p>Laio, F., Ganora, D., Claps, P., &amp; Galeati, G. (2011). Spatially smooth regional estimation of the flood frequency curve (with uncertainty). Journal of Hydrology, 408(1-2), 67-77. <a href="http://dx.doi.org/10.1016/j.jhydrol.2011.07.022" class="uri">http://dx.doi.org/10.1016/j.jhydrol.2011.07.022</a></p>
+<p>Schabenberger, O., &amp; Gotway, C. A. (2004). Statistical methods for spatial data analysis (Vol. 64). CRC Press.</p>
+<p>Tasker, G., &amp; Stedinger, J. (1989). An operational GLS model for hydrologic regression. Journal of Hydrology, 111(1), 361 - 375. <a href="https://doi.org/10.1016/0022-1694(89)90268-0" class="uri">https://doi.org/10.1016/0022-1694(89)90268-0</a></p>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

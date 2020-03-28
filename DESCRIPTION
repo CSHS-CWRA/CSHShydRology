@@ -21,11 +21,21 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
-    curl
+    curl,
+    gstat,
+    sp,
+    lmom,
+    lmomco,
+    lmomRFA,
+    numDeriv,
+    mnormt,
+    Matrix,
+    boot,
+    quantreg
 Suggests: 
     knitr,
     testthat, 
     rmarkdown
 VignetteBuilder: knitr
 LazyData: true
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2

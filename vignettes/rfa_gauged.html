@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+<title>Regional flood frequency analysis at gauged sites</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Regional flood frequency analysis at gauged sites</h1>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This document shows how to use <code>CSHShydRology</code> to perform regional flood frequency analysis (RFA) using pooling groups and the index-flood model. The methodology is presented using 45 hydrometric sites located in the Atlantic provinces of Canada. The dataset <code>flowAtlantic</code> contains the annual maximums of river discharge <code>ams</code> and the catchment descriptors: drainage area, mean annual precipitation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(CSHShydRology)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">data</span>(flowAtlantic) </span>
+<span id="cb1-3"><a href="#cb1-3"></a>ams &lt;-<span class="st"> </span>flowAtlantic<span class="op">$</span>ams</span>
+<span id="cb1-4"><a href="#cb1-4"></a>info &lt;-<span class="st"> </span>flowAtlantic<span class="op">$</span>info</span></code></pre></div>
+</div>
+<div id="measure-of-similarity" class="section level2">
+<h2>Measure of similarity</h2>
+<p>For this analysis, pooling groups are formed as the nearest sites to a target site from which regional information will be transfered. Different measures of similarity exist to identify the members of a pooling group. Here we will use a measure of similarity based on the seasonality of the annual maximums that characterizes the flood regime of the site of interest. This follows the recommendation of Mostofi Zadeh et al. (2019) that showed that the seasonality based on annual maximum discharges should be preferred for RFA based on threshold modeling.</p>
+<p>An angular value (in radians) can be attributed to the moment when a flood is observed <span class="math display">\[
+\theta_i = \mathrm{(Julian \,date)}_i\left( \frac{2\pi}{365}\right).
+\]</span> Accordingly, a sample of <span class="math inline">\(n\)</span> angular values is summarized by averaging each Cartesian coordinate separately.</p>
+<p><span class="math display">\[
+\begin{align}
+\bar x &amp;= \frac{1}{n}\sum_{i=1}^n \cos(\theta_i) \\
+\bar y &amp;= \frac{1}{n}\sum_{i=1}^n \sin(\theta_i) 
+\end{align}
+\]</span> Nevertheless, these summary statistics are easier to interpret in polar coordinates where <span class="math inline">\(\theta\)</span> represents the average date of occurrence for the annual maximum discharges and <span class="math inline">\(r\)</span> represent its regularity during the year. In particular, values of <span class="math inline">\(r\)</span> close to 1 indicate that the maximum discharge occurs at almost the same day every year, while values close to 0 imply that the maximum discharge could be observed at any time of the year.</p>
+<p><span class="math display">\[
+\begin{align}
+\theta &amp;= \arctan \left( \bar y / \bar x\right)\\
+r &amp;= \sqrt{\bar x^2 + \bar y^2} \\
+\end{align}
+\]</span></p>
+<p>The seasonality of one or several sites can be estimated using the <code>SeasonStat</code> function.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co">## Evaluate seasonal statistics</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>s &lt;-<span class="st"> </span>ams[ams<span class="op">$</span>id <span class="op">==</span><span class="st"> </span>ams<span class="op">$</span>id[<span class="dv">1</span>], ]<span class="op">$</span>date</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">SeasonStat</span>(s)</span></code></pre></div>
+<pre><code>##          x          y      angle     radius 
+## -0.2308825  0.5945593  1.9411980  0.6378146</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>st &lt;-<span class="st"> </span><span class="kw">SeasonStat</span>(date <span class="op">~</span><span class="st"> </span>id, ams)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">head</span>(st)</span></code></pre></div>
+<pre><code>##                    x         y    angle    radius
+## 01AF007 -0.230882469 0.5945593 1.941198 0.6378146
+## 01AF009 -0.308499369 0.7230383 1.974081 0.7861019
+## 01AJ010  0.005594521 0.4226291 1.557560 0.4226661
+## 01AK001 -0.130335849 0.7598669 1.740668 0.7709638
+## 01AK007 -0.053384346 0.5568674 1.666370 0.5594204
+## 01AL002 -0.040488450 0.6006337 1.638104 0.6019968</code></pre>
+<p>Next, the distance between sites can be evaluated using the Eucledean distance between cartesian or polar coordinates. The function <code>DistSeason</code> computes the distance between pairs <span class="math inline">\((r_j,\theta_j)\)</span> and <span class="math inline">\((r_k, \theta_k)\)</span> according to</p>
+<p><span class="math display">\[
+h_{i,j} =\sqrt{\|r_j-r_k \|^2 + \left(\frac{\|\theta_j-\theta_k\|}{\pi}\right)^2}
+\]</span></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co">## Site names</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>sname &lt;-<span class="st"> </span><span class="kw">as.character</span>(info<span class="op">$</span>id)</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">## Distance using cartesian coordinates</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>distance.st &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(st[,<span class="kw">c</span>(<span class="st">&#39;x&#39;</span>,<span class="st">&#39;y&#39;</span>)]))</span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="kw">colnames</span>(distance.st) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.st) &lt;-<span class="st"> </span>sname</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">## Distance using polar coordinates</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>distance.st2 &lt;-<span class="st"> </span><span class="kw">DistSeason</span>(radius <span class="op">~</span><span class="st"> </span>angle , st)</span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="kw">colnames</span>(distance.st2) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.st2) &lt;-<span class="st"> </span>sname</span></code></pre></div>
+<p>The graphic below shows the seasonal statistics of the Atlantic rivers. A k-means algorithm is used to divide the sites into three regions based on regularity and timing.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>km &lt;-<span class="st"> </span><span class="kw">kmeans</span>(<span class="kw">as.dist</span>(distance.st2), <span class="dv">3</span>, <span class="dt">nstart =</span> <span class="dv">5</span>)</span>
+<span id="cb7-3"><a href="#cb7-3"></a>regime &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&#39;blue&#39;</span>,<span class="st">&#39;darkgreen&#39;</span>,<span class="st">&#39;orange&#39;</span>)[km<span class="op">$</span>cluster]</span>
+<span id="cb7-4"><a href="#cb7-4"></a></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="kw">JulianPlot</span>()</span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="kw">points</span>(st, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">col =</span> regime)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="pooling-groups" class="section level2">
+<h2>Pooling groups</h2>
+<p>The example below first uses the function <code>DataWide</code>, to construct a matrix of the data where sites are represented by columns and years by rows. Next, nearest sites to the target <code>01AK007</code> are extracted. Here, the target is assumed to be the site with distance 0. Notice that the example below makes sure that the columns of the distance matrix respect the order imposed by the columns of <code>xd</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">## Organisation of the data in a matrix</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>ams<span class="op">$</span>year &lt;-<span class="st"> </span><span class="kw">format</span>(ams<span class="op">$</span>date, <span class="st">&#39;%Y&#39;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a>xd &lt;-<span class="st"> </span><span class="kw">DataWide</span>(ams <span class="op">~</span><span class="st"> </span>id <span class="op">+</span><span class="st"> </span>year, ams)</span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">## Extract a pooling groups</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>distance.target &lt;-<span class="st"> </span>distance.st2[<span class="kw">colnames</span>(xd),<span class="st">&#39;01AK007&#39;</span>]</span>
+<span id="cb8-7"><a href="#cb8-7"></a>xd.target &lt;-<span class="st"> </span><span class="kw">FindNearest</span>(xd, <span class="dt">distance =</span> distance.target, <span class="dv">25</span>)</span></code></pre></div>
+<p>The study of Mostofi Zadeh and Burn (2019) used the concept of super regions to to improve the quality of the pooling group. This implies to form pooling groups inside a set of sites that was already restricted by a second measure of similarity. Alternatively to the measure of similarity based on the seasonality of the annual maxima, the Euclidean distance between is also often used to form pooling group. In particular, they obtained good results using as descriptors the drainage area and the mean annnual precipitation, which are surrogate for catchment scale and climate. Both measures of similarity bring complementary information that can be relevant in the delineation of homogenous regions.</p>
+<p>The example below show how to split the available sites using a hierarchical clustering algorithm before forming the pooling groups.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co">## Compute the Euclidean distance</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>phy &lt;-<span class="st"> </span><span class="kw">scale</span>(<span class="kw">log</span>(info[,<span class="kw">c</span>(<span class="st">&#39;area&#39;</span>,<span class="st">&#39;map&#39;</span>)]))</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">## Make sure that the order of the sites match with the wide dataset</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="kw">rownames</span>(phy) &lt;-<span class="st"> </span>info<span class="op">$</span>id</span>
+<span id="cb9-6"><a href="#cb9-6"></a>phy &lt;-<span class="st"> </span>phy[<span class="kw">colnames</span>(xd),]</span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">## Split the sites using clustering techniques</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>phy.cluster &lt;-<span class="st"> </span><span class="kw">hclust</span>(<span class="kw">dist</span>(phy),<span class="dt">method =</span> <span class="st">&#39;ward.D&#39;</span>)</span>
+<span id="cb9-10"><a href="#cb9-10"></a>super &lt;-<span class="st"> </span><span class="kw">cutree</span>(phy.cluster, <span class="dv">2</span>)</span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">## Find the pooling group for &#39;01AK007&#39; inside the super region</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a>xd.super &lt;-<span class="st"> </span><span class="kw">FindNearest</span>(xd[,super], <span class="dt">distance =</span> distance.target[super], <span class="dv">15</span>)</span></code></pre></div>
+<p>Another approach is to consider a super regions in the from of a neighborhood of the target, which can be done directly using <code>FindNearest</code>. For instance, the example below finds first the 30 nearest sites according to the Euclidean distance. Next, the 15 nearest sites are selected according to the seasonality measure.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">## Euclidean distance with target</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>distance.phy &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(<span class="kw">dist</span>(phy))</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">## Extract a pooling group with super regions</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>xd.super &lt;-<span class="st"> </span><span class="kw">FindNearest</span>(xd, <span class="dt">distance =</span> distance.target, <span class="dt">n =</span> <span class="dv">15</span>,</span>
+<span id="cb10-6"><a href="#cb10-6"></a>                        <span class="dt">super.distance =</span> distance.phy[,<span class="st">&#39;01AK007&#39;</span>],</span>
+<span id="cb10-7"><a href="#cb10-7"></a>                        <span class="dt">super.n =</span> <span class="dv">30</span>)</span></code></pre></div>
+</div>
+<div id="index-flood-model" class="section level2">
+<h2>Index-flood model</h2>
+<p>The index-flood model is frequently used to evaluate flood quantile <span class="math inline">\(Q_T\)</span> of return period <span class="math inline">\(T\)</span> based on a regional growth curve that characterizes the pooling group. This model assumes that all at-site distributions are proportional to the same regional growth curve up to a scale factor <span class="math inline">\(\mu\)</span>. This scale factor is usually taken as the sample mean. Therefore, the estimated flood quantiles have the form <span class="math display">\[
+Q_T = \mu \times q_T
+\]</span> where <span class="math inline">\(q_T\)</span> is the flood quantile of the region growth curve. Most of the time, the regional growth curve is estimated using the L-moment algorithm that derives the regional parameters from the average of the sample L-moments of the sites in the pooling group. A best distribution is then selected by identifying the distribution where the L-moments are the most coherent with the sample estimates. See Burn (1990) and Hosking and Wallis (1997) for a more in depth introduction.</p>
+<p>The regional growth curve is estimated using the regional L-moments by the function <code>FitRegLmom</code>. The summary of the fitted model indicates that the best distribution is the generalized extreme value (GEV) distribution. This is determined by the Z-scores that identify the distribution with the closest L-kurtosis to its sample estimates.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co">## Fit regional growth curve</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xd.target)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="kw">print</span>(fit.target)</span></code></pre></div>
+<pre><code>## 
+## Regional frequency analysis with pooling groups
+## 
+## Nb. site: 25
+## Station-year: 1245
+## Homogeneity: 4.97 2.02 0.69
+## 
+## Z-scores (absolute):
+## Zglo Zgev Zgno Zpe3 Zgpa 
+## 2.29 0.62 1.45 3.09 7.48 
+## 
+## Regional L-moments:
+##     L1    LCV    LSK   LKUR 
+## 1.0000 0.2029 0.2116 0.1733 
+## 
+## Distribution: gev
+## Parameter:
+##       xi    alpha    kappa 
+##  0.82283  0.27499 -0.06379</code></pre>
+<p>A complementary tool to the Z-score is the L-moment ratio diagram that illustrates the L-skewness and the L-kurtosis of all sites. It can be seen in the figure below that the poolin group average (red dot) is located near the theoretical line of the GEV.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">plot</span>(fit.target)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="homogenous-regions" class="section level2">
+<h2>Homogenous regions</h2>
+<p>To assess the hypothesis of the index-flood model, the degree of homogeneity of the pooling group must be verified. Accordingly, for a homogenous group each at-site L-coefficient of variation <span class="math inline">\(V\)</span> or LCV should be close to the regional value. Therefore, a large dispersion of the LCV provides evidence that the pooling group is not homogenous. To this end, a common heterogeneity measure is <span class="math display">\[
+H = \frac{V-\mu_V}{\sigma_V}
+\]</span> where values <span class="math inline">\(H &lt; 1\)</span> can be interpreted as acceptably homogenous, <span class="math inline">\(1\leq H&lt;2\)</span> possibly heterogenous and <span class="math inline">\(H \geq 2\)</span> definitely heterogenous.</p>
+<p>A pooling group may be found overall heterogeneous only because it contains a few heterogenous sites. In turn, each site can be removed from the pooling group and the one that best improves the heterogeneity measure <span class="math inline">\(H\)</span> should be permanently removed. This process can be repeated until a homogenous pooling group is found or a given stopping criteria is reached. The function <code>PoolRemove</code> searches for the heterogenous sites, removes them and updates the regional growth curve. In the present situation, two sites are removed to obtain a homogenous pooling group.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co">## Remove heterogenous sites </span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>fit.target2 &lt;-<span class="st"> </span><span class="kw">PoolRemove</span>(fit.target)</span></code></pre></div>
+<pre><code>## [1] &quot;n:25, h:4.97, t:1245&quot;
+## [1] &quot;n:24, h:2.53, t:1149&quot;</code></pre>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co">## New heterogeneity measure</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>fit.target2<span class="op">$</span>stat[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>##          
+## 1.512758</code></pre>
+</div>
+<div id="intersite-correlation" class="section level2">
+<h2>Intersite correlation</h2>
+<p>Inference for the L-moment algorithm requires parametric bootstrap. Snow accumulation and subsequent melting or large rainfall systems generate floods that affect multiple sites simultaneously, which creates spatial dependence among sites. This will result in more uncertainties about the estimated flood quantiles in comparison to independent data. To account for intersite correlation, a multivariate Normal distribution is used to simulate spatially distributed data that are later transformed to the proper at-site distributions.</p>
+<p>The Spearman <span class="math inline">\(\rho_{i,j}\)</span> and the Kendall <span class="math inline">\(\tau_{i,j}\)</span> coefficient between pairs of the i-th and j-th sites are twe measures that evaluate the degree of association between series of flood events. These measure are well suited to quantify the intersite correlations between paired observations as they are invariant to the at-site distributions. The relations <span class="math display">\[
+\begin{align}
+\theta_{i,j} &amp;= 2 \sin\left(\frac{\pi}{6}\rho_{i,j}\right)\\
+\theta_{i,j} &amp;= \sin\left(\frac{\pi}{2}\tau_{i,j}\right)
+\end{align}
+\]</span> links the correlation coefficients <span class="math inline">\(\theta_{i,j}\)</span> of the multivariate Normal distribution to the two measures of associations. However, corrections may be necessary to ensure that the final covariance matrix is positive definite (Higham, 2002).</p>
+<p>The function <code>Intersite</code> can be used to estimate the parameters of the multivariate normal distribution. The output is a list containing among others the correlation coefficient <code>corr</code> and their corrected value <code>model</code>. The function <code>sitename</code> is used to extract the names of the sites in a pooling group, which is useful to know which sites have been selected.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>sid &lt;-<span class="st"> </span><span class="kw">sitenames</span>(fit.target2)</span>
+<span id="cb18-2"><a href="#cb18-2"></a>icor &lt;-<span class="st"> </span><span class="kw">Intersite</span>(xd[,sid])</span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="kw">round</span>(icor<span class="op">$</span>model[<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="op">:</span><span class="dv">3</span>],<span class="dv">2</span>)</span></code></pre></div>
+<pre><code>##         01AK007 01AL002 01AP002
+## 01AK007    1.00    0.87    0.26
+## 01AL002    0.87    1.00    0.43
+## 01AP002    0.26    0.43    1.00</code></pre>
+<p>The strength of the dependence may depend on the distance between sites. In this case, an exponential model can be fitted by the function <code>Intersite</code>. The exponential model has the form</p>
+<p><span class="math display">\[
+\widehat{\theta}_{i,j} = \begin{cases}
+(1-\tau) \exp\left(-3 \left|\frac{h}{\gamma}\right|^p \right) &amp; h &gt; 0  \\
+1 &amp; h = 0\\
+\end{cases}
+\]</span> where the nugget effect <span class="math inline">\(\tau \in [0,1]\)</span> represents a discontinuity at the origin <span class="math inline">\(h = 0\)</span> and the range parameter <span class="math inline">\(\gamma &gt; 0\)</span> controls the decay of the correlation with respect to the distance. Additionally, th smooth parameter <span class="math inline">\(p\)</span> can be used to modfied the shape of the the function. The paare estimated by weighted least squares with weights proportional to the number of paired observations. Note that it is important in the example below that the order of the columns in the matrix of data and distance match.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co">## Compute the distance</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>distance.geo &lt;-<span class="st"> </span><span class="kw">GeoDist</span>(<span class="op">~</span>lon<span class="op">+</span>lat, info)</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="kw">colnames</span>(distance.geo) &lt;-<span class="st"> </span><span class="kw">rownames</span>(distance.geo) &lt;-<span class="st"> </span>sname</span>
+<span id="cb20-4"><a href="#cb20-4"></a>geo.target &lt;-<span class="st"> </span>distance.geo[sid,sid]</span>
+<span id="cb20-5"><a href="#cb20-5"></a></span>
+<span id="cb20-6"><a href="#cb20-6"></a></span>
+<span id="cb20-7"><a href="#cb20-7"></a><span class="co">## Fit the power exponential model </span></span>
+<span id="cb20-8"><a href="#cb20-8"></a>Finter &lt;-<span class="st"> </span><span class="cf">function</span>(sm){</span>
+<span id="cb20-9"><a href="#cb20-9"></a>  <span class="kw">Intersite</span>(xd[,sid], <span class="dt">type =</span> <span class="st">&#39;exp&#39;</span>,</span>
+<span id="cb20-10"><a href="#cb20-10"></a>                   <span class="dt">distance =</span> geo.target, </span>
+<span id="cb20-11"><a href="#cb20-11"></a>                   <span class="dt">distance.max =</span> <span class="dv">500</span>,</span>
+<span id="cb20-12"><a href="#cb20-12"></a>                   <span class="dt">distance.bin =</span> <span class="dv">15</span>, <span class="dt">smooth =</span> sm)  </span>
+<span id="cb20-13"><a href="#cb20-13"></a>}</span>
+<span id="cb20-14"><a href="#cb20-14"></a></span>
+<span id="cb20-15"><a href="#cb20-15"></a><span class="kw">print</span>(icor2 &lt;-<span class="st"> </span><span class="kw">Finter</span>(<span class="dv">1</span>))</span></code></pre></div>
+<pre><code>## 
+## Intersite-correlation
+## 
+## Model: exp
+## Method: spearman
+## Nb. sites: 23
+## RMSE: 0.4667
+## Parameter:
+##   nugget    range   smooth 
+##   0.2426 467.8442   1.0000</code></pre>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co">## Plot correlation cloud</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>tri &lt;-<span class="kw">lower.tri</span>(icor2<span class="op">$</span>corr)</span>
+<span id="cb22-3"><a href="#cb22-3"></a>theta &lt;-<span class="st"> </span>icor2<span class="op">$</span>corr[tri]</span>
+<span id="cb22-4"><a href="#cb22-4"></a>h &lt;-<span class="st"> </span>geo.target[tri]</span>
+<span id="cb22-5"><a href="#cb22-5"></a></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="kw">plot</span>(h, theta, <span class="dt">col =</span> <span class="st">&#39;grey&#39;</span>, <span class="dt">pch =</span> <span class="st">&#39;+&#39;</span>,</span>
+<span id="cb22-7"><a href="#cb22-7"></a>     <span class="dt">xlab =</span> <span class="st">&#39;distance&#39;</span>, <span class="dt">ylab =</span> <span class="st">&#39;Spatial correlation&#39;</span>)</span>
+<span id="cb22-8"><a href="#cb22-8"></a></span>
+<span id="cb22-9"><a href="#cb22-9"></a><span class="kw">points</span>(icor2<span class="op">$</span>bin, <span class="dt">pch =</span> <span class="dv">16</span>, <span class="dt">col =</span> <span class="st">&#39;black&#39;</span>, <span class="dt">cex =</span> <span class="fl">1.5</span>)</span>
+<span id="cb22-10"><a href="#cb22-10"></a></span>
+<span id="cb22-11"><a href="#cb22-11"></a><span class="co">## Plot POW with p = 1</span></span>
+<span id="cb22-12"><a href="#cb22-12"></a>hid &lt;-<span class="st"> </span><span class="kw">order</span>(h)</span>
+<span id="cb22-13"><a href="#cb22-13"></a>theta &lt;-<span class="st"> </span>icor2<span class="op">$</span>model[tri]</span>
+<span id="cb22-14"><a href="#cb22-14"></a><span class="kw">lines</span>(h[hid], theta[hid], <span class="dt">col =</span> <span class="st">&#39;red&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb22-15"><a href="#cb22-15"></a></span>
+<span id="cb22-16"><a href="#cb22-16"></a><span class="co">## Plot POW with p = 2</span></span>
+<span id="cb22-17"><a href="#cb22-17"></a>theta &lt;-<span class="st"> </span><span class="kw">Finter</span>(<span class="dv">2</span>)<span class="op">$</span>model[tri]</span>
+<span id="cb22-18"><a href="#cb22-18"></a><span class="kw">lines</span>(h[hid], theta[hid], <span class="dt">col =</span> <span class="st">&#39;blue&#39;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="flood-quantiles" class="section level2">
+<h2>Flood quantiles</h2>
+<p>Flood quantiles can be obtained from the function <code>predict</code>. The example below obtains the flood quantiles of 10 and 100 year return periods with different models of intersite correlations. The argument <code>corr</code> is the correlation matrix of a multivariate Normal distribution used for the parametric bootstrap. A single value can also be passed, in which case a constant coefficient of correlation is used. When the function <code>Intersite</code> evaluates the correlation matrix empirically, it computes the average coefficient of correlation (<code>para</code>).</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co">## Using exponential model</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target2, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.99</span>), <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">corr =</span> icor2<span class="op">$</span>model)</span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##       pred rmse lower upper
+## 0.50  54.4  3.7  48.4  62.3
+## 0.80  75.0  5.3  65.8  86.1
+## 0.90  89.7  6.7  78.1 103.9
+## 0.95 104.7  8.2  90.1 122.7
+## 0.98 125.6 10.8 106.6 147.5
+## 0.99 142.3 13.2 118.2 169.0</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co">## Using constant coefficient of correlation</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target2, <span class="dt">q =</span> <span class="kw">c</span>(.<span class="dv">9</span>, <span class="fl">.99</span>), <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">corr =</span> icor<span class="op">$</span>para)</span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##       pred rmse lower upper
+## 0.50  54.4  3.9  48.0  61.5
+## 0.80  75.0  5.4  65.4  84.9
+## 0.90  89.7  6.6  77.7 101.4
+## 0.95 104.7  8.0  89.9 118.5
+## 0.98 125.6 10.3 106.6 142.5
+## 0.99 142.3 12.4 119.7 163.4</code></pre>
+<p>Please note that the argument <code>out.matrix = TRUE</code> can be used to return the bootstrap samples of the index-flood at the target site, the parameters of the regional distribution and the flood quantiles. This data can be used among others to evaluate the variability of the model parameters.</p>
+</div>
+<div id="rfa-using-likelihood-techniques" class="section level2">
+<h2>RFA using likelihood techniques</h2>
+<p>The previous section use the L-moment approach to estimate regional parameters of an index-flood model. It should be pointed out that this procedure consider spatial dependence in evaluation of the uncertainty, but not during the estimation of the regional parameters. If the main interest is the at-site distribution, an alternative estimation method would be to use composite likelihood (Padoan et al. 2010), which consists in optimizing a likelihood-based criterion based on events of low dimensions.<br />
+In particular, consider <span class="math inline">\(L_i\)</span> the likelihood of the ith site of <span class="math inline">\(n\)</span> sites. The independent likelihood <span class="math inline">\(\Pi_{i=1} L_i\)</span> defined as the product of the at-site likelihood corresponds to the full likelihood of a regional model where the sites are spatially independent. This likelihood function contains most of the information about the at-site distribution and can be maximized to estimate regional parameters without providing a full characterization of the dependence structure.</p>
+<p>The example below fit an index-flood model for the sites found in the studied pooling groups. As before, the observation are standardized by the at-site means, but the regional parameters are estimated using the independent likelihood of the regional distribution.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>xw &lt;-<span class="st"> </span>xd[,<span class="kw">sitenames</span>(fit.target2)]</span>
+<span id="cb27-2"><a href="#cb27-2"></a>fit &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="kw">print</span>(fit)</span></code></pre></div>
+<pre><code>## 
+## Regional model for pooling groups
+## 
+## Type: mean
+## Number of sites: 23
+## Ind. loglik: -394.59
+## Distribution: gev
+## Parameters
+##       xi    alpha    kappa 
+##  0.81373  0.28155 -0.07915</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">cat</span>(<span class="st">&#39;</span><span class="ch">\n</span><span class="st">Flood quantiles for station 01AK007</span><span class="ch">\n</span><span class="st">&#39;</span>)</span></code></pre></div>
+<pre><code>## 
+## Flood quantiles for station 01AK007</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="kw">predict</span>(fit, <span class="dt">index =</span> fit<span class="op">$</span>index[<span class="dv">1</span>])</span></code></pre></div>
+<pre><code>##       0.5       0.8       0.9      0.95      0.98      0.99 
+##  54.53513  74.94342  89.49865 104.29670 124.74695 141.09104</code></pre>
+<p>The composite likelihood approach also allows more flexible models that can be set with the argument <code>type</code>. The first alternative (<code>type = &#39;shape&#39;</code>) that will be called the shape regional model (SRM) assumed that the shape parameter is constant across sites and that the other parameters are site-specific. For the GPA, the SRM implies that a scale parameter is estimated for each site and for the 3 parameter distributions, the location and scale parameters are site-specific. The SRM model is more flexible, but has <span class="math inline">\(2n+1\)</span> parameters to estimate where <span class="math inline">\(n\)</span> is the number of sites.</p>
+<p>The index-flood model standardizes the observations by the at-site means, which imposed a constant coefficient of variation. This property is not respected for the SRM. Apart for the GPA, the considered distributions have for each site <span class="math inline">\(i\)</span> the location <span class="math inline">\(\xi_i\)</span>, scale <span class="math inline">\(\alpha_i\)</span> and shape <span class="math inline">\(\kappa_i\)</span>. The model below provide a similar behavior as the index-flood model by linking the location and the scale parameters. <span class="math display">\[
+\begin{align}
+\xi_i &amp;= \xi \\
+\alpha_i &amp;= \beta \xi_i\\
+\kappa_i &amp;= \kappa
+\end{align},
+\]</span> This regional model will be annoted CVRM and requires that <code>type = &#39;cv&#39;</code>. Take note that this model has significantly less parameters than the previous model with <span class="math inline">\(n+2\)</span> parameters. Considering that the at-site means are empirical estimates and that the mean of the regional distribution is fixed, this represent the same degree of freedom as the index-flood model. One advantage that the CVRM has in comparison with the index-flood model is that the site-specific parameter is jointly estimated with the regional parameters.</p>
+<p>In the example below, the estimation of SRM and CVRM is carried out for the studied pooling group. Both leads to a shape parameter of roughly -0.95, which is similar to the -0.08 obtained with the index-flood model. For CVRM, the regional <code>cv</code> parameter <span class="math inline">\(\beta\)</span> that relates the location parameter with the scale parameter is 0.343. In it interesting to see that the ratio between the regional scale and location parameter for the index-flood model is very similar with a value of 0.346.</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="kw">print</span>(fit.shp &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;shape&#39;</span>))</span></code></pre></div>
+<pre><code>## 
+## Regional model for pooling groups
+## 
+## Type: shape
+## Number of sites: 46
+## Ind. loglik: -5256.74
+## Distribution: gev
+## Parameters
+##    kappa 
+## -0.09753</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="kw">print</span>(fit.cv &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xw, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;cv&#39;</span>))</span></code></pre></div>
+<pre><code>## 
+## Regional model for pooling groups
+## 
+## Type: cv
+## Number of sites: 23
+## Ind. loglik: -5273.08
+## Distribution: gev
+## Parameters
+##       cv    kappa 
+##  0.34278 -0.09412</code></pre>
+<p>The independent likelihood represent a measure of goodness-of-fit that focus on the at-site distributions. This can be used to select a best distribution among the four distributions GEV, GLO, GNO and PE3, because they have the same number of parameters. However, for the same reason it is not possible to use such criterion to choose between two different types of regional models.</p>
+<p>As with the L-moment approach, inference can be performed using parametric bootstraps. One possible implementation of the this procedure is illustrated in the code below and makes use of the function <code>FitPoolMargin</code> and <code>simulate</code> that respectively fit every at-site distribution separately and create bootstrap samples following a specific intersite correlation structure. We use here a relatively small sample of size 20 for illustration purposes.</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="co">## Create bootstrap</span></span>
+<span id="cb37-2"><a href="#cb37-2"></a>fit.margin &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xw, <span class="st">&#39;gev&#39;</span>, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>, </span>
+<span id="cb37-3"><a href="#cb37-3"></a>                            <span class="dt">method.optim =</span> <span class="st">&#39;Nelder-Mead&#39;</span>, </span>
+<span id="cb37-4"><a href="#cb37-4"></a>                            <span class="dt">control =</span> <span class="kw">list</span>(<span class="dt">maxit =</span> <span class="dv">5000</span>))</span>
+<span id="cb37-5"><a href="#cb37-5"></a></span>
+<span id="cb37-6"><a href="#cb37-6"></a>boot &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit.margin, <span class="dt">nsim =</span> <span class="dv">20</span>, <span class="dt">corr =</span> <span class="fl">0.3</span>)</span></code></pre></div>
+<p>Afterwards, the three regional models considered by <code>FitPoolMle</code> are used to extracts the flood quantiles of 10 year return period for each bootstrap samples.</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="co">## Fit the regional models on the samples</span></span>
+<span id="cb38-2"><a href="#cb38-2"></a>ffun &lt;-<span class="st"> </span><span class="cf">function</span>(z, type) <span class="kw">FitPoolMle</span>(z, <span class="dt">distr =</span> <span class="st">&#39;gev&#39;</span>, <span class="dt">type =</span> type)</span>
+<span id="cb38-3"><a href="#cb38-3"></a>fboot.mean &lt;-<span class="st"> </span><span class="kw">lapply</span>(boot, ffun, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span>
+<span id="cb38-4"><a href="#cb38-4"></a>fboot.cv &lt;-<span class="st"> </span><span class="kw">lapply</span>(boot, ffun, <span class="dt">type =</span> <span class="st">&#39;cv&#39;</span>)</span>
+<span id="cb38-5"><a href="#cb38-5"></a>fboot.shp &lt;-<span class="st"> </span><span class="kw">lapply</span>(boot, ffun, <span class="dt">type =</span> <span class="st">&#39;shape&#39;</span>)</span>
+<span id="cb38-6"><a href="#cb38-6"></a></span>
+<span id="cb38-7"><a href="#cb38-7"></a></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="co">## Boostrap samples of the flood quantiles</span></span>
+<span id="cb38-9"><a href="#cb38-9"></a>qboot.mean &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.mean, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</span>
+<span id="cb38-10"><a href="#cb38-10"></a>qboot.cv &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.cv, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</span>
+<span id="cb38-11"><a href="#cb38-11"></a>qboot.shp &lt;-<span class="st"> </span><span class="kw">sapply</span>(fboot.shp, predict, <span class="dt">p =</span> <span class="fl">.9</span>)</span>
+<span id="cb38-12"><a href="#cb38-12"></a></span>
+<span id="cb38-13"><a href="#cb38-13"></a><span class="co">## Evaluate the standard deviation</span></span>
+<span id="cb38-14"><a href="#cb38-14"></a>mean.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.mean, <span class="dv">1</span>, sd)</span>
+<span id="cb38-15"><a href="#cb38-15"></a>cv.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.cv, <span class="dv">1</span>, sd)</span>
+<span id="cb38-16"><a href="#cb38-16"></a>shp.sd &lt;-<span class="st"> </span><span class="kw">apply</span>(qboot.shp, <span class="dv">1</span>, sd)</span>
+<span id="cb38-17"><a href="#cb38-17"></a></span>
+<span id="cb38-18"><a href="#cb38-18"></a><span class="co">## Extract at-site estimate</span></span>
+<span id="cb38-19"><a href="#cb38-19"></a>hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.margin, <span class="fl">.9</span>)</span>
+<span id="cb38-20"><a href="#cb38-20"></a></span>
+<span id="cb38-21"><a href="#cb38-21"></a><span class="kw">print</span>(</span>
+<span id="cb38-22"><a href="#cb38-22"></a>  <span class="kw">cbind</span>(</span>
+<span id="cb38-23"><a href="#cb38-23"></a>    <span class="dt">Index.flood =</span> <span class="kw">mean</span>(mean.sd<span class="op">/</span>hat),</span>
+<span id="cb38-24"><a href="#cb38-24"></a>    <span class="dt">Lik.cv =</span> <span class="kw">mean</span>(cv.sd<span class="op">/</span>hat), </span>
+<span id="cb38-25"><a href="#cb38-25"></a>    <span class="dt">Lik.shp =</span> <span class="kw">mean</span>(shp.sd<span class="op">/</span>hat)),</span>
+<span id="cb38-26"><a href="#cb38-26"></a>  <span class="dt">digits =</span> <span class="dv">3</span>) </span></code></pre></div>
+<pre><code>##      Index.flood Lik.cv Lik.shp
+## [1,]      0.0628 0.0554  0.0715</code></pre>
+<p>The overall uncertainty of the regional model can serve as a criterion for choosing among the regional models. The example below standardizes the standard deviation of the flood quantile by the at-site estimates to obtain a coefficient of variation for the flood quantile (QCV). The average QCV assess the global uncertainty associated with the regional model. The results below shows that the SRM leads the largest uncertainty and at the opposite the CVRM model has the lowest uncertainty.</p>
+</div>
+<div id="rfa-using-peaks-over-threshold" class="section level2">
+<h2>RFA using peaks over threshold</h2>
+<p>The functions provided in this package also allow to carry out regional flood frequency analysis based on the peaks over threshold (POT) approach, where the exceedances are modeled according to a Generalized Pareto distribution (GPA). The same initial pooling group are considered as they are based on the seasonality of the annual maximum floods. On the other hand, the POT approach requires the selection of an appropriate threshold for each site inside the target region. We do not cover here that aspect and refer the reader to the vignette dedicated to this topic (<code>rfa_pot</code>) for more information.</p>
+<p>The code below create a synthetic dataset of exceedances, where the model parameters are based on the asymptotic the correspondence between the GPA and the GEV distribution for the previous target regions. Note that in this example the intersite correlation is not considered.</p>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1"></a><span class="kw">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb40-2"><a href="#cb40-2"></a></span>
+<span id="cb40-3"><a href="#cb40-3"></a><span class="co">## Station</span></span>
+<span id="cb40-4"><a href="#cb40-4"></a>stations &lt;-<span class="st"> </span><span class="kw">colnames</span>(xd.target)</span>
+<span id="cb40-5"><a href="#cb40-5"></a></span>
+<span id="cb40-6"><a href="#cb40-6"></a><span class="co">## Number of peaks</span></span>
+<span id="cb40-7"><a href="#cb40-7"></a>npeak &lt;-<span class="st"> </span><span class="kw">apply</span>(xd.target, <span class="dv">2</span>, <span class="cf">function</span>(z) <span class="kw">rpois</span>(<span class="dv">1</span>,<span class="kw">sum</span>(<span class="kw">is.finite</span>(z))))</span>
+<span id="cb40-8"><a href="#cb40-8"></a></span>
+<span id="cb40-9"><a href="#cb40-9"></a><span class="co">## GEV parameter</span></span>
+<span id="cb40-10"><a href="#cb40-10"></a>para &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xd.target, <span class="st">&#39;gev&#39;</span>)<span class="op">$</span>para</span>
+<span id="cb40-11"><a href="#cb40-11"></a></span>
+<span id="cb40-12"><a href="#cb40-12"></a><span class="co">## Shape parameter</span></span>
+<span id="cb40-13"><a href="#cb40-13"></a>u &lt;-<span class="st"> </span><span class="kw">apply</span>(xd.target, <span class="dv">2</span>, quantile, <span class="fl">0.1</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb40-14"><a href="#cb40-14"></a>alpha &lt;-<span class="st"> </span>para[<span class="dv">2</span>,] <span class="op">+</span><span class="st"> </span>para[<span class="dv">3</span>,] <span class="op">*</span><span class="st"> </span>(u <span class="op">-</span><span class="st"> </span>para[<span class="dv">1</span>,])</span>
+<span id="cb40-15"><a href="#cb40-15"></a>kap &lt;-<span class="st"> </span>para[<span class="dv">3</span>,]</span>
+<span id="cb40-16"><a href="#cb40-16"></a></span>
+<span id="cb40-17"><a href="#cb40-17"></a></span>
+<span id="cb40-18"><a href="#cb40-18"></a><span class="co">## Create the random sample in the long format</span></span>
+<span id="cb40-19"><a href="#cb40-19"></a>Fz &lt;-<span class="st"> </span><span class="cf">function</span>(m,n,a,k){</span>
+<span id="cb40-20"><a href="#cb40-20"></a>  x &lt;-<span class="st"> </span><span class="kw">rgpa</span>(n,a,k)</span>
+<span id="cb40-21"><a href="#cb40-21"></a>  <span class="kw">data.frame</span>(<span class="dt">station =</span> m, <span class="dt">year =</span> <span class="kw">seq_along</span>(x), <span class="dt">value =</span> x)</span>
+<span id="cb40-22"><a href="#cb40-22"></a>}</span>
+<span id="cb40-23"><a href="#cb40-23"></a></span>
+<span id="cb40-24"><a href="#cb40-24"></a>xs &lt;-<span class="st"> </span><span class="kw">mapply</span>(Fz, stations, npeak, alpha, kap, <span class="dt">SIMPLIFY =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb40-25"><a href="#cb40-25"></a>xs &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, xs)</span>
+<span id="cb40-26"><a href="#cb40-26"></a><span class="kw">rownames</span>(xs) &lt;-<span class="st"> </span><span class="ot">NULL</span></span></code></pre></div>
+<p>The regional analysis with POT follow the same steps as using annual maxima. First the data must be transformed to a wide format. The argument <code>order.time</code> can be set to <code>FALSE</code> as the order of the observations is not considered. If the pooling group is not already formed, it can be created using the function <code>FindNearest</code> as previously done.</p>
+<p>For estimation, it is possible to choose between a two or three parameters GPA. When the lower bound is set to zero, a two parameter GPA can be requested by setting the argument <code>type = &#39;pot&#39;</code>. The third parameter is necessary in some occasions where the exceedances have a nonzero lower bound. In this case, the distribution simply must be set to <code>distr = &#39;gpa&#39;</code>. Afterwards, the verification of the homogeneity and the estimation of the parameter is performed using the same functions as using annual maxima.</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a><span class="co">## Transform to wide format</span></span>
+<span id="cb41-2"><a href="#cb41-2"></a>xs.target &lt;-<span class="st"> </span><span class="kw">DataWide</span>(value <span class="op">~</span><span class="st"> </span>station <span class="op">+</span><span class="st"> </span>year, xs, <span class="dt">order.time =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb41-3"><a href="#cb41-3"></a></span>
+<span id="cb41-4"><a href="#cb41-4"></a><span class="co">## Fit regional growth curve using 3 parameter</span></span>
+<span id="cb41-5"><a href="#cb41-5"></a>fit.target.amax &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xs.target, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>)</span>
+<span id="cb41-6"><a href="#cb41-6"></a><span class="kw">print</span>(fit.target.amax)</span></code></pre></div>
+<pre><code>## 
+## Regional frequency analysis with pooling groups
+## 
+## Nb. site: 25
+## Station-year: 1260
+## Regional L-moments:
+##     L1    LCV    LSK   LKUR 
+## 1.0000 0.5119 0.3393 0.1803 
+## 
+## Distribution: gpa
+## Parameter:
+##       xi    alpha    kappa 
+## -0.01697  1.00348 -0.01327</code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1"></a><span class="co">## Fit regional growth curve using 2 parameter</span></span>
+<span id="cb43-2"><a href="#cb43-2"></a>fit.target &lt;-<span class="st"> </span><span class="kw">FitRegLmom</span>(xs.target, <span class="dt">type =</span> <span class="st">&#39;pot&#39;</span>)</span>
+<span id="cb43-3"><a href="#cb43-3"></a><span class="kw">print</span>(fit.target)</span></code></pre></div>
+<pre><code>## 
+## Regional frequency analysis with pooling groups
+## 
+## Type: POT
+## Nb. site: 25
+## Station-year: 1260
+## Homogeneity: 2.3 1.47 0.83
+## 
+## Regional L-moments:
+##     L1    LCV    LSK   LKUR 
+## 1.0000 0.5119 0.3393 0.1803 
+## 
+## Distribution: gpa
+## Parameter:
+##       xi    alpha    kappa 
+##  0.00000  0.95358 -0.04642</code></pre>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a><span class="co"># Create a homogenous group</span></span>
+<span id="cb45-2"><a href="#cb45-2"></a>fit.target &lt;-<span class="st"> </span><span class="kw">PoolRemove</span>(fit.target, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
+<p>For a threshold model, the flood quantile of T-year event is defined as the quantile of the GPA distribution associated with the probability <span class="math inline">\(p_\lambda = (1-1/\{\lambda T\})\)</span>, where <span class="math inline">\(\lambda\)</span> represent an average number of peaks per year. For the exceedances we simulated, thresholds were not specified for the pooling group. Therefore, we will assume that we have estimated <span class="math inline">\(\hat\lambda = 2.2\)</span> for the target site based on the exceedances rate. The flood quantiles are then obtained from the function <code>predict</code> using the probability <span class="math inline">\(p_{\hat \lambda}\)</span>. The confidence interval returned by <code>predict</code> doesn’t account for the uncertainty associated with the estimation of <span class="math inline">\(\hat\lambda\)</span>. However, variability generated by the estimation of the exceedance rate, which is usually relatively small in comparison with the other parameters (Coles, 2001).</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1"></a><span class="co">## Average number of exceedances at target</span></span>
+<span id="cb46-2"><a href="#cb46-2"></a>lambda &lt;-<span class="st"> </span><span class="fl">2.2</span></span>
+<span id="cb46-3"><a href="#cb46-3"></a></span>
+<span id="cb46-4"><a href="#cb46-4"></a><span class="co">## return periods of interest</span></span>
+<span id="cb46-5"><a href="#cb46-5"></a>period &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">50</span>)</span>
+<span id="cb46-6"><a href="#cb46-6"></a></span>
+<span id="cb46-7"><a href="#cb46-7"></a><span class="co">## Associated probabilities</span></span>
+<span id="cb46-8"><a href="#cb46-8"></a>prob &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span><span class="dv">1</span><span class="op">/</span>(lambda <span class="op">*</span><span class="st"> </span>period)</span>
+<span id="cb46-9"><a href="#cb46-9"></a></span>
+<span id="cb46-10"><a href="#cb46-10"></a><span class="co">## Estimate flood quantiles for POT</span></span>
+<span id="cb46-11"><a href="#cb46-11"></a>hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.target.amax, prob, <span class="dt">ci =</span> <span class="ot">TRUE</span>, <span class="dt">nsim =</span> <span class="dv">2000</span>)</span>
+<span id="cb46-12"><a href="#cb46-12"></a><span class="kw">print</span>(<span class="kw">round</span>(hat,<span class="dv">1</span>))</span></code></pre></div>
+<pre><code>##       pred rmse lower upper
+## 0.909 40.7  5.6  30.3  52.2
+## 0.991 81.2 11.7  58.0 103.8</code></pre>
+<p>In practical context, the threshold that was substracted to obtained the exceedances must be added to retrieve the final flood quantiles. The RFA using peaks over threshold can also be carried out using the independent likelihood approach. However, the CVRM cannot be used.</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1"></a><span class="co">## Fitting</span></span>
+<span id="cb48-2"><a href="#cb48-2"></a>xs.lik &lt;-<span class="st"> </span>xs.target[,<span class="kw">sitenames</span>(fit.target)]</span>
+<span id="cb48-3"><a href="#cb48-3"></a>fit.lik &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(xs.lik, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span>
+<span id="cb48-4"><a href="#cb48-4"></a>hat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.lik, <span class="dt">p =</span> prob, <span class="dt">index =</span> fit.lik<span class="op">$</span>index[<span class="dv">1</span>])</span>
+<span id="cb48-5"><a href="#cb48-5"></a></span>
+<span id="cb48-6"><a href="#cb48-6"></a><span class="co">## Bootstrap</span></span>
+<span id="cb48-7"><a href="#cb48-7"></a>fit.margin &lt;-<span class="st"> </span><span class="kw">FitPoolMargin</span>(xw, <span class="st">&#39;gpa&#39;</span>, <span class="dt">method =</span> <span class="st">&#39;mle&#39;</span>)</span>
+<span id="cb48-8"><a href="#cb48-8"></a></span>
+<span id="cb48-9"><a href="#cb48-9"></a>Fz &lt;-<span class="st"> </span><span class="cf">function</span>(z) {</span>
+<span id="cb48-10"><a href="#cb48-10"></a>  f &lt;-<span class="st"> </span><span class="kw">FitPoolMle</span>(z, <span class="dt">distr =</span> <span class="st">&#39;gpa&#39;</span>, <span class="dt">type =</span> <span class="st">&#39;mean&#39;</span>)</span>
+<span id="cb48-11"><a href="#cb48-11"></a>  <span class="kw">predict</span>(f, <span class="dt">p =</span> prob, <span class="dt">index =</span> f<span class="op">$</span>index[<span class="dv">1</span>])</span>
+<span id="cb48-12"><a href="#cb48-12"></a>}</span>
+<span id="cb48-13"><a href="#cb48-13"></a></span>
+<span id="cb48-14"><a href="#cb48-14"></a>boot &lt;-<span class="st"> </span><span class="kw">simulate</span>(fit.margin, <span class="dt">nsim =</span> <span class="dv">500</span>, <span class="dt">corr =</span> <span class="dv">0</span>)</span>
+<span id="cb48-15"><a href="#cb48-15"></a>pboot &lt;-<span class="st"> </span><span class="kw">sapply</span>(boot, Fz)</span>
+<span id="cb48-16"><a href="#cb48-16"></a></span>
+<span id="cb48-17"><a href="#cb48-17"></a><span class="co">## Uncertainty</span></span>
+<span id="cb48-18"><a href="#cb48-18"></a>se &lt;-<span class="st"> </span><span class="kw">apply</span>(pboot, <span class="dv">1</span>, sd)</span>
+<span id="cb48-19"><a href="#cb48-19"></a><span class="kw">round</span>(<span class="kw">cbind</span>(<span class="dt">pred =</span> hat, <span class="dt">se =</span> se), <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>##        pred     se
+## 0.91 40.090 12.349
+## 0.99 77.908 17.786</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>In this document we showed how to perform a regional flood frequency analysis using similarity based seasonal statistics and pooling groups. First seasonal statistics were evaluated (<code>SeasonStat</code>) as well as the pairwise distance (<code>DistSeason</code>) of the sites in the seasonal space. The annual maximums were reorganized in a matrix with sites in columns and years in rows (<code>DataWide</code>). Next, the nearest sites to a target were identified (<code>FindNearest</code>) and an index flood model was fitted (<code>FitRegLmom</code>) using the L-moments algorithm. It was found that the pooling group of the target was not homogenous. The most heterogenous sites were then removed in a stepwise manner (<code>PoolRemove</code>) and the flood quantiles were estimated (<code>predict</code>). Ignoring intersite correlation could leads to an underestimation of the true uncertainty of the flood quantiles. Dependence models based on the multivariate normal were estimated (<code>Intersite</code>) by considering either a constant coefficient of correlation or correlation function that slowly decay with the great-circle distance. Afterwards, the function <code>FitPoolMle</code> based on likelihood techniques is presented as an alternative estimation to the L-moment approach. Finally, further indications were provided to show how the same routines can be used to perform RFA using peaks over threshold.</p>
+</div>
+<div id="references" class="section level2">
+<h2>References</h2>
+<ul>
+<li><p>Burn, D. H. (1990). An appraisal of the “region of influence” approach to flood frequency analysis. Hydrological Sciences Journal, 35(2), 149–165. <a href="https://doi.org/10.1080/02626669009492415" class="uri">https://doi.org/10.1080/02626669009492415</a></p></li>
+<li><p>Burn, D. H. (1997). Catchment similarity for regional flood frequency analysis using seasonality measures. Journal of Hydrology, 202(1–4), 212–230. <a href="https://doi.org/10.1016/S0022-1694(97)00068-1" class="uri">https://doi.org/10.1016/S0022-1694(97)00068-1</a></p></li>
+<li><p>Coles, S. (2001). An introduction to statistical modeling of extreme values. Springer Verlag.</p></li>
+<li><p>Durocher, M., Burn, D. H., &amp; Mostofi Zadeh, S. (2018). A nationwide regional flood frequency analysis at ungauged sites using ROI/GLS with copulas and super regions. Journal of Hydrology, 567, 191–202. <a href="https://doi.org/10.1016/j.jhydrol.2018.10.011" class="uri">https://doi.org/10.1016/j.jhydrol.2018.10.011</a></p></li>
+<li><p>Higham, Nick (2002). Computing the nearest correlation matrix - a problem from finance; IMA Journal of Numerical Analysis 22, 329–343. <a href="https://doi.org/10.1093/imanum/22.3.329" class="uri">https://doi.org/10.1093/imanum/22.3.329</a></p></li>
+<li><p>Hosking, J. R. M., &amp; Wallis, J. R. (1997). Regional frequency analysis: an approach based on L-moments. Cambridge Univ Pr.</p></li>
+<li><p>Mostofi Zadeh, S., &amp; Burn, D. H. (2019). A Super Region Approach to Improve Pooled Flood Frequency Analysis. Canadian Water Resources Journal / Revue Canadienne Des Ressources Hydriques, <a href="https://doi.org/10.1080/07011784.2018.1548946" class="uri">https://doi.org/10.1080/07011784.2018.1548946</a></p></li>
+<li><p>Mostofi Zadeh, S., Durocher, M., Burn, D. H., &amp; Ashkar, F. (2019). Pooled flood frequency analysis: a comparison based on peaks-over-threshold and annual maximum series. Hydrological Sciences Journal, <a href="https://doi.org/10.1080/02626667.2019.1577556" class="uri">https://doi.org/10.1080/02626667.2019.1577556</a></p></li>
+<li><p>Padoan, S. A., Ribatet, M., &amp; Sisson, S. A. (2010). Likelihood-Based Inference for Max-Stable Processes. Journal of the American Statistical Association, 105(489), 263–277. <a href="https://doi.org/10.1198/jasa.2009.tm08577" class="uri">https://doi.org/10.1198/jasa.2009.tm08577</a></p></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

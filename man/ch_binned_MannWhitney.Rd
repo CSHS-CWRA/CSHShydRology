@@ -4,8 +4,16 @@
 \alias{ch_binned_MannWhitney}
 \title{Compares two time periods of data using Mann-Whitney test}
 \usage{
-ch_binned_MannWhitney(mdata, step, range1, range2, ptest = 0.05,
-  station_ID = "", station_name = "", variable = "discharge")
+ch_binned_MannWhitney(
+  mdata,
+  step,
+  range1,
+  range2,
+  ptest = 0.05,
+  station_ID = "",
+  station_name = "",
+  variable = "discharge"
+)
 }
 \arguments{
 \item{mdata}{A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.}
