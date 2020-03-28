@@ -146,6 +146,12 @@ Intersite <-
     pcor <- corr[lower.tri(corr)]
     pdist <- distance[lower.tri(distance)]
     w <- nmat[lower.tri(nmat)]
+    
+    ## remove pairs too far
+    pid <- (pdist <= distance.max)
+    pcor <- pcor[pid]
+    pdist <- pdist[pid]
+    w <- w[pid]
 
     ## remove NA
     pid <- !is.na(pcor)
@@ -153,11 +159,6 @@ Intersite <-
     pdist <- pdist[pid]
     w <- w[pid]
 
-    ## remove pairs too far
-    pid <- (pdist <= distance.max)
-    pcor <- pcor[pid]
-    pdist <- pdist[pid]
-    w <- w[pid]
 
     ## binning
     brks <- quantile(pdist, seq(0,1, len = distance.bin + 1))
