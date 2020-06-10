@@ -1,6 +1,18 @@
 #' Create Catchment Channels
 #'
 #' determines channel layer spatial files
+#' 
+#' This function generates a drainage network using the SAGA `ta_channels` module with option 0.
+#'
+#' The function requires a DEM and a contributing area grid. Like `ch_saga_catchment`, the user can provide the contributing area grid either as a raster object or by reading in a SAGA file; alternatively, the function can compute the contributing area grid from the DEM.
+#'
+#' The SAGA function generates three outputs: 
+#'  
+#'  1. a shape file containing the drainage network, 
+#'  2. a grid containing flow directions, and 
+#'  3. a grid in which, if a cell is part of a channel, its value equals the channel order; otherwise the cell is marked as no-data. 
+#'
+#' The output is a list, which will have elements that will include the channel network shape as an **sf** object (if `out_shp = TRUE`), the flow direction grid as a **raster** object (if `out_route = TRUE`) and the network grid as a **raster** object (if `out_ntwrk = TRUE`)
 #'
 #' @param dem Raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
@@ -14,8 +26,22 @@
 #' @param divcells parameters for SAGA function
 #' @param minlen parameters for SAGA function
 #' @param saga.env    SAGA environment object.  Default is to let saga find it on its own.
-#' @return out_list list containing (as specified) channels (shp), ntwrk (raster) and route (raster)
-#' ch_saga_channels()
+#' @return 
+#' \item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
+#' 
+#' @import RSAGA raster sf
+#' @author Dan Moore <dan.moore@ubc.ca>
+#' @seealso \code{\link{ch_saga_catchment}} for catchment delineation.
+#' @seealso For more details, see the following: {\link{http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html}}
+#' @export
+#' @examples
+#' \dontrun{
+#' ch_saga_carea()
+#' 
+#' # consider sample DEM data with this
+#  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
+#' }
+#' 
 
 ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              out_shp = TRUE,
@@ -24,9 +50,9 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              divcells = 5, minlen = 10,
                              saga.env = RSAGA::rsaga.env()) {
 
-  library(RSAGA)
-  library(raster)
-  library(sf)
+  # require(RSAGA)
+  # require(raster)
+  # require(sf)
 
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
@@ -75,4 +101,4 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
     out_list$route <- route
   }
   return(out_list)
-} # end ch_channels
+}

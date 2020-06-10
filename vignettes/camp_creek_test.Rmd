@@ -1,6 +1,6 @@
 ---
 title: "Application of Dan Moore's spatial hydrology functions"
-author: "Stefan Gronsdahl"
+author: "Stefan Gronsdahl, Robert Chlumsky"
 date: "December 15, 2019"
 output:
   html_document:
@@ -8,6 +8,8 @@ output:
     theme: cerulean
     toc: yes
     toc_float: yes
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -16,76 +18,81 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-This analysis presents the application of Dan Moore's code for data from Camp Creek, BC.  
+This analysis presents the application of Dan Moore's code for data from Camp Creek, BC. This vignette has been updated to use the functions from within the CSHShydRology package. Note that in order to run the SAGA tools, you will need to have the OSGeo4W Network Installed on your system, see the [QGIS Downloads page](https://qgis.org/en/site/forusers/download.html).
+
+We will start by downloading the sample data for Shannon Creek Falls from [Dan Moore's link]("https://ibis.geog.ubc.ca/~rdmoore/rcode/ShannonFallsMapData.zip"). The snippet below will save the zip file to a temporary file for reference within our examples.
+
+```{r download data. echo=T}
+temp <- tempfile()
+download.file("https://ibis.geog.ubc.ca/~rdmoore/rcode/ShannonFallsMapData.zip", temp)
+# system("tar -xzvf ShannonFallsMapData.zip")
+tempdir_ShannonFalls <- tempdir()
+unzip(temp, exdir=tempdir_ShannonFalls)
+```
+
+Now we can setup our workspace, and load the `CSHShydRology` library.
 
 ```{r, echo = T}
+# load libraries
+library(CSHShydRology)
+library(raster)
 
-# Clear workspace
+# create and set wd
+wd <- paste0(getwd(),"/working_spatial_demo")
+ch_create_wd(wd)
+setwd(wd)
 
-# define functions
-source("ch_saga_2019Sept03_fnonly.r")
-
-# create wd 
-wd <- "C:/cshshydrology/spatial_functions/working"
-
-# read in raster
-dem <- raster("DEM.tif")
-
+# read in raster (from our temp info)
+# dem <- raster("DEM.tif") 
+dem <- raster::raster(paste0(tempdir_ShannonFalls,"/ShannonFallsDEM.tif"))
 ```
 
 # Ch_create_wd and ch_clear_wd
 
+Test generating and clearing working directories. In this case we will just use the temporary directory, but it may be useful to catalogue all the spatial files into one working directory for SAGA.
+
 ```{r, echo = T}
+temp_wd <- paste0(getwd(),"/test")
 
 # test create wd function
-ch_create_wd(wd)
+ch_create_wd(temp_wd)
+
+# create a temporary file, list files
+file.create(sprintf("%s/new_text_file.txt",temp_wd))
+list.files(temp_wd)
 
 # test remove wd function
-ch_clear_wd(wd)
-
-# install wd again
-ch_create_wd(wd)
-
+ch_clear_wd(temp_wd)
 ```
 
 # ch_saga_fillskins
+
+Fill the sinks in the DEM file in a number of ways.
 ```{r, echo = T}
 # test out the three functions using all three algorithms
 dem_ns1 <- ch_saga_fillsinks(dem, saga_wd = wd, "planchon.darboux.2001")
 dem_ns2 <- ch_saga_fillsinks(dem, wd, "wang.liu.2006")
 dem_ns3 <- ch_saga_fillsinks(dem, wd, "xxl.wang.liu.2006")
 
-# test out if input data is let out
-ch_saga_fillsinks(wd, "planchon.darboux.2001")
-ch_saga_fillsinks(dem, "planchon.darboux.2001")
-ch_saga_fillsinks(dem, wd)
-
-# plot output
-# windows(height = 10, width = 7)
-# par(mfrow = c(3, 1), mar = c(2, 2, 1, 1))
-
+# plot filled dems
 plot(dem_ns1)
 legend("topleft", legend = "planchon.darboux.2001")
+
 plot(dem_ns2)
 legend("topleft", legend = "wang.liu.2006")
+
 plot(dem_ns3)
 legend("topleft", legend = "xxl.wang.liu.2006")
-
 ```
 
 
 # carea
 
+Generate the contributing area grid.
 ```{r, echo = T}
 carea <- ch_saga_carea(dem_ns3, wd)
 
-# plot output
-# windows(height = 5, width = 5)
-# par(mfrow = c(1, 1), mar = c(1, 1, 1, 1))
-
 plot(carea)
-
-
 ```
 
 # ch_saga_catchment
@@ -95,10 +102,8 @@ Note: Some errors in code were found (line numbers refer to attached "ch_saga_20
 - line 242 change 'outlets' to 'outlet'
 - line 259 change 'outlets to 'outlet
 
-
+Generate the catchment boundaries.
 ```{r, echo = T}
-
-
 # input basin points for outlets - there are 11 points in this file
 basin_points = st_read("basin_points.shp")
 basin_points = st_transform(basin_points, "+proj=lcc +lat_1=77 +lat_2=49 +lat_0=49 +lon_0=-95 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs") 
@@ -109,12 +114,11 @@ catchments = ch_saga_catchment(dem = dem_ns1, saga_wd = wd, outlet = basin_point
 
 # plot output
 plot(catchments$geometry)
-
-
 ```
 
 # ch_saga_channel
 
+Generate the channel within the catchment.
 ```{r, echo = T}
 
 # try under both situations
