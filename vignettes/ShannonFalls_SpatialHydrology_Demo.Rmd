@@ -1,0 +1,233 @@
+---
+title: "Digital terrain analysis tools for CSHShydRology based on SAGA GIS in Shannon Falls"
+author: "Dan Moore"
+date: "June 10, 2020"
+output:
+  html_document:
+    number_sections: no
+    theme: cerulean
+    toc: yes
+    toc_float: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This analysis presents the application of Dan Moore's code within the CSHS hydRology package for data from Shannon Falls, BC. Note that in order to run the SAGA tools, you will need to have the OSGeo4W Network Installed on your system, see the [QGIS Downloads page](https://qgis.org/en/site/forusers/download.html).
+
+We will start by downloading the sample data for Shannon Creek Falls from [Dan Moore's link]("https://ibis.geog.ubc.ca/~rdmoore/rcode/ShannonFallsMapData.zip"). The snippet below will save the zip file to a temporary file for reference within our examples.
+
+Load the relevant libraries, includuing the `CSHShydRology` library.
+```{r, message=F, warning=F}
+# load libraries
+library(RSAGA)
+library(magrittr)
+library(raster)
+library(sf)
+library(rgdal)
+library(dplyr)
+library(ggspatial)
+library(CSHShydRology)
+```
+
+```{r download data. echo=T}
+temp <- tempfile()
+download.file("https://ibis.geog.ubc.ca/~rdmoore/rcode/ShannonFallsMapData.zip", temp)
+# system("tar -xzvf ShannonFallsMapData.zip")
+tempdir_ShannonFalls <- tempdir()
+unzip(temp, exdir=tempdir_ShannonFalls)
+```
+
+Now we can setup our workspace.
+```{r, echo = T}
+# create and set wd
+wd <- paste0(getwd(),"/working_spatial_demo")
+ch_create_wd(wd)
+setwd(wd)
+```
+
+# Application - Shannon Falls Creek, BC
+
+To illustrate the functions, they will be applied to a DEM containing the area near the head of Howe Sound, including the drainage area for Shannon Falls Creek.
+
+## Read in DEM (in longlat) and reproject to UTM
+
+```{r}
+# read in raster (from our temp info)
+# dem <- raster("DEM.tif") 
+dem <- raster::raster(paste0(tempdir_ShannonFalls,"/ShannonFallsDEM.tif"))
+
+# read in digital elevation model and project to UTM
+# dem <- raster::raster("c:/Research/Shannon Falls/Map/cdem_dem_151108_134502_tif/cdem_dem_151108_134502.tif")
+dem.utm <- raster::projectRaster(dem, crs = "+proj=utm +zone=10 +ellps=WGS84", res = 25, method = "bilinear") 
+```
+
+
+## Define outlets and specify arguments
+
+```{r}
+long <- c(-123.16139, -123.151173, -123.152317, -123.16)
+lat <- c(49.67105, 49.675904, 49.666367, 50.1)
+label <- c("Shannon Creek 1", "Chief Creek", "Shannon Creek 2", "not in dem")
+outlet_ll <- data.frame(label, long, lat) %>%
+             mutate(label = label) %>%
+             sf::st_as_sf(coords = c("long", "lat"))
+sf::st_crs(outlet_ll) <- 4326
+# reproject to utm
+(outlets <- sf::st_transform(outlet_ll, crs = raster::crs(dem.utm)@projargs))
+
+# specify arguments 
+sinkmethod <- "xxl.wang.liu.2006"
+minslope <- 0.1
+buffsize <- 50
+saga_wd <- paste0(getwd(), "/scratch")
+```
+
+## Apply functions 
+
+### 1. Filling sinks and running `ch_carea`
+
+The workflow below removes sinks in the DEM by filling them. It then generates a contributing area raster using the `carea()` function. When the `ch_catchments` function is run, the contributing area grid is read in from the working directory. 
+
+```{r}
+ch_create_wd(saga_wd)
+dem_filled <- ch_saga_fillsinks(dem_raw = dem.utm, saga_wd = saga_wd, 
+                                sinkmethod = sinkmethod, 
+                                minslope = minslope)
+carea <- ch_saga_carea(dem_filled, saga_wd)
+catchments <- ch_saga_catchment(dem_filled, carea_flag = 1,
+                                saga_wd = saga_wd,
+                                outlet = outlets, 
+                                outlet_label = label, buffsize = buffsize)
+ch_checkcatchment(catchment = catchments, dem = dem_filled, outlet = outlets,
+                  outlet_label = label)
+```
+
+```{r}
+channel_list <- ch_saga_channels(dem_filled, saga_wd, carea_flag = 1, 
+                             initmethod = 2, initvalue = 1e5,
+                             divcells = 5, minlen = 10)
+channels = channel_list$channels
+ch_checkchannels(dem_filled, channels, outlet = outlets)
+
+
+# ch_clear_wd(saga_wd)
+```
+
+Note that the code chunk above ends with `ch_clear_wd(saga_wd)`, which will remove the files and directory. However, it has been commented out because it threw an error during the knitting process for this R Markdown file.
+
+The code chunk below generates maps by combining several of the layers.
+
+```{r}
+# map with several layers, including log10(contributing area),
+# elevation contours, outlets and catchment boundaries
+
+contours = ch_contours(dem.utm)
+bb = st_bbox(contours)
+
+ggplot() +
+  layer_spatial(log10(carea)) +
+  scale_fill_continuous(expression(log[10](italic(CA))), 
+                        low = "lightgrey", high = "black") +
+  geom_sf(data = contours, color = "yellow") +
+  geom_sf(data = outlets, pch = 21, bg = "red") +
+  geom_sf(data = sf::st_geometry(catchments), fill = NA, color = "red") +
+  ggspatial::annotation_north_arrow(style = north_arrow_fancy_orienteering, 
+                                    location = "tr",
+                                    pad_x = unit(4, "mm"), 
+                                    pad_y = unit(6.5, "mm")) +
+  ggspatial::annotation_scale() +
+  coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4])) +
+  theme_bw()
+```
+``
+
+### 2. Remove sinks by deepening the drainage network and have `ch_saga_catchment` generate `carea` from the DEM
+
+In the script below, `ch_carea` is not run. Therefore, `ch_saga_catchment` is run with `carea_flag = 0`, so that the contributing  area grid is generated within the function and is stored as a file named *carea.sdat* in the working directory. When `ch_saga_channels` is run, `carea_flag` is set to 1, so that the contributing area grid is read in from *carea.sdat*.
+
+It is interesting to see the contrast between the channel network generated by deepening the drainage network versus that generated by filling sinks.
+
+```{r}
+ch_create_wd(saga_wd)
+dem_ns <- ch_saga_removesinks(dem = dem.utm, saga_wd = saga_wd)
+catchments <- ch_saga_catchment(dem_ns, carea_flag = 0,
+                                saga_wd = saga_wd,
+                                outlet = outlets, 
+                                outlet_label = label, buffsize = buffsize)
+ch_checkcatchment(catchment = catchments, dem = dem.utm, outlet = outlets,
+                  outlet_label = label)
+channel_list <- ch_saga_channels(dem_ns, saga_wd, carea_flag = 1, 
+                                 initmethod = 2, initvalue = 5e4,
+                                 divcells = 5, minlen = 10)
+channels <- channel_list$channels
+ch_checkchannels(dem_ns, channels, outlet = outlets)
+
+contours <- ch_contours(dem.utm)
+bb = st_bbox(contours)
+```
+
+```{r}
+# map with several layers, including log10(contributing area),
+# elevation contours, outlets and catchment boundaries
+ggplot() +
+  layer_spatial(log10(carea)) +
+  scale_fill_continuous(expression(log[10](italic(CA))), 
+                        low = "lightgrey", high = "black") +
+  geom_sf(data = contours, color = "yellow") +
+  geom_sf(data = outlets, pch = 21, bg = "red") +
+  geom_sf(data = sf::st_geometry(catchments), fill = NA, color = "red") +
+  ggspatial::annotation_north_arrow(style = north_arrow_fancy_orienteering, 
+                                    location = "tr",
+                                    pad_x = unit(4, "mm"), 
+                                    pad_y = unit(6.5, "mm")) +
+  ggspatial::annotation_scale() +
+  coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4])) +
+  theme_bw()
+
+```
+
+
+### 3. Compute topographic wetness index (combines ch_saga and **raster** functions)
+
+The topographic wetness index was classically defined as follows:
+
+$$   TWI = ln(a/tan \beta) $$
+
+where $a$ is the specific contributing area, computed as
+
+$$   a = A/w_c $$
+
+where $A$ is the contributing area for a pixel (m^2^), $w_c$ is the contour width (m), and $\beta$ is slope angle (rad). The contour width is a function of flow direction, equal to the cell width ($dx$, m) for flow in the N, E, S or W directions, or $\sqrt{2} \cdot dx$ for flow in the diagonal directions.
+
+The code chunk below computes $TWI$ using the classical definition by combining the `ch_saga_carea` function with the `terrain` function from the **raster** package.
+
+```{r, results = 'hold'}
+dx <- xres(dem_filled)
+carea <- ch_saga_carea(dem_filled, saga_wd)
+slope <- terrain(dem_filled, opt = 'slope', units = 'radians', neighbours = 8)
+flowdir <- terrain(dem_filled, opt = 'flowdir')
+wc <- calc(flowdir, function(x) ifelse(x %in% c(1, 4, 16, 64), dx, dx*sqrt(2)))
+twi <- log((carea/wc)/tan(slope))
+
+ggplot() +
+  layer_spatial(twi) +
+  scale_fill_continuous(expression(italic(TWI)), 
+                        low = "lightgrey", high = "darkblue") +
+  geom_sf(data = contours, color = "yellow") +
+  geom_sf(data = outlets, pch = 21, bg = "red") +
+  geom_sf(data = sf::st_geometry(catchments), fill = NA, color = "red") +
+  ggspatial::annotation_north_arrow(style = north_arrow_fancy_orienteering, 
+                                    location = "tr",
+                                    pad_x = unit(4, "mm"), 
+                                    pad_y = unit(6.5, "mm")) +
+  ggspatial::annotation_scale() +
+  coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4])) +
+  theme_bw()
+```
+
