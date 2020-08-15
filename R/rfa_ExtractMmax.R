@@ -40,7 +40,7 @@ ExtractMmax.formula <- function(form, x, tol = 28, ...){
     xlst <- split(x[,c(1,3)], x[,2])
     site.value <- sapply(split(x[,2], x[,2]), '[',1)
 
-    ## extract all montly maximums
+    ## extract all monthly maximums
     ans <- lapply(xlst, ExtractMmax, tol = tol)
 
     ## merge the results in one dataset
