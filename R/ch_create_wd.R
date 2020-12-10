@@ -1,8 +1,21 @@
 #' Create SAGA Working Directory
 #' 
-#' This function creates a SAGA working directory
+#' This function creates a SAGA working directory.
+#' 
 #' @param wd working directory file path
-
+#' @return 
+#' \item{TRUE}{returns TRUE upon successful execution}
+#' 
+#' @import RSAGA raster sf
+#' @author Dan Moore <dan.moore@ubc.ca>
+#' @seealso \code{\link{ch_clear_wd}} to clear the working SAGA directory
+#' @export
+#' @examples
+#' \dontrun{
+#' ch_create_wd()
+#' 
+#' }
+#' 
 ch_create_wd <- function(wd) {
   # creates working directory for saga files
   if (dir.exists(wd)) {
@@ -12,4 +25,5 @@ ch_create_wd <- function(wd) {
     # create directory
     dir.create(wd)
   }
-} # end function ch_create_wd
+  return(TRUE)
+}

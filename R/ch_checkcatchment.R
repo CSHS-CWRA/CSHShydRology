@@ -1,14 +1,30 @@
 #' Check Catchments
 #'
-#' Generates a map with contours, catchment polygons, and outlet
+#' This function generates a simple map to allow a visual assessment of the catchment 
+#' boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
+#' including the coordinates of the outlet point and the catchment area.
 #'
 #' @param dem Raster. DEM that catchment was generated from
 #' @param catchment sf. catchment polygon
 #' @param outlet sf. location of catchment outlet
 #' @param outlet_label string. Label for outlet
-#' @return Generates contour map with catchment polygon and outlet
+#' @return 
+#' \item{area_df}{Generates contour map with catchment polygon and outlet check}
 #' @import sf raster ggplot2 ggspatial dplyr
 #' @examples /dontrun{map <- ch_checkcatchment(dem, catchment_shape, outlet)}
+#' 
+#' @author Dan Moore <dan.moore@ubc.ca>
+#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+#' @export
+#' @examples
+#' \dontrun{
+#' ch_checkcatchment()
+#' 
+#' # consider sample DEM data with this
+#  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
+#' }
+#' 
+#' 
 ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL) {
 
   # create contours and get bounding box to set map limits
@@ -44,5 +60,5 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL) {
     mutate(label = labels, area = value, units = units)
   
   return(area_df)
-} # end function ch_checkcatchment
+}
 

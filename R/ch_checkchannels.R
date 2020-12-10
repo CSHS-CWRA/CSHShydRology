@@ -1,15 +1,25 @@
 #' Check Channels
 #' 
-#' Generates a map of the generated channel layer
+#' Generates a map of the generated channel layer.
+#' 
+#' This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 #' 
 #' @param dem Raster. DEM catchment was generated from
 #' @param catchment sf. catchment polygon
 #' @param outlet sf. location of catchment outlet
-#' @return generates map with channel layer
+#' @return 
+#' \item{check_map}{generates map with channel layer}
 #' @import sf raster ggplot2 ggspatial
+#' 
+#' 
+#' @author Dan Moore <dan.moore@ubc.ca>
+#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+#' @export
+#' 
 #' @examples \dontrun{map <-  ch_checkchannels(dem, channels, outlet)}
-
+#' 
 ch_checkchannels <- function(dem, channels, outlet) {
+  
   contours <- ch_contours(dem)
   # get bounding box for contours to set map limits
   bb <- st_bbox(contours)
@@ -26,5 +36,5 @@ ch_checkchannels <- function(dem, channels, outlet) {
     coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4])) +
     theme_bw()
   return(check_map)
-} # end function ch_checkchannels
+}
 

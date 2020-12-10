@@ -19,33 +19,24 @@ knitr::opts_chunk$set(echo = TRUE)
 This analysis presents the application of Dan Moore's code for data from Camp Creek, BC.  
 
 ```{r, echo = T}
-
 # Clear workspace
-
 # define functions
 source("ch_saga_2019Sept03_fnonly.r")
-
 # create wd 
 wd <- "C:/cshshydrology/spatial_functions/working"
-
 # read in raster
 dem <- raster("DEM.tif")
-
 ```
 
 # Ch_create_wd and ch_clear_wd
 
 ```{r, echo = T}
-
 # test create wd function
 ch_create_wd(wd)
-
 # test remove wd function
 ch_clear_wd(wd)
-
 # install wd again
 ch_create_wd(wd)
-
 ```
 
 # ch_saga_fillskins
@@ -54,23 +45,19 @@ ch_create_wd(wd)
 dem_ns1 <- ch_saga_fillsinks(dem, saga_wd = wd, "planchon.darboux.2001")
 dem_ns2 <- ch_saga_fillsinks(dem, wd, "wang.liu.2006")
 dem_ns3 <- ch_saga_fillsinks(dem, wd, "xxl.wang.liu.2006")
-
 # test out if input data is let out
 ch_saga_fillsinks(wd, "planchon.darboux.2001")
 ch_saga_fillsinks(dem, "planchon.darboux.2001")
 ch_saga_fillsinks(dem, wd)
-
 # plot output
 # windows(height = 10, width = 7)
 # par(mfrow = c(3, 1), mar = c(2, 2, 1, 1))
-
 plot(dem_ns1)
 legend("topleft", legend = "planchon.darboux.2001")
 plot(dem_ns2)
 legend("topleft", legend = "wang.liu.2006")
 plot(dem_ns3)
 legend("topleft", legend = "xxl.wang.liu.2006")
-
 ```
 
 
@@ -78,14 +65,10 @@ legend("topleft", legend = "xxl.wang.liu.2006")
 
 ```{r, echo = T}
 carea <- ch_saga_carea(dem_ns3, wd)
-
 # plot output
 # windows(height = 5, width = 5)
 # par(mfrow = c(1, 1), mar = c(1, 1, 1, 1))
-
 plot(carea)
-
-
 ```
 
 # ch_saga_catchment
@@ -97,66 +80,49 @@ Note: Some errors in code were found (line numbers refer to attached "ch_saga_20
 
 
 ```{r, echo = T}
-
-
 # input basin points for outlets - there are 11 points in this file
 basin_points = st_read("basin_points.shp")
 basin_points = st_transform(basin_points, "+proj=lcc +lat_1=77 +lat_2=49 +lat_0=49 +lon_0=-95 +x_0=0 +y_0=0 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs") 
-
 # try function with full basin points file 
 catchments = ch_saga_catchment(dem = dem_ns1, saga_wd = wd, outlet = basin_points,
                                carea_flag = 1, carea = NULL, outlet_label = NULL)
-
 # plot output
 plot(catchments$geometry)
-
-
 ```
 
 # ch_saga_channel
 
 ```{r, echo = T}
-
 # try under both situations
 channel_list <- ch_saga_channels(dem_ns1, wd, carea_flag = 1, 
                                  initmethod = 2, initvalue = 5e4,
                                  divcells = 5, minlen = 50)
-
 channel_list <- ch_saga_channels(dem_ns1, wd, carea_flag = 0, carea = NULL, 
                                  initmethod = 2, initvalue = 5e4,
                                  divcells = 5, minlen = 50)
-
 # read in outputs
 channels = st_read("working/channels.shp")
 ntwrk <- raster::raster("working/ntwrk.sdat", format = "SAGA")
 route <- raster::raster("working/route.sdat", format = "SAGA")
-
 # plot output
 plot(channels$geometry)
 plot(ntwrk)
 plot(route)
-
-
 ```
 
 # ch_contours
 
 ```{r, echo = T}
-
 contours = ch_contours(dem)
 plot(contours$geometry)
-
-
 ```
 
 
 # ch_check_catchment 
 
 ```{r, echo = T}
-
 ch_checkcatchment(catchment = catchments, dem = dem_ns1, outlet = basin_points,
                   outlet_label = catchments$label)
-
 ```
 
 # ch_check_channels 
@@ -164,5 +130,4 @@ ch_checkcatchment(catchment = catchments, dem = dem_ns1, outlet = basin_points,
 ```{r, echo = T}
 channels <- channel_list$channels
 ch_checkchannels(dem_ns1, channels, outlet = basin_points)
-
 ```
