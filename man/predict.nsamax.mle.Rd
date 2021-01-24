@@ -5,12 +5,24 @@
 \alias{BootNsAmaxMle}
 \title{Prediction of flood quantiles for the nonstationary model using MLE}
 \usage{
-\method{predict}{nsamax.mle}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98,
-  0.99), newdata = NULL, type = "quantile", ...)
+\method{predict}{nsamax.mle}(
+  object,
+  p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  newdata = NULL,
+  type = "quantile",
+  ...
+)
 
-BootNsAmaxMle(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  newdata = NULL, reliability = FALSE, nsim = 1000, alpha = 0.95,
-  verbose = TRUE, ...)
+BootNsAmaxMle(
+  object,
+  p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
+  newdata = NULL,
+  reliability = FALSE,
+  nsim = 1000,
+  alpha = 0.95,
+  verbose = TRUE,
+  ...
+)
 }
 \arguments{
 \item{object}{Output of \link{FitNsAmaxMle}.}

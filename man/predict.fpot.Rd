@@ -4,9 +4,16 @@
 \alias{predict.fpot}
 \title{Prediction of flood quantiles of a given return period.}
 \usage{
-\method{predict}{fpot}(object, rt = c(2, 5, 10, 20, 50, 100),
-  se = FALSE, ci = "none", alpha = 0.05, nsim = 1000,
-  out.matrix = FALSE, ...)
+\method{predict}{fpot}(
+  object,
+  rt = c(2, 5, 10, 20, 50, 100),
+  se = FALSE,
+  ci = "none",
+  alpha = 0.05,
+  nsim = 1000,
+  out.matrix = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{Output of \link{FitPot}.}

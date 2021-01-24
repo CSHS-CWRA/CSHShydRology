@@ -4,10 +4,26 @@
 \alias{PlotMrl}
 \title{Mean residual life plot}
 \usage{
-PlotMrl(form, x, u, declust = NULL, r = 1, rlow = 0.75,
-  alpha = 0.05, ylab = "Mean Residual Life", xlab = "Threshold",
-  col = "black", lty = 1, lwd = 1, col.ci = "black", lty.ci = 3,
-  lwd.ci = 1, ylim = NULL, display = TRUE, ...)
+PlotMrl(
+  form,
+  x,
+  u,
+  declust = NULL,
+  r = 1,
+  rlow = 0.75,
+  alpha = 0.05,
+  ylab = "Mean Residual Life",
+  xlab = "Threshold",
+  col = "black",
+  lty = 1,
+  lwd = 1,
+  col.ci = "black",
+  lty.ci = 3,
+  lwd.ci = 1,
+  ylim = NULL,
+  display = TRUE,
+  ...
+)
 }
 \arguments{
 \item{form, x}{Formula and sample. The must be of the form.}

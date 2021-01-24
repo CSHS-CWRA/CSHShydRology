@@ -4,8 +4,13 @@
 \alias{JulianPlot}
 \title{Plotting Julian date}
 \usage{
-JulianPlot(rose.col = "gray40", rose.lwd = 1.5, rose.cex = 1.5,
-  rose.radius = seq(0.25, 1, 0.25), ...)
+JulianPlot(
+  rose.col = "gray40",
+  rose.lwd = 1.5,
+  rose.cex = 1.5,
+  rose.radius = seq(0.25, 1, 0.25),
+  ...
+)
 }
 \arguments{
 \item{rose.col, rose.lwd, rose.cex}{Property of the polar axes.}

@@ -4,7 +4,9 @@
 \name{flowAtlantic}
 \alias{flowAtlantic}
 \title{Annual maximums from sites in the Atlantic region of Canada}
-\format{An object of class \code{list} of length 2.}
+\format{
+An object of class \code{list} of length 2.
+}
 \source{
 \url{https://wateroffice.ec.gc.ca/}
 }

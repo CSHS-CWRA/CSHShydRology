@@ -9,8 +9,7 @@
 \usage{
 DataWide(x, ...)
 
-\method{DataWide}{data.frame}(x, order.time = TRUE, order.site = FALSE,
-  ...)
+\method{DataWide}{data.frame}(x, order.time = TRUE, order.site = FALSE, ...)
 
 \method{DataWide}{formula}(form, x, ...)
 

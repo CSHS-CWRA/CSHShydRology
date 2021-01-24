@@ -4,8 +4,15 @@
 \alias{FindThresh}
 \title{Find automatically a best threshold}
 \usage{
-FindThresh(x, method = "sgn", tol.sgn = 0.25, tol.ppy = 2,
-  qua = "q10", tol.qua = Inf, ppy = c(0, Inf))
+FindThresh(
+  x,
+  method = "sgn",
+  tol.sgn = 0.25,
+  tol.ppy = 2,
+  qua = "q10",
+  tol.qua = Inf,
+  ppy = c(0, Inf)
+)
 }
 \arguments{
 \item{x}{output form \link{SearchThresh}.}

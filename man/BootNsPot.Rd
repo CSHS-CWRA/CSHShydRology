@@ -4,8 +4,15 @@
 \alias{BootNsPot}
 \title{Bootstrap sample of the nonstationary POT model}
 \usage{
-BootNsPot(object, x, rt = c(2, 5, 10, 20, 50, 100), newdata = NULL,
-  reliability = FALSE, nsim = 1000, verbose = TRUE)
+BootNsPot(
+  object,
+  x,
+  rt = c(2, 5, 10, 20, 50, 100),
+  newdata = NULL,
+  reliability = FALSE,
+  nsim = 1000,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{object}{Output form \link{FitNsPot}.}

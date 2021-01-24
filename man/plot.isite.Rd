@@ -4,9 +4,19 @@
 \alias{plot.isite}
 \title{Plot of the pairwise intersite correlation.}
 \usage{
-\method{plot}{isite}(x, xmat, distance, xlab = NULL, ylab = NULL,
-  pch = "+", col = "grey", bin.pch = 16, bin.cex = 1.5,
-  bin.col = "black", ...)
+\method{plot}{isite}(
+  x,
+  xmat,
+  distance,
+  xlab = NULL,
+  ylab = NULL,
+  pch = "+",
+  col = "grey",
+  bin.pch = 16,
+  bin.cex = 1.5,
+  bin.col = "black",
+  ...
+)
 }
 \arguments{
 \item{x}{Output from \code{Intersite}.}

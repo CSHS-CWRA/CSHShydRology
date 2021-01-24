@@ -4,8 +4,7 @@
 \alias{booth_plot}
 \title{Create a Booth plot of peaks over a threshold}
 \usage{
-booth_plot(events, threshold, title, type = "mag", colour1 = 1,
-  colour2 = 1)
+booth_plot(events, threshold, title, type = "mag", colour1 = 1, colour2 = 1)
 }
 \arguments{
 \item{events}{A data frame of POT events from the function \code{get_peaks}}

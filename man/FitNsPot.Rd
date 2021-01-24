@@ -4,10 +4,23 @@
 \alias{FitNsPot}
 \title{Estimation of a nonstationary POT model.}
 \usage{
-FitNsPot(form, x, tau, method = "reg-lmom", thresh = ~1, trend = ~1,
-  trend.link = "identity", trend.start = NULL, trend.method = "BFGS",
-  trend.control = list(), declust = "none", r = 1, rlow = 0.75,
-  unit = 365.25, quiet = FALSE)
+FitNsPot(
+  form,
+  x,
+  tau,
+  method = "reg-lmom",
+  thresh = ~1,
+  trend = ~1,
+  trend.link = "identity",
+  trend.start = NULL,
+  trend.method = "BFGS",
+  trend.control = list(),
+  declust = "none",
+  r = 1,
+  rlow = 0.75,
+  unit = 365.25,
+  quiet = FALSE
+)
 }
 \arguments{
 \item{form}{Formula defining the response variable and date. 

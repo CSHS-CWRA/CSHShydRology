@@ -4,9 +4,18 @@
 \alias{plot.nspot}
 \title{Plotting the the result of the nonstationary POT model}
 \usage{
-\method{plot}{nspot}(x, type = "l", line.col = c("red", "blue"),
-  line.lty = c(1, 1), line.lwd = c(2, 2), peak.col = "black",
-  peak.pch = 1, peak.cex = 0.7, do.legend = TRUE, ...)
+\method{plot}{nspot}(
+  x,
+  type = "l",
+  line.col = c("red", "blue"),
+  line.lty = c(1, 1),
+  line.lwd = c(2, 2),
+  peak.col = "black",
+  peak.pch = 1,
+  peak.cex = 0.7,
+  do.legend = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{Output from}

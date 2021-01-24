@@ -4,7 +4,9 @@
 \name{flowStJohn}
 \alias{flowStJohn}
 \title{Streamflow data}
-\format{An object of class \code{data.frame} with 32234 rows and 2 columns.}
+\format{
+An object of class \code{data.frame} with 32234 rows and 2 columns.
+}
 \source{
 \url{https://wateroffice.ec.gc.ca/}
 }

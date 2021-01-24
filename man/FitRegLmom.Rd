@@ -9,8 +9,14 @@
 \alias{sitenames}
 \title{Fitting an index-flood model using regional L-moments}
 \usage{
-FitRegLmom(x, distr = NULL, type = "amax", diagnostic = FALSE,
-  diagnostic.nsim = 1000, nmom = 4)
+FitRegLmom(
+  x,
+  distr = NULL,
+  type = "amax",
+  diagnostic = FALSE,
+  diagnostic.nsim = 1000,
+  nmom = 4
+)
 
 \method{coef}{reglmom}(object, distr = NULL, ...)
 

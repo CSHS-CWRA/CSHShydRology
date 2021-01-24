@@ -4,8 +4,7 @@
 \alias{predict.poolmle}
 \title{Prediction of the flood quantile for regional model}
 \usage{
-\method{predict}{poolmle}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
-  index = NULL, ...)
+\method{predict}{poolmle}(object, p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99), index = NULL, ...)
 }
 \arguments{
 \item{object}{Output from \link{FitPoolMle}.}

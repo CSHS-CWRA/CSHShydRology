@@ -4,7 +4,9 @@
 \name{flowUngauged}
 \alias{flowUngauged}
 \title{L-moments and catchment descriptors of hydrometric stations in Canada}
-\format{An object of class \code{data.frame} with 562 rows and 11 columns.}
+\format{
+An object of class \code{data.frame} with 562 rows and 11 columns.
+}
 \source{
 \url{https://wateroffice.ec.gc.ca/}
 }

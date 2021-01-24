@@ -13,8 +13,7 @@ ExtractAmax(x, ...)
 
 \method{ExtractAmax}{formula}(form, x, tol = 0, ...)
 
-\method{ExtractAmax}{default}(x, tol = 0, nlab = "n", ylab = "yy",
-  ...)
+\method{ExtractAmax}{default}(x, tol = 0, nlab = "n", ylab = "yy", ...)
 
 ExtractMmax(x, ...)
 

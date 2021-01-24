@@ -4,8 +4,14 @@
 \alias{predict.nspot}
 \title{Flood quantiles for the nonstationary POT model}
 \usage{
-\method{predict}{nspot}(object, rt = c(2, 5, 10, 20, 50, 100),
-  newdata = NULL, reliability = FALSE, reg.kappa = NULL, ...)
+\method{predict}{nspot}(
+  object,
+  rt = c(2, 5, 10, 20, 50, 100),
+  newdata = NULL,
+  reliability = FALSE,
+  reg.kappa = NULL,
+  ...
+)
 }
 \arguments{
 \item{object}{Output form \cite{FitNsPot}.}

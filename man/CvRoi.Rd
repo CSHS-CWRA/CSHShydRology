@@ -7,13 +7,21 @@
 \alias{plot.roicv}
 \title{Cross-validation using region of influence and kriging}
 \usage{
-CvRoi(x, nk, phy, similarity, kriging = NULL, ker = TRUE,
-  model = "Exp", fold = 5, verbose = TRUE)
+CvRoi(
+  x,
+  nk,
+  phy,
+  similarity,
+  kriging = NULL,
+  ker = TRUE,
+  model = "Exp",
+  fold = 5,
+  verbose = TRUE
+)
 
 \method{head}{roicv}(x, crit = "mad", ...)
 
-\method{plot}{roicv}(x, crit = "mad", best.col = "red",
-  best.pch = 16, best.cex = 1, ...)
+\method{plot}{roicv}(x, crit = "mad", best.col = "red", best.pch = 16, best.cex = 1, ...)
 }
 \arguments{
 \item{x}{Data.}

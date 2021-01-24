@@ -4,7 +4,9 @@
 \name{HYDAT_list}
 \alias{HYDAT_list}
 \title{HYDAT_list}
-\format{A dateframe with 7791 rows and 20 columns.}
+\format{
+A dateframe with 7791 rows and 20 columns.
+}
 \source{
 Water Survey of Canada
 
