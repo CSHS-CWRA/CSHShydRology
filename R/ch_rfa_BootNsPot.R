@@ -1,6 +1,6 @@
 #' Bootstrap sample of the nonstationary POT model
 #' 
-#' Return bootstrap samples of the parameters and flood quantiles for the 
+#' @return Returns a list of the bootstrap samples of the parameters and flood quantiles for the 
 #' nonstationary POT model.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>

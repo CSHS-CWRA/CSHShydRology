@@ -1,6 +1,6 @@
 #' Bootstrap sample of the nonstationary AMAX model
 #' 
-#' Return bootstrap samples of the parameters and flood quantiles for the 
+#' @description Calculates bootstrap samples of the parameters and flood quantiles for the 
 #' nonstationary AMAX model.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
