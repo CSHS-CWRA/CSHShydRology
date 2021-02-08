@@ -1,7 +1,7 @@
 ###########################################################
-#' Extracts the annual maximums of a daily time series
+#' Extracts the annual maxima of a daily time series
 #'
-#' Returns a dataset containing the annual (Monthly) maximums,
+#' @return  Returns a dataset containing the annual (Monthly) maxima,
 #' the date and the number of observations during the year.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>

@@ -187,7 +187,7 @@ legend('topleft', legend = c('Flood quantile','Design level'),
        col = c('magenta','cyan'), lty = c(2,1))
 
 ## ------------------------------------------------------------------------
-hat <- BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
+hat <- ch_rfa_BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
                  reliability = TRUE, verbose = FALSE)
 summary(hat, variable = 'para')
 summary(hat, variable = 'qua')

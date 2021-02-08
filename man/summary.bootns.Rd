@@ -7,7 +7,7 @@
 \method{summary}{bootns}(object, variable = "para", alpha = 0.05, ...)
 }
 \arguments{
-\item{object}{Output from \link{BootNsAmax} or \link{BootNsAmaxMle}.}
+\item{object}{Output from \link{ch_rfa_boot_nsamax} or \link{ch_rfa_boot_nsamaxMle}.}
 
 \item{variable}{Variable to summarize. Must be one of 
 \code{('para', 'beta', 'qua')}.}

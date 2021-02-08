@@ -29,7 +29,7 @@ the period of interest. See Durocher et al. (2019) for more details.}
 \description{
 Return the flood quantiles associatied to specifc level of 
 exceeding probability or reliability level. 
-The function \code{BootNsAmax} is used to obtain bootstrap samples of 
+The function \code{ch_rfa_boot_nsamax} is used to obtain bootstrap samples of 
 the parameters and flood quantiles.
 }
 \details{
@@ -67,7 +67,7 @@ for(ii in 1:2) lines(hat[,ii], col = 'red')
 for(ii in 1:2) lines(cbind(ref.period, rel[ii]), lwd = 3, col = 'blue')
 
 ## Using boostrap to evaluate the model uncertainty
-bs <- BootNsAmax(fit, c(.5, .9), nsim = 50, 
+bs <- ch_rfa_boot_nsamax(fit, c(.5, .9), nsim = 50, 
                  newdata = amax[ref.period,], reliability = TRUE)
 summary(bs)
 

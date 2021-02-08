@@ -117,7 +117,7 @@ legend('top', horiz = TRUE,
 
 
 ## ------------------------------------------------------------------------
-hat <- BootNsAmax(fit.lin, p = prob, reliability = TRUE, nsim = 500, verbose = FALSE)
+hat <- ch_rfa_boot_nsamax(fit.lin, p = prob, reliability = TRUE, nsim = 500, verbose = FALSE)
 summary(hat, variable = 'para')
 summary(hat, variable = 'qua')
 

@@ -3,7 +3,7 @@
 #' 
 #' Return the flood quantiles associatied to specifc level of 
 #' exceeding probability or reliability level.
-#' The function \code{BootNsAmaxMle} is used to obtain bootstrap samples of 
+#' The function \code{ch_rfa_boot_nsamaxMle} is used to obtain bootstrap samples of 
 #' the parameters and flood quantiles.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
@@ -70,7 +70,7 @@
 #' for(ii in 1:2) lines(cbind(ref.period, rel[ii]), lwd = 3, col = 'blue')
 #' 
 #' ## Using boostrap to evaluate the model uncertainty
-#' bs <- BootNsAmaxMle(fit, c(.5, .9), nsim = 50, reliability = TRUE,
+#' bs <- ch_rfa_boot_nsamaxMle(fit, c(.5, .9), nsim = 50, reliability = TRUE,
 #'                  method = 'Nelder-Mead', control = list(maxit = 2000))
 #' 
 #' out <- summary(bs)
@@ -146,7 +146,7 @@ predict.nsamax.mle <-
 
 #' @export
 #' @rdname predict.nsamax.mle
-BootNsAmaxMle <- 
+ch_rfa_boot_nsamaxMle <- 
   function(object,
            p = c(0.5, 0.8, 0.9, 0.95, 0.98, 0.99),
            newdata = NULL,

@@ -72,17 +72,17 @@ expect_equal(names(rel), paste0('q',rt0))
 expect_equal(class(rel), 'numeric')
 
 ## verify that boot
-out0 <- BootNsPot(fit, rt = c(10,100), nsim = 5, x = flowStJohn, reliability = FALSE)
+out0 <- ch_rfa_BootNsPot(fit, rt = c(10,100), nsim = 5, x = flowStJohn, reliability = FALSE)
 
-out0 <- BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
+out0 <- ch_rfa_BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
                   newdata = xyy, reliability = FALSE)
 
 round(summary(out0), 3)
 
-out0 <- BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
+out0 <- ch_rfa_BootNsPot(fit, rt = c(10,100), x = flowStJohn, nsim = 5,
                   newdata = xyy, reliability = FALSE)
 
-out <- BootNsPot(fit, rt = c(10,100), x = flowStJohn,
+out <- ch_rfa_BootNsPot(fit, rt = c(10,100), x = flowStJohn,
                  newdata = xyy, reliability = TRUE)
 
 summary(out, 'para')
@@ -92,7 +92,7 @@ fit <- FitNsPot(flow~date, x = flowStJohn, tau = .95, trend.method = 'mle',
                 trend = ~ date, thresh = ~ date, declust = 'wrc', r = 14)
 out <- predict(fit, reliability = TRUE)
 
-out <- BootNsPot(fit, rt = c(10,100), x = flowStJohn,
+out <- ch_rfa_BootNsPot(fit, rt = c(10,100), x = flowStJohn,
                  newdata = xyy, reliability = TRUE)
 summary(out, 'qua')
 ##############################################################################

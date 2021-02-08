@@ -344,11 +344,11 @@ legend('top', horiz = TRUE,
 Inference about the nonstationary model is carried out by parametric bootstraps 
 to ensure that the total variability estimated included the uncertainty 
 associated with both the regression model and the fitted distribution.
-The function `BootNsAmax` is used to simplify that process as shown in the 
+The function `ch_rfa_boot_nsamax` is used to simplify that process as shown in the 
 example below.
 
 ```{r}
-hat <- BootNsAmax(fit.lin, p = prob, reliability = TRUE, nsim = 500, verbose = FALSE)
+hat <- ch_rfa_boot_nsamax(fit.lin, p = prob, reliability = TRUE, nsim = 500, verbose = FALSE)
 summary(hat, variable = 'para')
 summary(hat, variable = 'qua')
 ```

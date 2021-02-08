@@ -20,12 +20,17 @@
 #'   
 #' @param nsim Number of simulations.
 #' 
-#' @param verbose Logical. Should a progress bar be displayed.
+#' @param verbose Logical. Should a progress bar be displayed?
 #'
 #' @seealso \link{FitNsPot}, \link{predict.nspot}.
 #' @export
+#' 
+#' @example \dontrun{
+#' # this example is explained in the vignette "At-site flood frequency analysis using peaks over threshold"
+#' hat <- ch_rfa_BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
+#' reliability = TRUE, verbose = FALSE)}
 #'
-BootNsPot <- 
+ch_rfa_BootNsPot <- 
   function(object, x,
            rt = c(2,5,10,20,50,100),
            newdata = NULL, 
@@ -62,8 +67,8 @@ BootNsPot <-
   ny <- 1 / object$unit * object$ppy
   
   ## extract the design matrix for all data
-  trend.xmat <- model.matrix(attr(object$trend$data, 'term'), x)
-  trend.all <- trend.xmat %*% object$trend$beta
+  trend_xmat <- model.matrix(attr(object$trend$data, 'term'), x)
+  trend_all <- trend_xmat %*% object$trend$beta
     
   for(ii in 1:nsim){
     
@@ -72,34 +77,34 @@ BootNsPot <-
     
     ## Create a bootstrap sample of exceedances
     sid <- which(runif(nr) < ny)
-    yboot <- rgpa(length(sid), kap[1], kap[2]) * trend.all[sid]
+    yboot <- rgpa(length(sid), kap[1], kap[2]) * trend_all[sid]
     
    
     ##---- Fit the trend of the boostrap sample ----##
     
     if(object$method %in% c('reg-mle','reg-lmom', 'reg-mom')){
       
-      trend.fit <- .FitNsPotGlm(trend.xmat[sid,], 
+      trend_fit <- .FitNsPotGlm(trend_xmat[sid,], 
                               yboot, 
                               object$trend$beta, 
                               object$trend$link)
     
-      copy$trend$beta <- paras[ii,-1] <- coef(trend.fit)
-      trend.fitted <- fitted(trend.fit)
+      copy$trend$beta <- paras[ii,-1] <- coef(trend_fit)
+      trend_fitted <- fitted(trend_fit)
   
       if(object$method == 'reg-mle'){
-        copy$kappa <- paras[ii,1] <- .FitNsPotKappaMle(yboot / trend.fitted)
+        copy$kappa <- paras[ii,1] <- .FitNsPotKappaMle(yboot / trend_fitted)
     
       } else if(object$method == 'reg-lmom'){
-        copy$kappa <- paras[ii,1] <- fgpaLmom(yboot / trend.fitted)[2]
+        copy$kappa <- paras[ii,1] <- fgpaLmom(yboot / trend_fitted)[2]
       
       } else if(object$method == 'reg-mom'){
-        copy$kappa <- paras[ii,1] <- fgpaMom(yboot / trend.fitted)[2]
+        copy$kappa <- paras[ii,1] <- fgpaMom(yboot / trend_fitted)[2]
       }
     
     } else{
       
-       sol <- .FitNsPotMle(x = trend.xmat, y = yboot, l = object$trend$link, 
+       sol <- .FitNsPotMle(x = trend_xmat, y = yboot, l = object$trend$link, 
                         s = c(-.1, object$trend$beta[-1]), 
                         object$trend$method, object$trend$control)
     
@@ -118,7 +123,7 @@ BootNsPot <-
   }
   
   ans <- list(para = paras, qua = quas)
-  class(ans)<- c('bootns', 'bootnspot')
+  class(ans)<- c('bootns', 'ch_rfa_BootNsPot')
   
   return(ans)
 }

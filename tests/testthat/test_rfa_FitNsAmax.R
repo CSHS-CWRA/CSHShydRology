@@ -117,7 +117,7 @@ simulate(obj.add)
 
 ## Perform bootstrap and verify the output
 nsim0 <- 10
-boot.add <- BootNsAmax(obj.add, nsim = nsim0, verbose = FALSE)
+boot.add <- ch_rfa_boot_nsamax(obj.add, nsim = nsim0, verbose = FALSE)
 
 expect_equal(names(boot.add), c('para','beta','qua'))
 expect_equal(nrow(boot.add$para), nsim0)
@@ -139,7 +139,7 @@ ss <- summary(boot.add, 'qua')
 expect_equal(dim(ss), c(ny, 24))
 
 ## verify that it work when using reliability
-boot.add <- BootNsAmax(obj.add, 
+boot.add <- ch_rfa_boot_nsamax(obj.add, 
                        p = c(.35,.9), 
                        nsim = nsim0,
                        newdata = obj.add$data[91:100,],
@@ -153,7 +153,7 @@ expect_equal(dim(ss), c(2,4))
 
 obj <- FitNsAmax(log(flow) ~ poly(date,3), x, distr = 'gev', type = 'add')
 
-b <- BootNsAmax(obj, 
+b <- ch_rfa_boot_nsamax(obj, 
                 p = c(.35,.9), 
                 nsim = 100,
                 newdata = obj$data[81:88,],
@@ -210,7 +210,7 @@ rel <- predict(fit, p = c(.8,.98),
 for(ii in 1:6)
   lines(dd0, rep(rel[ii],length(dd0)), col = 'magenta')
 
-out <- BootNsAmaxMle(fit,  newdata = x[sset,], reliability = TRUE, nsim = 5,
+out <- ch_rfa_boot_nsamaxMle(fit,  newdata = x[sset,], reliability = TRUE, nsim = 5,
                       method = 'BFGS')
 
 expect_equivalent(colnames(out$para), names(fit$para))

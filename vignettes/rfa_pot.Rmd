@@ -497,11 +497,11 @@ legend('topleft', legend = c('Flood quantile','Design level'),
 ```
 
 Inference about the nonstationary model can be carried out by parametric bootstraps.
-The function `BootNsPot` is used to simplify that process as shown in the 
+The function `ch_rfa_BootNsPot` is used to simplify that process as shown in the 
 example below.
 
 ```{r}
-hat <- BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
+hat <- ch_rfa_BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
                  reliability = TRUE, verbose = FALSE)
 summary(hat, variable = 'para')
 summary(hat, variable = 'qua')

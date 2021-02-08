@@ -5,7 +5,7 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' 
-#' @param object Output from \link{BootNsAmax} or \link{BootNsAmaxMle}.
+#' @param object Output from \link{ch_rfa_boot_nsamax} or \link{ch_rfa_boot_nsamaxMle}.
 #'
 #' @param variable Variable to summarize. Must be one of 
 #' \code{('para', 'beta', 'qua')}.
