@@ -7,30 +7,30 @@
 #' 
 #' @param object Output form \link{FitNsPot}.
 #' 
-#' @param rt Vector of return period to estimate.
-#' 
 #' @param x Dataset used to fit the nonstationary POT model.
-#'    
-#' @param newdata Covariates. If \code{NULL} the input data that served to fit 
-#'   the model is used
+#' 
+#' @param rt Vector of return period to estimate. Default is \code{rt = c(2,5,10,20,50,100}
+#' 
+#' @param newdata Covariates. If \code{NULL} (the default), the input data that served to fit 
+#'   the model is used.
 #'   
 #' @param reliability Logical. Should the flood quantile associated with 
-#'   reliability level be returned. In that case, \code{newdata} must represent
-#'   the period of interest. See Durocher et al. (2019) for more details.
+#'   reliability level be returned? In that case, \code{newdata} must represent
+#'   the period of interest. See Durocher et al. (2019) for more details. Default is \code{FALSE}.
 #'   
-#' @param nsim Number of simulations.
+#' @param nsim Number of simulations. Default is \code{1000}.
 #' 
-#' @param verbose Logical. Should a progress bar be displayed?
+#' @param verbose Logical. Should a progress bar be displayed? Default is \code{TRUE}.
 #'
 #' @seealso \link{FitNsPot}, \link{predict.nspot}.
 #' @export
 #' 
 #' @example \dontrun{
 #' # this example is explained in the vignette "At-site flood frequency analysis using peaks over threshold"
-#' hat <- ch_rfa_BootNsPot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
+#' hat <- ch_rfa_boot_nspot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
 #' reliability = TRUE, verbose = FALSE)}
 #'
-ch_rfa_BootNsPot <- 
+ch_rfa_boot_nspot <- 
   function(object, x,
            rt = c(2,5,10,20,50,100),
            newdata = NULL, 
@@ -123,7 +123,7 @@ ch_rfa_BootNsPot <-
   }
   
   ans <- list(para = paras, qua = quas)
-  class(ans)<- c('bootns', 'ch_rfa_BootNsPot')
+  class(ans)<- c('bootns', 'ch_rfa_boot_nspot')
   
   return(ans)
 }
