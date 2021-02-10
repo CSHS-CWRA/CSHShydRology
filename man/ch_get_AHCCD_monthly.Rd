@@ -4,8 +4,12 @@
 \alias{ch_get_AHCCD_monthly}
 \title{Retrieve AHCCD data from EC datamart}
 \usage{
-ch_get_AHCCD_monthly(station, province, variable,
-  url = "http://dd.weather.gc.ca/climate/ahccd/geojson/historical/monthly/")
+ch_get_AHCCD_monthly(
+  station,
+  province,
+  variable,
+  url = "http://dd.weather.gc.ca/climate/ahccd/geojson/historical/monthly/"
+)
 }
 \arguments{
 \item{station}{Required. The station number - either as numeric or as a string.}

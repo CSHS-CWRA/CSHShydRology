@@ -4,8 +4,11 @@
 \alias{ch_flow_raster}
 \title{Raster plot of streamflows}
 \usage{
-ch_flow_raster(dframe, title = "", rastercolours = c("lightblue",
-  "cyan", "blue", "slateblue", "orange", "red"))
+ch_flow_raster(
+  dframe,
+  title = "",
+  rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red")
+)
 }
 \arguments{
 \item{dframe}{A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.}
