@@ -52,7 +52,7 @@
 #' \item{vgm}{Sample variogram.}
 #' \item{model}{Fitted variogram model.}
 #' 
-#' @seealso \code{\link{CvRoi}}, \code{\link[gstat]{krige}}, \code{\link{lm}}
+#' @seealso \code{\link{ch_rfa_cv_roi}}, \code{\link[gstat]{krige}}, \code{\link{lm}}
 #' 
 #' @references 
 #' 

@@ -60,7 +60,7 @@ nk.lst <- seq(30,100,10)
 set.seed(1)
 
 ## Perform cross-validation
-cv0 <- CvRoi(x = xd, nk = nk.lst, fold = 5,
+cv0 <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = 5,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
@@ -81,14 +81,14 @@ kf <- sample(rep_len(1:5, nrow(xd)))
 formula.phy <- log(q100) ~ area + map + stream + wb
 
 ## Perform cross-validation with all descriptors
-cv0 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+cv0 <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
 ## Formula without wb and stream
 formula.phy2 <- log(q100) ~ area + map
 
-cv1 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+cv1 <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy2, similarity = formula.dist,
             verbose = FALSE)
 
@@ -115,7 +115,7 @@ median(abs(res/hat))
 ## ---- warning = FALSE----------------------------------------------------
 formula.krig <- ~ lon + lat
 
-cvk <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+cvk <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             kriging = formula.krig, verbose = FALSE)
 

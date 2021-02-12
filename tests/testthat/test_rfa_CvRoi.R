@@ -1,5 +1,5 @@
 ###############################################################################
-## Test function CvRoi
+## Test function ch_rfa_cv_roi
 ## Martin Durocher <mduroche@uwaterloo.ca>
 ##############################################################################
 
@@ -34,7 +34,7 @@ fsimilarity <- ~ area + map
 fkriging <- ~ lon + lat
 
 ## Perform cross-validation.
-out <- CvRoi(x = xdf, nk = seq(20,150, 10), fold = 5,
+out <- ch_rfa_cv_roi(x = xdf, nk = seq(20,150, 10), fold = 5,
                 phy = fphy,  similarity = fsimilarity, model = 'Exp')
 
 ## verify output scale
@@ -61,14 +61,14 @@ plot(out, 'smad', ylab = '', xlab = '')
 ## -----------------------------
 
 fphy <- ly ~ area + map + poly(wb,3) + poly(stream,3)
-out <- CvRoi(x = xdf, nk = seq(40,60, 10), fold = 10,
+out <- ch_rfa_cv_roi(x = xdf, nk = seq(40,60, 10), fold = 10,
                 phy = fphy,  similarity = fsimilarity, model = 'Exp')
 
 expect_true(all(out$mad < 0.5))
 expect_true(all(out$nsh > 0.7))
 
 fphy <- log(y) ~ area + map + wb + wb
-out <- CvRoi(x = xdf, nk = seq(40,60, 10), fold = 10,
+out <- ch_rfa_cv_roi(x = xdf, nk = seq(40,60, 10), fold = 10,
                 phy = fphy,  similarity = fsimilarity, model = 'Exp')
 
 expect_true(all(out$mad < 0.5))

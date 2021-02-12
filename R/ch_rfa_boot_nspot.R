@@ -1,11 +1,10 @@
 #' Bootstrap sample of the nonstationary POT model
 #' 
-#' @return Returns a list of the bootstrap samples of the parameters and flood quantiles for the 
-#' nonstationary POT model.
+#' @description Calculates bootstrap samples of the parameters and flood quantiles for the nonstationary POT model.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' 
-#' @param object Output form \link{FitNsPot}.
+#' @param object Output from \link{FitNsPot}.
 #' 
 #' @param x Dataset used to fit the nonstationary POT model.
 #' 
@@ -25,7 +24,10 @@
 #' @seealso \link{FitNsPot}, \link{predict.nspot}.
 #' @export
 #' 
-#' @example \dontrun{
+#' @return Returns a list of the bootstrap samples of the parameters and flood quantiles for the 
+#' nonstationary POT model.
+#' 
+#' @examples \dontrun{
 #' # this example is explained in the vignette "At-site flood frequency analysis using peaks over threshold"
 #' hat <- ch_rfa_boot_nspot(fit, x = flowStJohn, newdata = flowStJohn[yr,], nsim = 50, 
 #' reliability = TRUE, verbose = FALSE)}

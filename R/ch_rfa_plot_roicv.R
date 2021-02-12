@@ -1,5 +1,5 @@
 #' @export
-#' @rdname CvRoi
+#' @rdname ch_rfa_cv_roi
 plot.roicv <- 
   function(x, 
            crit = 'mad', 

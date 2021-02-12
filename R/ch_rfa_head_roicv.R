@@ -1,5 +1,5 @@
 #' @export
-#' @rdname CvRoi
+#' @rdname ch_rfa_cv_roi
 head.roicv <- function(x, crit = 'mad', ...){
 
   lstCrit <- c('rmse','rrmse','nsh','mad','rmad','smad')

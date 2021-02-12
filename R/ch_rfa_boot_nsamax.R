@@ -34,7 +34,7 @@
 #'
 #' @export
 #' 
-#' @example \dontrun{
+#' @examples \dontrun{
 #' # this example is explained in the vignette "At-site flood frequency analysis using annual maxima"
 #' hat <- ch_rfa_boot_nsamax(fit.lin, p = prob, reliability = TRUE, nsim = 500, verbose = FALSE)}
 #'

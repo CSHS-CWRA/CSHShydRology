@@ -185,7 +185,7 @@ In turn, each group is treated as ungauged and predicted by the other sites.
 These predictions can be compared to the "known" flood quantiles by evaluating
 common criteria such as the Root Mean Square Error (RMSE) or the Mean Absolute 
 Deviation (MAD).
-The function `CvRoi` performs cross-validation and returns  
+The function `ch_rfa_cv_roi` performs cross-validation and returns  
 several evaluation criteria. 
 Afterward, the function `head` can be used to return the three best `nk` 
 according to a given criteria.
@@ -196,7 +196,7 @@ nk.lst <- seq(30,100,10)
 set.seed(1)
 
 ## Perform cross-validation
-cv0 <- CvRoi(x = xd, nk = nk.lst, fold = 5,
+cv0 <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = 5,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
@@ -214,7 +214,7 @@ plot(cv0, crit = 'mad')
 
 
 Cross-validation can also be used to select relevant catchment descriptors. 
-By default, the output of `CvRoi` varies as the groups are created randomly.
+By default, the output of `ch_rfa_cv_roi` varies as the groups are created randomly.
 Specific cross-validation groups can be passed as an argument to ensure that 
 concurrent models are evaluated using the same design.
 The second example below shows that the descriptors `wb` and `stream` improve 
@@ -229,14 +229,14 @@ kf <- sample(rep_len(1:5, nrow(xd)))
 formula.phy <- log(q100) ~ area + map + stream + wb
 
 ## Perform cross-validation with all descriptors
-cv0 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+cv0 <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             verbose = FALSE)
 
 ## Formula without wb and stream
 formula.phy2 <- log(q100) ~ area + map
 
-cv1 <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+cv1 <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy2, similarity = formula.dist,
             verbose = FALSE)
 
@@ -248,7 +248,7 @@ head(signif(cv1,3), crit = 'mad')
 ```
 
 
-If other criteria than those included in `CvRoi` are desired, it is also
+If other criteria than those included in `ch_rfa_cv_roi` are desired, it is also
 possible to perform the cross-validation sheme and keep the predicted value (or 
 residuals) using the function `predict` (`residuals`).
 
@@ -299,7 +299,7 @@ the rate at which the covariance decreases with respect to $h$ and
 $\tau \in \left[0,C(0)\right]$ is a nugget effect 
 that creates a discontinuity at $h = 0$.  
 
-The function `FitRoi` and `CvRoi` can directly perform the kriging on the 
+The function `FitRoi` and `ch_rfa_cv_roi` can directly perform the kriging on the 
 residuals by passing a set of coordinates to the argument `kriging`.
 The example below shows that the addition of the spatial component improves the 
 prediction power of the model.
@@ -307,7 +307,7 @@ prediction power of the model.
 ```{r, warning = FALSE}
 formula.krig <- ~ lon + lat
 
-cvk <- CvRoi(x = xd, nk = nk.lst, fold = kf,
+cvk <- ch_rfa_cv_roi(x = xd, nk = nk.lst, fold = kf,
             phy = formula.phy, similarity = formula.dist,
             kriging = formula.krig, verbose = FALSE)
 ```
@@ -426,7 +426,7 @@ apply(boot, 1, sd)
 In this document we showed how the function `FitRoi` can be used to fit local
 regression-kriging model to estimate flood quantiles at ungauged sites. 
 The selection of the descriptors and the size of the region of 
-influence were further calibrated using the function `CvRoi`. 
+influence were further calibrated using the function `ch_rfa_cv_roi`. 
 Finally, a bootstrap strategy was proposed to estimate the 
 variance of the total error. 
  
