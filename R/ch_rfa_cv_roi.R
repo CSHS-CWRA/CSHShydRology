@@ -1,17 +1,15 @@
-########################################################################
 #' Cross-validation using region of influence and kriging
 #'
-#' Return a matrix of criteria evaluated by using region of
-#' influence (ROI) and kriging. It includes: Root mean square error 
+#' @description Performs cross-validation using region of
+#' influence (ROI) and kriging with several goodness-of-fit statistics
+#' including Root mean square error 
 #' (\code{rmse}), relative RMSE (\code{rrmse}), Nash-Sutcliffe (\code{nsh}),
 #' Mean absolute deviation (\code{mad}), relative MAD (\code{rmad}) and
 #' the skill score based on MAD (\code{smad}). 
-#' The latter \code{smad} has the same form as \code{nsh} except that 
-#' absolute error are taken instead of square error.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
-#' @param x Data.
+#' @param x Data frame to be analysed.
 #'
 #' @param nk List of neighborhood sizes to try.
 #'
@@ -26,21 +24,28 @@
 #'
 #' @param model Variogram model. See \link[gstat]{vgm}.
 #'
-#' @param ker Should a (Epanechnikov) kernel be used in to weight
-#'  local regression model. Otherwise uniform weight are used.
+#' @param ker Should a (Epanechnikov) kernel be used to weight
+#'  local regression model? Otherwise uniform weight are used. Default is \code{TRUE}.
 #'  
 #' @param fold Number of group used in the cross-validation scheme. 
 #'   Can also be a vector defining the group for each site.
 #'   
-#' @param verbose Logical. Should a progress bar be displayed.
+#' @param verbose Logical. Should a progress bar be displayed. Default is \code{TRUE}.
 #' 
 #' @param crit Cross-validation criteria used to evaluate the best choice.
 #' 
-#' @param best.col,best.pch,best.cex Argument for the point indication the best
+#' @param best.col, best.pch, best.cex Argument for the point indication the best
 #'   choice.
 #'
 #' @param ... More arguments to pass to the plot function (\link{par}).
 #'
+#' @return Returns a matrix of criteria evaluated by using region of
+#' influence (ROI) and kriging. It includes: Root mean square error 
+#' (\code{rmse}), relative RMSE (\code{rrmse}), Nash-Sutcliffe (\code{nsh}),
+#' Mean absolute deviation (\code{mad}), relative MAD (\code{rmad}) and
+#' the skill score based on MAD (\code{smad}). 
+#' The \code{smad} criterion has the same form as \code{nsh} except that 
+#' absolute errors are taken instead of square errors.
 #' 
 #' @references 
 #' 
@@ -80,13 +85,14 @@
 #'  fsimilarity <- ~ area + map
 #'
 #'  ## Perform cross-validation.
-#'  system.time(out <- CvRoi(x = xdf, nk = seq(20,150, 10), fold = 5,
+#'  system.time(out <- ch_rfa_cv_roi(x = xdf, nk = seq(20, 150, 10), fold = 5,
 #'                  phy = fphy,  similarity = fsimilarity, model = 'Exp'))
 #'
 #'  head(out, 'nsh')
 #'  plot(out, 'mad')
+#'  detach(flowUngauged)
 #'
-CvRoi <- 
+ch_rfa_cv_roi <- 
   function(x, 
            nk, 
            phy, 

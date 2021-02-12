@@ -24,7 +24,7 @@ ch_rfa_cv_roi(
 \method{plot}{roicv}(x, crit = "mad", best.col = "red", best.pch = 16, best.cex = 1, ...)
 }
 \arguments{
-\item{x}{Data.}
+\item{x}{Data frame to be analysed.}
 
 \item{nk}{List of neighborhood sizes to try.}
 
