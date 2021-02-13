@@ -4,7 +4,9 @@
 \name{W05AA008}
 \alias{W05AA008}
 \title{W05AA008}
-\format{A dateframe with 25252 rows and 5 columns spanning the period 1910-2013.}
+\format{
+A dateframe with 25252 rows and 5 columns spanning the period 1910-2013.
+}
 \source{
 Water Survey of Canada
 

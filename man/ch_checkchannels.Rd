@@ -14,11 +14,23 @@ ch_checkchannels(dem, channels, outlet)
 \item{catchment}{sf. catchment polygon}
 }
 \value{
-generates map with channel layer
+\item{check_map}{generates map with channel layer}#'
 }
 \description{
-Generates a map of the generated channel layer
+Generates a map of the generated channel layer.
+}
+\details{
+This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 }
 \examples{
-\dontrun{map <-  ch_checkchannels(dem, channels, outlet)}
+\dontrun{
+map <-  ch_checkchannels(dem, channels, outlet)
+}
+
+}
+\seealso{
+\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+}
+\author{
+Dan Moore <dan.moore@ubc.ca>
 }

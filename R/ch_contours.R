@@ -14,10 +14,10 @@
 #' @return  
 #' \item{contours_sf}{sf object containing contours}
 #' 
-#' @import RSAGA raster sf
+#' 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
-#' @export
+#' 
 #' @examples
 #' \dontrun{
 #' ch_contours()
@@ -26,13 +26,14 @@
 #  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
 #' }
 #' 
+#' @importFrom raster raster getValues rasterToContour crs
+#' @importFrom sf st_as_sf st_crs
+#' 
+#' @export
 ch_contours <- function(dem,
                         zmin = NULL, zmax = NULL,
                         n_levels = 10,
                         z_levels = NULL) {
-
-  # require(raster)
-  # require(sf)
   
   # determine contour levels
   if (is.null(z_levels)) {
@@ -42,7 +43,7 @@ ch_contours <- function(dem,
     z_levels <- seq(zmin, zmax, length.out = n_levels)
   }
   # if dem includes sea level, start contours at 0.1 m to mimic coastline
-  if (z_levels[1] <= 0) z_levels[1] <- 0.1
+  if (z_levels[1] <= 0) {z_levels[1] <- 0.1}
   # generate contours as a sf object
   contours_sf <- raster::rasterToContour(dem, levels = z_levels) %>%
     sf::st_as_sf()

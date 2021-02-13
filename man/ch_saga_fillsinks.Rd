@@ -24,9 +24,30 @@ ch_saga_fillsinks(
 \item{saga.env}{SAGA environment object.  Default is to let saga find it on its own.}
 }
 \value{
-dem_ns filled dem as a raster object 
-ch_saga_fillsinks()
+\item{dem_ns}{filled dem as a raster object.}
 }
 \description{
-This removes sinks in a DEM by filling
+This removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
+}
+\details{
+This function removes sinks by filling them. To ensure continuous flow through the DEM, 
+a minimum slope can be imposed on cells. Although there are other options, the most imporant 
+are method and minslope; these are implemented in the function. For a full list of available options type 
+`?rsaga.fill.sinks`` at the console. 
+The main input is a DEM as a raster object. The main output will be a sink-filled DEM with the 
+same topology and coordinate reference system as the input raster.
+}
+\examples{
+\dontrun{
+ch_saga_fillsinks()
+
+# consider sample DEM data with this
+}
+
+}
+\seealso{
+\code{\link{ch_saga_removesinks}} to remove sinks instead of filling
+}
+\author{
+Dan Moore <dan.moore@ubc.ca>
 }

@@ -170,90 +170,85 @@ ch_flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "
 
 
   #####################################################  panel one raster image
-  par(mar = c(4, 4, 0, 0))
-
-  image(1:periods, 1:length(Years), qsliced,
-    axes = FALSE, col = qcols(9),
-    zlim = c(qmin, qmax), xlab = "", ylab = ""
-  )
-
-  sstep <- round(periods / 5)
-  speriod <- sub_set_Years(period, sstep)
-  axis(1, at = speriod$position, labels = speriod$label, cex = 1.2)
-
-  nn <- 1
-  if (length(Years) >= 70) nn <- 10
-  if (length(Years) >= 40) nn <- 5
-  if (length(Years) >= 20) nn <- 2
-  sYears <- sub_set_Years(Years, nn)
-
-  axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
-  mtext(DOY, side = 1, line = 2.2, cex = 0.9)
+  par(mar=c(6,4,0,0)) 
+  
+  image(1:periods,1:length(Years), qsliced, axes=FALSE, col=qcols(9),
+                  zlim=c(qmin,qmax),  xlab="", ylab="")  
+  
+  sstep <-round(periods/5)
+  speriod <- sub_set_Years(period,sstep)
+  graphics::axis(1, at=speriod$position,labels=speriod$label, cex=1.2)
+  
+  nn<-1
+  if(length(Years)>=70) nn <- 10 
+  if(length(Years)>=40) nn <-  5
+  if(length(Years)>=20) nn <-  2     
+  sYears <- sub_set_Years(Years,nn)
+  
+  axis(2, at=sYears$position,labels=sYears$label, cex.axis=.7, las=1)
+  mtext(DOY,side=1, line =2.2, cex=0.9)  
   box()
-
+  
+  month <- c("J","F","M","A", "M", "J", "J","A", "S", "O", "N", "D","") 
+  mday <- c(0, 31, 59, 90, 120, 151, 181, 212,243, 273, 304, 334,365)
+  md <- (mday / 365 * 73) + 1 
+  
+  axis(1,line=3.5,at=md, month)
+  
   #####################################################  panel two doy summary of trends
-  mch <- c("", 1, 19)
-  mch_n <- c("", 173, 175)
-  mcolour <- c("white", "blue", "red")
-
-  ylimits <- c(min(qsliced, na.rm = TRUE), max(qsliced, na.rm = TRUE))
-  par(mar = c(1, 4, 0, 0))
-  plot(period, med_n, ylab = l_disch, col = "black", 
-                 ylim = ylimits, xaxt = "n", xaxs = "i", las = 1, 
-                 pch = as.numeric(mch[code]))
-  points(period, max_n, type = "l", col = "gray35")
-  points(period, min_n, type = "l", col = "gray35")
-  par(font = 5)
-  points(period, med_n, type = "p", col = mcolour[arrow], 
-                   pch = as.numeric(mch_n[arrow]), cex = 1.2)
-  par(font = 1)
-
-
+  par(mar=c(7,4,0,0))
+  mch   <- c("",1,19)
+  mch_n <- c("",173,175)
+  mcolour <- c("white","blue","red")
+  
+  ylimits<- c(min(qsliced,na.rm=TRUE),max(qsliced, na.rm=TRUE))
+  par(mar=c(1,4,0,0))
+  plot(period,med_n, ylab=l_disch, col="black", ylim=ylimits, xaxt="n", xaxs="i", las=1,pch=as.numeric(mch[code]))
+  points(period,max_n, type="l", col="gray35")
+  points(period,min_n, type="l", col="gray35")
+  par(font=5)
+  points(period,med_n, type="p", col=mcolour[arrow], pch=as.numeric(mch_n[arrow]), cex=1.2)
+  par(font=1)
+  
+  axis(1,line=0,at=md, labels=FALSE)
   #####################################################  panel three time series
   options(scipen = 999)
 
   xy <- c(1:length(Years))
-  ylimits <- c(min(qsliced, na.rm = TRUE), max(qsliced, na.rm = TRUE))
-  if (ylimits[1] == 0) (ylimits[1] <- 0.001)
-  par(mar = c(4, 1, 0, 0))
-  plot(ymed_n, xy, col = tcol[t1], xlim = ylimits, 
-                 xlab = l_disch, yaxt = "n", yaxt = "n", yaxs = "i", 
-                 log = "x", ylab = "")
-  points(ymax_n, xy, col = tcol[t3], pch = 19, cex = 0.7)
-  points(ymin_n, xy, col = tcol[t2], pch = 19, cex = 0.7)
-
-  ########################################################  Add title
-  tscale <- 1.6
-  if (nchar(title) >= 45) tscale <- 1.4
-  if (nchar(title) >= 50) tscale <- 1.2
-  mtext(title, side = 3, line = 1, cex = tscale, outer = TRUE)
-
-
-  ########################################################  Add scalebar
-  frame()
-
-  par(mar = c(0, 0, 0, 4))
-
-  zr <- c(qmin, qmax)
-
-  image.plot(
-    zlim = zr, col = qcols(9), legend.only = TRUE,
-    legend.width = 4.5, legend.shrink = 0.8,
-    bigplot = c(0.1, 0.2, 0.1, 0.2),
-    legend.args = list(text = l_disch, side = 2, line = 0.5, cex = 0.9)
-  )
-
-  line1 <- list(
-    stationID, missing, step, periods, qsliced, period, med_n, max_n, min_n, tau, prob, Years,
-    ymed_n, ymax_n, ymin_n, tmy, tmaxy, tminy
-  )
+  ylimits<- c(min(qsliced,na.rm=TRUE),max(qsliced, na.rm=TRUE))
+  if (ylimits[1] == 0) (ylimits[1]<-0.001)
+  par(mar=c(6,4,0,0))
+  plot(ymed_n,xy,  col = tcol[t1], xlim = ylimits, xlab = l_disch, yaxt = "n", yaxt = "n",yaxs = "i", log = "x", ylab="")
+  points(ymax_n, xy, col=tcol[t3], pch=19, cex=0.7)
+  points(ymin_n, xy, col=tcol[t2], pch=19, cex=0.7)
   
-  names(line1) <- c(
-    "stationID", "missing", "step", "periods", "bins", "period", "med_period", 
-    "max_period", "min_period", "tau_period", "prob_period",
-    "year", "median_year", "max_year", "min_year", "tau_median_year", 
-    "tau_maximum_year", "tau_minimum_year"
-  )
+  
+  ########################################################  Add title
+  tscale = 1.2
+  if(nchar(title) >= 45) tscale = 1.0
+  if(nchar(title) >= 50) tscale = 0.8
+  graphics::mtext(title, side=3, line=1, cex=tscale,outer=TRUE)
+  
+  
+  ########################################################  Add scalebar
+  graphics::frame()
+  
+  graphics::par(mar=c(0,0,0,4))
+  
+  zr=c(qmin,qmax)
+  
+  fields::image.plot( zlim= zr, col=qcols(9),legend.only=TRUE,
+                      legend.width=4.5, legend.shrink=0.8,
+                      bigplot=c(0.1,0.2,0.1,0.2),
+                      legend.args=list(text=l_disch, side=2,line=0.5, cex=0.9))
+  
+  sID <- substr(title,1,7)
+  
+  
+  line1 <-list(sID, missing, step, periods,qsliced,period,med_n,max_n,min_n,tau,prob, Years, 
+               ymed_n,ymax_n,ymin_n, tmy, tmaxy,tminy)
+  names(line1) <-c("sID","na.rm=", "step", "periods", "bins","period", "med_period","max_period","min_period", 	"tau_period", "prob_period",
+                   "year", "median_year", "max_year", "min_year","tau_median_year", "tau_maximum_year", "tau_minimum_year")
   return(line1)
 }
 

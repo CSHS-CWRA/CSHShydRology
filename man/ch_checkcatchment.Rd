@@ -16,11 +16,26 @@ ch_checkcatchment(dem, catchment, outlet, outlet_label = NULL)
 \item{outlet_label}{string. Label for outlet}
 }
 \value{
-Generates contour map with catchment polygon and outlet
+\item{area_df}{Generates contour map with catchment polygon and outlet check}
 }
 \description{
-Generates a map with contours, catchment polygons, and outlet
+This function generates a simple map to allow a visual assessment of the catchment 
+boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
+including the coordinates of the outlet point and the catchment area.
 }
 \examples{
 /dontrun{map <- ch_checkcatchment(dem, catchment_shape, outlet)}
+
+\dontrun{
+ch_checkcatchment()
+
+# consider sample DEM data with this
+}
+
+}
+\seealso{
+\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+}
+\author{
+Dan Moore <dan.moore@ubc.ca>
 }

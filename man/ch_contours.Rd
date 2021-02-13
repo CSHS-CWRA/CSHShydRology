@@ -18,9 +18,27 @@ ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 \item{z_levels}{levels at which to plot contours}
 }
 \value{
-contours_sf  sf object containing contours
-ch_contours()
+\item{contours_sf}{sf object containing contours}
 }
 \description{
-creates contour lines from a DEM
+creates contour lines from a DEM.
+}
+\details{
+This function generates contour lines from a DEM, which are returned as an **sf** object. 
+The user can either provide a vector of elevation values by specifying the `z_levels` argument, 
+or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the number of contour lines (`n_levels`).
+}
+\examples{
+\dontrun{
+ch_contours()
+
+# consider sample DEM data with this
+}
+
+}
+\seealso{
+\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+}
+\author{
+Dan Moore <dan.moore@ubc.ca>
 }
