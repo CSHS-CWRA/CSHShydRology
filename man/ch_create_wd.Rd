@@ -9,6 +9,22 @@ ch_create_wd(wd)
 \arguments{
 \item{wd}{working directory file path}
 }
+\value{
+\item{TRUE}{returns TRUE upon successful execution}
+}
 \description{
-This function creates a SAGA working directory
+This function creates a SAGA working directory.
+}
+\examples{
+\dontrun{
+ch_create_wd()
+
+}
+
+}
+\seealso{
+\code{\link{ch_clear_wd}} to clear the working SAGA directory
+}
+\author{
+Dan Moore <dan.moore@ubc.ca>
 }
