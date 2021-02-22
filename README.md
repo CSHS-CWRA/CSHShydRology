@@ -12,7 +12,7 @@ The commands are:
 ``` R
 install.packages("devtools")
 library(devtools)
-install_github("CSHS-hydRology/CSHS-hydRology")
+install_github("CSHS-CWRA/CSHShydRology")
 ```
 
 ## What is CSHS Hydrology?
