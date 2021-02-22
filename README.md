@@ -58,7 +58,7 @@ The testthat package allows unit tests to be created for each function. The func
 #### Test data
 Each function is required to have an example, which should be executable code. The only exception should be for code which is intended to access data which may not be available, such as data downloaded from a server.
 The example, vignettes, and unit tests will all require test data sets. The data are stored in the /data folder of the package, and should be stored as .Rdata (binary) files, unless reading in data from another format is the point of the function. CRAN has a maximum limit of 1 MB for test data, so we will need to minimise the datasets we include. We should minimise the size of each test dataset and re-use the same data in as many functions as possible. If a function requires data output by another function, both functions can be included in the example.
-Each dataset needs to be documented in the same way as a function. The creation of datasets and their documentation is explained at  http://r-pkgs.had.co.nz/data.html.
+Each dataset needs to be documented in the same way as a function. The creation of datasets and their documentation is explained at http://r-pkgs.had.co.nz/data.html.
 
 ## Working with GitHub
 There is a lot of information available on using git and GitHub in R. The best starting point is https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN which shows how to integrate git and GitHub with RStudio.
