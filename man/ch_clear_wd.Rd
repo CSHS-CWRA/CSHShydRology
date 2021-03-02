@@ -13,12 +13,12 @@ ch_clear_wd(wd)
 \item{result}{returns TRUE upon successful execution}
 }
 \description{
-This function empties and removes a SAGA working directory. Note: the data for raster layers read in as sdat 
-files (e.g., carea) are held on disk rather than in memory; #' if you clear the working directory you
- will get an error if you try to use the raster layer.
+This function empties and removes a SAGA working directory. Note: the data for raster layers read in as SAGA sdat 
+files (e.g. the contributing area, carea) are held on disk rather than in memory; if you clear the working directory you
+will get an error if you try to use the raster layer.
 }
 \examples{
-\donrun{
+\dontrun{
 # clear the current working directory
 ch_clear_wd(getwd())
 }
