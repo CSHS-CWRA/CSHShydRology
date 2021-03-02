@@ -22,14 +22,9 @@ ch_read_ECDE_flows <- function(filename) {
   mdata$Date <- as.Date(mdata$Date, format = "%Y/%m/%d")
   cut <- length(mdata[, 1]) - 3
   mdata <- mdata[1:cut, ]
-<<<<<<< HEAD
-  
   # change "Flow,m3.c"   to "Flow" to deal with the difference in ECDE versions
   names(mdata)[4] <-substr(names(mdata)[4],1,4)
-=======
-  names(mdata)[4] <-substr(names(mdata)[4],1,4)
-  
->>>>>>> bb242387e85ab386f9b7a49d30349e2ca836f753
+
   if(names(mdata)[4] != "Flow") 
     print("File format error")
   
