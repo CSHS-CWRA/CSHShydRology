@@ -4,7 +4,6 @@
 #' @return returns the annual (monthly) maximums, the date, 
 #' and the number of observations during the year
 #' 
-#' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
 #' @param form Formula of the form \code{value ~ date} that specifies the
