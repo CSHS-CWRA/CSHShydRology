@@ -1,8 +1,9 @@
 ###########################################################
-#' Extracts the annual maximums of a daily time series
-#'
-#' Returns a dataset containing the annual (Monthly) maximums,
-#' the date and the number of observations during the year.
+#' @description this function extracts the annual maximums of a daily time series
+#' 
+#' @return returns the annual (monthly) maximums, the date, 
+#' and the number of observations during the year
+#' 
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
@@ -31,7 +32,7 @@ ExtractAmax <- function(x, ...) UseMethod('ExtractAmax',x)
 
 #' @export
 #' @rdname ExtractAmax
-ExtractAmax.formula <- function(form, x, tol = 0, ...){
+ExtractAmax_formula <- function(form, x, tol = 0, ...){
 
   ## reformat dataset according to formula
   x <- get_all_vars(form,x)
@@ -45,7 +46,7 @@ ExtractAmax.formula <- function(form, x, tol = 0, ...){
 
     ## split the site
     xlst <- split(x[,c(1,3)], x[,2])
-    site.value <- sapply(split(x[,2], x[,2]), '[',1)
+    site_value <- sapply(split(x[,2], x[,2]), '[',1)
 
     ## extract all annual maximums
     ans <- lapply(xlst, ExtractAmax, tol = tol, ...)
