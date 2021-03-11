@@ -10,10 +10,9 @@
 #'
 #' @export
 #'
-#' @return A dataframe consisting of:
+#' @return a dataframe
 #' \itemize{
-#' \item	 {Station} {StationID}
-#' \item   {Fav} {Favorite}
+#' \item	 {Station}  {StationID}
 #' \item	 {StationName} {Station Name}
 #' \item	 {HYDStatus} {Active or Discontinued}
 #' \item	 {Prov} {Province}
@@ -30,14 +29,14 @@
 #' \item	 {OperSched} {Continuous or Seasonal}
 #' \item	 {RealTime} {if TRUE/Yes}
 #' \item	 {RHBN} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Region} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Datum} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Operator} {if TRUE/Yes is in the reference hydrologic basin network}
+#' \item	 {Region} {Name of regional office}
+#' \item	 {Datum} {Elevation datum}
+#' \item	 {Operator} {Operator}
 #' }
 #' @examples \dontrun{
 #' filename <- "FavHydatStations.tb0"
-#' meta0 <- ch_get_ECDE_metadata(filename)
-#' meta1 <- ch_get_ECDE_metadata(filename, writefile = "study52_metadata.csv")}
+#' meta0 <- ch_get_ECDE_metadata (filename)
+#' meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
 
 ch_get_ECDE_metadata  <- function(filename, writefile=NULL){
   
@@ -45,7 +44,8 @@ ch_get_ECDE_metadata  <- function(filename, writefile=NULL){
   
   names (meta) <-c("Station", "Fav", "StationName", "HydStatus", "Prov", "Latitude", "Longitude", "DrainageArea",
                    "Years", "From", "To", "Reg.", "Flow", "Level", "Sed", "OperSched", "RealTime", "RHBN", "Region", "Datum", "Operator") 
-  meta <- meta[, c(1, 3:21)]
+  meta <- meta[,1:21]
+  meta <- subset(meta, select = -c(Fav) )
 
   if(!is.null(writefile))  
     write.csv(meta, writefile, row.names=FALSE)
