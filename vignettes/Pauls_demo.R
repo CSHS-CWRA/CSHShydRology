@@ -61,6 +61,6 @@ tr <- ch_flow_raster_trend(mdata$Date, mdata$Flow, step = 11, stationID = "04JD0
 
 ## ---- echo=TRUE, fig.width=6, fig.height=5-------------------------------
 
-cdata <- cut_block(mdata, "2000/01/01","2010/12/31")
+cdata <- ch_cut_block(mdata, "2000/01/01","2010/12/31")
 tr <- ch_flow_raster_trend(cdata$Date, cdata$Flow, step = 11, stationID = "04JD005")
 

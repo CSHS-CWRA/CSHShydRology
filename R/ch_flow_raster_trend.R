@@ -53,7 +53,7 @@
 #' @export 
 #' @seealso \code{\link{ch_flow_raster}}
 #' @examples
-#'  mdoy <- doys(W05AA008$Date)
+#'  mdoy <- ch_doys(W05AA008$Date)
 #'  mplot <- ch_flow_raster_trend(W05AA008$Date, W05AA008$Flow, step = 5, station = "05AA008")
 #'
 
@@ -62,7 +62,7 @@ ch_flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "
   l_disch <- expression(paste("m"^{3}, "/sec"))
   
   # get doy and year
-  doy_vals <- doys(date)
+  doy_vals <- ch_doys(date)
   Year <- doy_vals$year
   doy <- doy_vals$doy
   DOY <- paste("Period of Year (", step, " day)", sep = "")
@@ -84,7 +84,7 @@ ch_flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "
   Years <- c((nYear + 1):mYear) ## all years in range
   aYears <- unique(Year) ## actual years in range
 
-  mslice <- slice(doy, step) ###  create a factor for n day periods
+  mslice <- ch_slice(doy, step) ###  create a factor for n day periods
   myear <- as.factor(Year)
   fac <- list(myear, mslice)
 
@@ -176,14 +176,14 @@ ch_flow_raster_trend <- function(date, flow, step = 5, stationID = "", title = "
                   zlim=c(qmin,qmax),  xlab="", ylab="")  
   
   sstep <-round(periods/5)
-  speriod <- sub_set_Years(period,sstep)
+  speriod <- ch_sub_set_Years(period,sstep)
   graphics::axis(1, at=speriod$position,labels=speriod$label, cex=1.2)
   
-  nn<-1
-  if(length(Years)>=70) nn <- 10 
-  if(length(Years)>=40) nn <-  5
-  if(length(Years)>=20) nn <-  2     
-  sYears <- sub_set_Years(Years,nn)
+  nn <- 1
+  if (length(Years) >= 70) nn <- 10 
+  if (length(Years) >= 40) nn <-  5
+  if (length(Years) >= 20) nn <-  2
+  sYears <- ch_sub_set_Years(Years,nn)
   
   axis(2, at=sYears$position,labels=sYears$label, cex.axis=.7, las=1)
   mtext(DOY,side=1, line =2.2, cex=0.9)  

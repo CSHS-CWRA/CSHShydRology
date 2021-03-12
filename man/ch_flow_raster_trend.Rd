@@ -68,7 +68,7 @@ period and each year where data exist, and
 }
 }
 \examples{
- mdoy <- doys(W05AA008$Date)
+ mdoy <- ch_doys(W05AA008$Date)
  mplot <- ch_flow_raster_trend(W05AA008$Date, W05AA008$Flow, step = 5, station = "05AA008")
 
 }

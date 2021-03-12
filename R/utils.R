@@ -1,13 +1,16 @@
 #'@title  Generates the x axis for day of year
 #'
-#'@description  Used by \code{ch_regime_plot}. This code deals only with the axis adjustments. Day of water year needs to be done separately
-#'@param wyear Month to begin water year. Use \code{wyear = 1} for calendar year, \code{wyear = 10} for October 1.
+#'@description  Used by \code{ch_regime_plot}. This code deals only with the axis 
+#'adjustments. Day of water year needs to be done separately
+#'@param wyear Month to begin water year. Use \code{wyear = 1} for calendar year,
+#' \code{wyear = 10} for October 1.
 #'@author Paul Whitfield
 #'@keywords internal
 #'@import graphics
 #'
-axis_doy <- function(wyear = 1) {
-  cday <- c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397, 425, 456, 486, 517, 547, 578, 609, 639, 670)
+ch_axis_doy <- function(wyear = 1) {
+  cday <- c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397, 425, 
+            456, 486, 517, 547, 578, 609, 639, 670)
   ctxt <- c(
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
     "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov"
@@ -35,7 +38,14 @@ axis_doy <- function(wyear = 1) {
 
 #'@title Converts doy or dwy into a factor that is used to bin data
 #'
-#'@description Whenever the number of bins does not divide in 365 evenly a message is printed showing the number of bins created and the number of days added to the last bin. Simply put, \code{slice} is used to convert doy into a factor which is a number of bins per year. A year can be converted into any number of bins; slice does it based upon a number of days. So when you send it am array of doy it slices that into bins of the desired width. For example, if the step is 5. They 365/5 gives 73 bins and becasue of leap years there might be one extra day added every four years to the final bin.
+#'@description Whenever the number of bins does not divide in 365 evenly a 
+#'message is printed showing the number of bins created and the number of days 
+#'added to the last bin. Simply put, \code{ch_slice} is used to convert doy into a 
+#'factor which is a number of bins per year. A year can be converted into any 
+#'number of bins; slice does it based upon a number of days. So when you send it 
+#'an array of doy it slices that into bins of the desired width. For example, 
+#'if the step is 5. They 365/5 gives 73 bins and becasue of leap years there might 
+#'be one extra day added every four years to the final bin.
 #'
 #' To illustrate:
 #' doy:
@@ -47,8 +57,8 @@ axis_doy <- function(wyear = 1) {
 #' @param step Width of bin in days
 #'
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
-#' @return Returns a vector of bin numbers that is used as a factor for each day in the dataset
-#' prints a message indicating the handling of partial bins
+#' @return Returns a vector of bin numbers that is used as a factor for each day 
+#' in the dataset and prints a message indicating the handling of partial bins
 #' @export
 #' @keywords internal
 #'
@@ -57,10 +67,10 @@ axis_doy <- function(wyear = 1) {
 #' @examples
 #' doy <- c(1:365)
 #' # first 30 days are 1, 31-60 are 2 etc
-#' dice <- slice(doy, 30)
+#' dice <- ch_slice(doy, 30)
 #' plot(doy, dice)
 
-slice <- function(doy, step) {
+ch_slice <- function(doy, step) {
   limit <- floor(366 / step)
   period <- floor((doy + step - 1) / step)
 
@@ -73,13 +83,16 @@ slice <- function(doy, step) {
   llevels <- as.character(c(1:limit))
   period <- factor(period, levels = llevels)
 
-  print(paste("Bins =", limit, " The number of extra points in last bin is up to ", extra, " per year"))
+  print(paste("Bins =", limit, " The number of extra points in last bin is up to ", 
+              extra, " per year"))
   return(period)
 }
 
 #' @title Helper function for selecting points for an axis so not all are necessary
 #'
-#' @description Sub-samples a vector every n places. Many times there are so many years the labels on the plot overlap. This function returns the position and label for the subset. The function can be used on any type of simple array.
+#' @description Sub-samples a vector every n places. Many times there are so many 
+#' years the labels on the plot overlap. This function returns the position and label 
+#' for the subset. The function can be used on any type of simple array.
 #' @param years a vector of years
 #' @param n sample size
 #' @return a list containing:
@@ -88,18 +101,17 @@ slice <- function(doy, step) {
 #' 	\item{label}{array of labels}
 #' 	}
 #' @export
-#' @keywords internal
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #' @examples
 #' myears <- c(1900:2045)
-#' myears <- sub_set_Years(myears, 20)
+#' myears <- ch_sub_set_Years(myears, 20)
 #' myears
 #'
 #' a <- LETTERS
-#' my_alpha <- sub_set_Years(a, 5)
+#' my_alpha <- ch_sub_set_Years(a, 5)
 #' my_alpha
 
-sub_set_Years <- function(years, n) {
+ch_sub_set_Years <- function(years, n) {
   pts <- c(1:length(years))
   pts <- pts[1:(length(years) / n) * n]
 
@@ -112,9 +124,8 @@ sub_set_Years <- function(years, n) {
 
 #' @title Cuts a block in time from a time series
 #' 
-#' @description Allows the user to select a time period from a longer record. Could be used to
-#' get the same period of time from several stations for comparison.
-#'
+#' @description Allows the user to select a time period from a longer record. 
+#' Could be used to get the same period of time from several stations for comparison.
 #'
 #' @param dataframe A time series dataframe with a \code{Date} variable
 #' @param st_date Starting date as a string with the format \option{Y/m/d}
@@ -122,12 +133,11 @@ sub_set_Years <- function(years, n) {
 #' 
 #' @return Returns a data frame with the same columns as the original data frame
 #' @export
-#' @keywords internal
 #' @author Paul Whitfield
 #' @examples 
-#' subset <- cut_block(W05AA008, "2000/01/01", "2010/12/31")
+#' subset <- ch_cut_block(W05AA008, "2000/01/01", "2010/12/31")
 
-cut_block <- function(dataframe, st_date, end_date) {
+ch_cut_block <- function(dataframe, st_date, end_date) {
   
   st_date  <- as.Date(st_date, format = "%Y/%m/%d")
   if (!st_date >= min(dataframe$Date)) {
@@ -156,17 +166,19 @@ cut_block <- function(dataframe, st_date, end_date) {
 
 #' Stacks EC values
 #' 
-#' @description Converts data frames of Environment Canada year x month or month x day data to vectors
+#' @description Converts data frames of Environment Canada year x month or 
+#' month x day data to vectors.
 #' @param data_values Required. Data frame of year x month or month x day values.
 #' @param data_codes Required. Data frame of year x month or month x day data codes.
 #'
 #' @return Returns a data frame with two colums: the data values, and the data codes.
 #' @export
 #' @keywords internal
+#' @author Kevin Shook
 #'
-#' @examples \dontrun{df <- unstack_EC(data_values, data_codes)}
+#' @examples \dontrun{df <- ch_stack_EC(data_values, data_codes)}
 #' 
-stack_EC <- function(data_values = NULL, data_codes = NULL) {
+ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
   #check parameters
   if (is.null(data_values))  {
     stop("No specified data values")
@@ -190,9 +202,10 @@ stack_EC <- function(data_values = NULL, data_codes = NULL) {
 
 #' Days of year and water year
 #' 
-#' @description Converts a vector of dates into a dataframe with date, doy, dowy, year
+#' @description Converts a vector of dates into a dataframe with date, 
+#' doy (day of year), dowy (day of water year), year
 
-#' @param Date A vector of R dates.
+#' @param Date A vector of \R dates.
 #' @param mon The month starting the water year, default is 10 (October).
 #'
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
@@ -212,11 +225,11 @@ stack_EC <- function(data_values = NULL, data_codes = NULL) {
 #'
 #' @examples
 #' dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"), by = 1)
-#' output <- doys(dd)
+#' output <- ch_doys(dd)
 #' head(output)
 #'
 
-doys <- function(Date, mon = 10) # Date needs to be as.Date
+ch_doys <- function(Date, mon = 10) # Date needs to be as.Date
 {
   if (mon == 2) print("Currently restricted to water year starting March to October")
   
@@ -253,7 +266,7 @@ doys <- function(Date, mon = 10) # Date needs to be as.Date
   return(dowy)
 }
 
-#' Subset date by String
+#' Subsets dates by string
 
 #' @description Subsets a data frame by an specified date range, provided as
 #' a string by the \code{prd} argument. This function is meant to emulate the subsetting
@@ -265,16 +278,15 @@ doys <- function(Date, mon = 10) # Date needs to be as.Date
 #' @keywords date data subset
 #' @author Robert Chlumsky <rchlumsk@gmail.com>
 #' @export
-#' @keywords internal
 #' @examples{
 #' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"), by = 1)
 #' x <- rnorm(length(dd))
 #' y <- abs(rnorm(length(dd)))*2
 #' df <- data.frame("Date" = dd,x,y)
 #' prd <- "2011-10-01/2012-09-30"
-#' summary(date_subset(df,prd))}
+#' summary(ch_date_subset(df,prd))}
 
-date_subset <- function(df, prd) {
+ch_date_subset <- function(df, prd) {
   ss <- unlist(strsplit(prd, split = "/"))
   df <- df[df$Date >= as.Date(ss[1]) & df$Date <= as.Date(ss[2]), ]
   return(df)

@@ -177,7 +177,7 @@ ch_hydrograph_plot <- function(flows = NULL,
     || nchar(firstsplit[1]) != 10 || nchar(firstsplit[2]) != 10) {
       stop("Check the format of supplied period; two dates should be in YYYY-MM-DD format.")
     }
-    if (nrow(date_subset(flows, prd)) == 0) {
+    if (nrow(ch_date_subset(flows, prd)) == 0) {
       stop("prd does not overlap with flows; check prd and flows data frame.")
     }
   } else {
@@ -197,10 +197,10 @@ ch_hydrograph_plot <- function(flows = NULL,
   }
 
   # subset data
-  flows <- date_subset(flows, prd)
+  flows <- ch_date_subset(flows, prd)
 
   if (!(is.null(precip))) {
-    precip <- date_subset(precip, prd)
+    precip <- ch_date_subset(precip, prd)
     if (nrow(precip) == 0) {
       warning("precip data does not overlap with prd; check data and prd arguments.")
       precip <- NULL

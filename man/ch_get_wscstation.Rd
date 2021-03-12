@@ -36,7 +36,7 @@ Returns a data frame with 21 variables
 \item	 {Region} {if TRUE/Yes is in the reference hydrologic basin network}
 \item	 {Datum} {if TRUE/Yes is in the reference hydrologic basin network}
 \item	 {Operator} {if TRUE/Yes is in the reference hydrologic basin network}
-\item   {Station_lname} {Added field combines ID,Name,Province and if RHBN an * is added}
+\item   {Station_lname} {Added field combining ID, Name, Province and if RHBN an * is added}
 }
 }
 \description{
@@ -45,8 +45,9 @@ Retrieves station information for an individual Water Survey of Canada site,
 adds a text string at position 21 that combines key elements for a title.
 }
 \examples{
-df <- HYDAT_list
-s_info <- ch_get_wscstation("05BB001", df)
+data("HYDAT_list")
+HYDAT_list <- HYDAT_list
+s_info <- ch_get_wscstation("05BB001", HYDAT_list)
 title <- s_info[21]
 print(title)
 

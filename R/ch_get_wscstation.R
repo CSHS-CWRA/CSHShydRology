@@ -30,14 +30,15 @@
 #' \item	 {Region} {if TRUE/Yes is in the reference hydrologic basin network}
 #' \item	 {Datum} {if TRUE/Yes is in the reference hydrologic basin network}
 #' \item	 {Operator} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item   {Station_lname} {Added field combines ID,Name,Province and if RHBN an * is added}
+#' \item   {Station_lname} {Added field combining ID, Name, Province and if RHBN an * is added}
 #' }
 #'
 #' @export
 #'
 #' @examples
-#' df <- HYDAT_list
-#' s_info <- ch_get_wscstation("05BB001", df)
+#' data("HYDAT_list")
+#' HYDAT_list <- HYDAT_list
+#' s_info <- ch_get_wscstation("05BB001", HYDAT_list)
 #' title <- s_info[21]
 #' print(title)
 #'
@@ -56,7 +57,8 @@ ch_get_wscstation <- function(stnID, stn) {
     (rhbn <- "*")
   }
 
-  stninfo[21] <- paste(stninfo$Station, " - ", stninfo$StationName, " - ", stninfo$Prov, rhbn, sep = "")
+  stninfo[21] <- paste(stninfo$Station, " - ", stninfo$StationName, " - ", 
+                       stninfo$Prov, rhbn, sep = "")
   names(stninfo) [21] <- "Station_lname"
   return(stninfo)
 }

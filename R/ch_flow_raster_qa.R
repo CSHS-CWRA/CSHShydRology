@@ -82,11 +82,11 @@ ch_flow_raster_qa <- function(dframe, title = "") {
     zlim = c(qmin, qmax), xlab = "", ylab = ""
   )
 
-  sdoy <- sub_set_Years(doys, 15)
+  sdoy <- ch_sub_set_Years(doys, 15)
   axis(1, at = sdoy$position, labels = sdoy$label, cex = 1.2)
 
   if (length(lyears) >= 70) nn <- 10 else nn <- 5
-  sYears <- sub_set_Years(lyears, nn)
+  sYears <- ch_sub_set_Years(lyears, nn)
 
   axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
   mtext(DOY, side = 1, line = 2.2, cex = 0.9)

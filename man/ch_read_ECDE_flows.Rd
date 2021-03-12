@@ -20,8 +20,10 @@ Reads in a file WSC daily flows as returned from the program ECDataExplorer,
 and omits the last 3 lines as these contain the data disclaimer.
 }
 \examples{
-mfile <- system.file("extdata", "04JD005_Daily_Flow_ts.csv", package = "CSHShydRology")
-mdata <- ch_read_ECDE_flows(mfile)
+\dontrun{
+# Using a dummy file name as an example
+mfile <- "04JD005_Daily_Flow_ts.csv"
+mdata <- ch_read_ECDE_flows(mfile)}
 
 }
 \author{

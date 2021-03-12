@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(CSHShydRology)
+data("W05AA008")
 W05AA008 <- W05AA008
 ```
 

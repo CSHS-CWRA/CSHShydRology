@@ -138,7 +138,7 @@ ch_read_AHCCD_daily <- function(daily_file){
   month_str <- twodigitnums[month_num]
   
   # stack the data frames to vectors
-  stacked <- stack_EC(data_values, data_codes)
+  stacked <- ch_stack_EC(data_values, data_codes)
   
   # replicate months
   all_days <- rep.int(twodigitnums, row_count)

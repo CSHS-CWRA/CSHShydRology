@@ -3,6 +3,9 @@
 \name{ch_tidyhydat_ECDE_meta}
 \alias{ch_tidyhydat_ECDE_meta}
 \title{Creates an ECDE-like dataframe of metadata}
+\usage{
+ch_tidyhydat_ECDE_meta(stations)
+}
 \arguments{
 \item{stations}{A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005")}
 }
@@ -19,7 +22,7 @@ Returns a list with three items:
   \item {Prov - Province}
   \item {Latitude}
   \item {Longitude}
-  \item {DrainageArea - km²}
+  \item {DrainageArea - km\eqn{^2}{^2}}
   \item {Years - number of years with data}
   \item {From - Start Year}
   \item {To - End Year}
@@ -48,6 +51,9 @@ result <- ch_tidyhydat_ECDE_meta(stations)
 metadata <- result[[1]]
 version <- result[[2]]
 
+}
+\seealso{
+\code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>

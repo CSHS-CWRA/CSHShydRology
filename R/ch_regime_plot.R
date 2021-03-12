@@ -28,7 +28,7 @@ ch_regime_plot <- function(date, flow, title="", wyear = 1, colour = TRUE, mx = 
   ############################################################################# labels
   dmf <- expression(paste("Mean Daily Discharge m("^{3}, "/sec)"))
   # get doy and year
-  doy_vals <- doys(date)
+  doy_vals <- ch_doys(date)
   year <- doy_vals$year
   doy <- doy_vals$doy
   doys <- 366
@@ -76,7 +76,7 @@ ch_regime_plot <- function(date, flow, title="", wyear = 1, colour = TRUE, mx = 
   ######################################################################### plot start
   par(mar = c(3, 5, 3, 1))
   plot(doy1, regime[9, ], type = "p", xlab = "", xaxt = "n", col = colr[4], cex = 0.5, ylab = dmf, ylim = ylims, xlim = c(1, 366), main = title)
-  axis_doy(wyear)
+  ch_axis_doy(wyear)
   polygon(mdays, poly1, col = colr[1], border = colr[1])
   polygon(mdays, poly2, col = colr[2], border = colr[2])
   polygon(mdays, poly3, col = colr[3], border = colr[3])

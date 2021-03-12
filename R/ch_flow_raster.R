@@ -26,7 +26,7 @@ ch_flow_raster <- function(dframe, title="", rastercolours = c("lightblue", "cya
   flow <- dframe$Flow
   qcols <- colorRampPalette(rastercolours)
   # get doy and year
-  doy_vals <- doys(date)
+  doy_vals <- ch_doys(date)
   Year <- doy_vals$year
   doy <- doy_vals$doy
  
@@ -61,11 +61,11 @@ ch_flow_raster <- function(dframe, title="", rastercolours = c("lightblue", "cya
     zlim = c(qmin, qmax), xlab = "", ylab = ""
   )
 
-  sdoy <- sub_set_Years(doys, 10)
+  sdoy <- ch_sub_set_Years(doys, 10)
   axis(1, at = sdoy$position, labels = sdoy$label, cex = 1.2)
 
   if (length(lyears) >= 70) nn <- 10 else nn <- 5
-  sYears <- sub_set_Years(lyears, nn)
+  sYears <- ch_sub_set_Years(lyears, nn)
 
   axis(2, at = sYears$position, labels = sYears$label, cex.axis = 1.2, las = 1)
   mtext(DOY, side = 1, line = 2.2, cex = 0.9)

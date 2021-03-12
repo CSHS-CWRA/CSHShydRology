@@ -24,7 +24,7 @@
 #'   \item {Prov - Province}
 #'   \item {Latitude}
 #'   \item {Longitude}
-#'   \item {DrainageArea - km²}
+#'   \item {DrainageArea - km\eqn{^2}{^2}}
 #'   \item {Years - number of years with data}
 #'   \item {From - Start Year}
 #'   \item {To - End Year}

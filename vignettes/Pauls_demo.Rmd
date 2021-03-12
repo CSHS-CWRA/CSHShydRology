@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(CSHShydRology)
 library(graphics)
+data("HYDAT_list")
 HYDAT_list <- HYDAT_list
 fig_file <- system.file("extdata", "04JD005_h.PNG", package = "CSHShydRology")
 
@@ -194,13 +195,13 @@ step = 11 there is no longer a trend in the minimum.
 
 One application is to do this for different river for the same time period. To
 do that we needs blocks of data for the same time periods. That is where the
-function cut\_block gets used. It take a dataset and returns all records between
+function ch_cut\_block gets used. It take a dataset and returns all records between
 a start and end date.
 
 
 ```{r, echo=TRUE, fig.width=6, fig.height=5}
 
-cdata <- cut_block(mdata, "2000/01/01","2010/12/31")
+cdata <- ch_cut_block(mdata, "2000/01/01","2010/12/31")
 tr <- ch_flow_raster_trend(cdata$Date, cdata$Flow, step = 11, stationID = "04JD005")
 ```
 

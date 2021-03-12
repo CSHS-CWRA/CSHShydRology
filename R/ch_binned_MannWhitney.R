@@ -58,7 +58,7 @@ ch_binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05,
                                station_ID = "", station_name = "", 
                                variable = "discharge") {
   fail <- FALSE
-  mdoy <- doys(mdata$Date)
+  mdoy <- ch_doys(mdata$Date)
   doy <- mdoy$doy
   years <- mdoy$year
 
@@ -79,7 +79,7 @@ ch_binned_MannWhitney <- function(mdata, step, range1, range2, ptest = 0.05,
   aYears <- unique(years) ## actual years in range
 
 
-  mslice <- slice(doy, step) ###  create a factor for n day periods
+  mslice <- ch_slice(doy, step) ###  create a factor for n day periods
   myear <- as.factor(years)
   fac <- list(myear, mslice)
   qsliced <- array(dim = c(nYears, periods))

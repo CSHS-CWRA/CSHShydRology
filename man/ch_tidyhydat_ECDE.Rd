@@ -7,15 +7,16 @@
 ch_tidyhydat_ECDE(data)
 }
 \arguments{
-\item{filename}{Tibble of daily flows retrieved using \pkg{tidyhydat} function \code{hy_daily_flows}.}
+\item{data}{Tibble of daily flows retrieved using \pkg{tidyhydat} function \code{hy_daily_flows}.}
 }
 \value{
-A dataframe or a list of with formats consistent with datafiles from ECDE
+A dataframe or a list of flows with formats consistent with datafiles from ECDE
 }
 \description{
-Accessing daily flow data using \pkg{tidyhydat} is quick and efficient. However, it sometimes
-conflicts with other functions as \pkg{tidyhydat} changes variable names and some default entries. This function converts a tibble obtained 
-from a \pkg{tidyhydat} tibble to a dataframe with standard Environment and Climate Change Canada Data Explorer (ECDE) headings.
+Accessing daily flow data using \pkg{tidyhydat} is quick and efficient. However, it 
+sometimes conflicts with other functions as \pkg{tidyhydat} changes variable names and some default 
+entries. This function converts a tibble obtained from a \pkg{tidyhydat} tibble to a dataframe 
+with standard Environment and Climate Change Canada Data Explorer (ECDE) headings.
 }
 \examples{
 mdata <- hy_daily_flowsd(station_number=c("05CK004"))
@@ -27,8 +28,6 @@ str(mnew[[1]])
 str(mnew[[2]])
 str(mnew[[3]]) 
 #note the order is in increasing alphabetical order
-
-
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>

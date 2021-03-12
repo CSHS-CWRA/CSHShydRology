@@ -105,7 +105,7 @@ ch_read_AHCCD_monthly <- function(monthly_file = NULL) {
   data_values[data_values <= -999] <- NA_real_
 
   # stack the data frames to vectors
-  stacked <- stack_EC(data_values, data_codes)
+  stacked <- ch_stack_EC(data_values, data_codes)
 
   # replicate months
   all_months <- rep.int(twodigitnums, row_count)

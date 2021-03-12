@@ -15,9 +15,9 @@ ch_pmp_hershfield(
 \arguments{
 \item{val.max}{Vector with annual maximum.}
 
-\item{area.km}{Watershed area. This methodology is for Western US. By default, if the correction is not needed is recommended a value of 1.}
+\item{input.hrs}{PMP to be defined 24 hrs, 6 hrs or 1 hr.}
 
-\item{input.hr}{PMP to be defined 24 hrs, 6 hrs or 1 hr.}
+\item{area.km}{Watershed area. This methodology is for Western US. By default, if the correction is not needed is recommended a value of 1.}
 
 \item{number.of.obs.units}{How many observation units are implemented. ie Daily info for 24 hrs PMP is 1.}
 
@@ -27,21 +27,22 @@ ch_pmp_hershfield(
 List Elements:
 \itemize{
 \item values - maximum values used in the analysis
-\item n - ammount of years
+\item n - number of years
 \item correction - data.frame with the parameters and corrections for average and St. Dev.
 \item Km - corrections for rainfal duration and mean annual series (based on Figure 4.1)
 \item PMP - probably maximum precipitation estimated. This value does not include correction from Figure 4.7, which is aplicable to Western US.
 \item PMP.with.area.correction.for.West.US - PMP value corrected based on watershed area based on Figure 4.7
 }
-Please note that data from NA are removed in the analysis.
+Please note that data with the value \code{NA} are removed in the analysis.
 }
 \description{
 PMP Estimation based on Hershfield methodology from Daily values
 }
 \examples{
-## EX 1: PMP for the daily maximum values for a 24 hours PMP in an area of 200km2 (Optional for Western US).
+## EX 1: PMP for the daily maximum values for a 24 hours PMP in an area of 200km2 
+## (Optional for Western US).
 ## Random 30 number from 60 to 150
-PMP(val.max = runif(30,min = 60,150),input.hrs = 24,number.of.obs.unit = 1,area.km = 200,graphs = T)
+ch_pmp_hershfield(val.max = runif(30,min = 60,150),input.hrs = 24,number.of.obs.unit = 1,area.km = 200,graphs = T)
 }
 \references{
 [WMO] World Meteorological Organization (2009), Manual on Estimation of Probable Maximum Precipitation (PMP) WMO-No 1045
