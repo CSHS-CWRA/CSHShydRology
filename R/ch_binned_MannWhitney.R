@@ -10,7 +10,7 @@
 #' hydrology in Canada. Canadian Water Resources Journal 25: 19-65.
 
 #'
-#' @param mdata A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.
+#' @param DF A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.
 #' @param step An integer indicating the degree of smoothing eg. 1, 5, 11.
 #' @param range1 The first and last year of first period, as \code{c(first,last)}
 #' @param range2 The first and last year of second period as code{c(first,last)}
