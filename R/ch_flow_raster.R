@@ -37,7 +37,7 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   date <- as.Date(DF$Date, "%Y/%m/%d")
   
   Year <- as.numeric(format(date,"%Y"))
-  doy <- as.numeric(timeDate::dayOfYear(timeDate::as.timeDate(date)))
+  doy <- as.numeric(dayOfYear(as.timeDate(date)))
   
   mYear <- max(Year, na.rm = TRUE)
   nYear <- min(Year, na.rm = TRUE) - 1
@@ -88,7 +88,7 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   
   ######### scale bar and legend
   
-  fields::image.plot(
+  image.plot(
     zlim = c(qmin, qmax), col = qcols(9), legend.only = TRUE,
     legend.width = 4, legend.mar = 1,
     legend.shrink = 1.0,

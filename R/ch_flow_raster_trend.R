@@ -142,7 +142,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, stn = HYDAT_list
     
     
     t1 <- NA
-    t1 <- Kendall::MannKendall(qsliced[i, ])
+    t1 <- MannKendall(qsliced[i, ])
     tau[i] <- t1$tau
     prob[i] <- t1$sl
     
@@ -170,9 +170,9 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, stn = HYDAT_list
   
   tcol <- c("red", "black", "blue")
   
-  tmy   <- Kendall::MannKendall(ymed_n)
-  tminy <- Kendall::MannKendall(ymin_n)
-  tmaxy <- Kendall::MannKendall(ymax_n)
+  tmy   <- MannKendall(ymed_n)
+  tminy <- MannKendall(ymin_n)
+  tmaxy <- MannKendall(ymax_n)
   
   t1 <- ifelse(as.numeric(tmy[2])  > 0.05, 2, ifelse(tmy[1]  >= 0, 3, 1))
   t2 <- ifelse(as.numeric(tminy[2])> 0.05, 2, ifelse(tminy[1]>= 0, 3, 1))
@@ -258,7 +258,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, stn = HYDAT_list
   
   zr = c(qmin, qmax)
   
-  fields::image.plot(zlim = zr, 
+  image.plot(zlim = zr, 
              col=qcols(9),legend.only = TRUE,
              legend.width = 4.5, legend.shrink = 0.8,
              bigplot = c(0.1, 0.2, 0.1, 0.2),
