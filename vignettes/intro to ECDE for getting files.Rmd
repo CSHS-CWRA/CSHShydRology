@@ -1,0 +1,138 @@
+---
+title: "Getting data for project from ECDE - basics"
+author: "CSHS hydRology Team"
+date: "March 2021"
+output: rmarkdown::word_document
+
+vignette: >
+  %\VignetteIndexEntry{data source differences}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(CSHShydRology)
+library(tidyhydat)
+
+
+
+source("C:/R-packages/CSHShydrology/R/ch_tidyhydat_ECDE.R")
+source("C:/R-packages/CSHShydrology/R/ch_get_ECDE_metadata.R")
+source("C:/R-packages/CSHShydrology/R/ch_read_ECDE_flows.R")
+source("C:/R-packages/CSHShydrology/R/ch_tidyhydat_ECDE_meta.R")
+source("C:/R-packages/CSHShydrology/R/ch_qa_hydrograph.R")
+```
+
+
+
+Accessing data from ECDataExplorer
+
+Go to:
+https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/explorer.html
+
+ Install ECDE:
+
+To install ECDE to your computer, download the Microsoft Windows Installer from the ftp download site. Installation instructions and system requirements can be found in the ECDE Reference Manual.
+
+select “Download Environment Canada Data Explorer”
+select   ECDE_EDEC_2.2.9_32bit.msi
+
+File will download: takes ~12 minutes
+
+Also good idea to download the pdfs that are the manual, the database definition, and the release notes.
+
+Run the installer:
+
+Open ECDE
+
+
+Use the interface to select stations:  here stations from 08M  that have flow data and are RHBN are selected.
+
+
+```{r, echo=FALSE, fig.width=6, fig.height=3}
+
+
+knitr::include_graphics("Figure 1.png")
+```
+
+
+[Figure 1]
+
+
+Right click
+“select all stations”
+“Add to favourite station list”
+
+
+Then move to “file” on the top bar – select
+Then select “Save Favourite Station List”
+Save to a project folder as EnSim Table Data *.tb0
+
+
+Then move to Export and select “flow” “Daily”, and “TimeSeries and set ythe folder you want to place the data and “Okay”.
+
+
+```{r, echo=FALSE, fig.width=6, fig.height=3}
+
+
+knitr::include_graphics("Figure 2.png")
+```
+ 
+ 
+ [Figure 2]
+
+Now the metadata and files with daily flow time series are in a project folder.
+
+ 
+```{r, echo=FALSE, fig.width=6, fig.height=3}
+
+
+knitr::include_graphics("Figure 3.png")
+```
+
+[Figure 3]
+
+
+now, in R  convert the station text file to a dataframe 
+
+```{r, echo=TRUE,fig.width=6, fig.height=5}
+
+setwd("C:/p_ch_functions/sample data")
+
+HYDAT_list <- ch_get_ECDE_metadata("FavHydatStations.tb0")
+
+str(HYDAT_list)
+
+write.csv(HYDAT_list,"study_stations_metadata.csv", row.names=FALSE)
+
+```
+
+Now handle the station files in a loop.
+
+
+```{r, echo=TRUE,fig.width=6, fig.height=5}
+
+
+setwd("C:/p_ch_functions/sample data")
+
+Files <- list.files(pattern="_ts.csv")
+
+print(length(Files))
+
+par(mfrow=c(5,1))
+for(kk in 1:length(Files)){
+
+  
+  mdata <- ch_read_ECDE_flows(Files[kk])
+m_test <- ch_qa_hydrograph(mdata)
+
+}
+```
+
+Figure 
+
+
+P.H.Whitfield 

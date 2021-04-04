@@ -1,0 +1,142 @@
+---
+title: "Part 1. Accessing daily streamflow data from Water Survey of Canada's HYDAT Database"
+author: "CSHS hydRology Team"
+date: "March 2021"
+output: rmarkdown::word_document
+
+vignette: >
+  %\VignetteIndexEntry{data source differences}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(CSHShydRology)
+library(tidyhydat)
+
+
+
+#source("C:/R-packages/CSHShydrology/R/ch_tidyhydat_ECDE.R")
+#source("C:/R-packages/CSHShydrology/R/ch_get_ECDE_metadata.R")
+#source("C:/R-packages/CSHShydrology/R/ch_read_ECDE_flows.R")
+#source("C:/R-packages/CSHShydrology/R/ch_tidyhydat_ECDE_meta.R")
+#source("C:/R-packages/CSHShydrology/R/ch_qa_hydrograph.R")
+```
+
+
+
+One of the key opportunities for users of the R-package __CSHShydRology__ is that users can tap into the computer functions that are used by other professionals across Canada.  Many of the functions have been developed by practitioners and researchers and are shared so that the entire community can perform analysis and interpretation based on the current state of the art.  
+
+The current version of __CSHShydRology__ can be obtained from GitHub at https://github.com/CSHS-CWRA/CSHShydRology. It is planned to release the package through CRAN (https://cran.r-project.org/) later this year.
+
+
+## How can you access Canada's hydrometric data using R? 
+
+This article, which is written using __Rmarkdown__ (cran.r-project.org/web/packages/rmarkdown/vignettes/rmarkdown.html), shows how to obtain daily flow data from the primary source the HYDAT database. This database is updated quarterly which and that creates opportunities and risks. 
+
+There are two main approaches to doing obtaining the data:.
+
+1. Access using the r-package __tidyhydat__.  
+
+2. Access data using ECDataExplorer (ECDE) by saving data files to a local directory.
+
+You can obtain ECDataExplorer at: https://www.canada.ca/en/environment-climate-change/services/water-overview/quantity/monitoring/survey/data-products-services/explorer.html
+
+One always needs to be careful when using data from these types of sources.  Sometimes, changes are made at the source and code developed for one version could be impacted by those changes.
+
+You need to be aware that the HYDAT database is periodically updated and if your work or project depends on the same data being available you may need to approach this differently.  HYDAT is actually several linked databases and many parts change over time (quarterly) and provide a ‘snapshot’ for the current version. 
+
+There are many options, so it is important to know who you are and what fits your needs. This is simply one important form of fitness for purpose. Is it important that you have the same data each time for your project? 
+
+Note that all __CSHShydRology__ functions start with  "ch_"
+
+
+## __tidyhydat__
+
+__tidyhydat__ has wide functionality and there are vignettes describing various ways to access data.  __tidyhydat__ can also be used to access real time streamflow data.  It is possible to search quite widely using station names, numbers, and provinces.  I use __tidyhydat__ to access data for sites where I have an interest in something that I consider 'one-off' or short-term and I do not feel the need to have a static dataset.
+
+One of the many useful features of __tidyhydat__ is you can retrieve daily flow data for a single station or a list of stations, as shown by these examples.  
+
+
+```{r, echo=TRUE}
+
+
+
+##  hy_daily_flows is a tidyhydat function to retrieve daily flows 
+
+m_thydat <- hy_daily_flows(station_number =c("05CK004"))
+str(m_thydat)
+
+
+stations  <- c("05CK004","05CK003","05BB001")
+
+m_thydat_list <- hy_daily_flows(station_number=stations)
+str(m_thydat_list)
+
+```
+What __tidyhydat__ returns is a tibble.  Tibbles are a modern take on dataframes and have some useful features, but since they have a different structure to a dataframe they need a bit of tweaking for use in some of the function in __CSHShydRology__.  
+__CSHShydRology___ has a function that uses __tidyhydat__ to get the flow data but returns the data in the same format as from ECDE. If there are multiple stations,
+values are returned in a list of dataframes.
+
+There are several changes made in the data structure.  The variable names are changed as are some contents.  In ECDE, PARAM value 1 is Flow and 2 is Level; in __tidyhydat__ these are explicitly named. In ECDE, the data quality variable SYM can be "", "A", "B", "D", or "E" in __tidyhydat__ these are changed to NA, "A", "B", "D", or "E".
+
+The function ch_tidyhydat_ECDE makes the resulting dataframe from __tidyhydat__ match those from ECDE.
+
+```{r, echo=TRUE}
+
+
+th_ECDE <-ch_tidyhydat_ECDE(m_thydat)
+str(th_ECDE)
+
+mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))
+m_list <- ch_tidyhydat_ECDE(mdata)
+ str(m_list[[1]]) 
+ str(m_list[[2]])
+ str(m_list[[3]]) 
+#'#note the order of the list is in increasing alphabetical station_number order
+
+ t04CK004 <-m_list[[2]]
+
+```
+
+ 
+
+ECDataExplorer provides much of the same access as __tidyhydat__ outside of the R environment.  It too is subject to the quarterly updates but it has a graphical user interface and lets the user explore the database in many ways.  As a researcher I use it to select stations that meet the criteria of my project.  I can save the "tombstone" data (i.e. station metadata) for all the stations that I select, and I can also bulk download the hydrometric data in separate files. This is more cumbersome that doing it in __tidyhydat__, but since repeatability and reproducibility are important to my work I prefer having the station data files and the tombstone information for the day I made the selection. That way, I have files that are ‘fixed’ in time. I store these in a project directory and these are never changed.  
+
+
+
+In the following I access a single station file with daily flow data from ECDE from the working directory.
+
+```{r, echo=TRUE}
+
+
+url  <- "https://zenodo.org/record/4612007/files/04JD005_Daily_Flow_ts.csv?download=1"
+url1 <- "https://zenodo.org/record/4612007/files/05CK004_Daily_Flow_ts.csv?download=1"
+
+#read the data file and name it e04JD005
+
+e04JD005 <- ch_read_ECDE_flows(url)
+
+
+e05CK004<- ch_read_ECDE_flows(url1)
+
+str(e05CK004)
+
+
+
+
+```
+So, the data from __tidyhydat__ [21641] is longer than from ECDE [21275] because they originated in different versions of HYDAT.
+
+__CSHShydRology__ has many functions that help us work with these data however you choose to access them.
+
+In Part 2, we will show how to access the station metadata that we might want to include in plots. 
+
+
+_Other articles in this series are available on the CSHS GreyJay website: URL._
+
+
+P.H.Whitfield  
