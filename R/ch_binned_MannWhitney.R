@@ -151,4 +151,3 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   
   return(result)
 }
-

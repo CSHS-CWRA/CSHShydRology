@@ -2,7 +2,7 @@
 #'   
 #' @description   creates a simple plot comparing two decades from the output of ch_binned_MannWhitney
 #'   
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #' 
 #' @param mplot- output from the function ch_binned_MannWitney
 #

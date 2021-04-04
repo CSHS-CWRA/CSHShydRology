@@ -60,7 +60,8 @@ ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1,
   
   colr <- c("gray70", "gray50", "gray30", "black", "gray10")
   if (colour == TRUE) colr <- c("gray", "cyan", "deepskyblue2", "red", "darkblue")
-  ############################################################################ create table of year of daily discharge
+  
+  ########################################################################## create table of year of daily discharge
   for (k in 1:length(year)) {
     q[(year[k] - min_year), doy[k]] <- flow[k]
   }

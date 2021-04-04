@@ -2,7 +2,7 @@
 #'
 #' @description Sub-samples a vector every n places. Many times there are so many 
 #' years the labels on the plot overlap. This function returns the position and label 
-#' for the subset. The function can be used on any type of simple array.
+#' for the subset. The function can be used on any type of simple array. 
 #' @param years a vector of years
 #' @param n sample size
 #' @return a list containing:

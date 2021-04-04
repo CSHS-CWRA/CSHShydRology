@@ -41,7 +41,7 @@ ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
   return(df)
 }
 
-
+ 
 #' Subsets dates by string
 
 #' @description Subsets a data frame by an specified date range, provided as

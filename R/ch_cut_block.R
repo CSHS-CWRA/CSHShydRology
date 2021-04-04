@@ -5,7 +5,7 @@
 #' @param {st_date} starting date format is \%Y/\%m/\%d
 #' @param {end_date} ending date format is \%Y/\%m/\%d
 #' @export
-#' @author Paul Whitfield 
+#' @author Paul Whitfield  
 #' @examples
 #' subset <- ch_cut_block(W05AA005,"2000/01/01", "2010/12/31")
 

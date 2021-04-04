@@ -9,7 +9,7 @@
 #'  
 #' @param {wyear}{wyear=1 for calendar year, 10 for October 1}
 #' 
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #' @seealso \code{\link{ch_regime_plot}}
 #' @export
 

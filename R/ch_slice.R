@@ -7,7 +7,7 @@
 #'factor which is a number of bins per year. A year can be converted into any 
 #'number of bins; slice does it based upon a number of days. So when you send it 
 #'an array of doy it slices that into bins of the desired width. For example, 
-#'if the step is 5. They 365/5 gives 73 bins and becasue of leap years there might 
+#'if the step is 5. They 365/5 gives 73 bins and because of leap years there might 
 #'be one extra day added every four years to the final bin.
 #'
 #' To illustrate:
