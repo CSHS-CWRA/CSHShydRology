@@ -8,9 +8,9 @@
 #' In that case, the x axis represents a normal distribution. 
 #' 
 #'
-#' @param DF - dataframe of daily flows from \code{ch_read_ECDE_flows}
-#' @param normal If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE
-#' @param gust : if \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added
+#' @param {DF} - dataframe of daily flows from \code{ch_read_ECDE_flows}
+#' @param {normal} If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE
+#' @param {gust} If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added
 #'
 #' @return Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
 #'

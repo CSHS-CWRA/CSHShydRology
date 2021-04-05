@@ -4,20 +4,27 @@
 \alias{ch_regime_plot}
 \title{Plots the regime of daily streamflows}
 \usage{
-ch_regime_plot(date, flow, title = "", wyear = 1, colour = TRUE, mx = 1)
+ch_regime_plot(
+  DF,
+  wyear = 1,
+  colour = TRUE,
+  mx = 1,
+  quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05)
+)
 }
 \arguments{
-\item{date}{Vector of dates}
+\item{{DF}}{dataframe of daily flow data}
 
-\item{flow}{Vector of daily streamflows. Must be the same length as \code{date}}
+\item{{quant}}{quantiles; default is quant= c(0.95,0.9,0.75,0.5,0.25,0.1,0.05).  Can be changed
+but the length must be 7 and the 4th value must be 0.5 (median)}
 
-\item{title}{Text to be used as the graph title}
+\item{{wyear}}{set wyear = 10 for October water year, = 1 for calendar year, can be any month}
 
-\item{wyear}{Beginning month of water year. USe \code{wyear = 10} for October water year, \code{wyear = 1} for calendar year}
+\item{{colour}}{if \code{TRUE} plot is in colour, if \code{FALSE} plot is grayscale.}
 
-\item{colour}{Logical. If \code{TRUE} plot is in colour, if \code{FALSE} plot is grayscale}
-
-\item{mx}{The maximum y value; if \code{mx = 1} then maximum value of the flows is used to set the maximum y-axis value. The value of \code{mx} can be specified to produce a series of plots with the same scale.}
+\item{{mx}}{set the maximum y value; if = 1 then maximum value of the flows is used to set 
+the y-axis value. The value of \code{mx} can be specified to produce a series of plots with the 
+same scale.}
 }
 \value{
 No value is returned; a standard \R graphic is created.
@@ -28,11 +35,12 @@ day of the year and the maximum and minimum. Parameters can be set to change col
 to allow plots of same scale to be produced.
 }
 \examples{
-ch_regime_plot(W05AA008$Date, W05AA008$Flow, title = "05AA008", colour = TRUE, wyear = 10)
+data(W05AA008)
+ch_regime_plot(W05AA008, colour = TRUE, wyear = 1)
 
 }
 \references{
-MacCulloch, G. and P. H. Whitfield (2012). Towards a Stream Classification System
+MacCulloch, G. and P. H. Whitfield (2012). Towards a Stream Classification System 
 for the Canadian Prairie Provinces. Canadian Water Resources Journal 37: 311-332.
 }
 \author{

@@ -7,7 +7,7 @@
 #' This routine deals only with the axis adjustments.  Day of water year needs to be done 
 #' separately
 #'  
-#' @param {wyear}{wyear=1 for calendar year, 10 for October 1}
+#' @param {wyear} wyear = 1 for calendar year, = 10 for October 1.
 #' 
 #' @author Paul Whitfield 
 #' @seealso \code{\link{ch_regime_plot}}

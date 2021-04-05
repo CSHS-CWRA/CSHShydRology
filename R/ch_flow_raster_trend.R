@@ -54,7 +54,7 @@
 #' @importFrom graphics axis legend par plot points polygon
 #' @export 
 #' @seealso \code{\link{ch_flow_raster}}
-#' @reference Whitfield, P. H., Kraaijenbrink, P. D. A., Shook, K. R., and Pomeroy, J. W. 2021.
+#' @references Whitfield, P. H., Kraaijenbrink, P. D. A., Shook, K. R., and Pomeroy, J. W. 2021.
 #'  The Spatial Extent of Hydrological and Landscape Changes across the Mountains and Prairies 
 #'  of Canada in the Mackenzie and Nelson River Basins Based on data from a Warm Season Time Window, 
 #'  Hydrology and Earth Systems Sciences Discussions.

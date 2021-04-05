@@ -4,12 +4,9 @@
 \alias{ch_qa_hydrograph}
 \title{Plots a hydrograph with the data quality symbols and prints a report}
 \usage{
-ch_qa_hydrograph(data, sdate = NULL, edate = NULL, cts = TRUE, rescale = FALSE)
+ch_qa_hydrograph(DF, sdate = NULL, edate = NULL, cts = TRUE, rescale = FALSE)
 }
 \arguments{
-\item{data}{Data frame retrieved from ECDataExplorer as returned by the function 
-\code{ch_read_ECDE_flows}.}
-
 \item{sdate}{Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}}
 
 \item{edate}{Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}}
@@ -19,6 +16,9 @@ counts are not shown, as in ECDE.}
 
 \item{rescale}{If \code{FALSE} (the default), the y-axis scaling is determined by the time 
 period. If \code{TRUE} then determined by the whole dataset.}
+
+\item{{DF}}{Data frame retrieved from ECDataExplorer as returned by the function 
+\code{ch_read_ECDE_flows}.}
 }
 \value{
 Produces a plot and returns a list that contains the station name, start and end dates provided, the number of 
@@ -26,7 +26,7 @@ data points and a summary of the SYMs.
 }
 \description{
 Plots a hydrograph of a WSC daily data file read from from ECDataExplorer (ECDE). 
-The hydrograph shows individual days with quality symbols [SYM] 
+The hydrograph shows individual days with data quality symbols [SYM] 
 in colour and counts cases of each and reports them in the legend. The colours and symbols 
 are those produced by ECDataExplorer. The option is to provide start and end dates to show 
 only part of the time period for which data exists and the plot is annotated to indicate this.
@@ -36,5 +36,5 @@ m_test <- ch_qa_hydrograph(W05AA008)
 m_test <- ch_qa_hydrograph(W05AA008, sdate="1980-01-01", edate="1999-12-31")
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }

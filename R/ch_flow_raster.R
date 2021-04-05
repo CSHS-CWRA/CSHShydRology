@@ -18,7 +18,7 @@
 #' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
 #'
 #' @examples
-#" ch_flow_raster(W05AA008)
+#' ch_flow_raster(W05AA008)
 
 
 ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red")) {

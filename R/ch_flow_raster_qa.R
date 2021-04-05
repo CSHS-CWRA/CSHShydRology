@@ -9,21 +9,23 @@
 #' @description {
 #' Produces a raster plot: years against day of year, showing all the data flags
 #' \describe{
-#' \item{A (Partial)}{green}
-#' \item{B (Backwater)}{blue}
-#' \item{D (Dry)}{yellow}
-#' \item{E (Estimated)}{red}
+#' \item{A}{(Partial) green}
+#' \item{B}{(Backwater) blue}
+#' \item{D}(Dry) yellow}
+#' \item{E}{(Estimated) red}
+#' }
 #' }
 #' @param DF - a dataframe of daily streamflow read by ch_read_ECDE_flows
-#' @seealso \code{\link{ch_read_ECDE_flows}
+#' @seealso \code{\link{ch_read_ECDE_flows}}
 #' 
 #' @return No value is returned; a standard R graphic is created.
 #' 
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
-#' @import graphics grDevices fields
-#' @importFrom timeDate dayOfYear as.timeDate
-#' @importFrom fields image.plot
-#' @export
+#' 
+#' @author Paul Whitfield 
+#' @import graphics grDevices 
+#' @importFrom timeDate dayOfYear as.timeDate 
+#' @importFrom fields image.plot 
+#' @export 
 #' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster}}
 #'
 

@@ -2,64 +2,57 @@
 % Please edit documentation in R/ch_flow_raster_trend.R
 \name{ch_flow_raster_trend}
 \alias{ch_flow_raster_trend}
-\title{Raster plot and simple trends of observed streamflows}
+\title{Raster plot and simple trends of observed streamflows by periods}
 \usage{
 ch_flow_raster_trend(
-  date,
-  flow,
+  DF,
   step = 5,
-  stationID = "",
-  title = "",
   missing = FALSE,
+  stn = HYDAT_list,
   colours = c("lightblue", "cyan", "blue", "slateblue", "darkblue", "red")
 )
 }
 \arguments{
-\item{date}{A numeric vector of the date as an \R date. Must be same length as the \code{flow}}
+\item{DF}{- dataframe of daily flow data as read by ch_read_ECDE_flows}
 
-\item{flow}{A numeric vector of daily streamflows}
+\item{step}{- a number indicating the degree of smoothing eg. 1, 5, 11.}
 
-\item{step}{An integer indicating the degree of smoothing eg. 1, 5, 11.}
+\item{missing}{If \code{FALSE} years with missing data are excluded. 
+If \code{TRUE} partial years are included.}
 
-\item{stationID}{Station ID number, e.g. "05BB001". This value is optional, but is included in the output to help you identify the results.}
-
-\item{title}{Title of the plot}
-
-\item{missing}{If \code{FALSE} years with missing data are excluded. If \code{TRUE} partial years
-are included.}
-
-\item{colours}{A vector of colours used for the raster plot. The default is \code{c("lightblue","cyan", "blue", "slateblue", "darkblue", "red")}.}
+\item{{colours}}{A vector of colours used for the raster plot. 
+The default is \code{c("lightblue","cyan", "blue", "slateblue", "darkblue", "red")}.}
 }
 \value{
 a list containing:
 \describe{
-	\item{stationID}{Station ID eg 05BB001}
-	\item{missing}{How missing values were used FALSE=used, TRUE=removed}
-	\item{step}{number of days in a bin}
-	\item{periods}{number of periods in a year}
-	\item{period}{period numbers i.e. 1:365/step}
-	\item{bins}{values for each period in each year}
-	\item{med_period}{median for each period}
-	\item{max_period}{maximum for each period}
-	\item{min_period}{minimum for each period}
-	\item{tau_period}{Kendall's Tau for each period}
-	\item{prob_period}{probability of Tau for each period}
-	\item{year}{years spanning the data}
-	\item{median_year}{median bin for each year}
-	\item{max_year}{maximum bin for each year}
-	\item{min_year}{minimum bin for each year}
-	\item{tau_median_year}{value of tau and probability for median_year}
-	\item{tau_maximum_year}{value of tau and probability for max_year}
-	\item{tau_minimum_year}{value of tau and probability for min_year}
-	}
+  \item{stationID}{Station ID eg. 05BB001}
+  \item{missing}{How missing values were used FALSE = used, TRUE = removed}
+  \item{step}{number of days in a bin}
+  \item{periods}{number of periods in a year}
+  \item{period}{period numbers i.e. 1:365/step}
+  \item{bins}{values for each period in each year}
+  \item{med_period}{median for each period}
+  \item{max_period}{maximum for each period}
+  \item{min_period}{minimum for each period}
+  \item{tau_period}{Kendall's Tau for each period}
+  \item{prob_period}{probability of Tau for each period}
+  \item{year}{years spanning the data}
+  \item{median_year}{median bin for each year}
+  \item{max_year}{maximum bin for each year}
+  \item{min_year}{minimum bin for each year}
+  \item{tau_median_year}{value of tau and probability for annual median}
+  \item{tau_maximum_year}{value of tau and probability for annual maximum}
+  \item{tau_minimum_year}{value of tau and probability for annual minimum}
+  }
 }
 \description{
-Creates a raster plot plus trend plots for day of year, and over time which may be binned by a number of days
-}
-\details{
+Creates a raster plot plus trend plots for day of year, and over time
+which may be binned by a number of days.
+
 The plot contains four panels based upon binned data:
 \enumerate{
-\item The annual maximum, minimum, and median dlow with a trend test number
+\item The annual maximum,minimum,and median flow with a trend test
 for each period: red arrows indicate decreases, blue arrows indicate increases.
 \item The scale bar for the colours used in the raster plot,
 \item The rasterplot with a colour for each
@@ -67,10 +60,19 @@ period and each year where data exist, and
 \item A time series plot of the minimum, median, and maximum annual bin values. If there is no trend (p > 0.05) the points are black. Decreasing trend are in red, increasing trends are in blue..
 }
 }
+\details{
+Creates a streamflow raster plot with simple trends of WSC observations for binned data.
+}
 \examples{
- mdoy <- ch_doys(W05AA008$Date)
- mplot <- ch_flow_raster_trend(W05AA008$Date, W05AA008$Flow, step = 5, station = "05AA008")
+ dd <- W05AA008
+ mplot <- raster_trend(dd, step=5)
 
+}
+\references{
+Whitfield, P. H., Kraaijenbrink, P. D. A., Shook, K. R., and Pomeroy, J. W. 2021.
+ The Spatial Extent of Hydrological and Landscape Changes across the Mountains and Prairies 
+ of Canada in the Mackenzie and Nelson River Basins Based on data from a Warm Season Time Window, 
+ Hydrology and Earth Systems Sciences Discussions.
 }
 \seealso{
 \code{\link{ch_flow_raster}}

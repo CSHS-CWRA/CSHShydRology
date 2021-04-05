@@ -58,7 +58,7 @@
 #' range1 <- c(1970,1979)
 #' range2 <- c(1990,1999)
 #' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
-#'
+#' }
 
 ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge") {
   

@@ -5,30 +5,24 @@
 \title{Compares two time periods of data using Mann-Whitney test}
 \usage{
 ch_binned_MannWhitney(
-  mdata,
+  DF,
   step,
   range1,
   range2,
   ptest = 0.05,
-  station_ID = "",
-  station_name = "",
   variable = "discharge"
 )
 }
 \arguments{
-\item{mdata}{A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.}
+\item{DF}{A data frame of hydrometric data from \code{ch_read_ECDE_flows}}
 
 \item{step}{An integer indicating the degree of smoothing eg. 1, 5, 11.}
 
 \item{range1}{The first and last year of first period, as \code{c(first,last)}}
 
-\item{range2}{The first and last year of second period as code{c(first,last)}}
+\item{range2}{The first and last year of second period, as \code{c(first,last)}}
 
-\item{ptest}{The significance level. The default is \code{0.05}.}
-
-\item{station_ID}{Optional ID of station.}
-
-\item{station_name}{Optional name of station.}
+\item{ptest}{The significance level default is \code{0.05}.}
 
 \item{variable}{Name of variable. Default is \option{discharge}}
 }
@@ -54,25 +48,32 @@ Returns a list containing:
 	}
 }
 \description{
-It bins data based upon a specified size, extracting data for two time periods
-and tests for change between two such periods. Result can be passed to 
-\code{ch_polar_plot} for visualization
+Compares two time periods of data using Mann-Whitney.
+
+Data are binned based upon a bin size, extracting data for two time periods 
+and tests for change between two such periods
+result can be passed to \code{ch_polar_plot} or \code{ch_decades_plot} 
+for visualization
+}
+\details{
+Performs a binned Mann-Whitney test on periods of a defined length.
 }
 \examples{
 \dontrun{
-# fails due to missing data in both periods
+data(HYDAT_list)
+data(W05AA008)
+#fails due to missing data in both periods
 range1 <- c(1960,1969)
 range2 <- c(1990,1999)
-b_MW <- ch_binned_MannWhitney(W05AA008, step=5, range1, range2, ptest=0.05)}
+b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
 
 range1 <- c(1970,1979)
 range2 <- c(1990,1999)
-b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, 
-ptest = 0.05, station_ID = "05AA008", station_name= "Crowsnest River at Frank")
-
+b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
+}
 }
 \references{
-Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and
+Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and 
 hydrology in Canada. Canadian Water Resources Journal 25: 19-65.
 }
 \seealso{

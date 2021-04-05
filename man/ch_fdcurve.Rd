@@ -4,42 +4,44 @@
 \alias{ch_fdcurve}
 \title{Plot Flow Duration Curve}
 \usage{
-ch_fdcurve(flow, title = "", normal = FALSE, gust = TRUE)
+ch_fdcurve(DF, normal = FALSE, gust = TRUE)
 }
 \arguments{
-\item{flow}{Vector containing daily flows}
+\item{{DF}}{- dataframe of daily flows from \code{ch_read_ECDE_flows}}
 
-\item{title}{The plot title}
+\item{{normal}}{If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE}
 
-\item{normal}{If \code{normal = TRUE} then exceedance probability is normalized. Default is \code{FALSE}}
-
-\item{gust}{If \code{TRUE} (the default), adds the curves from Gustard et al 1992}
+\item{{gust}}{If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added}
 }
 \value{
-Plots the flow durations and returns a data frame containing the exceedance probabilty and flow
+Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
 }
 \description{
-A flow duration curve is a plot of flow magnitude against exceedance probability.
-The plot may contain the Gustard Curves or they can be omitted. The default is for
-curves to be plotted against probability, but an option is to plot against the normalized
-exceedance probability. In that case, the x axis represents a normal distribution.
+A flow duration curve is a plot of flow magnitude against exceedance probability. 
+The plot may contain the Gustard Curves or they can be omitted. The default is for curves to be 
+plotted against probability, but an option is to plot against the normalized exceedance probability. 
+In that case, the x axis represents a normal distribution.
+}
+\details{
+Create a Flow Duration Curve based upon Observations.
 }
 \examples{
-flow <- W05AA008$Flow
+data(W05AA008)
 # plot with Gustard 1992 curves
-test <- ch_fdcurve(flow, title = "Station", normal = FALSE, gust = TRUE)
-
+test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
 # plot with normalized exceedance probability
-test <- ch_fdcurve(flow, title = "Station", normal = TRUE, gust = FALSE)
+test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
 }
 \references{
-Gustard, A., A. Bullock, and J.M. Dixon. 1992. Low flow estimation in the United Kingdom.
+Gustard, A., A. Bullock, and J.M. Dixon. 1992. Low flow estimation in the United Kingdom. 
 Institute of Hydrology, 292. Wallingford: Institute of Hydrology.
 
-Vogel, R.M., and N.M. Fennessy. 1994. Flow-duration curves. I: New Interpretation and
+Vogel, R.M., and N.M. Fennessy. 1994. Flow-duration curves. I: New Interpretation and 
 confidence intervals. Journal of Water Resources Planning and Management ASCE 120:485-504.
+
+Vogel, R.M., and N.M. Fennessy. 1995. Flow duration curves II: A review of applications 
+in water resources planning. Water Resources Bulletin 31:1030-9.
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }
-\keyword{plot}
