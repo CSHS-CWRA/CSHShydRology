@@ -8,13 +8,13 @@
 #' In that case, the x axis represents a normal distribution. 
 #' 
 #'
-#' @param {DF} - dataframe of daily flows from \code{ch_read_ECDE_flows}
-#' @param {normal} If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE
-#' @param {gust} If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added
-#'
+#' @param DF - dataframe of daily flows from \code{ch_read_ECDE_flows}
+#' @param normal If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE
+#' @param gust If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added
+#' @param metadata dataframe of metadata, defaults to HYDAT_list
 #' @return Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
 #'
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #' @references 
 #' Gustard, A., A. Bullock, and J.M. Dixon. 1992. Low flow estimation in the United Kingdom. 
 #' Institute of Hydrology, 292. Wallingford: Institute of Hydrology.
@@ -27,6 +27,7 @@
 #'
 #' @export 
 #' @examples
+#' data(HYDAT_list)
 #' data(W05AA008)
 #' # plot with Gustard 1992 curves
 #' test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
@@ -34,12 +35,12 @@
 #' test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
 #
 
-ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE) {
+ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = HYDAT_list) {
   
   flow <- DF$Flow
   
   station <- DF[1,1]
-  sname <- ch_get_wscstation(station, stn=HYDAT_list)
+  sname <- ch_get_wscstation(station, stn=metadata)
   title <- sname$Station_lname
 
   ## load the values for the Gustard curves for %mean flow for Type Curves Gustard et al 1992.

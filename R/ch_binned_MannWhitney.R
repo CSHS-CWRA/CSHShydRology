@@ -60,10 +60,10 @@
 #' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
 #' }
 
-ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge") {
+ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", metadata = HYDAT_list) {
   
   fail <- FALSE
-  mdoy <- doys(DF$Date)
+  mdoy <- ch_doys(DF$Date)
   doy <- mdoy$doy
   years <- mdoy$year
   flow <- DF$Flow
@@ -140,9 +140,9 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   names(series) <- c("period", "median_1", "median_2", "MW_U", "p_value",
                      "s_code")
   
-  sname <- ch_get_wscstation(sID, stn=HYDAT_list)
+  sname <- ch_get_wscstation(sID, stn = metadata)
   
-  result <- list(sID, sname[21], variable, step, range1,range2,ptest, fail, binmethod, testmethod,series)
+  result <- list(sID, sname[21], variable, step, range1, range2, ptest, fail, binmethod, testmethod, series)
   
   names(result) <- c(
     "StationID", "Station_lname", "variable", "bin_width", "range1", "range2",

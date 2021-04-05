@@ -5,12 +5,13 @@
 #' to allow plots of same scale to be produced.
 #'
 #'
-#' @param {DF}  dataframe of daily flow data
-#' @param {quant} quantiles; default is quant= c(0.95,0.9,0.75,0.5,0.25,0.1,0.05).  Can be changed
+#' @param DF  dataframe of daily flow data
+#' @param quant quantiles; default is quant= c(0.95,0.9,0.75,0.5,0.25,0.1,0.05).  Can be changed
 #' but the length must be 7 and the 4th value must be 0.5 (median)
-#' @param {wyear} set wyear = 10 for October water year, = 1 for calendar year, can be any month
-#' @param {colour} if \code{TRUE} plot is in colour, if \code{FALSE} plot is grayscale.
-#' @param {mx} set the maximum y value; if = 1 then maximum value of the flows is used to set 
+#' @param wyear set wyear = 10 for October water year, = 1 for calendar year, can be any month
+#' @param colour if \code{TRUE} plot is in colour, if \code{FALSE} plot is grayscale.
+#' @param mx set the maximum y value; if = 1 then maximum value of the flows is used to set 
+#' @param metadata a dataframe of metadata, defaults to HYDAT_list.
 #' the y-axis value. The value of \code{mx} can be specified to produce a series of plots with the 
 #' same scale.
 #' 
@@ -27,12 +28,12 @@
 #' ch_regime_plot(W05AA008, colour = TRUE, wyear = 1)
 #'
 
-ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1,
+ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = 'HYDAT_list',
                         quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05))
   {
  
   station <- DF[1, 1]
-  sname <- ch_get_wscstation(station, stn = HYDAT_list)
+  sname <- ch_get_wscstation(station, stn = metadata)
   title <- sname$Station_lname
   
   ############################################################################# labels

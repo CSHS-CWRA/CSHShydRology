@@ -6,13 +6,14 @@
 #' are those produced by ECDataExplorer. The option is to provide start and end dates to show 
 #' only part of the time period for which data exists and the plot is annotated to indicate this. 
 #'
-#' @param {DF} Data frame retrieved from ECDataExplorer as returned by the function 
+#' @param DF Data frame retrieved from ECDataExplorer as returned by the function 
 #' \code{ch_read_ECDE_flows}.
-#' @param sdate Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}
-#' @param edate Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}
+#' @param st_date Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}
+#' @param end_date Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}
 #' @param rescale If \code{FALSE} (the default), the y-axis scaling is determined by the time 
 #' period. If \code{TRUE} then determined by the whole dataset.
 #' @param cts If \code{TRUE} (the default) shows the counts of SYM in the legend. If \code{FALSE} 
+#' @param metadata a dataframe of station metadata, default is HYDAT_list.
 #' counts are not shown, as in ECDE.
 
 #' @author Paul Whitfield 
@@ -27,12 +28,12 @@
 #' m_test <- ch_qa_hydrograph(W05AA008, sdate="1980-01-01", edate="1999-12-31")
 #
 
-ch_qa_hydrograph <- function(DF, sdate=NULL, edate=NULL, cts=TRUE, rescale=FALSE) {
+ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, metadata = HYDAT_list) {
 
     mcol <- c("black", "green", "cyan", "white","yellow", "red")
     dish <-expression(paste("Mean Daily Discharge m" ^{3}, "/sec"))
   
-    m_station <- ch_get_wscstation(DF[1, 1], stn = HYDAT_list)
+    m_station <- ch_get_wscstation(DF[1, 1], stn = metadata)
     title <- paste(m_station$Station, "  ", m_station$StationName)
   
     sym_count <- array(0, dim = 6)
@@ -40,13 +41,13 @@ ch_qa_hydrograph <- function(DF, sdate=NULL, edate=NULL, cts=TRUE, rescale=FALSE
 
     ylims <- c(min(DF[ , 4]),max(DF[,4]))
 
- if (!is.null(sdate))
+ if (!is.null(st_date))
    {
-   sdate <- as.Date(sdate, "%Y-%m-%d")
-   edate <- as.Date(edate, "%Y-%m-%d")
+   st_date <- as.Date(st_date, "%Y-%m-%d")
+   end_date <- as.Date(end_date, "%Y-%m-%d")
    
-   DF <- DF[DF$Date >= sdate, ]
-   DF <- DF[DF$Date <= edate, ]
+   DF <- DF[DF$Date >= st_date, ]
+   DF <- DF[DF$Date <= end_date, ]
    }
    
  if (!rescale) ylims <- c(min(DF[ , 4]), max(DF[ , 4]))
@@ -78,12 +79,12 @@ ch_qa_hydrograph <- function(DF, sdate=NULL, edate=NULL, cts=TRUE, rescale=FALSE
   
   if (!cts)  legend("topleft", ltexta, pch = 19, col = lcol, cex = 0.7)
   if (cts)   legend("topleft", ltextb, pch = 19, col = lcol, cex = 0.7)
-   if (!is.null(sdate))  text(DF$Date[as.integer(0.75 * length(DF$Date))], max(DF[ , 4]),
+   if (!is.null(st_date))  text(DF$Date[as.integer(0.75 * length(DF$Date))], max(DF[ , 4]),
                             "Selected Date Range", col = "gray50", cex = 0.7)
 
   names(sym_count) <- c("Default", "A", "B", "C", "D", "E")
   
-  result <- list(title,  sdate, edate, length(DF[,4]), sym_count)
+  result <- list(title,  st_date, end_date, length(DF[,4]), sym_count)
   names(result) <- c("Station", "start_date", "end_date", "points", "SYM_count")
   return (result)
 }

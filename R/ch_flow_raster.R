@@ -4,8 +4,9 @@
 #' This produces a plot showing the flow data in colours, showing different context than i
 #' n a hydrograph. High flows are in warm colours.
 #' 
-#' @param {DF} A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.
-#' @param {rastercolour} A vector of colours used for the flow magnitudes. 
+#' @param DF A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.
+#' @param rastercolour A vector of colours used for the flow magnitudes. 
+#' @param metadata a dataframe of station metadata, defaults to HYDAT_list
 #' The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
 #' 
 #' #' @return No value is returned; a standard R graphic is created.
@@ -21,7 +22,8 @@
 #' ch_flow_raster(W05AA008)
 
 
-ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red")) {
+ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red"),
+                           metadata = HYDAT_list) {
   
   
   ##### Fixed labels and text strings
@@ -31,7 +33,7 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   qcols <- colorRampPalette(rastercolours)
   
   station <- as.character(DF$ID[1])
-  sname <- ch_get_wscstation(station, stn=HYDAT_list)
+  sname <- ch_get_wscstation(station, stn = metadata)
   title <- sname$Station_lname
   
   date <- as.Date(DF$Date, "%Y/%m/%d")

@@ -9,13 +9,13 @@
 #' @description {
 #' Produces a raster plot: years against day of year, showing all the data flags
 #' \describe{
-#' \item{A}{(Partial) green}
-#' \item{B}{(Backwater) blue}
-#' \item{D}(Dry) yellow}
-#' \item{E}{(Estimated) red}
-#' }
+#' \item A (Partial) green
+#' \item B (Backwater) blue
+#' \item D Dry) yellow
+#' \item E Estimated) red
 #' }
 #' @param DF - a dataframe of daily streamflow read by ch_read_ECDE_flows
+#' @param metadata - a dataframe of metadata or defaults to "HYDAT_lst"
 #' @seealso \code{\link{ch_read_ECDE_flows}}
 #' 
 #' @return No value is returned; a standard R graphic is created.
@@ -30,13 +30,14 @@
 #'
 
 #' @examples
-#' #data(W05AA008)
+#' data(HYDAT_list)
+#' data(W05AA008)
 #' qaplot <- raster_qa(W05AA008)
 #' 
 
 
 
-ch_flow_raster_qa <- function(DF) {
+ch_flow_raster_qa <- function(DF, metadata = 'HYDAT_list') {
   ##### Fixed labels and text strings
   DOY <- "Day of Year"
   ylabelq <- expression(paste("Discharge m"^{3}, "/sec"))
@@ -47,7 +48,7 @@ ch_flow_raster_qa <- function(DF) {
   fcols <-c("black", "red", "green", "blue", "cyan", "magenta", "yellow", "gray")
   
   station <- as.character(DF$ID[1])
-  sname <- ch_get_wscstation(station, stn = HYDAT_list)
+  sname <- ch_get_wscstation(station, stn = metadata)
   title <- sname$Station_lname
   
   date <- as.Date(DF$Date, "%Y/%m/%d")

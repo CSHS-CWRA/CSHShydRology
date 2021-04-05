@@ -65,14 +65,14 @@
 #'  mplot <- raster_trend(dd, step=5)
 #'
 
-ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, stn = HYDAT_list,
+ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, stn = HYDAT_list, metadata = HYDAT_list,
                                  colours = c("lightblue", "cyan", "blue", "slateblue", "darkblue", "red")) {
   l_disch <- expression(paste("m"^{3}, "/sec"))
   l_disch2 <- expression(paste("\nm" ^{3}, "/sec"))
   
   #get title information
   station <- DF[1, 1]
-  sname <- ch_get_wscstation(station, stn)
+  sname <- ch_get_wscstation(station, stn = metadata)
   title=sname$Station_lname
   
   

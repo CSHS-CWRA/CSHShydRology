@@ -1,9 +1,9 @@
 #' Allows the user to extract a specific time period from a longer record.
 #' 
 #' @description Could be used to get the same period of time from several station for comparison.
-#' @param {DF} A daily streamflow data frame as from \code{ch_read_ECDE_flows}
-#' @param {st_date} starting date format is \%Y/\%m/\%d
-#' @param {end_date} ending date format is \%Y/\%m/\%d
+#' @param DF A daily streamflow data frame as from \code{ch_read_ECDE_flows}
+#' @param st_date starting date format is \%Y/\%m/\%d
+#' @param end_date ending date format is \%Y/\%m/\%d
 #' @export
 #' @author Paul Whitfield  
 #' @examples
