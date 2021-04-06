@@ -37,12 +37,12 @@
 #'
 #' @examples
 #' data("HYDAT_list")
-#' s_info <- ch_get_wscstation("05BB001", metadata = HYDAT_list)
+#' s_info <- ch_get_wscstation("05BB001", metadata = "HYDAT_list")
 #' title <- s_info[21]
 #' print(title)
 #'
 
-ch_get_wscstation <- function(stnID, metadata = HYDAT_list) {
+ch_get_wscstation <- function(stnID, metadata = "HYDAT_list") {
 
   rhbn <- NULL
   stninfo <- metadata[metadata$Station == stnID, ]

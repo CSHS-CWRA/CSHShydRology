@@ -28,7 +28,7 @@
 #' ch_regime_plot(W05AA008, colour = TRUE, wyear = 1)
 #'
 
-ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = 'HYDAT_list',
+ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = "HYDAT_list",
                         quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05))
   {
  
