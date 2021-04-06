@@ -18,8 +18,10 @@ This routine deals only with the axis adjustments.  Day of water year needs to b
 separately
 }
 \examples{
+\dontrun{
 ch_axis_doy(wyear = 1)  # starts in January
 ch_axis_doy(wyear = 10) # starts in October
+}
 }
 \seealso{
 \code{\link{ch_regime_plot}}

@@ -17,6 +17,7 @@ ch_cut_block(DF, st_date, end_date)
 Could be used to get the same period of time from several station for comparison.
 }
 \examples{
+data(W05AA008)
 subset <- ch_cut_block(W05AA005,"2000/01/01", "2010/12/31")
 }
 \author{

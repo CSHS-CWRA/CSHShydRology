@@ -14,7 +14,7 @@
 #' @export
 
 #' @examples 
-#' \not run{
+#' \dontrun{
 #' ch_axis_doy(wyear = 1)  # starts in January
 #' ch_axis_doy(wyear = 10) # starts in October
 #' }
