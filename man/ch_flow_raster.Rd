@@ -6,13 +6,16 @@
 \usage{
 ch_flow_raster(
   DF,
-  rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red")
+  rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red"),
+  metadata = HYDAT_list
 )
 }
 \arguments{
-\item{{DF}}{A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.}
+\item{DF}{A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.}
 
-\item{{rastercolour}}{A vector of colours used for the flow magnitudes. 
+\item{rastercolours}{A vector of colours used for the flow magnitudes.}
+
+\item{metadata}{a dataframe of station metadata, defaults to HYDAT_list
 The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
 
 #' @return No value is returned; a standard R graphic is created.}

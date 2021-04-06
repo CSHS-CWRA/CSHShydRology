@@ -26,7 +26,7 @@
 #' 
 #' @examples
 #' dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"),by = 1)
-#' output <- doys(dd, water_yr=10)
+#' output <- ch_doys(dd, water_yr=10)
 #' head(output)
 #' 
 

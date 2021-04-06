@@ -4,21 +4,30 @@
 \alias{ch_qa_hydrograph}
 \title{Plots a hydrograph with the data quality symbols and prints a report}
 \usage{
-ch_qa_hydrograph(DF, sdate = NULL, edate = NULL, cts = TRUE, rescale = FALSE)
+ch_qa_hydrograph(
+  DF,
+  st_date = NULL,
+  end_date = NULL,
+  cts = TRUE,
+  rescale = FALSE,
+  metadata = HYDAT_list
+)
 }
 \arguments{
-\item{sdate}{Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}}
+\item{DF}{Data frame retrieved from ECDataExplorer as returned by the function 
+\code{ch_read_ECDE_flows}.}
 
-\item{edate}{Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}}
+\item{st_date}{Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}}
 
-\item{cts}{If \code{TRUE} (the default) shows the counts of SYM in the legend. If \code{FALSE} 
-counts are not shown, as in ECDE.}
+\item{end_date}{Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}}
+
+\item{cts}{If \code{TRUE} (the default) shows the counts of SYM in the legend. If \code{FALSE}}
 
 \item{rescale}{If \code{FALSE} (the default), the y-axis scaling is determined by the time 
 period. If \code{TRUE} then determined by the whole dataset.}
 
-\item{{DF}}{Data frame retrieved from ECDataExplorer as returned by the function 
-\code{ch_read_ECDE_flows}.}
+\item{metadata}{a dataframe of station metadata, default is HYDAT_list.
+counts are not shown, as in ECDE.}
 }
 \value{
 Produces a plot and returns a list that contains the station name, start and end dates provided, the number of 

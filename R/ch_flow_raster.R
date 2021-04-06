@@ -5,7 +5,7 @@
 #' n a hydrograph. High flows are in warm colours.
 #' 
 #' @param DF A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.
-#' @param rastercolour A vector of colours used for the flow magnitudes. 
+#' @param rastercolours A vector of colours used for the flow magnitudes. 
 #' @param metadata a dataframe of station metadata, defaults to HYDAT_list
 #' The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
 #' 

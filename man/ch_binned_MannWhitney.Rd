@@ -10,7 +10,8 @@ ch_binned_MannWhitney(
   range1,
   range2,
   ptest = 0.05,
-  variable = "discharge"
+  variable = "discharge",
+  metadata = HYDAT_list
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ ch_binned_MannWhitney(
 \item{ptest}{The significance level default is \code{0.05}.}
 
 \item{variable}{Name of variable. Default is \option{discharge}}
+
+\item{metadata}{datafframe of station metadata, default id HYDAT_list}
 }
 \value{
 Returns a list containing:

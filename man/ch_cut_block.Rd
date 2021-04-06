@@ -7,11 +7,11 @@
 ch_cut_block(DF, st_date, end_date)
 }
 \arguments{
-\item{{DF}}{A daily streamflow data frame as from \code{ch_read_ECDE_flows}}
+\item{DF}{A daily streamflow data frame as from \code{ch_read_ECDE_flows}}
 
-\item{{st_date}}{starting date format is \%Y/\%m/\%d}
+\item{st_date}{starting date format is \%Y/\%m/\%d}
 
-\item{{end_date}}{ending date format is \%Y/\%m/\%d}
+\item{end_date}{ending date format is \%Y/\%m/\%d}
 }
 \description{
 Could be used to get the same period of time from several station for comparison.

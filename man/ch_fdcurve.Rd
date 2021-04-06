@@ -4,14 +4,16 @@
 \alias{ch_fdcurve}
 \title{Plot Flow Duration Curve}
 \usage{
-ch_fdcurve(DF, normal = FALSE, gust = TRUE)
+ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = HYDAT_list)
 }
 \arguments{
-\item{{DF}}{- dataframe of daily flows from \code{ch_read_ECDE_flows}}
+\item{DF}{- dataframe of daily flows from \code{ch_read_ECDE_flows}}
 
-\item{{normal}}{If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE}
+\item{normal}{If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE}
 
-\item{{gust}}{If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added}
+\item{gust}{If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added}
+
+\item{metadata}{dataframe of metadata, defaults to HYDAT_list}
 }
 \value{
 Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
@@ -26,6 +28,7 @@ In that case, the x axis represents a normal distribution.
 Create a Flow Duration Curve based upon Observations.
 }
 \examples{
+data(HYDAT_list)
 data(W05AA008)
 # plot with Gustard 1992 curves
 test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
@@ -43,5 +46,5 @@ Vogel, R.M., and N.M. Fennessy. 1995. Flow duration curves II: A review of appli
 in water resources planning. Water Resources Bulletin 31:1030-9.
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }

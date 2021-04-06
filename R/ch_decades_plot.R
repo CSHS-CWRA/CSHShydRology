@@ -7,11 +7,13 @@
 #' @param mplot- output from the function ch_binned_MannWitney
 #
 #' @return a list containing
+#' @examples 
+#' # mplot from ch_binned_MannWhitney
+#' ch_decades_plot(mplot)   
 #'   
-#'   
-#
+#'
 
-ch_decades_plot <- function (mplot )
+ch_decades_plot <- function (mplot)
   {
   
   mch <- c(24, NA, 25)

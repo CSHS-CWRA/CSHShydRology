@@ -15,6 +15,12 @@ a list containing
 \description{
 creates a simple plot comparing two decades from the output of ch_binned_MannWhitney
 }
+\examples{
+# mplot from ch_binned_MannWhitney
+ch_decades_plot(mplot)   
+  
+
+}
 \author{
 Paul Whitfield
 }

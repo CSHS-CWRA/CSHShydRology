@@ -4,12 +4,12 @@
 \alias{ch_doys}
 \title{Days of year and water year}
 \usage{
-ch_doys(Date, w_yr = 10)
+ch_doys(Date, water_yr = 10)
 }
 \arguments{
-\item{{Date}}{{an array as.Date}}
+\item{Date}{an array as.Date}
 
-\item{{w_yr}}{the month starting the water year, default is 10 (October).}
+\item{water_yr}{the month starting the water year, default is 10 (October).}
 }
 \value{
 a dataframe with different date information
@@ -37,7 +37,7 @@ Converts a date array and produces a data frame with years, wateryears, and days
 }
 \examples{
 dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"),by = 1)
-output <- doys(dd, w_yr=10)
+output <- ch_doys(dd, water_yr=10)
 head(output)
 
 }

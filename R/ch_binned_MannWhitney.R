@@ -21,6 +21,7 @@
 #' @param range2 The first and last year of second period, as \code{c(first,last)}
 #' @param ptest The significance level default is \code{0.05}.
 #' @param variable Name of variable. Default is \option{discharge}
+#' @param metadata datafframe of station metadata, default id HYDAT_list
 #' 
 #' @return Returns a list containing:
 #' \describe{

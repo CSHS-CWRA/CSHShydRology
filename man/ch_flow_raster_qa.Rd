@@ -4,10 +4,12 @@
 \alias{ch_flow_raster_qa}
 \title{Raster plot of daily streamflows with WSC quality flags}
 \usage{
-ch_flow_raster_qa(DF)
+ch_flow_raster_qa(DF, metadata = "HYDAT_list")
 }
 \arguments{
 \item{DF}{- a dataframe of daily streamflow read by ch_read_ECDE_flows}
+
+\item{metadata}{- a dataframe of metadata or defaults to "HYDAT_lst"}
 }
 \value{
 No value is returned; a standard R graphic is created.
@@ -22,7 +24,8 @@ a hydrograph.
 
 }
 \examples{
-#data(W05AA008)
+data(HYDAT_list)
+data(W05AA008)
 qaplot <- raster_qa(W05AA008)
 
 }

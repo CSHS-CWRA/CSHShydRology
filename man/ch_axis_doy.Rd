@@ -9,7 +9,7 @@ Produce a date axis starting in a specific month.}
 ch_axis_doy(wyear = 1)
 }
 \arguments{
-\item{{wyear}}{wyear = 1 for calendar year, = 10 for October 1.}
+\item{wyear}{wyear = 1 for calendar year, = 10 for October 1.}
 }
 \description{
 generates an axis for day of year or day of water year; used by regime_plot.
