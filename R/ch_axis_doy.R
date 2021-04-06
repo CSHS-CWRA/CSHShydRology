@@ -14,8 +14,10 @@
 #' @export
 
 #' @examples 
+#' \not run{
 #' ch_axis_doy(wyear = 1)  # starts in January
 #' ch_axis_doy(wyear = 10) # starts in October
+#' }
 
 ch_axis_doy <- function (wyear = 1) 
   {
