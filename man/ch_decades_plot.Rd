@@ -7,7 +7,7 @@
 ch_decades_plot(mplot)
 }
 \arguments{
-\item{mplot-}{output from the function ch_binned_MannWitney}
+\item{mplot}{output from the function ch_binned_MannWitney}
 }
 \value{
 a list containing

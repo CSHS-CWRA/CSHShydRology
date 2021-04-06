@@ -7,9 +7,9 @@
 ch_flow_raster_qa(DF, metadata = "HYDAT_list")
 }
 \arguments{
-\item{DF}{- a dataframe of daily streamflow read by ch_read_ECDE_flows}
+\item{DF}{dataframe of daily streamflow read by ch_read_ECDE_flows}
 
-\item{metadata}{- a dataframe of metadata or defaults to "HYDAT_lst"}
+\item{metadata}{dataframe of metadata or defaults to "HYDAT_lst"}
 }
 \value{
 No value is returned; a standard R graphic is created.
@@ -20,8 +20,15 @@ This produces a plot showing the flow data in grayscale
 overlain by the Water Survey of Canada quality flags.  Colours are consistent with 
 ECDataExplorer. Raster layout lets the use see the flags in a different context than in 
 a hydrograph.
-
-
+}
+\details{
+Produces a raster plot: years against day of year, showing the data flags:
+\itemize{
+ \item {A}{(Partial) green}
+ \item {B}{(Backwater) blue}
+ \item {D}{(Dry) yellow}
+ \item {E}{Estimated) red}
+}
 }
 \examples{
 data(HYDAT_list)

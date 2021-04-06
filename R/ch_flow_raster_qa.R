@@ -6,20 +6,20 @@
 #' ECDataExplorer. Raster layout lets the use see the flags in a different context than in 
 #' a hydrograph.
 #' 
-#' @description {
-#' Produces a raster plot: years against day of year, showing all the data flags
-#' \describe{
-#' \item A (Partial) green
-#' \item B (Backwater) blue
-#' \item D Dry) yellow
-#' \item E Estimated) red
+#' @details
+#' Produces a raster plot: years against day of year, showing the data flags:
+#' \itemize{
+#'  \item {A}{(Partial) green}
+#'  \item {B}{(Backwater) blue}
+#'  \item {D}{(Dry) yellow}
+#'  \item {E}{Estimated) red}
 #' }
-#' @param DF - a dataframe of daily streamflow read by ch_read_ECDE_flows
-#' @param metadata - a dataframe of metadata or defaults to "HYDAT_lst"
+#' 
+#' @param DF dataframe of daily streamflow read by ch_read_ECDE_flows
 #' @seealso \code{\link{ch_read_ECDE_flows}}
+#' @param metadata dataframe of metadata or defaults to "HYDAT_lst"
 #' 
 #' @return No value is returned; a standard R graphic is created.
-#' 
 #' 
 #' @author Paul Whitfield 
 #' @import graphics grDevices 

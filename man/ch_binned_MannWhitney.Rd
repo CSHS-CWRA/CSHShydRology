@@ -27,7 +27,7 @@ ch_binned_MannWhitney(
 
 \item{variable}{Name of variable. Default is \option{discharge}}
 
-\item{metadata}{datafframe of station metadata, default id HYDAT_list}
+\item{metadata}{datafframe of station metadata, default is HYDAT_list}
 }
 \value{
 Returns a list containing:
@@ -62,10 +62,10 @@ for visualization
 Performs a binned Mann-Whitney test on periods of a defined length.
 }
 \examples{
-\dontrun{
 data(HYDAT_list)
 data(W05AA008)
-#fails due to missing data in both periods
+\dontrun{
+# first example fails due to missing data in both periods
 range1 <- c(1960,1969)
 range2 <- c(1990,1999)
 b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)

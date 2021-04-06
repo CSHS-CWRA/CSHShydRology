@@ -21,7 +21,7 @@
 #' @param range2 The first and last year of second period, as \code{c(first,last)}
 #' @param ptest The significance level default is \code{0.05}.
 #' @param variable Name of variable. Default is \option{discharge}
-#' @param metadata datafframe of station metadata, default id HYDAT_list
+#' @param metadata datafframe of station metadata, default is HYDAT_list
 #' 
 #' @return Returns a list containing:
 #' \describe{
@@ -46,12 +46,12 @@
 #' @import stats
 #' @export
 #' @seealso \code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}}
-#'  
+#' 
 #' @examples
+#' data(HYDAT_list)
+#' data(W05AA008)
 #' \dontrun{
-#'data(HYDAT_list)
-#'data(W05AA008)
-#'#fails due to missing data in both periods
+#' # first example fails due to missing data in both periods
 #' range1 <- c(1960,1969)
 #' range2 <- c(1990,1999)
 #' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)

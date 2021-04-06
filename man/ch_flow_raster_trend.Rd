@@ -63,7 +63,7 @@ If there is no trend (p > 0.05) the points are black. Decreasing trend are in re
 }
 \examples{
  data(W05AA008)
- mplot <- ch_flow_raster_trend(W05AA008, step=5)
+ mplot <- raster_trend(W05AA008, step=5)
 
 }
 \references{

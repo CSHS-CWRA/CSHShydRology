@@ -42,7 +42,7 @@ ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = 'HYDA
   flow <- DF$Flow
   Date <- DF$Date
  
-  doy_vals <- ch_doys(Date, w_yr = wyear)
+  doy_vals <- ch_doys(Date, water_yr = wyear)
   year <- doy_vals$year
   doy <- doy_vals$doy
   

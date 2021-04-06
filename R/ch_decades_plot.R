@@ -4,7 +4,7 @@
 #'   
 #' @author Paul Whitfield 
 #' 
-#' @param mplot- output from the function ch_binned_MannWitney
+#' @param mplot output from the function ch_binned_MannWitney
 #
 #' @return a list containing
 #' @examples 

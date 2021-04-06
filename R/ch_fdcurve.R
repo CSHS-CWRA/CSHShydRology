@@ -12,6 +12,7 @@
 #' @param normal If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE
 #' @param gust If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added
 #' @param metadata dataframe of metadata, defaults to HYDAT_list
+#' 
 #' @return Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
 #'
 #' @author Paul Whitfield 
@@ -39,9 +40,8 @@ ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = HYDAT_list) {
   
   flow <- DF$Flow
   
-  station <- DF[1,1]
-  sname <- ch_get_wscstation(station, stn=metadata)
-  title <- sname$Station_lname
+  stname <- ch_get_wscstation(DF[1, 1], stn=metadata)
+  title <- stname$Station_lname
 
   ## load the values for the Gustard curves for %mean flow for Type Curves Gustard et al 1992.
   g <- array(NA, dim = c(19, 7))
