@@ -48,7 +48,7 @@ ch_flow_raster_qa <- function(DF, metadata = 'HYDAT_list') {
   fcols <-c("black", "red", "green", "blue", "cyan", "magenta", "yellow", "gray")
   
   station <- as.character(DF$ID[1])
-  sname <- ch_get_wscstation(station, stn = metadata)
+  sname <- ch_get_wscstation(station, metadata = metadata)
   title <- sname$Station_lname
   
   date <- as.Date(DF$Date, "%Y/%m/%d")

@@ -71,7 +71,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = HYDAT
   
   # get title information
   station <- DF[1, 1]
-  sname <- ch_get_wscstation(station, stn = metadata)
+  sname <- ch_get_wscstation(station, metadata = metadata)
   title=sname$Station_lname
   
   

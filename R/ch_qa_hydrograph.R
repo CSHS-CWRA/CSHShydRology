@@ -33,7 +33,7 @@ ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, re
     mcol <- c("black", "green", "cyan", "white","yellow", "red")
     dish <-expression(paste("Mean Daily Discharge m" ^{3}, "/sec"))
   
-    m_station <- ch_get_wscstation(DF[1, 1], stn = metadata)
+    m_station <- ch_get_wscstation(DF[1, 1], metadata = metadata)
     title <- paste(m_station$Station, "  ", m_station$StationName)
   
     sym_count <- array(0, dim = 6)

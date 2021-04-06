@@ -33,7 +33,7 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   qcols <- colorRampPalette(rastercolours)
   
   station <- as.character(DF$ID[1])
-  sname <- ch_get_wscstation(station, stn = metadata)
+  sname <- ch_get_wscstation(station, metadata = metadata)
   title <- sname$Station_lname
   
   date <- as.Date(DF$Date, "%Y/%m/%d")

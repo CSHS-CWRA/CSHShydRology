@@ -40,7 +40,7 @@ ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = HYDAT_list) {
   
   flow <- DF$Flow
   
-  stname <- ch_get_wscstation(DF[1, 1], stn=metadata)
+  stname <- ch_get_wscstation(DF[1, 1], metadata = metadata)
   title <- stname$Station_lname
 
   ## load the values for the Gustard curves for %mean flow for Type Curves Gustard et al 1992.

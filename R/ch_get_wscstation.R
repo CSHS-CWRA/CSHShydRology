@@ -4,9 +4,9 @@
 #' adds a text string at position 21 that combines key elements for a title.
 #'
 #' @param stnID A Water Survey of Canada station number
-#' @param stn a data frame of station information from ECDataExplorer. The data frame \option{HYDAT_list} is supplied with this package.
+#' @param metadata a data frame of station information from ECDataExplorer. The data frame \option{HYDAT_list} is supplied with this package.
 #'
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #'
 #' @return Returns a data frame with 21 variables
 #' \itemize{
@@ -37,16 +37,15 @@
 #'
 #' @examples
 #' data("HYDAT_list")
-#' HYDAT_list <- HYDAT_list
-#' s_info <- ch_get_wscstation("05BB001", HYDAT_list)
+#' s_info <- ch_get_wscstation("05BB001", metadata = HYDAT_list)
 #' title <- s_info[21]
 #' print(title)
 #'
 
-ch_get_wscstation <- function(stnID, stn) {
+ch_get_wscstation <- function(stnID, metadata = HYDAT_list) {
 
   rhbn <- NULL
-  stninfo <- stn[stn$Station == stnID, ]
+  stninfo <- metadata[metadata$Station == stnID, ]
 
   if (length(stninfo[, 1]) == 0) {
     print(paste("WSC Station ", stnID, " not found"))

@@ -70,6 +70,7 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   flow <- DF$Flow
   
   sID <- as.character(DF[1,1])
+  sname <- ch_get_wscstation(sID, metadata = metadata)
   
   binmethod <- "median"
   testmethod <- "Mann-Whitney U"
@@ -141,7 +142,7 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   names(series) <- c("period", "median_1", "median_2", "MW_U", "p_value",
                      "s_code")
   
-  sname <- ch_get_wscstation(sID, stn = metadata)
+ 
   
   result <- list(sID, sname[21], variable, step, range1, range2, ptest, fail, binmethod, testmethod, series)
   

@@ -33,7 +33,7 @@ ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = 'HYDA
   {
  
   station <- DF[1, 1]
-  sname <- ch_get_wscstation(station, stn = metadata)
+  sname <- ch_get_wscstation(station, metadata = metadata)
   title <- sname$Station_lname
   
   ############################################################################# labels
