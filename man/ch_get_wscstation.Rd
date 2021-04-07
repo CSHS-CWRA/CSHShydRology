@@ -6,7 +6,7 @@
 Retrieves station information for an individual Water Survey of Canada site,
 adds a text string at position 21 that combines key elements for a title.}
 \usage{
-ch_get_wscstation(stnID, metadata = HYDAT_list)
+ch_get_wscstation(stnID, metadata = NULL)
 }
 \arguments{
 \item{stnID}{A Water Survey of Canada station number}
