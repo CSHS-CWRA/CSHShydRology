@@ -5,3 +5,5 @@
 .github
 ^\.travis\.yml$
 CSHShydRology.pdf
+^doc$
+^Meta$

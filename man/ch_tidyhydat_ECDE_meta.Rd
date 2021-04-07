@@ -46,10 +46,11 @@ result does not capture all the fields in ECDE as ECDE reports the most recent s
 of many fields such as operating schedule.
 }
 \examples{
+\dontrun{
 stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 result <- ch_tidyhydat_ECDE_meta(stations)
 metadata <- result[[1]]
-version <- result[[2]]
+version <- result[[2]]}
 
 }
 \seealso{

@@ -31,6 +31,9 @@ str(mnew[[2]])
 str(mnew[[3]]) 
 #note the order is in increasing alphabetical order}
 }
+\seealso{
+\code{\link{ch_tidyhydat_ECDE_meta}}
+}
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }
