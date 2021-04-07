@@ -45,7 +45,7 @@
 ch_get_wscstation <- function(stnID, metadata = NULL) {
   
   if (is.null(metadata)) {
-    data("HYDAT_list"))
+    data("HYDAT_list")
     metadata <- HYDAT_list
   }
   
