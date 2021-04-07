@@ -33,7 +33,7 @@ Produces a raster plot: years against day of year, showing the data flags:
 \examples{
 data(HYDAT_list)
 data(W05AA008)
-qaplot <- raster_qa(W05AA008)
+qaplot <- ch_flow_raster_qa(W05AA008)
 
 }
 \seealso{

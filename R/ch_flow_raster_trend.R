@@ -60,7 +60,7 @@
 #'  
 #' @examples
 #'  data(W05AA008)
-#'  mplot <- raster_trend(W05AA008, step=5)
+#'  mplot <- ch_flow_raster_trend(W05AA008, step=5)
 #'
 
 ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = HYDAT_list,
