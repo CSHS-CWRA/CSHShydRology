@@ -61,7 +61,7 @@
 #' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
 #' }
 
-ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", metadata = "HYDAT_list") {
+ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", metadata = HYDAT_list) {
   
   fail <- FALSE
   mdoy <- ch_doys(DF$Date)

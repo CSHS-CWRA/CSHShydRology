@@ -37,7 +37,7 @@
 
 
 
-ch_flow_raster_qa <- function(DF, metadata = "HYDAT_list") {
+ch_flow_raster_qa <- function(DF, metadata = HYDAT_list) {
   ##### Fixed labels and text strings
   DOY <- "Day of Year"
   ylabelq <- expression(paste("Discharge m"^{3}, "/sec"))

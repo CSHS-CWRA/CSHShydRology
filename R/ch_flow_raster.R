@@ -23,7 +23,7 @@
 
 
 ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red"),
-                           metadata = "HYDAT_list") {
+                           metadata = HYDAT_list) {
   
   
   ##### Fixed labels and text strings
