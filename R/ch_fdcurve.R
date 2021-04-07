@@ -145,5 +145,5 @@ ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = NULL) {
   }
   result <- data.frame(exceed, q)
   names(result) <- c("exceedance_prob", "flow")
-  return (result)
+  return(result)
 }

@@ -13,9 +13,10 @@
 #'
 #' @return A dataframe or a list of flows with formats consistent with datafiles from ECDE 
 #' @export
-#'
-#' @examples
-#'mdata <- hy_daily_flowsd(station_number=c("05CK004"))
+#' @seealso \code{\link{ch_tidyhydat_ECDE_meta}}
+#' @examples \dontrun{
+#'library(tidyhydat)
+#'mdata <- hy_daily_flow(station_number=c("05CK004"))
 #'m_data <- ch_tidyhydat_ECDE(mdata)
 #'
 #'mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))
@@ -23,7 +24,7 @@
 #'str(mnew[[1]])
 #'str(mnew[[2]])
 #'str(mnew[[3]]) 
-#'#note the order is in increasing alphabetical order
+#'#note the order is in increasing alphabetical order}
 
 ch_tidyhydat_ECDE <- function(data) {
   

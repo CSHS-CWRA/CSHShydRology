@@ -43,11 +43,11 @@
 #' 
 #' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range
 #' @seealso \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
-#' @examples 
+#' @examples \dontrun{
 #' stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 #' result <- ch_tidyhydat_ECDE_meta(stations)
 #' metadata <- result[[1]]
-#' version <- result[[2]]
+#' version <- result[[2]]}
 #' 
 
 ch_tidyhydat_ECDE_meta <- function(stations){

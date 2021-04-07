@@ -19,7 +19,9 @@ entries. This function converts a tibble obtained from a \pkg{tidyhydat} tibble 
 with standard Environment and Climate Change Canada Data Explorer (ECDE) headings.
 }
 \examples{
-mdata <- hy_daily_flowsd(station_number=c("05CK004"))
+\dontrun{
+library(tidyhydat)
+mdata <- hy_daily_flow(station_number=c("05CK004"))
 m_data <- ch_tidyhydat_ECDE(mdata)
 
 mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))
@@ -27,7 +29,7 @@ mnew <- ch_tidyhydat_ECDE(mdata)
 str(mnew[[1]])
 str(mnew[[2]])
 str(mnew[[3]]) 
-#note the order is in increasing alphabetical order
+#note the order is in increasing alphabetical order}
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>

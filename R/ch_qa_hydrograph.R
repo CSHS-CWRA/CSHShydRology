@@ -25,7 +25,7 @@
 #' @examples
 #' m_test <- ch_qa_hydrograph(W05AA008)
 #  using a date range
-#' m_test <- ch_qa_hydrograph(W05AA008, sdate="1980-01-01", edate="1999-12-31")
+#' m_test <- ch_qa_hydrograph(W05AA008, st_date="1980-01-01", end_date="1999-12-31")
 #
 
 ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, 
