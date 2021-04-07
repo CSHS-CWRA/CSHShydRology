@@ -6,12 +6,12 @@
 Retrieves station information for an individual Water Survey of Canada site,
 adds a text string at position 21 that combines key elements for a title.}
 \usage{
-ch_get_wscstation(stnID, stn)
+ch_get_wscstation(stnID, metadata = NULL)
 }
 \arguments{
 \item{stnID}{A Water Survey of Canada station number}
 
-\item{stn}{a data frame of station information from ECDataExplorer. The data frame \option{HYDAT_list} is supplied with this package.}
+\item{metadata}{a data frame of station information from ECDataExplorer. The data frame \option{HYDAT_list} is supplied with this package.}
 }
 \value{
 Returns a data frame with 21 variables
@@ -46,12 +46,11 @@ adds a text string at position 21 that combines key elements for a title.
 }
 \examples{
 data("HYDAT_list")
-HYDAT_list <- HYDAT_list
-s_info <- ch_get_wscstation("05BB001", HYDAT_list)
+s_info <- ch_get_wscstation("05BB001", metadata = HYDAT_list)
 title <- s_info[21]
 print(title)
 
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }
