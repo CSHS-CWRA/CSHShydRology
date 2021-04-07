@@ -16,9 +16,10 @@ a list containing
 creates a simple plot comparing two decades from the output of ch_binned_MannWhitney
 }
 \examples{
+\dontrun{
 # mplot from ch_binned_MannWhitney
 ch_decades_plot(mplot)   
-  
+}   
 
 }
 \author{

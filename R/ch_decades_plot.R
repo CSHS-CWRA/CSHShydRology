@@ -8,9 +8,10 @@
 #
 #' @return a list containing
 #' @examples 
+#' \dontrun{
 #' # mplot from ch_binned_MannWhitney
 #' ch_decades_plot(mplot)   
-#'   
+#' }   
 #'
 
 ch_decades_plot <- function (mplot)

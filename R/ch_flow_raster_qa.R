@@ -32,7 +32,7 @@
 #' @examples
 #' data(HYDAT_list)
 #' data(W05AA008)
-#' qaplot <- raster_qa(W05AA008)
+#' qaplot <- ch_flow_raster_qa(W05AA008)
 #' 
 
 
