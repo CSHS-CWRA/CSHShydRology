@@ -8,7 +8,7 @@
 #' @author Paul Whitfield  
 #' @examples
 #' data(W05AA008)
-#' subset <- ch_cut_block(W05AA005,"2000/01/01", "2010/12/31")
+#' subset <- ch_cut_block(W05AA008,"2000/01/01", "2010/12/31")
 
 ch_cut_block <- function (DF, st_date, end_date) 
 {
