@@ -62,7 +62,7 @@
 #' }
 
 ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", 
-                                  metadata) {
+                                  metadata = NULL) {
   
   fail <- FALSE
   mdoy <- ch_doys(DF$Date)

@@ -37,7 +37,7 @@
 
 
 
-ch_flow_raster_qa <- function(DF, metadata) {
+ch_flow_raster_qa <- function(DF, metadata = NULL) {
   ##### Fixed labels and text strings
   DOY <- "Day of Year"
   ylabelq <- expression(paste("Discharge m"^{3}, "/sec"))

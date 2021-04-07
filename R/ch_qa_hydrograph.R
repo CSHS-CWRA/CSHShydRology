@@ -29,7 +29,7 @@
 #
 
 ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, 
-                             metadata) {
+                             metadata = NULL) {
 
     mcol <- c("black", "green", "cyan", "white","yellow", "red")
     dish <-expression(paste("Mean Daily Discharge m" ^{3}, "/sec"))

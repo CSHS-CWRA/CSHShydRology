@@ -23,7 +23,7 @@
 
 
 ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red"),
-                           metadata) {
+                           metadata = NULL) {
   
   
   ##### Fixed labels and text strings

@@ -63,7 +63,7 @@
 #'  mplot <- ch_flow_raster_trend(W05AA008, step=5)
 #'
 
-ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata,
+ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
                                  colours = c("lightblue", "cyan", "blue", "slateblue", "darkblue", "red")) 
 {
   l_disch <- expression(paste("m"^{3}, "/sec"))

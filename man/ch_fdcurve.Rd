@@ -4,7 +4,7 @@
 \alias{ch_fdcurve}
 \title{Plot Flow Duration Curve}
 \usage{
-ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = HYDAT_list)
+ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = NULL)
 }
 \arguments{
 \item{DF}{- dataframe of daily flows from \code{ch_read_ECDE_flows}}

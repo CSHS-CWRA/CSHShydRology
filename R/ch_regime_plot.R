@@ -28,12 +28,12 @@
 #' ch_regime_plot(W05AA008, colour = TRUE, wyear = 1)
 #'
 
-ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata,
+ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
                         quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05))
   {
  
   station <- DF[1, 1]
-  sname <- ch_get_wscstation(station, metadata = metadata)
+  sname <- ch_get_wscstation(station, metadata)
   title <- sname$Station_lname
   
   ############################################################################# labels
