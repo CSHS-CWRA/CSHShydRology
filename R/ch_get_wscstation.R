@@ -43,11 +43,13 @@
 #'
 
 ch_get_wscstation <- function(stnID, metadata = NULL) {
-  
+
+     HYDAT_list <- c(0)
   if (is.null(metadata)) {
-    data("HYDAT_list")
+    data("HYDAT_list", envir = environment())
     metadata <- HYDAT_list
   }
+
   
   rhbn <- NULL
   stninfo <- metadata[metadata$Station == stnID, ]
