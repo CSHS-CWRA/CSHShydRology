@@ -28,7 +28,8 @@
 #' m_test <- ch_qa_hydrograph(W05AA008, sdate="1980-01-01", edate="1999-12-31")
 #
 
-ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, metadata = HYDAT_list) {
+ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, 
+                             metadata) {
 
     mcol <- c("black", "green", "cyan", "white","yellow", "red")
     dish <-expression(paste("Mean Daily Discharge m" ^{3}, "/sec"))

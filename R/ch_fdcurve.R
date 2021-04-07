@@ -36,7 +36,7 @@
 #' test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
 #
 
-ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = HYDAT_list) {
+ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata) {
   
   flow <- DF$Flow
   
