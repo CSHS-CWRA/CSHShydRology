@@ -9,7 +9,7 @@ ch_regime_plot(
   wyear = 1,
   colour = TRUE,
   mx = 1,
-  metadata = "HYDAT_list",
+  metadata = HYDAT_list,
   quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05)
 )
 }

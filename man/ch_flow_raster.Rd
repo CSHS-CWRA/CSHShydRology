@@ -7,7 +7,7 @@
 ch_flow_raster(
   DF,
   rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red"),
-  metadata = "HYDAT_list"
+  metadata = HYDAT_list
 )
 }
 \arguments{

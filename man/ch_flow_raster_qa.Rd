@@ -4,7 +4,7 @@
 \alias{ch_flow_raster_qa}
 \title{Raster plot of daily streamflows with WSC quality flags}
 \usage{
-ch_flow_raster_qa(DF, metadata = "HYDAT_list")
+ch_flow_raster_qa(DF, metadata = HYDAT_list)
 }
 \arguments{
 \item{DF}{dataframe of daily streamflow read by ch_read_ECDE_flows}

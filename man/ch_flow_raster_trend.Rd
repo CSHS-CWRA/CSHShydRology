@@ -8,7 +8,7 @@ ch_flow_raster_trend(
   DF,
   step = 5,
   missing = FALSE,
-  metadata = "HYDAT_list",
+  metadata = HYDAT_list,
   colours = c("lightblue", "cyan", "blue", "slateblue", "darkblue", "red")
 )
 }

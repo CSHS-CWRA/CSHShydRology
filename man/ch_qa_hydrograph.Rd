@@ -10,7 +10,7 @@ ch_qa_hydrograph(
   end_date = NULL,
   cts = TRUE,
   rescale = FALSE,
-  metadata = "HYDAT_list"
+  metadata = HYDAT_list
 )
 }
 \arguments{

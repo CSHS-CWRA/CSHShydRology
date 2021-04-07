@@ -11,7 +11,7 @@ ch_binned_MannWhitney(
   range2,
   ptest = 0.05,
   variable = "discharge",
-  metadata = "HYDAT_list"
+  metadata = HYDAT_list
 )
 }
 \arguments{
