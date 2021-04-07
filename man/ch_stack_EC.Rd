@@ -2,7 +2,10 @@
 % Please edit documentation in R/utils.R
 \name{ch_stack_EC}
 \alias{ch_stack_EC}
-\title{Stacks EC values}
+\title{ch_axis_doy moved to own file 2021/04/03
+ch_slice move to own file 2021/04/03
+ch_sub_set_years moved to own file 2021/04/03
+Stacks EC values}
 \usage{
 ch_stack_EC(data_values = NULL, data_codes = NULL)
 }

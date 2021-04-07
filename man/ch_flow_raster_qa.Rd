@@ -2,37 +2,45 @@
 % Please edit documentation in R/ch_flow_raster_qa.R
 \name{ch_flow_raster_qa}
 \alias{ch_flow_raster_qa}
-\title{Raster plot of streamflows with WSC quality flags}
+\title{Raster plot of daily streamflows with WSC quality flags}
 \usage{
-ch_flow_raster_qa(dframe, title = "")
+ch_flow_raster_qa(DF, metadata = NULL)
 }
 \arguments{
-\item{dframe}{A data frame of WSC hydrometric data. Must contain the variables \code{Date}, \code{Flow} and \code{SYM} which is the WSC data flag symbol.}
+\item{DF}{dataframe of daily streamflow read by ch_read_ECDE_flows}
 
-\item{title}{The (optional) title for the plot}
+\item{metadata}{dataframe of metadata or defaults to "HYDAT_lst"}
 }
 \value{
-No value is returned; a standard \R graphic is created.
+No value is returned; a standard R graphic is created.
 }
 \description{
-Produces a raster plot of years x day of year showing the flow data in grayscale
-overlain by the Water Survey of Canada quality flags. Colours are consistent with
-ECDataExplorer. Raster layout lets the use see the flags in a different context than in
+Raster plot with WSC quality flags. 
+This produces a plot showing the flow data in grayscale 
+overlain by the Water Survey of Canada quality flags.  Colours are consistent with 
+ECDataExplorer. Raster layout lets the use see the flags in a different context than in 
 a hydrograph.
-The data flags are:
-\describe{
-\item{A (Partial)}{green}
-\item{B (Below Ice)}{blue}
-\item{D (Dry)}{yellow}
-\item{E (Estimated)}{red}
+}
+\details{
+Produces a raster plot: years against day of year, showing the data flags:
+\itemize{
+ \item {A}{(Partial) green}
+ \item {B}{(Backwater) blue}
+ \item {D}{(Dry) yellow}
+ \item {E}{Estimated) red}
 }
 }
 \examples{
-ch_flow_raster_qa(W05AA008, "Station W05AA008")
+data(HYDAT_list)
+data(W05AA008)
+qaplot <- ch_flow_raster_qa(W05AA008)
+
 }
 \seealso{
+\code{\link{ch_read_ECDE_flows}}
+
 \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster}}
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }

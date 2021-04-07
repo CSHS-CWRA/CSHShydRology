@@ -2,34 +2,37 @@
 % Please edit documentation in R/ch_flow_raster.R
 \name{ch_flow_raster}
 \alias{ch_flow_raster}
-\title{Raster plot of streamflows}
+\title{Raster plot of daily streamflows}
 \usage{
 ch_flow_raster(
-  dframe,
-  title = "",
-  rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red")
+  DF,
+  rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red"),
+  metadata = NULL
 )
 }
 \arguments{
-\item{dframe}{A data frame of hydrometric data. Must contain the variables \code{Date} and \code{Flow}.}
+\item{DF}{A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.}
 
-\item{title}{The (optional) title for the plot}
+\item{rastercolours}{A vector of colours used for the flow magnitudes.}
 
-\item{rastercolours}{A vector of colours used for the raster plot. The default is \code{c("lightblue", "cyan", "blue", "slateblue", "orange", "red")}.}
-}
-\value{
-No value is returned; a standard \R graphic is created.
+\item{metadata}{a dataframe of station metadata, defaults to HYDAT_list
+The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
+
+#' @return No value is returned; a standard R graphic is created.}
 }
 \description{
-Produces a raster plot: years x day of year, showing magnitude of flows.  This produces a plot showing the flow data in colours, showing different context than in a hydrograph. High flows are in warm colours
+Produces a raster plot: years by day of year, showing magnitude of flow. 
+This produces a plot showing the flow data in colours, showing different context than i
+n a hydrograph. High flows are in warm colours.
 }
 \examples{
 ch_flow_raster(W05AA008)
-
 }
 \seealso{
+\code{\link{ch_read_ECDE_flows}}
+
 \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }
