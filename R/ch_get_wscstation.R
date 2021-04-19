@@ -27,9 +27,9 @@
 #' \item	 {OperSched} {Continuous or Seasonal}
 #' \item	 {RealTime} {if TRUE/Yes}
 #' \item	 {RHBN} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Region} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Datum} {if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Operator} {if TRUE/Yes is in the reference hydrologic basin network}
+#' \item	 {Region} {WSC Region}
+#' \item	 {Datum} {Datum used}
+#' \item	 {Operator} {Agency responsible for collecting data}
 #' \item   {Station_lname} {Added field combining ID, Name, Province and if RHBN an * is added}
 #' }
 #'
