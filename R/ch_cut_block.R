@@ -12,8 +12,18 @@
 
 ch_cut_block <- function (DF, st_date, end_date) 
 {
-  st_date  <- as.Date(st_date, format = "%Y/%m/%d")
-  end_date <- as.Date(end_date, format = "%Y/%m/%d")
+  if (substr(st_date,5,5) == "/") {
+    st_date  <- as.Date(st_date, format = "%Y/%m/%d")
+    end_date <- as.Date(end_date, format = "%Y/%m/%d")
+  }
+  
+  if (substr(st_date,5,5) == "-") {
+    st_date  <- as.Date(st_date, format = "%Y-%m-%d")
+    end_date <- as.Date(end_date, format = "%Y-%m-%d")
+  } else {
+    print( paste("incorrect date format", st_date, "must be like  2010/01/01"))
+    return ()
+  }
 
   if (!st_date >= min(DF$Date)){
     print(paste("Starting Date",st_date, "is before records are available"))
