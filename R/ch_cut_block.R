@@ -32,8 +32,7 @@ ch_cut_block <- function (DF, st_date, end_date)
 
   if (!end_date <= max(DF$Date)){
     print(paste("Ending Date",end_date, "is after records are available"))
-    return()
-  }
+    }
 
   result1 <- DF[DF$Date >= st_date, ]
   result <- result1[result1$Date <= end_date, ]
