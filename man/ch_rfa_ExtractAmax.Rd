@@ -28,7 +28,7 @@ the number of yearly observations and the year.
 If set to NULL the given column is not added.}
 }
 \value{
-Returns a dataset containing the annual (Monthly) maxima,
+Returns a data frame containing the annual (Monthly) maxima,
 the date and the number of observations during the year.
 }
 \description{
