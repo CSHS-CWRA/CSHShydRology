@@ -15,7 +15,9 @@
 #' @param title The (optional) title for the plot
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
-#' @import graphics grDevices fields
+#' 
+#' @importFrom graphics axis legend par plot points polygon image frame mtext
+#' @importFrom grDevices colorRampPalette
 #' @importFrom timeDate dayOfYear as.timeDate
 #' @importFrom fields image.plot
 #' @export

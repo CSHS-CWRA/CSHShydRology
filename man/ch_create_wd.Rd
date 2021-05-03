@@ -2,7 +2,9 @@
 % Please edit documentation in R/ch_create_wd.R
 \name{ch_create_wd}
 \alias{ch_create_wd}
-\title{Create SAGA Working Directory}
+\title{Create SAGA Working Directory
+
+This function creates a SAGA working directory.}
 \usage{
 ch_create_wd(wd)
 }
@@ -13,6 +15,8 @@ ch_create_wd(wd)
 \item{TRUE}{returns TRUE upon successful execution}
 }
 \description{
+Create SAGA Working Directory
+
 This function creates a SAGA working directory.
 }
 \examples{

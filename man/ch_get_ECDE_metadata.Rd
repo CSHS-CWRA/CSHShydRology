@@ -2,51 +2,43 @@
 % Please edit documentation in R/ch_get_ECDE_metadata.R
 \name{ch_get_ECDE_metadata}
 \alias{ch_get_ECDE_metadata}
-\title{Reads Environment Canada Date Explorer (ECDE) meta data file}
+\title{Reads ECDE meta data file}
 \usage{
 ch_get_ECDE_metadata(filename, writefile = NULL)
 }
 \arguments{
 \item{filename}{The name of the ECDE file, \option{FavHydatStations.tb0}.}
 
-\item{writefile}{Default is \code{NULL}, but if it is a filename e.g. \option{filename.csv} 
-then the dataframe is saved to a csv file.}
+\item{writefile}{Default is \code{NULL}, but if it is a filename e.g. \option{filename.csv} the dataframe is saved to a csv file.}
 }
 \value{
-Returns a dataframe consisting of
+a dataframe
 \itemize{
-\item	 {Station - StationID}
-\item	 {StationName - Station Name}
-\item	 {HYDStatus - Active or Discontinued}
-\item	 {Prov - Province}
+\item	 {Station}  {StationID}
+\item	 {StationName} {Station Name}
+\item	 {HYDStatus} {Active or Discontinued}
+\item	 {Prov} {Province}
 \item	 {Latitude}{}
 \item	 {Longitude}{}
-\item	 {DrainageArea - km2}
-\item	 {Years - # of years with data}
-\item	 {From - Start Year}
-\item	 {To - End Year}
-\item	 {Reg. - Regulated?} 
-\item	 {Flow - if TRUE/Yes}
-\item	 {Level - if TRUE/Yes}
-\item	 {Sed - if TRUE/Yes}
-\item	 {OperSched - Continuous or Seasonal}
-\item	 {RealTime - if TRUE/Yes}
-\item	 {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
-\item	 {Region - Name of regional office}
-\item	 {Datum - Elevation datum}
-\item	 {Operator - Operator}
+\item	 {DrainageArea} {km2}
+\item	 {Years} {# of years with data}
+\item	 {From} {Start Year}
+\item	 {To} {End Year}
+\item	 {Reg.} {Regulated?} 
+\item	 {Flow} {if TRUE/Yes}
+\item	 {Level} {if TRUE/Yes}
+\item	 {Sed} {if TRUE/Yes}
+\item	 {OperSched} {Continuous or Seasonal}
+\item	 {RealTime} {if TRUE/Yes}
+\item	 {RHBN} {if TRUE/Yes is in the reference hydrologic basin network}
+\item	 {Region} {Name of regional office}
+\item	 {Datum} {Elevation datum}
+\item	 {Operator} {Operator}
 }
 }
 \description{
 Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
 The dataframe returned contains 21 fields of metadata for each station.
-}
-\examples{
-\dontrun{
-filename <- "FavHydatStations.tb0"
-meta0 <- ch_get_ECDE_metadata (filename)
-meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
-}
 }
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>

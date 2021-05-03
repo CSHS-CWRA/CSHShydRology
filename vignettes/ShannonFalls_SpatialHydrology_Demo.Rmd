@@ -22,7 +22,7 @@ This analysis presents the application of Dan Moore's code within the CSHS hydRo
 
 We will start by downloading the sample data for Shannon Creek Falls from [Dan Moore's link]("https://ibis.geog.ubc.ca/~rdmoore/rcode/ShannonFallsMapData.zip"). The snippet below will save the zip file to a temporary file for reference within our examples.
 
-Load the relevant libraries, includuing the `CSHShydRology` library.
+Load the relevant libraries, including the `CSHShydRology` library.
 ```{r, message=F, warning=F}
 # load libraries
 library(RSAGA)

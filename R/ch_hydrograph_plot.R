@@ -44,8 +44,8 @@
 #' \option{base} plot type is supported, \option{ggplot} is under construction.
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' @keywords plot hydrograph
-#' @author Robert Chlumsky <rchlumsk@gmail.com>
-#' @import lubridate graphics
+#' @author Robert Chlumsky
+#' @importFrom lubridate year month day date
 #' @export
 #' @examples
 #' # example with synthetic random data
@@ -69,7 +69,7 @@
 #' # increase the plot ranges to separate flows and precip; add a legend box
 #' ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 #' range_mult_precip = 2, leg_box = TRUE)
-
+#' 
 ch_hydrograph_plot <- function(flows = NULL, 
                             precip = NULL, 
                             prd = NULL, 

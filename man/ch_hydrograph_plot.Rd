@@ -102,9 +102,10 @@ ch_hydrograph_plot(flows = df, precip = precip)
 # increase the plot ranges to separate flows and precip; add a legend box
 ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 range_mult_precip = 2, leg_box = TRUE)
+
 }
 \author{
-Robert Chlumsky <rchlumsk@gmail.com>
+Robert Chlumsky
 }
 \keyword{hydrograph}
 \keyword{plot}
