@@ -7,12 +7,12 @@ matrix:
       r: devel
 
     - os: linux
-      dist: trusty
+      dist: focal
       r: release
 
   allow_failures:
     - os: linux
-      dist: trusty
+      dist: focal
       r: devel
 
 
