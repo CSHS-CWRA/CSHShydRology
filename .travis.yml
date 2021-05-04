@@ -3,7 +3,7 @@
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: focal
       r: devel
 
     - os: linux
