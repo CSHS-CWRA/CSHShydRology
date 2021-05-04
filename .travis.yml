@@ -3,16 +3,16 @@
 matrix:
   include:
     - os: linux
-      dist: focal
+      dist: bionic
       r: devel
 
     - os: linux
-      dist: focal
+      dist: bionic
       r: release
 
   allow_failures:
     - os: linux
-      dist: focal
+      dist: bionic
       r: devel
 
 
