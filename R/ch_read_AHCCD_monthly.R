@@ -17,7 +17,8 @@
 #' \dontrun{
 #' Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")
 #' NB_monthly_tmean <- ch_read_AHCCD_monthly("mm4045695.txt") }
-#' @import stringr utils
+#' 
+#' @importFrom stringr str_split_fixed str_detect
 #' @export
 
 ch_read_AHCCD_monthly <- function(monthly_file = NULL) {

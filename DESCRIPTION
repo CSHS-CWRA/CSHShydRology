@@ -20,6 +20,7 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
+    tidyhydat,
     curl,
     RSAGA,
     ggplot2,
@@ -30,7 +31,7 @@ Imports:
     magrittr
 Suggests: 
     knitr,
-    testthat, 
+    testthat,
     rmarkdown
 VignetteBuilder: knitr
 LazyData: true

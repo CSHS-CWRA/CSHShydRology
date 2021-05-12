@@ -1,13 +1,11 @@
 #'  Converts tidyhydat daily flow tibble data to ECDE format
 #'
-
 #' @description Accessing daily flow data using \pkg{tidyhydat} is quick and efficient. However, it sometimes
 #' conflicts with other functions as \pkg{tidyhydat} changes variable names and some default entries. This function converts a tibble obtained 
 #' from a \pkg{tidyhydat} tibble to a dataframe with standard Environment and Climate Change Canada Data Explorer (ECDE) headings.
 #'
 #'
 #' @param filename Tibble of daily flows retrieved using \pkg{tidyhydat} function \code{hy_daily_flows}.
-
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #'
 #' @return A dataframe or a list of with formats consistent with datafiles from ECDE 
@@ -25,8 +23,7 @@
 #'#note the order is in increasing alphabetical order
 #'
 #'
-
-ch_tidyhydat_ECDE <- function (data) {
+ch_tidyhydat_ECDE <- function(data) {
   
   ndata <- data.frame(data)   # untibble
  

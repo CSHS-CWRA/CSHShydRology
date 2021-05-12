@@ -14,7 +14,8 @@
 #' @return  
 #' \item{carea}{raster of contributing areas for each pixel.}
 #' 
-#' @import RSAGA raster sf
+#' @importFrom RSAGA rsaga.topdown.processing
+#' @importFrom raster writeRaster raster crs 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' @seealso \code{\link{rsaga.topdown.processing}} for more information

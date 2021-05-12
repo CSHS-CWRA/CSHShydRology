@@ -40,6 +40,13 @@ a dataframe
 Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
 The dataframe returned contains 21 fields of metadata for each station.
 }
+\examples{
+\dontrun{
+filename <- "FavHydatStations.tb0"
+meta0 <- ch_get_ECDE_metadata (filename)
+meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
+}
+}
 \author{
 Paul Whitfield <paul.h.whitfield@gmail.com>
 }

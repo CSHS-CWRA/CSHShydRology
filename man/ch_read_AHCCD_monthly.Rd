@@ -22,6 +22,7 @@ which makes them difficult to read using standard \R functions.
 \dontrun{
 Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")
 NB_monthly_tmean <- ch_read_AHCCD_monthly("mm4045695.txt") }
+
 }
 \references{
 Monthly AHCCD data are available from \url{https://www.canada.ca/en/environment-climate-change/services/climate-change/science-research-data/climate-trends-variability/adjusted-homogenized-canadian-data/surface-air-temperature-access.html}. Any use of 

@@ -46,7 +46,9 @@
 #' 	\item{tau_minimum_year}{value of tau and probability for min_year}
 #' 	}
 #' @keywords plot
-#' @import stats graphics grDevices
+#' 
+#' @importFrom graphics axis legend par plot points polygon image frame mtext
+#' @importFrom grDevices colorRampPalette
 #' @importFrom Kendall MannKendall
 #' @importFrom fields image.plot
 #' @importFrom graphics axis legend par plot points polygon
