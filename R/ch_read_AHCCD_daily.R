@@ -57,7 +57,6 @@ ch_read_AHCCD_daily <- function(daily_file){
     stop("Unrecognised file type")
   }
     
-    
   # set up homes for data
   value <- c(0)
   code <- c(0)
@@ -113,7 +112,12 @@ ch_read_AHCCD_daily <- function(daily_file){
   all_classes <- c(header_classes, cols_classes)
   
 
-  cols <- rep.int(c(7,1),31)
+  # set columns widths depending on data type
+  if (val_type == "tmax" | val_type == "tmin" | val_type == "tmean")
+    cols <- rep.int(c(7,1),31)
+  else  
+    cols <- rep.int(c(8,1),31)
+  
   cols_classes <- rep.int(c('numeric', 'character'), 31)
   all <- c(header,cols)
   all_classes <- c(header_classes, cols_classes)

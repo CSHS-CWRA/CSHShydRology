@@ -24,7 +24,7 @@ Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")
 NB_monthly_tmean <- ch_read_AHCCD_monthly("mm4045695.txt") }
 }
 \references{
-Monthly AHCCD data are available from \url{https://www.canada.ca/en/environment-climate-change/services/climate-change/science-research-data/climate-trends-variability/adjusted-homogenized-canadian-data/surface-air-temperature-access.html}. Any use of 
+Monthly AHCCD data are available from \url{https://open.canada.ca/data/en/dataset/9c4ebc00-3ea4-4fe0-8bf2-66cfe1cddd1d}. Any use of 
 the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
 the second generation adjusted daily temperature and precipitation dataset for trend analysis in Canada. 
 Atmosphere-Ocean, 49 (2), 163-177.}
