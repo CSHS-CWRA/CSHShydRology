@@ -29,7 +29,9 @@
 #' @return  
 #' \item{catchment_sf}{Returns an sf object containing catchment polygons}
 #' 
-#' @import RSAGA raster sf
+#' @importFrom RSAGA rsaga.topdown.processing rsaga.geoprocessor 
+#' @importFrom raster writeRaster raster crs extract 
+#' @importFrom sf st_coordinates st_geometry st_sfc st_as_sf
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' @export
@@ -46,7 +48,6 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
                               outlet_label = NULL,
                               buffsize = 100,
                               saga.env = RSAGA::rsaga.env()) {
-
 
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {

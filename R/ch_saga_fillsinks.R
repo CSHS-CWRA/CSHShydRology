@@ -16,7 +16,10 @@
 #' @param saga.env    SAGA environment object.  Default is to let saga find it on its own.
 #' @return \item{dem_ns}{filled dem as a raster object.}
 #' 
-#' @import RSAGA raster sf
+#' @importFrom RSAGA rsaga.fill.sinks 
+#' @importFrom raster writeRaster raster crs extract 
+#' @importFrom sf st_geometry st_sfc st_crs st_sfc 
+#' 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
 #' @export
@@ -32,8 +35,6 @@ ch_saga_fillsinks <- function(dem_raw, saga_wd,
                               sinkmethod = "planchon.darboux.2001", 
                               minslope = 0.1,
                               saga.env = RSAGA::rsaga.env()) {
-  # require(RSAGA)
-  # require(raster)
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {

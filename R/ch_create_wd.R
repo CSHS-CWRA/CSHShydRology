@@ -1,4 +1,4 @@
-#' Create SAGA Working Directory
+#' @title Create SAGA Working Directory
 #' 
 #' This function creates a SAGA working directory.
 #' 
@@ -6,7 +6,6 @@
 #' @return 
 #' \item{TRUE}{returns TRUE upon successful execution}
 #' 
-#' @import RSAGA raster sf
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_clear_wd}} to clear the working SAGA directory
 #' @export

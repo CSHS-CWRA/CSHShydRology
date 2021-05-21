@@ -6,16 +6,15 @@
 #' @param rastercolours A vector of colours used for the raster plot. The default is \code{c("lightblue", "cyan", "blue", "slateblue", "orange", "red")}.
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
-#' @import grDevices fields
-#' @importFrom graphics axis legend par plot points polygon image
+#' @importFrom graphics axis legend par plot points polygon image frame mtext
 #' @importFrom fields image.plot
+#' @importFrom grDevices colorRampPalette
 #' @export
 #' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
 #'
 #' @examples
 #' ch_flow_raster(W05AA008)
 #'
-
 ch_flow_raster <- function(dframe, title="", rastercolours = c("lightblue", "cyan", "blue", "slateblue", "orange", "red")) {
 
   ##### Fixed labels and text strings

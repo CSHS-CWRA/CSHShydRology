@@ -22,7 +22,7 @@ This analysis presents the application of Dan Moore's code within the CSHS hydRo
 
 We will start by downloading the sample data for Shannon Creek Falls from [Dan Moore's link]("https://ibis.geog.ubc.ca/~rdmoore/rcode/ShannonFallsMapData.zip"). The snippet below will save the zip file to a temporary file for reference within our examples.
 
-Load the relevant libraries, includuing the `CSHShydRology` library.
+Load the relevant libraries, including the `CSHShydRology` library.
 ```{r, message=F, warning=F}
 # load libraries
 library(RSAGA)
@@ -59,11 +59,9 @@ To illustrate the functions, they will be applied to a DEM containing the area n
 
 ```{r}
 # read in raster (from our temp info)
-# dem <- raster("DEM.tif") 
 dem <- raster::raster(paste0(tempdir_ShannonFalls,"/ShannonFallsDEM.tif"))
 
 # read in digital elevation model and project to UTM
-# dem <- raster::raster("c:/Research/Shannon Falls/Map/cdem_dem_151108_134502_tif/cdem_dem_151108_134502.tif")
 dem.utm <- raster::projectRaster(dem, crs = "+proj=utm +zone=10 +ellps=WGS84", res = 25, method = "bilinear") 
 ```
 

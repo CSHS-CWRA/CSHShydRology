@@ -4,7 +4,7 @@
 #'@param wyear Month to begin water year. Use \code{wyear = 1} for calendar year, \code{wyear = 10} for October 1.
 #'@author Paul Whitfield
 #'@keywords internal
-#'@import graphics
+#'@importFrom graphics axis 
 #'
 axis_doy <- function(wyear = 1) {
   cday <- c(1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366, 397, 425, 456, 486, 517, 547, 578, 609, 639, 670)

@@ -13,7 +13,8 @@
 #' @param mx The maximum y value; if \code{mx = 1} then maximum value of the flows is used to set the maximum y-axis value. The value of \code{mx} can be specified to produce a series of plots with the same scale.
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield
-#' @import graphics
+#' @importFrom graphics par points polygon legend
+#' @importFrom stats quantile
 #' @export
 #'
 #' @references MacCulloch, G. and P. H. Whitfield (2012). Towards a Stream Classification System

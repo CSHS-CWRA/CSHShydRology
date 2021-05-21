@@ -74,7 +74,7 @@ ch_saga_carea()
 \seealso{
 \code{\link{ch_saga_catchment}} for catchment delineation.
 
-For more details, see the following: {\link{http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html}}
+For more details, see the following: (http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html)
 }
 \author{
 Dan Moore <dan.moore@ubc.ca>

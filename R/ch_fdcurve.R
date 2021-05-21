@@ -22,7 +22,7 @@
 #' Vogel, R.M., and N.M. Fennessy. 1994. Flow-duration curves. I: New Interpretation and
 #' confidence intervals. Journal of Water Resources Planning and Management ASCE 120:485-504.
 #'
-#' @import stats
+#' @importFrom stats qnorm
 #' @importFrom graphics axis legend par plot points polygon
 #' 
 #' @export

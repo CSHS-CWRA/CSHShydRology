@@ -8,7 +8,10 @@
 #' @param saga.env    SAGA environment object.  Default is to let saga find it on its own.
 #' @return {dem_ns}{processed dem as a raster object.}
 #' 
-#' @import RSAGA raster sf
+#' @importFrom RSAGA rsaga.sink.removal 
+#' @importFrom raster writeRaster raster crs extract 
+#' @importFrom sf st_geometry st_sfc st_crs st_sfc 
+#' 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' @export
@@ -22,8 +25,6 @@
 #' 
 ch_saga_removesinks <- function(dem_raw, saga_wd, 
                                 saga.env = RSAGA::rsaga.env()) {
-  # require(RSAGA)
-  # require(raster)
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {

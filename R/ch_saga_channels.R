@@ -29,10 +29,13 @@
 #' @return 
 #' \item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
 #' 
-#' @import RSAGA raster sf
+#' @importFrom RSAGA rsaga.topdown.processing rsaga.geoprocessor 
+#' @importFrom raster writeRaster raster crs extract 
+#' @importFrom sf st_geometry st_sfc st_crs st_sfc 
+#' 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_catchment}} for catchment delineation.
-#' @seealso For more details, see the following: {\link{http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html}}
+#' @seealso For more details, see the following: (http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html)
 #' @export
 #' @examples
 #' \dontrun{
@@ -49,10 +52,6 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              initmethod = 2, initvalue = 0,
                              divcells = 5, minlen = 10,
                              saga.env = RSAGA::rsaga.env()) {
-
-  # require(RSAGA)
-  # require(raster)
-  # require(sf)
 
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {

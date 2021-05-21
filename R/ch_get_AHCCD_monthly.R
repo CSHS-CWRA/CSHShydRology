@@ -17,7 +17,7 @@
 #'  }
 #' @param url Required. The default url currently works to access the data on the Environment Canada server. The
 #' url can be changed in case the site is moved.
-
+#' 
 #' @return Returns a data frame with the monthly values and associated variables.
 #' @author Kevin Shook
 #' @seealso  \code{\link{ch_read_AHCCD_daily}} \code{\link{ch_read_AHCCD_monthly}}
@@ -26,7 +26,9 @@
 #' Atmosphere-Ocean, 49 (2), 163-177.}
 #' @note Not all variables are available at all stations. Attempting to retrieve a non-existent variable 
 #' will result in an error being returned.
-#' @import jsonlite curl
+#' 
+#' @importFrom jsonlite fromJSON
+#' 
 #' @export
 #'
 #' @examples

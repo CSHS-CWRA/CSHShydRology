@@ -33,11 +33,12 @@
 #' \item	 {Datum} {Elevation datum}
 #' \item	 {Operator} {Operator}
 #' }
-#' @examples \dontrun{
+#' @examples 
+#' \dontrun{
 #' filename <- "FavHydatStations.tb0"
 #' meta0 <- ch_get_ECDE_metadata (filename)
 #' meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
-
+#' }
 ch_get_ECDE_metadata  <- function(filename, writefile=NULL){
   
   meta <- read.table(filename, skip = 96, sep = " ", na.strings =-999)
