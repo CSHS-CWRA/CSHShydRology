@@ -46,10 +46,11 @@
 #'  }
 #'   
 #' @keywords plot
-#' @import stats graphics grDevices
+#' @importFrom graphics axis legend par plot points polygon image frame mtext layout box
+#' @importFrom grDevices colorRampPalette
 #' @importFrom Kendall MannKendall
 #' @importFrom fields image.plot
-#' @importFrom graphics axis legend par plot points polygon
+#' @importFrom stats median
 #' @export 
 #' @seealso \code{\link{ch_flow_raster}}
 #' @references Whitfield, P. H., Kraaijenbrink, P. D. A., Shook, K. R., and Pomeroy, J. W. 2021.
@@ -62,7 +63,6 @@
 #'  data(W05AA008)
 #'  mplot <- ch_flow_raster_trend(W05AA008, step=5)
 #'
-
 ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
                                  colours = c("lightblue", "cyan", "blue", "slateblue", "darkblue", "red")) 
 {

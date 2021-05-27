@@ -34,6 +34,8 @@
 #' }
 #'
 #' @export
+#' 
+#' @importFrom utils data
 #'
 #' @examples
 #' data("HYDAT_list")

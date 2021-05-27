@@ -43,7 +43,7 @@
 #' 	\item{code}{significance codes for each bin}
 #' 	}
 #' 
-#' @import stats
+#' @importFrom stats wilcox.test median
 #' @export
 #' @seealso \code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}}
 #' 

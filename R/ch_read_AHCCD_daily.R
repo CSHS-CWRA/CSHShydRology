@@ -17,7 +17,8 @@
 #' @examples
 #' \dontrun{
 #'stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}
-#' @import stringr utils
+#' @importFrom stringr str_split_fixed str_detect fixed
+#' @importFrom utils read.fwf
 #' @export
 
 ch_read_AHCCD_daily <- function(daily_file){

@@ -25,7 +25,9 @@
 #'   https://doi.org/10.1016/S0022-1694(97)00068-1
 #'
 #' @export
-#'
+#' 
+#' @importFrom stats model.frame
+#' 
 #' @examples
 #'
 #' dt <- ch_rfa_ExtractAmax(flow~date, flowStJohn)$date

@@ -16,9 +16,10 @@ ch_flow_raster(
 \item{rastercolours}{A vector of colours used for the flow magnitudes.}
 
 \item{metadata}{a dataframe of station metadata, defaults to HYDAT_list
-The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
-
-#' @return No value is returned; a standard R graphic is created.}
+The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}}
+}
+\value{
+No value is returned; a standard R graphic is created.
 }
 \description{
 Produces a raster plot: years by day of year, showing magnitude of flow. 
@@ -27,6 +28,7 @@ n a hydrograph. High flows are in warm colours.
 }
 \examples{
 ch_flow_raster(W05AA008)
+
 }
 \seealso{
 \code{\link{ch_read_ECDE_flows}}

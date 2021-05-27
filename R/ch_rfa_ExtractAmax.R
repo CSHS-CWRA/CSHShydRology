@@ -20,6 +20,8 @@
 #' @param ... Other parameters.
 #' 
 #' @export
+#' 
+#' @importFrom stats get_all_vars
 #'
 #' @examples
 #' 
