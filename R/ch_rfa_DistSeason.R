@@ -28,6 +28,8 @@
 #'
 #' @export
 #' 
+#' @importFrom stats model.frame dist
+#' 
 #' @return Returns a matrix of distances between points in the seasonal 
 #' space that characterizes timing and regularity.
 #' @examples

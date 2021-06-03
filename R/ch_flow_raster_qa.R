@@ -22,21 +22,18 @@
 #' @return No value is returned; a standard R graphic is created.
 #' 
 #' @author Paul Whitfield 
-#' @import graphics grDevices 
+#' @importFrom graphics axis legend par plot points polygon image frame mtext layout box
+#' @importFrom grDevices colorRampPalette
 #' @importFrom timeDate dayOfYear as.timeDate 
 #' @importFrom fields image.plot 
 #' @export 
 #' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster}}
 #'
-
 #' @examples
 #' data(HYDAT_list)
 #' data(W05AA008)
 #' qaplot <- ch_flow_raster_qa(W05AA008)
 #' 
-
-
-
 ch_flow_raster_qa <- function(DF, metadata = NULL) {
   ##### Fixed labels and text strings
   DOY <- "Day of Year"

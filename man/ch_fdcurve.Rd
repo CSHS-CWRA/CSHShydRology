@@ -34,6 +34,7 @@ data(W05AA008)
 test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
 # plot with normalized exceedance probability
 test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
+
 }
 \references{
 Gustard, A., A. Bullock, and J.M. Dixon. 1992. Low flow estimation in the United Kingdom. 

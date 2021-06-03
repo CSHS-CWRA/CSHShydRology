@@ -21,6 +21,8 @@
 #' @return Produces a plot and returns a list that contains the station name, start and end dates provided, the number of 
 #' data points and a summary of the SYMs. 
 #' @export
+#' 
+#' @importFrom graphics text
 #'
 #' @examples
 #' m_test <- ch_qa_hydrograph(W05AA008)

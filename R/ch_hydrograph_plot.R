@@ -44,8 +44,9 @@
 #' \option{base} plot type is supported, \option{ggplot} is under construction.
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' @keywords plot hydrograph
-#' @author Robert Chlumsky <rchlumsk@gmail.com>
-#' @import lubridate graphics
+#' @author Robert Chlumsky
+#' @importFrom lubridate year month day date
+#' @importFrom graphics grid lines
 #' @export
 #' @examples
 #' # example with synthetic random data

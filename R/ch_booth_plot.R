@@ -17,7 +17,7 @@
 #' Whitfield, P.H., and J.W. Pomeroy. 2016. Changes to flood peaks of a mountain river: implications
 #' for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Processes 30:4657-73. doi:
 #' 10.1002/hyp.10957.
-#' @importFrom graphics axis legend par plot points polygon
+#' @importFrom graphics axis legend par plot points polygon abline
 #' @export
 #' @return No value is returned; a standard \R graphic is created.
 #' @keywords plot

@@ -26,6 +26,8 @@
 #' Vogel, R.M., and N.M. Fennessy. 1995. Flow duration curves II: A review of applications 
 #' in water resources planning. Water Resources Bulletin 31:1030-9.
 #'
+#' @importFrom stats qnorm
+#' @importFrom graphics abline text
 #' @export 
 #' @examples
 #' data(HYDAT_list)
@@ -34,8 +36,7 @@
 #' test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
 #' # plot with normalized exceedance probability
 #' test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
-#
-
+#' 
 ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = NULL) {
   
   flow <- DF$Flow

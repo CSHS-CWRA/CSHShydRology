@@ -17,7 +17,8 @@
 #' 
 #' @return No value is returned; a standard \R graphic is created.
 #' @author Paul Whitfield
-#' @import graphics
+#' @importFrom graphics par points polygon legend
+#' @importFrom stats quantile
 #' @export
 #'
 #' @references MacCulloch, G. and P. H. Whitfield (2012). Towards a Stream Classification System 

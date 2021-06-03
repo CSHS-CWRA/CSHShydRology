@@ -20,6 +20,7 @@
 #' @keywords plot
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #' @importFrom plotrix radial.plot radial.grid
+#' @importFrom stats approx
 #' @export
 #' @seealso \code{\link{ch_binned_MannWhitney}} \code{\link{ch_polar_plot_prep}}
 

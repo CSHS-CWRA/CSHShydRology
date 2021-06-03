@@ -24,9 +24,11 @@
 #' @references Use of the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
 #' the second generation adjusted daily temperature and precipitation dataset for trend analysis in Canada. 
 #' Atmosphere-Ocean, 49 (2), 163-177.}
+#' 
 #' @note Not all variables are available at all stations. Attempting to retrieve a non-existent variable 
 #' will result in an error being returned.
-#' @import jsonlite curl
+#' 
+#' @importFrom jsonlite fromJSON
 #' @export
 #'
 #' @examples

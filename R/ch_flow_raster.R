@@ -9,19 +9,19 @@
 #' @param metadata a dataframe of station metadata, defaults to HYDAT_list
 #' The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
 #' 
-#' #' @return No value is returned; a standard R graphic is created.
+#' @return No value is returned; a standard R graphic is created.
 #' @author Paul Whitfield 
 #' @seealso \code{\link{ch_read_ECDE_flows}}
 #' @export
-#' @import graphics grDevices fields
+#' @importFrom grDevices colorRampPalette
+#' @importFrom graphics layout box
 #' @importFrom timeDate dayOfYear as.timeDate
 #' @importFrom fields image.plot
 #' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
 #'
 #' @examples
 #' ch_flow_raster(W05AA008)
-
-
+#' 
 ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red"),
                            metadata = NULL) {
   
