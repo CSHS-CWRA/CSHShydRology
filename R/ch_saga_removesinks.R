@@ -5,12 +5,11 @@
 #' 
 #' @param dem_raw Raster object of your raw dem in the desired projection
 #' @param saga_wd     working directory to write and read saga files
-#' @param saga.env    SAGA environment object.  Default is to let saga find it on its own.
+#' @param saga_env    SAGA environment object.  Default is to let saga find it on its own.
 #' @return {dem_ns}{processed dem as a raster object.}
 #' 
 #' @importFrom RSAGA rsaga.sink.removal 
-#' @importFrom raster writeRaster raster crs extract 
-#' @importFrom sf st_geometry st_sfc st_crs st_sfc 
+#' @importFrom raster writeRaster raster crs extract
 #' 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
@@ -24,7 +23,7 @@
 #' }
 #' 
 ch_saga_removesinks <- function(dem_raw, saga_wd, 
-                                saga.env = RSAGA::rsaga.env()) {
+                                saga_env = RSAGA::rsaga.env()) {
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
@@ -38,11 +37,11 @@ ch_saga_removesinks <- function(dem_raw, saga_wd,
   RSAGA::rsaga.sink.removal(in.dem = paste0(saga_wd, "/dem_raw.sgrd"), 
                             out.dem = paste0(saga_wd, '/dem_ns.sgrd'), 
                             method = "deepen drainage route",
-                            env = saga.env)
+                            env = saga_env)
   # create filled dem as a raster object
   ns_file <- paste0(saga_wd, "/dem_ns.sdat")
   dem_ns <- raster::raster(ns_file, format = "SAGA")
-  crs(dem_ns) <- crs(dem_raw)
+  raster::crs(dem_ns) <- raster::crs(dem_raw)
   return(dem_ns)
 }
 

@@ -51,6 +51,6 @@ ch_saga_carea <- function(dem, saga_wd,
                                   env = saga_env)
   # read the catchment area grid into a raster object and return
   carea <- raster::raster(paste0(saga_wd, '/carea.sdat'))
-  crs(carea) <- crs(dem)
+  raster::crs(carea) <- raster::crs(dem)
   return(carea)
 }

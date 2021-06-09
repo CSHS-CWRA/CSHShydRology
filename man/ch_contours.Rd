@@ -31,8 +31,6 @@ or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the n
 \examples{
 \dontrun{
 ch_contours()
-
-# consider sample DEM data with this
 }
 
 }
