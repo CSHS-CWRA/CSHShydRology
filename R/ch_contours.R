@@ -44,6 +44,6 @@ ch_contours <- function(dem,
   # generate contours as a sf object
   contours_sf <- raster::rasterToContour(dem, levels = z_levels) %>%
     sf::st_as_sf()
-  st_crs(contours_sf) <- crs(dem)
+  sf::st_crs(contours_sf) <- raster::crs(dem)
   return(contours_sf)
 }

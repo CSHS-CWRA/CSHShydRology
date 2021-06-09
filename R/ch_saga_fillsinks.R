@@ -17,8 +17,7 @@
 #' @return \item{dem_ns}{filled dem as a raster object.}
 #' 
 #' @importFrom RSAGA rsaga.fill.sinks 
-#' @importFrom raster writeRaster raster crs extract 
-#' @importFrom sf st_geometry st_sfc st_crs st_sfc 
+#' @importFrom raster writeRaster raster crs extract
 #' 
 #' @author Dan Moore <dan.moore@ubc.ca>
 #' @seealso \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
@@ -52,6 +51,6 @@ ch_saga_fillsinks <- function(dem_raw, saga_wd,
   # create filled dem as a raster object
   ns_file <- paste0(saga_wd, "/dem_ns.sdat")
   dem_ns <- raster::raster(ns_file, format = "SAGA")
-  crs(dem_ns) <- crs(dem_raw)
+  raster::crs(dem_ns) <- raster::crs(dem_raw)
   return(dem_ns)
 }

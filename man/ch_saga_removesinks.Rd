@@ -4,14 +4,14 @@
 \alias{ch_saga_removesinks}
 \title{Deepen Drainage Network}
 \usage{
-ch_saga_removesinks(dem_raw, saga_wd, saga.env = RSAGA::rsaga.env())
+ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 }
 \arguments{
 \item{dem_raw}{Raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
-\item{saga.env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object.  Default is to let saga find it on its own.}
 }
 \value{
 {dem_ns}{processed dem as a raster object.}

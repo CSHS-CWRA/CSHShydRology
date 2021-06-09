@@ -45,7 +45,6 @@
 #  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
 #' }
 #' 
-
 ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              out_shp = TRUE,
                              out_ntwrk = FALSE, out_route = FALSE,
@@ -91,12 +90,12 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
   }
   if (out_ntwrk) {
     ntwrk <- raster::raster(paste0(saga_wd, '/ntwrk.sdat'))
-    crs(ntwrk) <- crs(dem)
+    sf::st_crs(ntwrk) <- raster::crs(dem)
     out_list$ntwrk <- ntwrk
   }
   if (out_route) {
     route <- raster::raster(paste0(saga_wd, '/route.sdat'))
-    crs(route) <- crs(dem)
+    sf::st_crs(route) <- raster::crs(dem)
     out_list$route <- route
   }
   return(out_list)
