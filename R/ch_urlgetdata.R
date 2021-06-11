@@ -8,8 +8,6 @@
 #' 
 #' @author Dan Moore
 #'
-#' @importFrom here here
-#' @import readr 
 #' @importFrom httr GET write_disk
 #' @importFrom sf st_read
 #' @importFrom raster raster
@@ -33,19 +31,19 @@
 #' # test with soil moisture data in csv format
 #' sm_fn <- here("test_data", "sm_data.csv")
 #' sm_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
-#' sm_data <- ch_getdata(sm_url, sm_fn)
+#' sm_data <- ch_urlgetdata(sm_url, sm_fn)
 #' head(sm_data)
 # 
 #' # test with tif/tiff file containing a dem
 #' ra_fn <- here("test_data", "gs_dem25.tif")
 #' ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
-#' ra_data <- ch_getdata(ra_url, ra_fn)
+#' ra_data <- ch_urlgetdata(ra_url, ra_fn)
 #' plot(ra_data)
 # 
 #' # test with GeoJSON
 #' gs_fn <- here("test_data", "gs_soilmaps.GeoJSON")
 #' gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
-#' gs_data <- ch_getdata(gs_url, gs_fn)
+#' gs_data <- ch_urlgetdata(gs_url, gs_fn)
 # 
 #' ggplot(gs_data) +
 #'   geom_sf(aes(fill = new_key)) +
@@ -57,7 +55,7 @@
 #'   
 #' @export
 #' 
-ch_getdata <- function(gd_url, gd_filename) {
+ch_urlgetdata <- function(gd_url, gd_filename) {
   file_ext <- strsplit(x = gd_filename, split = "[.]")[[1]][2]
   
   # csv file - returns data frame
