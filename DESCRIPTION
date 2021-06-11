@@ -20,7 +20,6 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
-    curl,
     RSAGA,
     ggplot2,
     ggspatial,
@@ -29,7 +28,10 @@ Imports:
     sp,
     dplyr,
     magrittr,
-    tidyhydat
+    tidyhydat,
+    here,
+    readr,
+    httr
 Suggests: 
     knitr,
     testthat, 
