@@ -50,7 +50,7 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
                               outlet_label = NULL,
                               buffsize = 100,
                               saga.env = RSAGA::rsaga.env()) {
-
+  
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
     print("saga_wd does not exist")

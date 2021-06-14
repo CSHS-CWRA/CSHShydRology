@@ -20,7 +20,6 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
-    curl,
     RSAGA,
     ggplot2,
     ggspatial,
@@ -29,11 +28,14 @@ Imports:
     sp,
     dplyr,
     magrittr,
+    httr,
     tidyhydat
 Suggests: 
     knitr,
     testthat, 
-    rmarkdown
+    rmarkdown,
+    here,
+    readr
 VignetteBuilder: knitr
 LazyData: true
 RoxygenNote: 7.1.1
