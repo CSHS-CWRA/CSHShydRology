@@ -1,13 +1,6 @@
-#' ch_axis_doy moved to own file 2021/04/03
-#' ch_slice move to own file 2021/04/03
-#' ch_sub_set_years moved to own file 2021/04/03
-
-
-
-
 #' Stacks EC values
 #' 
-#' @description Converts data frames of Environment Canada year x month or 
+#' @description Converts data frames of ECCC year x month or 
 #' month x day data to vectors.
 #' @param data_values Required. Data frame of year x month or month x day values.
 #' @param data_codes Required. Data frame of year x month or month x day data codes.

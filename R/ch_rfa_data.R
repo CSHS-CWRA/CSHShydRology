@@ -7,10 +7,7 @@
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' @source \url{https://wateroffice.ec.gc.ca/}
-#####################################################################
-"flowStJohn"
-
-#####################################################################
+#'
 #' L-moments and catchment descriptors of hydrometric stations in Canada
 #'
 #' The L-moments of the annual maximums at 562 stations

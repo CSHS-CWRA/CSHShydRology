@@ -1,11 +1,9 @@
-#' Plot Flow Duration Curve
+#' Plots Flow Duration Curve
 #' 
-#' Create a Flow Duration Curve based upon Observations.
 #' 
-#' @description A flow duration curve is a plot of flow magnitude against exceedance probability. 
-#' The plot may contain the Gustard Curves or they can be omitted. The default is for curves to be 
-#' plotted against probability, but an option is to plot against the normalized exceedance probability. 
-#' In that case, the x axis represents a normal distribution. 
+#' @description Creates a Flow Duration Curve based on Observations. 
+#' The plot can include the Gustard Curves. The flows can be 
+#' plotted against probability (default) or the normalized exceedance probability.
 #' 
 #'
 #' @param DF - dataframe of daily flows from \code{ch_read_ECDE_flows}

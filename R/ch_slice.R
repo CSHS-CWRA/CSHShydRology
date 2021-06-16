@@ -1,20 +1,7 @@
-
-#'@title Converts doy or dwy into a factor that is used to bin data
+#' Converts doy or dwy into a factor that is used to bin data
 #'
-#'@description Whenever the number of bins does not divide in 365 evenly a 
-#'message is printed showing the number of bins created and the number of days 
-#'added to the last bin. Simply put, \code{ch_slice} is used to convert doy into a 
-#'factor which is a number of bins per year. A year can be converted into any 
-#'number of bins; slice does it based upon a number of days. So when you send it 
-#'an array of doy it slices that into bins of the desired width. For example, 
-#'if the step is 5. They 365/5 gives 73 bins and because of leap years there might 
-#'be one extra day added every four years to the final bin.
+#'@description convert doy into a factor which is a number of bins per year.
 #'
-#' To illustrate:
-#' doy:
-#'   1  2  3  4  5  6  7  8  9 10 11  12
-#' Bin:
-#'   1  1  1  1  1  2  2  2  2  2  3   3
 #'
 #' @param doy A vector of the day of calendar year for the dataset
 #' @param step Width of bin in days

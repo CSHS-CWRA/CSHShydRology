@@ -1,5 +1,5 @@
-#' @title Designation of the water year
-#' @description Display water year
+#' Displays water year
+#' @description Displays water year.
 #' @export
 #'
 #' @param dates A vector of dates with actual year

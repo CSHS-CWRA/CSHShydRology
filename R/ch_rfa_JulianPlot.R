@@ -1,6 +1,6 @@
 #' Circular plotting by day of year 
 #'
-#' @description Create axis for plotting circular statistics in a unitary circle.
+#' @description Creates an axis for plotting circular statistics in a unitary circle.
 #'
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' 

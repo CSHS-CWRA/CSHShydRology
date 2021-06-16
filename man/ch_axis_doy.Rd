@@ -2,9 +2,7 @@
 % Please edit documentation in R/ch_axis_doy.R
 \name{ch_axis_doy}
 \alias{ch_axis_doy}
-\title{Generates the x axis for day of year
- 
-Produce a date axis starting in a specific month.}
+\title{Generates the x axis for day of year or water year starting in a specific month}
 \usage{
 ch_axis_doy(wyear = 1)
 }
@@ -12,7 +10,7 @@ ch_axis_doy(wyear = 1)
 \item{wyear}{wyear = 1 for calendar year, = 10 for October 1.}
 }
 \description{
-generates an axis for day of year or day of water year; used by regime_plot.
+Generates an axis for day of year or day of water year to be used by \code{ch_regime_plot}.
  
 This routine deals only with the axis adjustments.  Day of water year needs to be done 
 separately
