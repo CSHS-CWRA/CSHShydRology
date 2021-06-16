@@ -11,7 +11,7 @@ ch_read_AHCCD_monthly(monthly_file = NULL)
 }
 \value{
 If successful, returns the values in a dataframe, consisting of the \code{year},
-the \code{month}, the value and the data \code{code}. The meanings of the codes can be found in the
+the \code{month}, the value and the data \code{code}.
 }
 \description{
 This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data of 
@@ -24,8 +24,7 @@ Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")
 NB_monthly_tmean <- ch_read_AHCCD_monthly("mm4045695.txt") }
 }
 \references{
-Monthly AHCCD data are available from \url{https://open.canada.ca/data/en/dataset/9c4ebc00-3ea4-4fe0-8bf2-66cfe1cddd1d}. Any use of 
-the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
+Any use of the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
 the second generation adjusted daily temperature and precipitation dataset for trend analysis in Canada. 
 Atmosphere-Ocean, 49 (2), 163-177.}
 }

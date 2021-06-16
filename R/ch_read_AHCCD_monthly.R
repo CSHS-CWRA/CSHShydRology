@@ -5,12 +5,11 @@
 #' which makes them difficult to read using standard \R functions.
 #' @param monthly_file Required. Name of the file to be read.
 #' @return If successful, returns the values in a dataframe, consisting of the \code{year},
-#' the \code{month}, the value and the data \code{code}. The meanings of the codes can be found in the 
+#' the \code{month}, the value and the data \code{code}. 
 #' @author Kevin Shook
 #' @seealso  \code{\link{ch_read_AHCCD_daily}} \code{\link{ch_get_AHCCD_monthly}}
 #' @references
-#' Monthly AHCCD data are available from \url{https://open.canada.ca/data/en/dataset/9c4ebc00-3ea4-4fe0-8bf2-66cfe1cddd1d}. Any use of 
-#' the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
+#' Any use of the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
 #' the second generation adjusted daily temperature and precipitation dataset for trend analysis in Canada. 
 #' Atmosphere-Ocean, 49 (2), 163-177.}
 #' @examples
