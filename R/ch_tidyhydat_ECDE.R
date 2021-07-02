@@ -9,7 +9,7 @@
 
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #'
-#' @return A dataframe or a list of flows with formats consistent with datafiles from ECDE 
+#' @return A dataframe or a list of flows with formats consistent with datafiles from ECDE.
 #' @export
 #' @seealso \code{\link{ch_tidyhydat_ECDE_meta}}
 #' @examples \dontrun{

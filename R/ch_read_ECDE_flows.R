@@ -7,7 +7,7 @@
 #'
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #'
-#' @return Returns a dataframe with the last three rows removed and the Date as Date
+#' @return Returns a dataframe with the last three rows removed and the Date as Date.
 #' @importFrom utils read.csv
 #' @export
 

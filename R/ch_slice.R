@@ -1,6 +1,6 @@
 #' Converts doy or dwy into a factor that is used to bin data
 #'
-#'@description convert doy into a factor which is a number of bins per year.
+#' @description convert doy into a factor which is a number of bins per year.
 #'
 #'
 #' @param doy A vector of the day of calendar year for the dataset
@@ -8,7 +8,7 @@
 #'
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #' @return Returns a vector of bin numbers that is used as a factor for each day 
-#' in the dataset and prints a message indicating the handling of partial bins
+#' in the dataset and prints a message indicating the handling of partial bins.
 #' @export
 #' @keywords internal
 #'

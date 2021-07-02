@@ -5,7 +5,7 @@
 #' @param dates A vector of dates with actual year
 #' @param start_month Month in which the year starts (defaults to October)
 #'
-#' @return Year starting in start_month
+#' @return Year starting in start_month.
 #'
 #' @examples
 #' date <- seq(as.Date("1910/1/1"), as.Date("1912/1/1"), "days")

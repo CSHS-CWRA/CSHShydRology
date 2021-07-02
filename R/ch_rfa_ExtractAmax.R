@@ -19,7 +19,7 @@
 #'   If set to NULL the given column is not added. 
 #'    
 #' @param ... Other parameters.
-#' @return
+#' @return Returns a dataframe with annual maxima.
 #' @export
 #' 
 #' @importFrom stats get_all_vars

@@ -5,7 +5,7 @@
 #' @param DF A daily streamflow data frame as from \code{ch_read_ECDE_flows}
 #' @param st_date starting date format is \%Y/\%m/\%d
 #' @param end_date ending date format is \%Y/\%m/\%d
-#' @return
+#' @return Returns a data within the specific time period as a dataframe.
 #' @export
 #' @author Paul Whitfield  
 #' @examples

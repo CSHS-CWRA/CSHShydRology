@@ -16,7 +16,7 @@
 #' 
 #' @importFrom graphics segments
 #' 
-#' @return Returns a empty rose plot by day of year
+#' @return Returns a empty rose plot by day of year.
 #'
 #' @examples
 #'

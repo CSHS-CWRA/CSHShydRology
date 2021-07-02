@@ -7,7 +7,7 @@
 #' 
 #'  
 #' @param wyear wyear = 1 for calendar year, = 10 for October 1.
-#' @return
+#' @return No value is returned; the axis of the axis of the \R graphic created by \code{ch_regime_plot} is modified. 
 #' @author Paul Whitfield 
 #' @seealso \code{\link{ch_regime_plot}}
 #' @export
