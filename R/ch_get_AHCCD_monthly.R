@@ -1,5 +1,7 @@
-#' Retrieve AHCCD data from EC datamart
+#' Retrieves AHCCD data from ECCC database
 #'
+#' @description Retrieves Adjusted and Homogenized Canadian Climate Data (AHCCD) 
+#'  data from Environment and Climate Change Canada (ECCC) database.
 #' @param station Required. The station number - either as numeric or as a string.
 #' @param province Required. Name of province/territory. Must one of AB, BC, MB, NB, NL, NS, NT, NU, ON, PE, QC, SK, YT.
 #' @param variable Required. Must be one of 

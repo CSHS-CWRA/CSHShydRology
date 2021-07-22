@@ -1,13 +1,13 @@
-#' Reads a file of WSC daily flows from ECDataExplorer
+#' Reads a file of WSC daily flows from ECCCDataExplorer
 
-#' Reads in a file WSC daily flows as returned from the program ECDataExplorer,
-#' and omits the last 3 lines as these contain the data disclaimer.
+#' @description Reads in a WSC daily flows file as returned from the program ECCCDataExplorer.
+#'
 
 #' @param filename Datafile retrieved from ECDataExplorer
 #'
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #'
-#' @return Returns a dataframe with the last three rows removed and the Date as Date
+#' @return Returns a dataframe with the last three rows removed and the Date as Date.
 #' @importFrom utils read.csv
 #' @export
 

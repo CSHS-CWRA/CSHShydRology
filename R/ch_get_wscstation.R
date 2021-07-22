@@ -1,7 +1,7 @@
-#' Reads station information from a data file produced by ECDE
+#' Retrieves station information from the HYDAT database
 
-#' Retrieves station information for an individual Water Survey of Canada site,
-#' adds a text string at position 21 that combines key elements for a title.
+#' @description Retrieves station information for an individual Water Survey of Canada site
+#' from the HYDAT database.
 #'
 #' @param stnID A Water Survey of Canada station number
 #' @param metadata a data frame of station information from ECDataExplorer. The data frame \option{HYDAT_list} is supplied with this package.

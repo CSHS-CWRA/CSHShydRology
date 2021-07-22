@@ -1,7 +1,8 @@
-#' Create a Booth plot of peaks over a threshold
+#' Creates a Booth plot of peak flows over a threshold
 #'
-#' A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
-#' either magnitude (default) or volume on the vertical axis
+#' @description Creates a Booth plot of peak flows over a threshold. The plot shows
+#' the duration on the horizontal axis and
+#' either the magnitude (default) or volume on the vertical axis.
 #'
 #' @param events A data frame of POT events from the function \code{ch_get_peaks}
 #' @param threshold The threshold used by \code{ch_get_peaks}

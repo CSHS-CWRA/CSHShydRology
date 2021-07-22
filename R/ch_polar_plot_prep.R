@@ -1,6 +1,8 @@
-#' Creates a data structure to be passed to \code{ch_polar_plot}.
+#' Creates a data structure to be passed to \code{ch_polar_plot}
 #'
-#' Could be used to move data from a different type of analysis different to the \code{binned_MannWhitney} function which uses flows. The two series need to be of the same length and their length is related to the step size. For examples 73 periods links to 5 day periods.
+#' @description Creates a data structure to be passed to \code{ch_polar_plot}. 
+#'  Could be used to move data from a different type of analysis different to the \code{ch_binned_MannWhitney} function, which uses flows. 
+#'  The two series need to be of the same length and their length is related to the step size. For examples 73 periods links to 5 day periods.
 #'
 #' @param station Typically a station number
 #' @param plot_title Polar plot title - usually a station name

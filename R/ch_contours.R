@@ -1,8 +1,6 @@
-#' Create Contours
+#' Creates Contours
 #'
-#' creates contour lines from a DEM.
-#' 
-#' This function generates contour lines from a DEM, which are returned as an **sf** object. 
+#' @description Creates contour lines from a DEM, which are returned as an **sf** object. 
 #' The user can either provide a vector of elevation values by specifying the `z_levels` argument, 
 #' or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the number of contour lines (`n_levels`).
 #'
@@ -11,7 +9,7 @@
 #' @param zmax maximum elevation value for contours
 #' @param n_levels number of contour lines
 #' @param z_levels levels at which to plot contours
-#' @return  
+#' @return 
 #' \item{contours_sf}{sf object containing contours}
 #' 
 #' 

@@ -1,7 +1,8 @@
-#' Reads Environment Canada Date Explorer (ECDE) meta data file
+#' Reads the Environment and Climate Change Canada Date Explorer (ECCCDE) metadata file
 #'
-#' @description Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
-#' The dataframe returned contains 21 fields of metadata for each station.
+#' @description Reads the Environment and Climate Change Canada Date Explorer (ECCCDE) metadata
+#' file. 
+#' 
 #'  
 #' @param filename The name of the ECDE file, \option{FavHydatStations.tb0}.
 #' @param writefile Default is \code{NULL}, but if it is a filename e.g. \option{filename.csv} 

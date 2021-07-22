@@ -1,6 +1,6 @@
 #' Clear SAGA Working Directory
 #'
-#' This function empties and removes a SAGA working directory. Note: the data for raster layers read in as SAGA sdat 
+#' @description Empties and removes a SAGA working directory. Note: the data for raster layers read in as SAGA sdat 
 #' files (e.g. the contributing area, carea) are held on disk rather than in memory; if you clear the working directory you
 #' will get an error if you try to use the raster layer.
 #'

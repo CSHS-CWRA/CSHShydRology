@@ -1,6 +1,6 @@
 #' Plots the regime of daily streamflows
 #'
-#' Produces a regime hydrograph similar to that in the reference. It shows the flow quantiles for each
+#' @description Produces a regime hydrograph similar to that in \cite{MacCulloch and Whitfield, 2012}. It shows the flow quantiles for each
 #' day of the year and the maximum and minimum. Parameters can be set to change colours and fix the y scale
 #' to allow plots of same scale to be produced.
 #'

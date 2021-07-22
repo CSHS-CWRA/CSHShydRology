@@ -1,7 +1,8 @@
 #' Extracts the annual maxima of a daily time series
 #'
+#' @description Extracts the annual maxima of a daily time series.
 #' @return  Returns a data frame containing the annual (Monthly) maxima,
-#' the date and the number of observations during the year.
+#' date, and number of observations during the year.
 #' 
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #'
@@ -18,7 +19,7 @@
 #'   If set to NULL the given column is not added. 
 #'    
 #' @param ... Other parameters.
-#' 
+#' @return Returns a dataframe with annual maxima.
 #' @export
 #' 
 #' @importFrom stats get_all_vars

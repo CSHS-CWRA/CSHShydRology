@@ -1,8 +1,7 @@
-#' Reads AHCCD monthly file
+#' Read AHCCD monthly file
 #'
-#' @description This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data of 
-#' precipitation or temperatures. The values are arranged as year x month, 
-#' which makes them difficult to read using standard \R functions.
+#' @description Reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data file of 
+#' monthly precipitation or temperatures, which is difficult to read using standard \R functions.
 #' @param monthly_file Required. Name of the file to be read.
 #' @return If successful, returns the values in a dataframe, consisting of the \code{year},
 #' the \code{month}, the value and the data \code{code}. 

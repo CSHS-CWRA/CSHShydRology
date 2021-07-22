@@ -1,9 +1,8 @@
 #' Raster plot and simple trends of observed streamflows by periods
 #' 
-#' @description
-#' Creates a raster plot plus trend plots for day of year, 
-#' which may be binned by a number of days (step = ),
-#' and the max, min and median across years. The plot contains four panels based upon binned data.
+#' @description Creates a raster plot and trend plots for day of year, 
+#' which may be binned by a number of days (step),
+#' and the max, min, and median across years. The plot contains four panels based on binned data.
 #'
 #' @details
 #' The annual maximum,minimum,and median flow with a trend test

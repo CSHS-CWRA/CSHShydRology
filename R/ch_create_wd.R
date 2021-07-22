@@ -1,6 +1,6 @@
 #' @title Create SAGA Working Directory
 #' 
-#' This function creates a SAGA working directory.
+#' @description Creates a SAGA working directory.
 #' 
 #' @param wd working directory file path
 #' @return 
