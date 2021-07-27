@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_fdcurve.R
 \name{ch_fdcurve}
 \alias{ch_fdcurve}
-\title{Plot Flow Duration Curve}
+\title{Plots Flow Duration Curve}
 \usage{
 ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = NULL)
 }
@@ -16,16 +16,12 @@ ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = NULL)
 \item{metadata}{dataframe of metadata, defaults to HYDAT_list}
 }
 \value{
-Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
+flow duration curve plot and a data frame containing the exceedance probability and flow
 }
 \description{
-A flow duration curve is a plot of flow magnitude against exceedance probability. 
-The plot may contain the Gustard Curves or they can be omitted. The default is for curves to be 
-plotted against probability, but an option is to plot against the normalized exceedance probability. 
-In that case, the x axis represents a normal distribution.
-}
-\details{
-Create a Flow Duration Curve based upon Observations.
+Creates a Flow Duration Curve based on Observations. 
+The plot can include the Gustard Curves. The flows can be 
+plotted against probability (default) or the normalized exceedance probability.
 }
 \examples{
 data(HYDAT_list)

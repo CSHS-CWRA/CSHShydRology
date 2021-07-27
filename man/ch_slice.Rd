@@ -16,20 +16,7 @@ Returns a vector of bin numbers that is used as a factor for each day
 in the dataset and prints a message indicating the handling of partial bins
 }
 \description{
-Whenever the number of bins does not divide in 365 evenly a 
-message is printed showing the number of bins created and the number of days 
-added to the last bin. Simply put, \code{ch_slice} is used to convert doy into a 
-factor which is a number of bins per year. A year can be converted into any 
-number of bins; slice does it based upon a number of days. So when you send it 
-an array of doy it slices that into bins of the desired width. For example, 
-if the step is 5. They 365/5 gives 73 bins and because of leap years there might 
-be one extra day added every four years to the final bin.
-
-To illustrate:
-doy:
-  1  2  3  4  5  6  7  8  9 10 11  12
-Bin:
-  1  1  1  1  1  2  2  2  2  2  3   3
+convert doy into a factor which is a number of bins per year.
 }
 \examples{
 doy <- c(1:365)

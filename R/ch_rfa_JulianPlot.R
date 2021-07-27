@@ -1,6 +1,6 @@
 #' Circular plotting by day of year 
 #'
-#' @description Create axis for plotting circular statistics in a unitary circle.
+#' @description Creates an axis for plotting circular statistics in a unitary circle.
 #'
 #' @author Martin Durocher <mduroche@@uwaterloo.ca>
 #' 
@@ -16,7 +16,7 @@
 #' 
 #' @importFrom graphics segments
 #' 
-#' @return Returns a empty rose plot by day of year
+#' @return Returns an empty rose plot by day of year
 #'
 #' @examples
 #'

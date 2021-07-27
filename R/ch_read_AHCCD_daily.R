@@ -1,8 +1,7 @@
 #' Reads AHCCD daily file
 #'
-#' @description This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) of daily 
-#' precipitation or temperatures. The values are arranged as
-#' month x day, which makes them difficult to read using standard \R functions.
+#' @description Reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data file of daily 
+#' precipitation or temperature, which is difficult to read using standard \R functions.
 #' @param daily_file Required. Name of the file to be read.
 #' @return If successful, returns the values in a dataframe, consisting of the date, 
 #' the value and the data code. If unsuccessful, returns the value \code{FALSE}.

@@ -25,10 +25,9 @@ form \code{date ~ site}.}
 Returns the circular or seasonal statistics of flood peaks.
 }
 \description{
-Return the circular or seasonal statistics of flood peaks.
-The angle represent the average timing of the floods and the radius its
-regularity. For instance a radius of one represents perfect regularity. 
-Can perform the analyses on multiple sites.
+Returns the circular or seasonal statistics of flood peaks.
+The angle represents the average timing of the floods and the radius represents its
+regularity.
 }
 \examples{
 

@@ -1,10 +1,9 @@
 #'  Plots a hydrograph with the data quality symbols and prints a report
 #'  
-#' @description Plots a hydrograph of a WSC daily data file read from from ECDataExplorer (ECDE). 
+#' @description Plots a hydrograph of a WSC daily data file read from from ECCCDataExplorer (ECCCDE). 
 #' The hydrograph shows individual days with data quality symbols [SYM] 
 #' in colour and counts cases of each and reports them in the legend. The colours and symbols 
-#' are those produced by ECDataExplorer. The option is to provide start and end dates to show 
-#' only part of the time period for which data exists and the plot is annotated to indicate this. 
+#' are those produced by ECCCDataExplorer.
 #'
 #' @param DF Data frame retrieved from ECDataExplorer as returned by the function 
 #' \code{ch_read_ECDE_flows}.

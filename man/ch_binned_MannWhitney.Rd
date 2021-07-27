@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_binned_MannWhitney.R
 \name{ch_binned_MannWhitney}
 \alias{ch_binned_MannWhitney}
-\title{Compares two time periods of data using Mann-Whitney test}
+\title{Compares two time periods of data using the Mann-Whitney test}
 \usage{
 ch_binned_MannWhitney(
   DF,
@@ -51,15 +51,9 @@ Returns a list containing:
 	}
 }
 \description{
-Compares two time periods of data using Mann-Whitney.
-
-Data are binned based upon a bin size, extracting data for two time periods 
-and tests for change between two such periods
-result can be passed to \code{ch_polar_plot} or \code{ch_decades_plot} 
-for visualization
-}
-\details{
-Performs a binned Mann-Whitney test on periods of a defined length.
+Compares two binned time periods of data using the Mann-Whitney test.
+The result can be passed to \code{ch_polar_plot} or \code{ch_decades_plot} 
+for visualization.
 }
 \examples{
 data(HYDAT_list)

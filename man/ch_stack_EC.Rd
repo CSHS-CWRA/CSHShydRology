@@ -18,7 +18,7 @@ ch_stack_EC(data_values = NULL, data_codes = NULL)
 Returns a data frame with two colums: the data values, and the data codes.
 }
 \description{
-Converts data frames of Environment Canada year x month or 
+Converts data frames of ECCC year x month or 
 month x day data to vectors.
 }
 \examples{

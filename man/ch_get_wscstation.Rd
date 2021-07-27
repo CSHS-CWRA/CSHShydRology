@@ -2,9 +2,7 @@
 % Please edit documentation in R/ch_get_wscstation.R
 \name{ch_get_wscstation}
 \alias{ch_get_wscstation}
-\title{Reads station information from a data file produced by ECDE
-Retrieves station information for an individual Water Survey of Canada site,
-adds a text string at position 21 that combines key elements for a title.}
+\title{Retrieves station information from the HYDAT database}
 \usage{
 ch_get_wscstation(stnID, metadata = NULL)
 }
@@ -40,9 +38,8 @@ Returns a data frame with 21 variables
 }
 }
 \description{
-Reads station information from a data file produced by ECDE
-Retrieves station information for an individual Water Survey of Canada site,
-adds a text string at position 21 that combines key elements for a title.
+Retrieves station information for an individual Water Survey of Canada site
+from the HYDAT database.
 }
 \examples{
 data("HYDAT_list")

@@ -1,14 +1,13 @@
-#' Generates the x axis for day of year
+#' Generates the x-axis for day of year or water year
 #'  
-#' Produce a date axis starting in a specific month.
+#' 
 #'  
-#' @description generates an axis for day of year or day of water year; used by regime_plot.
-#'  
-#' This routine deals only with the axis adjustments.  Day of water year needs to be done 
-#' separately
+#' @description Generates the x-axis for day of year or day of water year to be 
+#'  used by \code{ch_regime_plot}. Day of water year needs to be generated separately.
+#' 
 #'  
 #' @param wyear wyear = 1 for calendar year, = 10 for October 1.
-#' 
+#' @return No value is returned; the axis of the axis of the \R graphic created by \code{ch_regime_plot} is modified. 
 #' @author Paul Whitfield 
 #' @seealso \code{\link{ch_regime_plot}}
 #' @export

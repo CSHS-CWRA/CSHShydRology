@@ -14,9 +14,8 @@ If successful, returns the values in a dataframe, consisting of the date,
 the value and the data code. If unsuccessful, returns the value \code{FALSE}.
 }
 \description{
-This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) of daily 
-precipitation or temperatures. The values are arranged as
-month x day, which makes them difficult to read using standard \R functions.
+Reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data file of daily 
+precipitation or temperature, which is difficult to read using standard \R functions.
 }
 \examples{
 \dontrun{

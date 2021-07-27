@@ -15,10 +15,10 @@ ch_wtr_yr(dates, start_month = 10)
 \item{start_month}{Month in which the year starts (defaults to October)}
 }
 \value{
-Year starting in start_month
+Year starting in start_month.
 }
 \description{
-Display water year
+Displays water year
 }
 \examples{
 date <- seq(as.Date("1910/1/1"), as.Date("1912/1/1"), "days")

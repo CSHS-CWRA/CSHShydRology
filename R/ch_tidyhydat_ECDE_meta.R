@@ -1,10 +1,7 @@
-#' @name ch_tidyhydat_ECDE_meta
-#' @title Creates an ECDE-like dataframe of metadata
+#' Creates an ECCCDE-like dataframe of metadata
 #'
 #' @description Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
-#' format similar to that used by the Environment Canada Data Explorer (ECDE). The 
-#' result does not capture all the fields in ECDE as ECDE reports the most recent status 
-#' of many fields such as operating schedule.
+#' format similar to that used by the Environment Canada Data Explorer (ECCCDE).
 #'
 #' @param stations  A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005")
 #' 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_AHCCD_monthly.R
 \name{ch_get_AHCCD_monthly}
 \alias{ch_get_AHCCD_monthly}
-\title{Retrieve AHCCD data from EC datamart}
+\title{Retrieves AHCCD data from ECCC database}
 \usage{
 ch_get_AHCCD_monthly(
   station,
@@ -37,7 +37,8 @@ url can be changed in case the site is moved.}
 Returns a data frame with the monthly values and associated variables.
 }
 \description{
-Retrieve AHCCD data from EC datamart
+Retrieves Adjusted and Homogenized Canadian Climate Data (AHCCD) 
+ data from Environment and Climate Change Canada (ECCC) database.
 }
 \note{
 Not all variables are available at all stations. Attempting to retrieve a non-existent variable 

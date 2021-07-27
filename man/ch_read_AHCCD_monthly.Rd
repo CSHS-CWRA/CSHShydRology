@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_read_AHCCD_monthly.R
 \name{ch_read_AHCCD_monthly}
 \alias{ch_read_AHCCD_monthly}
-\title{Reads AHCCD monthly file}
+\title{Read AHCCD monthly file}
 \usage{
 ch_read_AHCCD_monthly(monthly_file = NULL)
 }
@@ -14,9 +14,8 @@ If successful, returns the values in a dataframe, consisting of the \code{year},
 the \code{month}, the value and the data \code{code}.
 }
 \description{
-This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data of 
-precipitation or temperatures. The values are arranged as year x month, 
-which makes them difficult to read using standard \R functions.
+Reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) data file of 
+monthly precipitation or temperatures, which is difficult to read using standard \R functions.
 }
 \examples{
 \dontrun{

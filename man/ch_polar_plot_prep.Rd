@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_polar_plot_prep.R
 \name{ch_polar_plot_prep}
 \alias{ch_polar_plot_prep}
-\title{Creates a data structure to be passed to \code{ch_polar_plot}.}
+\title{Creates a data structure to be passed to \code{ch_polar_plot}}
 \usage{
 ch_polar_plot_prep(
   station,
@@ -73,7 +73,9 @@ Returns a list containing:
 	}
 }
 \description{
-Could be used to move data from a different type of analysis different to the \code{binned_MannWhitney} function which uses flows. The two series need to be of the same length and their length is related to the step size. For examples 73 periods links to 5 day periods.
+Creates a data structure to be passed to \code{ch_polar_plot}. 
+ Could be used to move data from a different type of analysis different to the \code{ch_binned_MannWhitney} function, which uses flows. 
+ The two series need to be of the same length and their length is related to the step size. For examples 73 periods links to 5 day periods.
 }
 \references{
 Whitfield, P.H. and A.J. Cannon. 2000. Polar plotting of seasonal hydrologic

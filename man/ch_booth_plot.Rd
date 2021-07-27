@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_booth_plot.R
 \name{ch_booth_plot}
 \alias{ch_booth_plot}
-\title{Create a Booth plot of peaks over a threshold}
+\title{Creates a Booth plot of peak flows over a threshold}
 \usage{
 ch_booth_plot(events, threshold, title, type = "mag", colour1 = 1, colour2 = 1)
 }
@@ -23,8 +23,9 @@ ch_booth_plot(events, threshold, title, type = "mag", colour1 = 1, colour2 = 1)
 No value is returned; a standard \R graphic is created.
 }
 \description{
-A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
-either magnitude (default) or volume on the vertical axis
+Creates a Booth plot of peak flows over a threshold. The plot shows
+the duration on the horizontal axis and
+either the magnitude (default) or volume on the vertical axis.
 }
 \examples{
 threshold <- 0.1 * max(W05AA008$Flow)  # arbitrary threshold

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_hydrograph_plot.R
 \name{ch_hydrograph_plot}
 \alias{ch_hydrograph_plot}
-\title{Plot hydrographs}
+\title{Plots hydrographs}
 \usage{
 ch_hydrograph_plot(
   flows = NULL,
@@ -68,17 +68,7 @@ Returns \code{TRUE} if the function is executed properly.
 }
 \description{
 Creates a hydrograph plot for simulated, observed, and inflow
-hydrograph series, including precipitation if provided. The secondary y axis 
-will be used to plot the precip time series.
-The function assumes that the supplied time series have the same length and
-duration in time. If this is not true, then the defined period or period
-calculated from the first available flow series will be used to determine
-the plotting limits in time. If the data is take from output from the \strong{Raven} model,
-this is not a concern. The supplied time series should be in \pkg{xts} format,
-which can be obtained directly by using the \code{hyd.extract} function in the 
-package \pkg{RavenR} .
-Note that a plot title is purposely omitted in order to allow the automatic
-generation of plot titles.
+hydrograph series, including precipitation timeseries (on secondary y-axis) if provided.
 }
 \examples{
 # example with synthetic random data

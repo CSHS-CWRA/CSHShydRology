@@ -1,6 +1,6 @@
 #' Check Catchments
 #'
-#' This function generates a simple map to allow a visual assessment of the catchment 
+#' @description Generates a simple map to allow a visual assessment of the catchment 
 #' boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
 #' including the coordinates of the outlet point and the catchment area.
 #'

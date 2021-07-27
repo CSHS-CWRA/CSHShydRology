@@ -28,15 +28,7 @@ a list containing:
 	 range from seven to n days in length.
 }
 \description{
-This function is development code being shared as is. It is expected that the user will be interested in the
-dataframe returned for POT analysis and for plotting (i.e. Booth_plots).
-}
-\details{
-This function retrieves peaks greater than the prescribed threshold.  It returns a dataframe of peak characteristics
-suitable for subsequent analysis.
-
-The portion under development is the It also returns a list of the flows during an event with the values of the three
-preceeding dates and three subsequnt dates.
+Extracts peaks over a prescribed threshold (POT).
 }
 \examples{
 threshold <- 0.9*max(W05AA008$Flow)  # arbitrary threshold

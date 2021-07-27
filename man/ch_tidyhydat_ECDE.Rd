@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_tidyhydat_ECDE.R
 \name{ch_tidyhydat_ECDE}
 \alias{ch_tidyhydat_ECDE}
-\title{Converts tidyhydat daily flow tibble data to ECDE format}
+\title{Converts tidyhydat daily flow tibble data to ECCCDE format}
 \usage{
 ch_tidyhydat_ECDE(data)
 }
@@ -10,13 +10,11 @@ ch_tidyhydat_ECDE(data)
 \item{data}{Tibble of daily flows retrieved using \pkg{tidyhydat} function \code{hy_daily_flows}.}
 }
 \value{
-A dataframe or a list of flows with formats consistent with datafiles from ECDE
+A dataframe or a list of flows with formats consistent with datafiles from ECDE.
 }
 \description{
-Accessing daily flow data using \pkg{tidyhydat} is quick and efficient. However, it 
-sometimes conflicts with other functions as \pkg{tidyhydat} changes variable names and some default 
-entries. This function converts a tibble obtained from a \pkg{tidyhydat} tibble to a dataframe 
-with standard Environment and Climate Change Canada Data Explorer (ECDE) headings.
+Converts a tibble obtained from a \pkg{tidyhydat} to a dataframe 
+with standard Environment and Climate Change Canada Data Explorer (ECCCDE) headings.
 }
 \examples{
 \dontrun{

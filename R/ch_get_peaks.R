@@ -1,13 +1,7 @@
 #' Extracts peak flows over a threshold
 #'
-#' This function is development code being shared as is. It is expected that the user will be interested in the
-#' dataframe returned for POT analysis and for plotting (i.e. Booth_plots).
+#' @description Extracts peaks over a prescribed threshold (POT).
 #'
-#' This function retrieves peaks greater than the prescribed threshold.  It returns a dataframe of peak characteristics
-#' suitable for subsequent analysis.
-#'
-#' The portion under development is the It also returns a list of the flows during an event with the values of the three
-#' preceeding dates and three subsequnt dates.
 #'
 #' @param dataframe a data frame of streamflow data containing columns named \option{Date} and \option{Flow}
 #' @param threshold a value for the threshold. Values above the threshold are tested for peaks.

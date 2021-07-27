@@ -2,9 +2,7 @@
 % Please edit documentation in R/ch_read_ECDE_flows.R
 \name{ch_read_ECDE_flows}
 \alias{ch_read_ECDE_flows}
-\title{Reads a file of WSC daily flows from ECDataExplorer
-Reads in a file WSC daily flows as returned from the program ECDataExplorer,
-and omits the last 3 lines as these contain the data disclaimer.}
+\title{Reads a file of WSC daily flows from ECCCDataExplorer}
 \usage{
 ch_read_ECDE_flows(filename)
 }
@@ -15,9 +13,7 @@ ch_read_ECDE_flows(filename)
 Returns a dataframe with the last three rows removed and the Date as Date
 }
 \description{
-Reads a file of WSC daily flows from ECDataExplorer
-Reads in a file WSC daily flows as returned from the program ECDataExplorer,
-and omits the last 3 lines as these contain the data disclaimer.
+Reads in a WSC daily flows file as returned from the program ECCCDataExplorer.
 }
 \examples{
 \dontrun{

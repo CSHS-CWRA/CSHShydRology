@@ -20,10 +20,10 @@ ch_rfa_JulianPlot(
 \item{...}{Other parameter passed to \link{points}.}
 }
 \value{
-Returns a empty rose plot by day of year
+Returns an empty rose plot by day of year
 }
 \description{
-Create axis for plotting circular statistics in a unitary circle.
+Creates an axis for plotting circular statistics in a unitary circle.
 }
 \examples{
 

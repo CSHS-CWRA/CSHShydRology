@@ -22,9 +22,8 @@ The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")
 No value is returned; a standard R graphic is created.
 }
 \description{
-Produces a raster plot: years by day of year, showing magnitude of flow. 
-This produces a plot showing the flow data in colours, showing different context than i
-n a hydrograph. High flows are in warm colours.
+Produces a raster plot showing day of year (x-axis), years (y-axis), and
+magnitude of flow (color of raster cells).
 }
 \examples{
 ch_flow_raster(W05AA008)

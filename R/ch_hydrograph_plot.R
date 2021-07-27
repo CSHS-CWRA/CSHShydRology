@@ -1,17 +1,7 @@
-#' Plot hydrographs
+#' Plots hydrographs
 #'
-#' Creates a hydrograph plot for simulated, observed, and inflow
-#' hydrograph series, including precipitation if provided. The secondary y axis 
-#' will be used to plot the precip time series.
-#' The function assumes that the supplied time series have the same length and
-#' duration in time. If this is not true, then the defined period or period
-#' calculated from the first available flow series will be used to determine
-#' the plotting limits in time. If the data is take from output from the \strong{Raven} model,
-#' this is not a concern. The supplied time series should be in \pkg{xts} format,
-#' which can be obtained directly by using the \code{hyd.extract} function in the 
-#' package \pkg{RavenR} .
-#' Note that a plot title is purposely omitted in order to allow the automatic
-#' generation of plot titles.
+#' @description Creates a hydrograph plot for simulated, observed, and inflow
+#' hydrograph series, including precipitation timeseries (on secondary y-axis) if provided.
 #'
 #' @param flows data frame of flows to plot
 #' @param precip data frame of precipitation values to plot

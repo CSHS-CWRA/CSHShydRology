@@ -7,7 +7,7 @@
 
 #' Stacks EC values
 #' 
-#' @description Converts data frames of Environment Canada year x month or 
+#' @description Converts data frames of ECCC year x month or 
 #' month x day data to vectors.
 #' @param data_values Required. Data frame of year x month or month x day values.
 #' @param data_codes Required. Data frame of year x month or month x day data codes.

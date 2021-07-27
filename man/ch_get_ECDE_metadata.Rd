@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_ECDE_metadata.R
 \name{ch_get_ECDE_metadata}
 \alias{ch_get_ECDE_metadata}
-\title{Reads Environment Canada Date Explorer (ECDE) meta data file}
+\title{Reads the Environment and Climate Change Canada Date Explorer (ECCCDE) metadata file}
 \usage{
 ch_get_ECDE_metadata(filename, writefile = NULL)
 }
@@ -38,8 +38,8 @@ Returns a dataframe consisting of
 }
 }
 \description{
-Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
-The dataframe returned contains 21 fields of metadata for each station.
+Reads the Environment and Climate Change Canada Date Explorer (ECCCDE) metadata
+file.
 }
 \examples{
 \dontrun{

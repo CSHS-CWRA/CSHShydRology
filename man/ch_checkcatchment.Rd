@@ -19,7 +19,7 @@ ch_checkcatchment(dem, catchment, outlet, outlet_label = NULL)
 \item{area_df}{Generates contour map with catchment polygon and outlet check}
 }
 \description{
-This function generates a simple map to allow a visual assessment of the catchment 
+Generates a simple map to allow a visual assessment of the catchment 
 boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
 including the coordinates of the outlet point and the catchment area.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_contours.R
 \name{ch_contours}
 \alias{ch_contours}
-\title{Create Contours}
+\title{Creates Contours}
 \usage{
 ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 }
@@ -21,10 +21,7 @@ ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 \item{contours_sf}{sf object containing contours}
 }
 \description{
-creates contour lines from a DEM.
-}
-\details{
-This function generates contour lines from a DEM, which are returned as an **sf** object. 
+Creates contour lines from a DEM, which are returned as an **sf** object. 
 The user can either provide a vector of elevation values by specifying the `z_levels` argument, 
 or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the number of contour lines (`n_levels`).
 }

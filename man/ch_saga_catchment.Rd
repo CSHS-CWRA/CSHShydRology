@@ -36,9 +36,8 @@ ch_saga_catchment(
 \item{catchment_sf}{Returns an sf object containing catchment polygons}
 }
 \description{
-This function generates catchment boundaries for a set of specified points of interest along a stream network. The output is a **sf** object containing the polygons.
-}
-\details{
+Generates catchment boundaries for a set of specified points of interest along a stream network. 
+
 The function has two gridded inputs: a DEM (with sinks removed as appropriate) and a grid of contributing areas. Other inputs include `outlet`, a **sf** object containing the coordinates of the catchment outlets, and `outlet_label`, an optional vector of character strings that serve as labels or descriptions of the outlet points.
 
 The DEM is input as a raster object via the `dem` argument.

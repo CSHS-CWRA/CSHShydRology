@@ -27,13 +27,10 @@ a dataframe with different date information
 \code{dwy}   numeric day of water year
 }
 \description{
-Converts an array of dates into a dataframe with date, Year, month, doy,
+Converts an array of dates into a dataframe with date, year, month, doy,
 wyear, dowy. 
-Calculates day of year and day of water year since 10.01 of present water year,
+Calculates day of year and day of water year from Oct 1st of present water year
  using base::isodate.
-}
-\details{
-Converts a date array and produces a data frame with years, wateryears, and days of year and of water year.
 }
 \examples{
 dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"),by = 1)

@@ -18,8 +18,7 @@ No value is returned; a standard R graphic is created.
 Raster plot with WSC quality flags. 
 This produces a plot showing the flow data in grayscale 
 overlain by the Water Survey of Canada quality flags.  Colours are consistent with 
-ECDataExplorer. Raster layout lets the use see the flags in a different context than in 
-a hydrograph.
+ECDataExplorer.
 }
 \details{
 Produces a raster plot: years against day of year, showing the data flags:

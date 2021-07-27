@@ -1,8 +1,6 @@
 #' Contributing Area Grid
 #' 
-#' Generates a grid of contributing area for each grid cell.
-#' 
-#' This function generates a raster of contributing areas based on a DEM, 
+#' @description Generates a grid of contributing area for each grid cell,
 #' which should have had sinks removed in a pre-processing step. For more information, see 
 #' ?`rsaga.topdown.processing`.
 #' 

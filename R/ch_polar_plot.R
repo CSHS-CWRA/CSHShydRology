@@ -1,6 +1,6 @@
 #' Polar plot of daily streamflows
 #'
-#' Produces a polar plot similar to that used in \cite{Whitfield and Cannon, 2000}. It uses output 
+#' @description Produces a polar plot similar to that used in \cite{Whitfield and Cannon, 2000}. It uses output 
 #' from the function \code{ch_binned_MannWhitney} or a data structure created using 
 #' the function \code{ch_polar_plot_prep}.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_tidyhydat_ECDE_meta.R
 \name{ch_tidyhydat_ECDE_meta}
 \alias{ch_tidyhydat_ECDE_meta}
-\title{Creates an ECDE-like dataframe of metadata}
+\title{Creates an ECCCDE-like dataframe of metadata}
 \usage{
 ch_tidyhydat_ECDE_meta(stations)
 }
@@ -41,9 +41,7 @@ Returns a list with three items:
 }
 \description{
 Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
-format similar to that used by the Environment Canada Data Explorer (ECDE). The 
-result does not capture all the fields in ECDE as ECDE reports the most recent status 
-of many fields such as operating schedule.
+format similar to that used by the Environment Canada Data Explorer (ECCCDE).
 }
 \examples{
 \dontrun{

@@ -30,9 +30,11 @@ If set to NULL the given column is not added.}
 \value{
 Returns a data frame containing the annual (Monthly) maxima,
 the date and the number of observations during the year.
+
+Returns a dataframe with annual maxima.
 }
 \description{
-Extracts the annual maxima of a daily time series
+Extracts the annual maxima of a daily time series.
 }
 \examples{
 

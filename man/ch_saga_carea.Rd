@@ -27,10 +27,7 @@ ch_saga_carea(
 \item{carea}{raster of contributing areas for each pixel.}
 }
 \description{
-Generates a grid of contributing area for each grid cell.
-}
-\details{
-This function generates a raster of contributing areas based on a DEM, 
+Generates a grid of contributing area for each grid cell,
 which should have had sinks removed in a pre-processing step. For more information, see 
 ?`rsaga.topdown.processing`.
 }

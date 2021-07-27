@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_cut_block.R
 \name{ch_cut_block}
 \alias{ch_cut_block}
-\title{Allows the user to extract a specific time period from a longer record.}
+\title{Extracts a specific time period from a longer record}
 \usage{
 ch_cut_block(DF, st_date, end_date)
 }
@@ -13,8 +13,12 @@ ch_cut_block(DF, st_date, end_date)
 
 \item{end_date}{ending date format is \%Y/\%m/\%d}
 }
+\value{
+Returns a data within the specific time period as a dataframe.
+}
 \description{
-Could be used to get the same period of time from several station for comparison.
+Extracts a specific time period from a longer record.
+ Could be used to get the same period of time from several stations for comparison.
 }
 \examples{
 data(W05AA008)
