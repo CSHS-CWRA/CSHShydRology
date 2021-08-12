@@ -5,6 +5,7 @@
 #' in colour and counts cases of each and reports them in the legend. The colours and symbols 
 #' are those produced by ECDataExplorer. The option is to provide start and end dates to show 
 #' only part of the time period for which data exists and the plot is annotated to indicate this. 
+#' Counts of missing observations is also provided in the legend.
 #'
 #' @param DF Data frame retrieved from ECDataExplorer as returned by the function 
 #' \code{ch_read_ECDE_flows}.
@@ -41,6 +42,7 @@ ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, re
   
     sym_count <- array(0, dim = 6)
     DF$dcol <- array(1, dim = length(DF[ , 1]))
+    
 
     ylims <- c(min(DF[ , 4]),max(DF[,4]))
 
@@ -70,15 +72,17 @@ ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, re
   points(DF$Date, DF[ , 4], col = mcol[DF$dcol], type = "p", pch = 19, cex = 0.6)
        
   sym_count[1] <- length(DF[,4])- sum(sym_count)
+  missdays <- as.numeric(1 + DF[length(DF[,1]), 3] - DF[1,3] -length(DF[, 1]))
  
   ltexta <- c("Default  ","(A) - Partial  ","(B) - Backwater  ","(D) - Dry  ","(E) - Estimate  ")
   ltextb <- c(paste("Default  ", sym_count[1]), 
              paste("(A) - Partial  ", sym_count[2]),
              paste("(B) - Backwater  ", sym_count[3]), 
              paste("(D) - Dry  ", sym_count[5]), 
-             paste("(E) - Estimate  ", sym_count[6]))
+             paste("(E) - Estimate  ", sym_count[6]),
+             paste("Missing days ", missdays))
   
-  lcol <- c("black", "green", "cyan", "yellow", "red")
+  lcol <- c("black", "green", "cyan", "yellow", "red", "white")
   
   if (!cts)  legend("topleft", ltexta, pch = 19, col = lcol, cex = 0.7)
   if (cts)   legend("topleft", ltextb, pch = 19, col = lcol, cex = 0.7)
@@ -87,7 +91,7 @@ ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, re
 
   names(sym_count) <- c("Default", "A", "B", "C", "D", "E")
   
-  result <- list(title,  st_date, end_date, length(DF[,4]), sym_count)
-  names(result) <- c("Station", "start_date", "end_date", "points", "SYM_count")
+  result <- list(title,  st_date, end_date, length(DF[,4]), sym_count, missdays)
+  names(result) <- c("Station", "start_date", "end_date", "points", "SYM_count","missing_observations")
   return (result)
 }
