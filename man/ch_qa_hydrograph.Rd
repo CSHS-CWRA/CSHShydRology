@@ -38,7 +38,8 @@ Plots a hydrograph of a WSC daily data file read from from ECDataExplorer (ECDE)
 The hydrograph shows individual days with data quality symbols [SYM] 
 in colour and counts cases of each and reports them in the legend. The colours and symbols 
 are those produced by ECDataExplorer. The option is to provide start and end dates to show 
-only part of the time period for which data exists and the plot is annotated to indicate this.
+only part of the time period for which data exists and the plot is annotated to indicate this. 
+Counts of missing observations is also provided in the legend.
 }
 \examples{
 m_test <- ch_qa_hydrograph(W05AA008)
