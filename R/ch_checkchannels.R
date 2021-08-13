@@ -48,14 +48,14 @@
 #' stns <- ch_get_url_data(gs_url, gs_fn)
 #' 
 #' # check channels
-#' ch_checkchannels(dem, channels, outlet=stns)
+#' ch_checkchannels(dem=filled_dem, channels, outlet=stns)
 #' }
 #' 
 #' @importFrom sf st_bbox st_geometry
 #' @importFrom ggplot2 ggplot geom_sf coord_sf theme_bw 
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
 #' @export
-ch_checkchannels <- function(channels, dem, outlet) {
+ch_checkchannels <- function(dem, channels, outlet) {
   
   # add handling for directly passing output from ch_saga_channels function
   if (class(channels) == "list" & "channels" %in% names(channels)) {

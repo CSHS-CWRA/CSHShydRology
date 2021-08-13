@@ -31,8 +31,8 @@
 #' # create saga wd using base::tempdir()
 #' saga_wd <- tempdir()
 #'
-#' # download 25m DEM
-#' ff <- "gs_dem25.tif"
+#' # download LiDAR DEM for 240 and 241 creek
+#' ff <- "gs_be240.tif"
 #' ra_fn <- file.path(saga_wd, ff)
 #' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
 #' dem <- ch_get_url_data(ra_url, ra_fn)
