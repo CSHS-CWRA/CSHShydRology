@@ -37,18 +37,19 @@
 #'   \item {To - End Year}
 #'   \item {Reg. - Regulated?} 
 #'   \item {Flow - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
-#'   \item {Level - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}
-#'   \item {Sed - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}
-#'   \item {OperSched - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}
+#'   \item {Level - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+#'   \item {Sed - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+#'   \item {OperSched - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
 #'   \item {RealTime - if TRUE/Yes}
 #'   \item {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
-#'   \item {Region - number of region instead of name (differs from ECDE), unless \code{all_ECDE = TRUE}
-#'   \item {Datum - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}
-#'   \item {Operator - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}
+#'   \item {Region - number of region instead of name (differs from ECDE), unless \code{all_ECDE = TRUE}}
+#'   \item {Datum - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}}
+#'   \item {Operator - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}}
 #' }
 #' }
 #' 
-#' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range
+#' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range hy_daily allstations
+#' @import dplyr
 #' @seealso \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 #' @examples \dontrun{
 #' stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
@@ -99,9 +100,16 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
   names(meta) <- colmeta
   
   result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
-  
-  print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta  ")
-  print("not all ECDE fields are reproduced in this summary")
+  if (all_ECDE) {
+    # get all ECDE variables
+    # flow
+    daily <- hy_daily(stations)
+    # get last dates
+    max_date_vals <- daily %>% group_by() summarize(max)
+  } else {
+    print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta  ")
+    print("not all ECDE fields are reproduced in this summary")
+  }
   
   return(result)
 }

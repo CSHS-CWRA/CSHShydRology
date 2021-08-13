@@ -4,46 +4,26 @@
 \alias{ch_tidyhydat_ECDE_meta}
 \title{Creates an ECDE-like dataframe of metadata}
 \usage{
-ch_tidyhydat_ECDE_meta(stations)
+ch_tidyhydat_ECDE_meta(stations, all_ECDE = FALSE)
 }
 \arguments{
-\item{stations}{A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005")}
+\item{stations}{A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005"). If 
+\code{stations = "all"} then values are returned for all stations.}
+
+\item{all_ECDE}{Should all ECDE values be returned? If \code{FALSE} the default, then
+values of \code{Flow}, \code{Sed}, \code{OperSched}, \code{Region}, \code{Datum}, and
+\code{Operator} are omitted or will differ from the ECDE values. If \code{all_ECDE = TRUE},
+then the function will return values identical to ECDE.}
 }
 \value{
-Returns a list with three items:
-\itemize{
-\item {\code{meta} - a dataframe of metadata from \pkg{tidyhydat} in ECDE form (not all ECDE fields are reproduced in this summary)}
-\item {\code{H_version} - version information, and }
-\item {\code{th_meta} - a dataframe with all \pkg{tidyhdat} fields including:}
-\itemize{
-  \item {Station - StationID}
-  \item {StationName - Station Name}
-  \item {HYDStatus - Active or Discontinued}
-  \item {Prov - Province}
-  \item {Latitude}
-  \item {Longitude}
-  \item {DrainageArea - km\eqn{^2}{^2}}
-  \item {Years - number of years with data}
-  \item {From - Start Year}
-  \item {To - End Year}
-  \item {Reg. - Regulated?} 
-  \item {Flow - not captured (differs from ECDE)}
-  \item {Level - not captured (differs from ECDE)}
-  \item {Sed - not captured (differs from ECDE)}
-  \item {OperSched - not captured (differs from ECDE)}
-  \item {RealTime - if TRUE/Yes}
-  \item {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
-  \item {Region - number of region instead of name (differs from ECDE)}
-  \item {Datum - reference number (differs from ECDE)}
-  \item {Operator - reference number (differs from ECDE)}
-}
-}
+
 }
 \description{
 Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
 format similar to that used by the Environment Canada Data Explorer (ECDE). The 
-result does not capture all the fields in ECDE as ECDE reports the most recent status 
-of many fields such as operating schedule.
+default does not capture all the fields in ECDE, which includes the most recent status 
+of many fields such as operating schedule. Returning these values slows the function,
+particularly when all WSC stations are selected.
 }
 \examples{
 \dontrun{
