@@ -3,10 +3,17 @@
 #'
 #' @description Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
 #' format similar to that used by the Environment Canada Data Explorer (ECDE). The 
-#' result does not capture all the fields in ECDE as ECDE reports the most recent status 
-#' of many fields such as operating schedule.
+#' default does not capture all the fields in ECDE, which includes the most recent status 
+#' of many fields such as operating schedule. Returning these values slows the function,
+#' particularly when all WSC stations are selected.
+#' 
 #'
-#' @param stations  A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005")
+#' @param stations  A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005"). If 
+#' \code{stations = "all"} then values are returned for all stations.
+#' @param all_ECDE Should all ECDE values be returned? If \code{FALSE} the default, then
+#' values of \code{Flow}, \code{Sed}, \code{OperSched}, \code{Region}, \code{Datum}, and
+#' \code{Operator} are omitted or will differ from the ECDE values. If \code{all_ECDE = TRUE},
+#' then the function will return values identical to ECDE.
 #' 
 #' @author Paul Whitfield <paul.h.whitfield@gmail.com>
 #' 
@@ -29,15 +36,15 @@
 #'   \item {From - Start Year}
 #'   \item {To - End Year}
 #'   \item {Reg. - Regulated?} 
-#'   \item {Flow - not captured (differs from ECDE)}
-#'   \item {Level - not captured (differs from ECDE)}
-#'   \item {Sed - not captured (differs from ECDE)}
-#'   \item {OperSched - not captured (differs from ECDE)}
+#'   \item {Flow - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+#'   \item {Level - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}
+#'   \item {Sed - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}
+#'   \item {OperSched - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}
 #'   \item {RealTime - if TRUE/Yes}
 #'   \item {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
-#'   \item {Region - number of region instead of name (differs from ECDE)}
-#'   \item {Datum - reference number (differs from ECDE)}
-#'   \item {Operator - reference number (differs from ECDE)}
+#'   \item {Region - number of region instead of name (differs from ECDE), unless \code{all_ECDE = TRUE}
+#'   \item {Datum - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}
+#'   \item {Operator - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}
 #' }
 #' }
 #' 
@@ -50,38 +57,43 @@
 #' version <- result[[2]]}
 #' 
 
-ch_tidyhydat_ECDE_meta <- function(stations){
-
+ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
+  allstations <- allstations
   H_version <- hy_version()  
   H_version <- data.frame(H_version)
   print(H_version)
   
-  #extract difference parts of metadata using tidyhydat
-  tc <- hy_stations(station_number=stations)
-  tc <- data.frame(tc)
+  if (stations[1] == "all") {
+    tc <- allstations
+    stations <- allstations$STATION_NUMBER
+  } 
   
-  td <- hy_stn_regulation(station_number=stations)
+  #extract difference parts of metadata using tidyhydat
+  tc <- hy_stations(station_number = stations)
+  tc <- data.frame(tc)
+
+  td <- hy_stn_regulation(station_number = stations)
   td <- data.frame(td)
   
-  te <- hy_stn_data_range(station_number=stations)
+  te <- hy_stn_data_range(station_number = stations)
   te <- data.frame(te)
-  te <- te[te[,2]=="Q",]
+  te <- te[te[,2] == "Q",]
   
   colnmc <- c("Station",	"StationName","Prov",	"Region",	"HydStatus", "SedStatus",	"Latitude","Longitude",	"DrainageAreaG", "DrainageAreaE","RHBN",
              "RealTime",		"Contributor",	"Operator",	"Datum")
-  colnmd <-c("Station",	"From",	"To",	"Reg.")
-  colnme <-c("Station","DATA_TYPE","SED_DATA_TYPE","From",	"To",	"Years")
+  colnmd <- c("Station",	"From",	"To",	"Reg.")
+  colnme <- c("Station","DATA_TYPE","SED_DATA_TYPE","From",	"To",	"Years")
   colmeta <- c("Station",	"StationName","HydStatus","Prov",	 "Latitude","Longitude",	"DrainageArea", "Years","From","To", "Reg.",
                "Flow","Level","Sed","Opersched","RealTime","RHBN","Region","Datum","operator")
   
-  names(tc) <-colnmc
-  names(td) <-colnmd
-  names(te) <-colnme
+  names(tc) <- colnmc
+  names(td) <- colnmd
+  names(te) <- colnme
     
-  t1 <- merge(tc,td, by.x="Station", by.y="Station")
-  t2 <- merge(t1,te, by.x="Station", by.y="Station")
+  t1 <- merge(tc, td, by.x = "Station", by.y = "Station")
+  t2 <- merge(t1, te, by.x = "Station", by.y = "Station")
   t3 <- rep.int(NA, length(t2[,1]))
-  th_meta <-t2
+  th_meta <- t2
   
   meta <- data.frame(t2[,c(1:2,5,3,7:9,23,21:22,18)],t3,t3,t3,t3,t2[,c(12,12,4,15,14)])
   names(meta) <- colmeta
