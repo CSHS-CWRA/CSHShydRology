@@ -23,7 +23,29 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' ch_saga_carea()
+#' # note: example not run in package compilation
+#' # - requires creating and accessing a temporary directory
+#' # - requires downloading spatial data from Zenodo repository
+#' # - requires a potentially lengthy GIS operation
+#' 
+#' # create saga wd using base::tempdir()
+#' saga_wd <- tempdir()
+#'
+#' # download LiDAR DEM for 240 and 241 creek
+#' ff <- "gs_be240.tif"
+#' ra_fn <- file.path(saga_wd, ff)
+#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
+#' dem <- ch_get_url_data(ra_url, ra_fn)
+#' 
+#' # fill sinks
+#' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+#' 
+#' # determine contributing area raster using filled_dem
+#' carea <- ch_saga_carea(filled_dem, saga_wd)
+#' 
+#' # plot contributing area raster
+#' library(raster)
+#' plot(carea)
 #' }
 #' 
 ch_saga_carea <- function(dem, saga_wd, 

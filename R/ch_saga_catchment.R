@@ -38,11 +38,36 @@
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' @export
 #' @examples
-#' \dontrun{
-#' ch_saga_catchment()
 #' 
-#' # consider sample DEM data with this
-#  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
+#' \dontrun{
+#' # note: example not run in package compilation
+#' # - requires creating and accessing a temporary directory
+#' # - requires downloading spatial data from Zenodo repository
+#' # - requires multiple potentially lengthy GIS operations
+#' 
+#' # create saga wd using base::tempdir()
+#' saga_wd <- tempdir()
+#' 
+#' # download LiDAR DEM for 240 and 241 creek
+#' ff <- "gs_be240.tif"
+#' ra_fn <- file.path(saga_wd, ff)
+#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
+#' dem <- ch_get_url_data(ra_url, ra_fn)
+#' 
+#' # fill sinks
+#' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+#' 
+#' # download station locations for 240, 241 (use as catchment outlets)
+#' ff <- "gs_weirs.GeoJSON"
+#' gs_fn <- file.path(saga_wd, ff)
+#' gs_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
+#' stns <- ch_get_url_data(gs_url, gs_fn)[1:2,]
+#' 
+#' # determine contributing area raster using filled_dem
+#' carea <- ch_saga_carea(filled_dem, saga_wd)
+#' 
+#' # run catchment delineation
+#' catchments <-  ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, outlet=stns, carea=carea)
 #' }
 #' 
 ch_saga_catchment <- function(dem, saga_wd, outlet,
@@ -56,9 +81,11 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
     print("saga_wd does not exist")
     return(NA)
   }
+  
   # store the dem in the working directory
   raster::writeRaster(dem, paste0(saga_wd, "/dem.sdat"), format = "SAGA",
                       NAflag = -9999, overwrite = TRUE)
+  
   # if a contributing area raster was not included, create one
   if (is.null(carea)) {
     if (carea_flag == 0) {
@@ -117,7 +144,7 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
     }
   }
   # create data frame
-  catchment_sf <- data.frame(label = outlet_label,
+  catchment_sf <- data.frame(label = labels,
                              outlet_x = xy[, 1], outlet_y = xy[, 2]) %>%
     cbind(polygon_sfc) %>%
     st_as_sf()

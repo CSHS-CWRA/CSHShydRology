@@ -10,10 +10,7 @@
 #' @seealso \code{\link{ch_clear_wd}} to clear the working SAGA directory
 #' @export
 #' @examples
-#' \dontrun{
-#' ch_create_wd()
-#' 
-#' }
+#' ch_create_wd(tempdir())
 #' 
 ch_create_wd <- function(wd) {
   # creates working directory for saga files
