@@ -13,8 +13,15 @@
 #' @seealso \code{\link{ch_create_wd}} to create working SAGA directory
 #' @export
 #' @examples \dontrun{
-#' # clear the current working directory
-#' ch_clear_wd(getwd())
+#' 
+#' # not run as clearing all files in a given directory cannot be tested in CRAN
+#' 
+#' # create a saga working directory
+#' saga_wd <- tempdir()
+#' ch_create_wd(saga_wd) # confirm creation
+#' 
+#' # clear the saga working directory
+#' ch_clear_wd(saga_wd)
 #' }
 #' 
 ch_clear_wd <- function(wd) {

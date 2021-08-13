@@ -19,8 +19,8 @@
 #' @param carea_flag if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat
 #' @param saga_wd name of working directory
 #' @param out_shp if TRUE, return channel network as sf object
-#' @param out_ntwrk if TRUE, return specified object as a raster
-#' @param out_route if TRUE, return specified object as a raster
+#' @param out_ntwrk if TRUE, return specified object (channel network) as a raster
+#' @param out_route if TRUE, return specified object (channel route) as a raster
 #' @param initvalue parameters for SAGA function
 #' @param initmethod parameters for SAGA function
 #' @param divcells parameters for SAGA function
@@ -38,11 +38,30 @@
 #' @seealso For more details, see the following: (http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html)
 #' @export
 #' @examples
-#' \dontrun{
-#' ch_saga_carea()
 #' 
-#' # consider sample DEM data with this
-#  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
+#' \dontrun{
+#' # note: example not run in package compilation
+#' # - requires creating and accessing a temporary directory
+#' # - requires downloading spatial data from Zenodo repository
+#' # - requires multiple potentially lengthy GIS operations
+#' 
+#' # create saga wd using base::tempdir()
+#' saga_wd <- tempdir()
+#'
+#' # download 25m DEM
+#' ff <- "gs_dem25.tif"
+#' ra_fn <- file.path(saga_wd, ff)
+#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
+#' dem <- ch_get_url_data(ra_url, ra_fn)
+#' 
+#' # fill sinks
+#' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+#' 
+#' # determine contributing area raster using filled_dem
+#' carea <- ch_saga_carea(filled_dem, saga_wd)
+#' 
+#' # generate channels sf object
+#' channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
 #' }
 #' 
 ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,

@@ -16,10 +16,26 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' ch_saga_removesinks()
+#' # note: example not run in package compilation
+#' # - requires creating and accessing a temporary directory
+#' # - requires downloading spatial data from Zenodo repository
+#' # - requires a potentially lengthy GIS operation
 #' 
-#' # consider sample DEM data with this
-#  # https://github.com/wcmbishop/rayshader-demo/blob/master/R/elevation-api.R
+#' # create saga wd using base::tempdir()
+#' saga_wd <- tempdir()
+#'
+#' # download 25m DEM
+#' ff <- "gs_dem25.tif"
+#' ra_fn <- file.path(saga_wd, ff)
+#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
+#' dem <- ch_get_url_data(ra_url, ra_fn)
+#' 
+#' # remove sinks
+#' removed_dem <-  ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
+#' 
+#' # plot the difference in raw and sink-removed dem 
+#' library(raster)
+#' plot(removed_dem-dem)
 #' }
 #' 
 ch_saga_removesinks <- function(dem_raw, saga_wd, 
