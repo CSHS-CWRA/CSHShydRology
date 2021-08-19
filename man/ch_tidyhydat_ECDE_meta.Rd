@@ -7,16 +7,47 @@
 ch_tidyhydat_ECDE_meta(stations, all_ECDE = FALSE)
 }
 \arguments{
-\item{stations}{A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", "05BB005"). If 
-\code{stations = "all"} then values are returned for all stations.}
+\item{stations}{A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", 
+"05BB005"). If  \code{stations = "all"} then values are returned for all stations.}
 
 \item{all_ECDE}{Should all ECDE values be returned? If \code{FALSE} the default, then
-values of \code{Flow}, \code{Sed}, \code{OperSched}, \code{Region}, \code{Datum}, and
+values of \code{Flow}, \code{Level}, \code{Sed}, \code{OperSched}, \code{Region}, \code{Datum}, and
 \code{Operator} are omitted or will differ from the ECDE values. If \code{all_ECDE = TRUE},
-then the function will return values identical to ECDE.}
+then the function will return values identical to ECDE. Note that setting 
+\code{all_ECDE = TRUE} will result in very long execution times, as it is necessary
+to extract many daily values for each station to determine the values of 
+\code{Flow}, \code{Level}, \code{Sed}, and \code{OperSched} to determine the
+final values.}
 }
 \value{
-
+Returns a list with three items:
+\itemize{
+\item {\code{meta} - a dataframe of metadata from \pkg{tidyhydat} in ECDE form (not all ECDE fields are reproduced in this summary)}
+\item {\code{H_version} - version information, and }
+\item {\code{th_meta} - a dataframe with all \pkg{tidyhdat} fields including:}
+\itemize{
+  \item {Station - StationID}
+  \item {StationName - Station Name}
+  \item {HYDStatus - Active or Discontinued}
+  \item {Prov - Province}
+  \item {Latitude}
+  \item {Longitude}
+  \item {DrainageArea - km\eqn{^2}{^2}}
+  \item {Years - number of years with data}
+  \item {From - Start Year}
+  \item {To - End Year}
+  \item {Reg. - Regulated?}
+  \item {Flow - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+  \item {Level - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+  \item {Sed - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+  \item {OperSched - not captured (differs from ECDE), unless \code{all_ECDE = TRUE}}
+  \item {RealTime - if TRUE/Yes}
+  \item {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
+  \item {Region - number of region instead of name (differs from ECDE), unless \code{all_ECDE = TRUE}}
+  \item {Datum - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}}
+  \item {Operator - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}}
+}
+}
 }
 \description{
 Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
@@ -26,16 +57,22 @@ of many fields such as operating schedule. Returning these values slows the func
 particularly when all WSC stations are selected.
 }
 \examples{
-\dontrun{
 stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 result <- ch_tidyhydat_ECDE_meta(stations)
 metadata <- result[[1]]
-version <- result[[2]]}
+version <- result[[2]]
+
+\dontrun{
+# This example is not run, as it can take several hours to execute
+# It should only be used to periodically update HYDAT_list
+result <- ch_tidyhydat_ECDE_meta("all", TRUE)
+HYDAT_list <- result$meta
+}
 
 }
 \seealso{
 \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield <paul.h.whitfield@gmail.com>, Kevin Shook
 }
