@@ -6,10 +6,12 @@
 #' default does not capture all the fields in ECDE, which includes the most recent status 
 #' of many fields such as operating schedule. Returning these values slows the function,
 #' particularly when all WSC stations are selected.
-#' 
 #'
 #' @param stations  A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", 
-#' "05BB005"). If  \code{stations = "all"} then values are returned for all stations.
+#' "05BB005"). If \code{stations = "all"} then values are returned for all stations. Note
+#' that you should ensure that that the \pgk{tidyhydat} database is up to date, if you
+#' select  \code{stations = "all"}, so that the most recent set of stations is used.
+#' 
 #' @param all_ECDE Should all ECDE values be returned? If \code{FALSE} the default, then
 #' values of \code{Flow}, \code{Level}, \code{Sed}, \code{OperSched}, \code{Region}, \code{Datum}, and
 #' \code{Operator} are omitted or will differ from the ECDE values. If \code{all_ECDE = TRUE},
@@ -50,7 +52,7 @@
 #'   \item {Region - number of region instead of name (differs from ECDE), unless \code{all_ECDE = TRUE}}
 #'   \item {Datum - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}}
 #'   \item {Operator - reference number (differs from ECDE), unless \code{all_ECDE = TRUE}}
-#' }
+#'   }
 #' }
 #' 
 #' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range 
@@ -67,7 +69,7 @@
 #' 
 #' \dontrun{
 #' # This example is not run, as it can take several hours to execute
-#' # It should only be used to periodically update HYDAT_list
+#' # It is intended to be used by the package maintainers to update HYDAT_list,
 #' result <- ch_tidyhydat_ECDE_meta("all", TRUE)
 #' HYDAT_list <- result$meta
 #' }
@@ -105,18 +107,16 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
   colnmd <- c("Station", "From", "To", "Reg.")
   colnme <- c("Station", "DATA_TYPE", "SED_DATA_TYPE", "From", "To", "Years")
   colmeta <- c("Station", "StationName","HydStatus","Prov", "Latitude", 
-               "Longitude", "DrainageArea", "Years", "From", "To", "Reg.",
+               "Longitude", "DrainageArea","EffectiveDrainageArea", "Years", "From", "To", "Reg.",
                "Flow", "Level", "Sed", "OperSched", "RealTime", "RHBN", "Region",
                "Datum", "Agency")
-  
-
   names(tc) <- colnmc
   names(td) <- colnmd
   names(te) <- colnme
 
   if (all_ECDE) {
-    t1 <- merge(tc, td, by.x = "Station", by.y = "Station", all.x = TRUE)
-    t2 <- merge(t1, te, by.x = "Station", by.y = "Station", all.x = TRUE)
+    t1 <- merge(tc, td, by = "Station", all.x = TRUE)
+    t2 <- merge(t1, te, by = "Station", all.x = TRUE)
     t3 <- rep.int(NA, length(t2[,1]))
     
     # re-do merging to get original tidyhydat format
@@ -124,7 +124,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
     t5 <- merge(t4, te, by = "Station")
     th_meta <- t5
     
-    meta <- data.frame(t2[,c(1:2,5,3,7:9,23,21:22,18)],t3,t3,t3,t3,t2[,c(12,12,4,15,14)])
+    meta <- data.frame(t2[,c(1:2,5,3,7:10,23,21:22,18)],t3,t3,t3,t3,t2[,c(12,12,4,15,14)])
     names(meta) <- colmeta
     
     if (nrow(meta) > 1)
@@ -141,7 +141,6 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
 
     agency_names <- left_join(meta, agencies, by = c("Agency" = "AGENCY_ID"))
 
-    
     meta$Region <- region_names$REGIONAL_OFFICE_NAME_EN
     meta$Datum <- datum_names$DATUM_EN
     French_datums <- !is.na(datum_names$DATUM_FR)
@@ -156,12 +155,8 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
     meta$Datum[is.na(meta$Datum)] <- ""
     meta$Agency[is.na(meta$Agency)] <- ""
     
-
+    # create progress bar
     pb <- txtProgressBar(min = 0, max = nrow(meta), style = 2)
-    
-    # temporarily disable warnings
-    oldwarn <- getOption("warn")
-    options(warn = -1)
     
     # loop through all stations to get all ECDE variables   
     for (i in 1:nrow(meta)) {
@@ -197,7 +192,6 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       }  
 
       # sediment
-      sed <- FALSE
       sed <- try(hy_sed_daily_loads(meta$Station[i], 
                                 start_date = start_date,
                                 end_date = end_date), silent = TRUE)
@@ -216,7 +210,6 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       }
 
       # operator schedule
-      oper <- ""
       oper <- try(hy_stn_data_coll(meta$Station[i]))
  
       if (nrow(oper) == 0) {
@@ -228,8 +221,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       }
     
      }  # for
-    # enable warnings
-    options(warn = oldwarn)
+
     result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
     
     print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
@@ -241,12 +233,12 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       t3 <- rep.int(NA, length(t2[,1]))
       th_meta <- t2
       
-      meta <- data.frame(t2[,c(1:2,5,3,7:9,23,21:22,18)],t3,t3,t3,t3,t2[,c(12,12,4,15,14)])
+      meta <- data.frame(t2[,c(1:2,5,3,7:10,23,21:22,18)],t3,t3,t3,t3,t2[,c(12,12,4,15,14)])
       names(meta) <- colmeta
       
       result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
       
-     print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta  ")
+     print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
      print("not all ECDE fields are reproduced in this summary")
     }
   
