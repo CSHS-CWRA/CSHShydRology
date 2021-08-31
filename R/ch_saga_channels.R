@@ -109,12 +109,12 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
   }
   if (out_ntwrk) {
     ntwrk <- raster::raster(paste0(saga_wd, '/ntwrk.sdat'))
-    sf::st_crs(ntwrk) <- raster::crs(dem)
+    raster::crs(ntwrk) <- raster::crs(dem)
     out_list$ntwrk <- ntwrk
   }
   if (out_route) {
     route <- raster::raster(paste0(saga_wd, '/route.sdat'))
-    sf::st_crs(route) <- raster::crs(dem)
+    raster::crs(route) <- raster::crs(dem)
     out_list$route <- route
   }
   return(out_list)
