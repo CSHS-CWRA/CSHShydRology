@@ -9,7 +9,7 @@
 #'
 #' @param stations  A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", 
 #' "05BB005"). If \code{stations = "all"} then values are returned for all stations. Note
-#' that you should ensure that that the \pgk{tidyhydat} database is up to date, if you
+#' that you should ensure that that the \pkg{tidyhydat} database is up to date, if you
 #' select  \code{stations = "all"}, so that the most recent set of stations is used.
 #' 
 #' @param all_ECDE Should all ECDE values be returned? If \code{FALSE} the default, then
@@ -68,7 +68,7 @@
 #' version <- result[[2]]
 #' 
 #' \dontrun{
-#' # This example is not run, as it can take several hours to execute
+#' # This example is not run, as it can take over an hour to execute
 #' # It is intended to be used by the package maintainers to update HYDAT_list,
 #' result <- ch_tidyhydat_ECDE_meta("all", TRUE)
 #' HYDAT_list <- result$meta
@@ -89,6 +89,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       stations <- allstations$STATION_NUMBER
     } 
   }
+  browser()
   # extract difference parts of metadata using tidyhydat
   tc <- hy_stations(station_number = stations)
   tc <- data.frame(tc)
@@ -170,9 +171,9 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       daily <- try(hy_daily(meta$Station[i], 
                         start_date = start_date,
                         end_date = end_date), silent = TRUE)
-
+      
       if (length(class(daily)) > 1) {
-        if (str_detect(string = daily[1], "Error")) {
+        if (str_detect(string = daily[1,1], "Error")) {
           meta$Flow[i] <- FALSE
           meta$Level[i] <- FALSE
         } else {
@@ -197,7 +198,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
                                 end_date = end_date), silent = TRUE)
       
       if (length(class(sed)) > 1) {
-        if (str_detect(string = sed[1], "Error"))
+        if (str_detect(string = sed[1, 1], "Error"))
           meta$Sed[i] <- FALSE
         else
           if (any(sed$Parameter == "Load"))
