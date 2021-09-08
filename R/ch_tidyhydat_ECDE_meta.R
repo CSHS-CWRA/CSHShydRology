@@ -89,7 +89,6 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       stations <- allstations$STATION_NUMBER
     } 
   }
-  browser()
   # extract difference parts of metadata using tidyhydat
   tc <- hy_stations(station_number = stations)
   tc <- data.frame(tc)
