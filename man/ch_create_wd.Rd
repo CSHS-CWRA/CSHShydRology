@@ -20,10 +20,7 @@ Create SAGA Working Directory
 This function creates a SAGA working directory.
 }
 \examples{
-\dontrun{
-ch_create_wd()
-
-}
+ch_create_wd(tempdir())
 
 }
 \seealso{

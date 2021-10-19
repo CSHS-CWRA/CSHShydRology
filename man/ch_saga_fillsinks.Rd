@@ -39,9 +39,26 @@ same topology and coordinate reference system as the input raster.
 }
 \examples{
 \dontrun{
-ch_saga_fillsinks()
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires a potentially lengthy GIS operation
 
-# consider sample DEM data with this
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download 25m DEM
+ff <- "gs_dem25.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# fill sinks
+filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+
+# plot the difference in raw and filled dem (positive -> filled)
+library(raster)
+plot(filled_dem-dem)
 }
 
 }

@@ -20,6 +20,9 @@ Accesses data sets, via a url the first time,
 saves them locally, then accesses them locally after the first time the script is executed.
 }
 \examples{
+\dontrun{
+# example not run since multiple large data files are downloaded
+
 # Tested using files in the Upper Penticton Creek
 # zenodo repository https://zenodo.org/record/4781469
 library(ggplot2)
@@ -31,20 +34,24 @@ dir_name <- here("test_data")
 if (!dir.exists(dir_name)) {
   dir.create(dir_name)
 }
+ 
 # test with soil moisture data in csv format
 sm_fn <- here("test_data", "sm_data.csv")
 sm_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
 sm_data <- ch_get_url_data(sm_url, sm_fn)
 head(sm_data)
+
 # test with tif/tiff file containing a dem
 ra_fn <- here("test_data", "gs_dem25.tif")
 ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 ra_data <- ch_get_url_data(ra_url, ra_fn)
 plot(ra_data)
+
 # test with GeoJSON
 gs_fn <- here("test_data", "gs_soilmaps.GeoJSON")
 gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 gs_data <- ch_get_url_data(gs_url, gs_fn)
+
 ggplot(gs_data) +
   geom_sf(aes(fill = new_key)) +
   labs(fill = "Soil class",
@@ -52,7 +59,7 @@ ggplot(gs_data) +
        y = "UTM Northing (m)") +
   coord_sf(datum = 32611) +
   theme_bw()
-  
+}
 }
 \author{
 Dan Moore <dan.moore@ubc.ca>

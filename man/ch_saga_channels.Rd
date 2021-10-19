@@ -30,9 +30,9 @@ ch_saga_channels(
 
 \item{out_shp}{if TRUE, return channel network as sf object}
 
-\item{out_ntwrk}{if TRUE, return specified object as a raster}
+\item{out_ntwrk}{if TRUE, return specified object (channel network) as a raster}
 
-\item{out_route}{if TRUE, return specified object as a raster}
+\item{out_route}{if TRUE, return specified object (channel route) as a raster}
 
 \item{initmethod}{parameters for SAGA function}
 
@@ -64,10 +64,30 @@ The SAGA function generates three outputs:
 The output is a list, which will have elements that will include the channel network shape as an **sf** object (if `out_shp = TRUE`), the flow direction grid as a **raster** object (if `out_route = TRUE`) and the network grid as a **raster** object (if `out_ntwrk = TRUE`)
 }
 \examples{
-\dontrun{
-ch_saga_carea()
 
-# consider sample DEM data with this
+\dontrun{
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires multiple potentially lengthy GIS operations
+
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download 25m DEM
+ff <- "gs_dem25.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# fill sinks
+filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+
+# determine contributing area raster using filled_dem
+carea <- ch_saga_carea(filled_dem, saga_wd)
+
+# generate channels sf object
+channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
 }
 
 }
