@@ -76,7 +76,7 @@
 #' 
 
 ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
-
+  hy_sed_daily_loads <- NULL
   H_version <- hy_version()  
   H_version <- data.frame(H_version)
   print(H_version)

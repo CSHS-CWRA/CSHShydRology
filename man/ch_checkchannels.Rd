@@ -23,7 +23,6 @@ Generates a map of the generated channel layer.
 This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 }
 \examples{
-
 \dontrun{
 # note: example not run in package compilation
 # - requires creating and accessing a temporary directory

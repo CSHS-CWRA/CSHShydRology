@@ -15,8 +15,6 @@
 #' 
 #' 
 #' @examples 
-#' @examples
-#' 
 #' \dontrun{
 #' # note: example not run in package compilation
 #' # - requires creating and accessing a temporary directory
