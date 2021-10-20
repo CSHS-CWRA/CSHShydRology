@@ -1,7 +1,7 @@
-#' Reads Environment Canada Date Explorer (ECDE) meta data file
+#' Reads Environment Canada Date Explorer (ECDE) meta data file.
 #'
 #' @description Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
-#' The dataframe returned contains 21 fields of metadata for each station.
+#' The dataframe returned contains 20 fields from ECDE.
 #'  
 #' @param filename The name of the ECDE file, \option{FavHydatStations.tb0}.
 #' @param writefile Default is \code{NULL}, but if it is a filename e.g. \option{filename.csv} 
@@ -15,26 +15,26 @@
 #'
 #' @return Returns a dataframe consisting of
 #' \itemize{
-#' \item	 {Station - StationID}
-#' \item	 {StationName - Station Name}
-#' \item	 {HYDStatus - Active or Discontinued}
-#' \item	 {Prov - Province}
-#' \item	 {Latitude}{}
-#' \item	 {Longitude}{}
-#' \item	 {DrainageArea - km2}
-#' \item	 {Years - # of years with data}
-#' \item	 {From - Start Year}
-#' \item	 {To - End Year}
-#' \item	 {Reg. - Regulated?} 
-#' \item	 {Flow - if TRUE/Yes}
-#' \item	 {Level - if TRUE/Yes}
-#' \item	 {Sed - if TRUE/Yes}
-#' \item	 {OperSched - Continuous or Seasonal}
-#' \item	 {RealTime - if TRUE/Yes}
-#' \item	 {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Region - Name of regional office}
-#' \item	 {Datum - Elevation datum}
-#' \item	 {Operator - Operator}
+#' \item	 {Station} { - StationID}
+#' \item	 {StationName} { - Station Name}
+#' \item	 {HYDStatus} {} - Active or Discontinued}
+#' \item	 {Prov} { - Province}
+#' \item	 {Latitude}
+#' \item	 {Longitude}
+#' \item	 {DrainageArea}{ - km2}
+#' \item	 {Years} { - # of years with data}
+#' \item	 {From} { - Start Year}
+#' \item	 {To} { - End Year}
+#' \item	 {Reg.}{ - Regulated?} 
+#' \item	 {Flow}{ - if TRUE/Yes}
+#' \item	 {Level}{ - if TRUE/Yes}
+#' \item	 {Sed}{ - if TRUE/Yes}
+#' \item	 {OperSched}{ - Continuous or Seasonal}
+#' \item	 {RealTime}{ - if TRUE/Yes}
+#' \item	 {RHBN}{ - if TRUE/Yes is in the reference hydrologic basin network}
+#' \item	 {Region}{ - Name of regional office}
+#' \item	 {Datum}{ - Elevation datum}
+#' \item	 {Operator}{} - Operator}
 #' }
 #' @examples \dontrun{
 #' filename <- "FavHydatStations.tb0"

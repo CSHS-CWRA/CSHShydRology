@@ -1,4 +1,4 @@
-#' Raster plot of daily streamflows with WSC quality flags
+#' Raster plot of daily streamflows with WSC quality flags.
 #'
 #' @description Raster plot with WSC quality flags. 
 #' This produces a plot showing the flow data in grayscale 
@@ -9,10 +9,10 @@
 #' @details
 #' Produces a raster plot: years against day of year, showing the data flags:
 #' \itemize{
-#'  \item {A}{(Partial) green}
-#'  \item {B}{(Backwater) blue}
-#'  \item {D}{(Dry) yellow}
-#'  \item {E}{Estimated) red}
+#'  \item {A}{ (Partial) green}
+#'  \item {B}{ (Backwater) blue}
+#'  \item {D}{ (Dry) yellow}
+#'  \item {E}{ (Estimated) red}
 #' }
 #' 
 #' @param DF dataframe of daily streamflow read by ch_read_ECDE_flows
@@ -31,8 +31,8 @@
 #'
 #' @examples
 #' data(HYDAT_list)
-#' data(W05AA008)
-#' qaplot <- ch_flow_raster_qa(W05AA008)
+#' data(CAN05AA008)
+#' qaplot <- ch_flow_raster_qa(CAN05AA008)
 #' 
 ch_flow_raster_qa <- function(DF, metadata = NULL) {
   ##### Fixed labels and text strings

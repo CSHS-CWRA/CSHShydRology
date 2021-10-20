@@ -1,6 +1,6 @@
-#' Days of year and water year
+#' Days of year and water year.
 #' 
-#' Converts a date array and produces a data frame with years, wateryears, and days of year and of water year.
+#' Converts a date array into a data frame with years, wateryears, and days of year and of water year.
 #'
 #' @description Converts an array of dates into a dataframe with date, Year, month, doy,
 #' wyear, dowy. 
@@ -11,13 +11,13 @@
 #' @param water_yr the month starting the water year, default is 10 (October).
 #' 
 #' @author Paul Whitfield 
-#' @return a dataframe with different date information
-#' @return \code{Date}  in Date format
-#' @return \code{year}  numeric calendar year
-#' @return \code{month} number calendar month
-#' @return \code{doy}   numeric day of year
-#' @return \code{wyear} numeric water year starting on day 1 of selected month
-#' @return \code{dwy}   numeric day of water year
+#' @return a dataframe with different date information:
+#' @return \code{Date} - in Date format
+#' @return \code{year}  - numeric calendar year
+#' @return \code{month} - number calendar month
+#' @return \code{doy}   - numeric day of year
+#' @return \code{wyear} - numeric water year starting on day 1 of selected month
+#' @return \code{dwy}   - numeric day of water year
 #' 
 
 #'  

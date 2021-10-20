@@ -1,6 +1,6 @@
-#' W05AA008
+#' CAN05AA008
 #' 
-#' A dataframe of Water Survey of Canada (WSC) daily flows for station W05AA008, CROWSNEST RIVER AT FRANK Alberta.
+#' A dataframe of Water Survey of Canada (WSC) daily flows for station 05AA008, CROWSNEST RIVER AT FRANK Alberta. Drainage area 403 km2.
 #' 
 #' @format A dateframe with 25252 rows and 5 columns spanning the period 1910-2013.
 #' @source Water Survey of Canada
@@ -14,5 +14,5 @@
 #' \item{SYM}{Water Survey FLags A, B, D, E }
 #' }
 #' 
-"W05AA008"
+"CAN05AA008"
 NULL

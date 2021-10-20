@@ -1,5 +1,4 @@
-#' @name ch_tidyhydat_ECDE_meta
-#' @title Creates an ECDE-like dataframe of metadata
+#' @title Creates an ECDE-like dataframe of metadata from \pkg{tidyhydat}.
 #'
 #' @description Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
 #' format similar to that used by the Environment Canada Data Explorer (ECDE). The 
@@ -22,7 +21,7 @@
 #' final values.
 #' 
 #' 
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>, Kevin Shook
+#' @author Paul Whitfield, Kevin Shook
 #' 
 #' @export
 #'
