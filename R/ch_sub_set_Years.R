@@ -12,7 +12,7 @@
 #' 	\item{label}{array of labels}
 #' 	}
 #' @export
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #' @examples
 #' myears <- c(1900:2045)
 #' myears <- ch_sub_set_Years(myears, 20)
