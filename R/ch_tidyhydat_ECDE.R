@@ -9,7 +9,7 @@
 #'
 #' @param data Tibble of daily flows retrieved using \pkg{tidyhydat} function \code{hy_daily_flows}.
 
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #'
 #' @return A dataframe or a list of flows with formats consistent with datafiles read using \code{ch_read_ECDE_flows}. 
 #' @export
