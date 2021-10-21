@@ -46,7 +46,7 @@
 #' str(my_peaks)
 
 
-get_peaks <- function (dataframe, threshold) {
+ch_get_peaks <- function (dataframe, threshold) {
   
   maxflow <- max(dataframe$Flow)
   
