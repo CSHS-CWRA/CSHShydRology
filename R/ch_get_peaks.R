@@ -42,18 +42,20 @@
 #' @export
 #' @seealso \code{\link{ch_booth_plot}}
 #' @examples
+#' CAN05AA008 <- CAN05AA008
 #' threshold <- 0.9*max(CAN05AA008$Flow)  # arbitrary threshold
 #' my_peaks <- ch_get_peaks(CAN05AA008, threshold)
 #' str(my_peaks)
 
 
-ch_get_peaks <- function (dataframe, threshold) {
+ch_get_peaks <- function(dataframe, threshold) {
   
   maxflow <- max(dataframe$Flow)
   
   if (maxflow < threshold) {
-    print(paste ("Threshold of", threshold, "is greater than maximum observed flow",maxflow))
-    return
+    print(paste("Threshold of", threshold, "
+                is greater than maximum observed flow", maxflow))
+    return()
   }  
   data <- dataframe$Flow
   Date <- dataframe$Date
@@ -87,9 +89,9 @@ ch_get_peaks <- function (dataframe, threshold) {
   volume 	  <- array(NA,dim=1)
   duration  <- array(NA,dim=1)
   
-  index=1 			###  set index to increment each time a new event is detected
+  index = 1 			###  set index to increment each time a new event is detected
   
-  flag=0
+  flag = 0
   
   for (k in 1:length(data)){
     
@@ -125,7 +127,7 @@ ch_get_peaks <- function (dataframe, threshold) {
   
   volume <- volume *24*60*60 *1e-9   ################### convert volumes to km#
   
-  max_date <-as.Date(max_date, format="%Y-%m-%d")
+  max_date <- as.Date(max_date, format="%Y-%m-%d")
   
   POT_events <- data.frame(st_date, max_date, max, volume, duration)
   
@@ -216,9 +218,9 @@ ch_get_peaks <- function (dataframe, threshold) {
   #
   
   ncases <- length(POT_events$st_date)
-  events <-list(POT_events,ncases, case)
+  events <- list(POT_events,ncases, case)
   
-  names(events) <-c("POTevents","ncases","case")
+  names(events) <- c("POTevents","ncases","case")
   
   
   return(events)

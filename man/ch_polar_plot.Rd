@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_polar_plot.R
 \name{ch_polar_plot}
 \alias{ch_polar_plot}
-\title{Polar plot of daily streamflows}
+\title{Polar plot of daily streamflows.}
 \usage{
 ch_polar_plot(
   bmw,
@@ -13,7 +13,7 @@ ch_polar_plot(
 )
 }
 \arguments{
-\item{bmw}{output from binned_MannWhitney}
+\item{bmw}{output from \code{binned_MannWhitney}}
 
 \item{lcol1}{line colour, default is c("black","gray50")}
 
@@ -34,7 +34,7 @@ the function \code{ch_polar_plot_prep}.
 \examples{
 range1 <- c(1970,1979)
 range2 <- c(1990,1999)
-b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, 
+b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, 
 ptest = 0.05)
 ch_polar_plot(b_MW)
 }
@@ -49,6 +49,6 @@ in Canada. Canadian Water Resources Journal 25: 19-65.
 \code{\link{ch_binned_MannWhitney}} \code{\link{ch_polar_plot_prep}}
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }
 \keyword{plot}

@@ -9,13 +9,13 @@ Produce a date axis starting in a specific month.}
 ch_axis_doy(wyear = 1)
 }
 \arguments{
-\item{wyear}{wyear = 1 for calendar year, = 10 for October 1.}
+\item{wyear}{wyear = 1 for calendar year, wyear = 10 for October 1.}
 }
 \description{
-generates an axis for day of year or day of water year; used by regime_plot.
+Generates an axis for day of year or day of water year; used by regime_plot.
  
-This routine deals only with the axis adjustments.  Day of water year needs to be done 
-separately
+This routine deals only with the axis adjustments.  Obtaining the day of water year needs to be done 
+separately.
 }
 \examples{
 \dontrun{

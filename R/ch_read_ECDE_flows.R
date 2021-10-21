@@ -1,6 +1,6 @@
 #' Reads a file of WSC daily flows from ECDataExplorer (ECDE).
 #'
-#' @Description Reads in a file WSC daily flows as returned from the Windows program ECDataExplorer, converts the Date,
+#' @description Reads in a file WSC daily flows as returned from the Windows program ECDataExplorer, converts the Date,
 #' and omits the last 3 lines as these contain the data disclaimer and not data.
 #'
 #' @param filename Datafile retrieved from ECDataExplorer.

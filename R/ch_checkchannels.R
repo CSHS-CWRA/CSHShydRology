@@ -5,8 +5,8 @@
 #' This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 #' 
 #' @param dem Raster. DEM catchment was generated from
-#' @param channels sf. channel polyline (or channels list from \code{ch_saga_channels})
-#' @param outlet sf. location of catchment outlet
+#' @param channels sf. Channel polyline (or channels list from \code{ch_saga_channels})
+#' @param outlet sf. Location of catchment outlet
 #' @return 
 #' \item{check_map}{generates map with channel layer}
 #' 
@@ -14,7 +14,6 @@
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' 
 #' 
-#' @examples 
 #' @examples
 #' 
 #' \dontrun{

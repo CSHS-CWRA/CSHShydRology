@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_peaks.R
 \name{ch_get_peaks}
 \alias{ch_get_peaks}
-\title{Extracts peak flows over a threshold}
+\title{Extracts peak flows over a threshold.}
 \usage{
 ch_get_peaks(dataframe, threshold)
 }
@@ -24,23 +24,24 @@ a list containing:
 	The \code{POTevents} dataframe contains five columns: st_date (starting date), max_date (date of maximum in the event),
 	max (maximum discharge), volume (volume of the event), and duration (in days).
 
-	The \code{case} list contains the flows during an event and also for three preceeding and subsequent days. The lists
-	 range from seven to n days in length.
+	The \code{case} list contains the flows during an event and also for four preceeding and subsequent days. The lists
+	 range from nine to n days in length.
 }
 \description{
 This function is development code being shared as is. It is expected that the user will be interested in the
-dataframe returned for POT analysis and for plotting (i.e. Booth_plots).
-}
-\details{
-This function retrieves peaks greater than the prescribed threshold.  It returns a dataframe of peak characteristics
+dataframe returned for POT analysis and for plotting (i.e. ch_booth_plot).
+
+This function retrieves peaks greater than or equal to the prescribed threshold.  It returns a dataframe of peak characteristics
 suitable for subsequent analysis.
 
-The portion under development is the It also returns a list of the flows during an event with the values of the three
-preceeding dates and three subsequnt dates.
+The portion under development is returns a list of the flows during an event with the values of the four
+preceding days and three subsequent days. If the peak is a single point the fragment is nine points long; if the events is longer 
+the fragment contains all days above the threshold and eight additional days.
 }
 \examples{
-threshold <- 0.9*max(W05AA008$Flow)  # arbitrary threshold
-my_peaks <- ch_get_peaks(W05AA008, threshold)
+CAN05AA008 <- CAN05AA008
+threshold <- 0.9*max(CAN05AA008$Flow)  # arbitrary threshold
+my_peaks <- ch_get_peaks(CAN05AA008, threshold)
 str(my_peaks)
 }
 \references{
@@ -53,4 +54,7 @@ for analysis of the 2013 flood in the Upper Bow River, Canada. Hydrological Proc
 }
 \seealso{
 \code{\link{ch_booth_plot}}
+}
+\author{
+Paul Whitfield
 }
