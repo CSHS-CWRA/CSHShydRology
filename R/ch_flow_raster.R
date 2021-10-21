@@ -1,8 +1,8 @@
-#' Raster plot of daily streamflows
+#' Raster plot of daily streamflows.
 #'
 #' @description Produces a raster plot: years by day of year, showing magnitude of flow. 
-#' This produces a plot showing the flow data in colours, showing different context than i
-#' n a hydrograph. High flows are in warm colours.
+#' This produces a plot showing the flow data in colours, showing different context than in
+#' a hydrograph. High flows are in warm colours.
 #' 
 #' @param DF A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.
 #' @param rastercolours A vector of colours used for the flow magnitudes. 
@@ -20,7 +20,7 @@
 #' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
 #'
 #' @examples
-#' ch_flow_raster(W05AA008)
+#' ch_flow_raster(CAN05AA008)
 #' 
 ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "slateblue", "orange", "red"),
                            metadata = NULL) {

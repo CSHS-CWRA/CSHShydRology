@@ -14,11 +14,11 @@ ch_cut_block(DF, st_date, end_date)
 \item{end_date}{ending date format is \%Y/\%m/\%d}
 }
 \description{
-Could be used to get the same period of time from several station for comparison.
+The function could also be used to get the same period of time from several station for comparison.
 }
 \examples{
-data(W05AA008)
-subset <- ch_cut_block(W05AA008,"2000/01/01", "2010/12/31")
+data(CAN05AA008)
+subset <- ch_cut_block(CAN05AA008,"2000/01/01", "2010/12/31")
 }
 \author{
 Paul Whitfield

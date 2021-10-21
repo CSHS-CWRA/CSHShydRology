@@ -2,9 +2,7 @@
 % Please edit documentation in R/ch_get_wscstation.R
 \name{ch_get_wscstation}
 \alias{ch_get_wscstation}
-\title{Reads station information from a data file produced by ECDE
-Retrieves station information for an individual Water Survey of Canada site,
-adds a text string at position 21 that combines key elements for a title.}
+\title{Reads station information from a data file produced by ECDE.}
 \usage{
 ch_get_wscstation(stnID, metadata = NULL)
 }
@@ -16,32 +14,31 @@ ch_get_wscstation(stnID, metadata = NULL)
 \value{
 Returns a data frame with 21 variables
 \itemize{
-\item	 {Station}  {StationID}
-\item	 {StationName} {Station Name}
-\item	 {HYDStatus} {Active or Discontinued}
-\item	 {Prov} {Province}
+\item	 {Station}  { - StationID}
+\item	 {StationName} { - Station Name}
+\item	 {HYDStatus} { - Active or Discontinued}
+\item	 {Prov} { - Province}
 \item	 {Latitude}{}
 \item	 {Longitude}{}
-\item	 {DrainageArea} {km2}
-\item	 {Years} {# of years with data}
-\item	 {From} {Start Year}
-\item	 {To} {End Year}
-\item	 {Reg.} {Regulated }
-\item	 {Flow} {if TRUE/Yes}
-\item	 {Level} {if TRUE/Yes}
-\item	 {Sed} {if TRUE/Yes}
-\item	 {OperSched} {Continuous or Seasonal}
-\item	 {RealTime} {if TRUE/Yes}
-\item	 {RHBN} {if TRUE/Yes is in the reference hydrologic basin network}
-\item	 {Region} {WSC Region}
-\item	 {Datum} {Datum used}
-\item	 {Operator} {Agency responsible for collecting data}
-\item   {Station_lname} {Added field combining ID, Name, Province and if RHBN an * is added}
+\item	 {DrainageArea} {- -km2}
+\item	 {Years} {- # of years with data}
+\item	 {From} { - Start Year}
+\item	 {To} { - End Year}
+\item	 {Reg.} { - Regulated }
+\item	 {Flow} {- if TRUE/Yes}
+\item	 {Level} { - if TRUE/Yes}
+\item	 {Sed} { - if TRUE/Yes}
+\item	 {OperSched} {- Continuous or Seasonal}
+\item	 {RealTime} { - if TRUE/Yes}
+\item	 {RHBN} {- if TRUE/Yes is in the reference hydrologic basin network}
+\item	 {Region} { - WSC Region}
+\item	 {Datum} {- Datum used}
+\item	 {Operator} { - Agency responsible for collecting data}
+\item   {Station_lname} {- -Added field combining StationID, StationName, Province and if RHBN an * is added}
 }
 }
 \description{
-Reads station information from a data file produced by ECDE
-Retrieves station information for an individual Water Survey of Canada site,
+Retrieves station information for an individual Water Survey of Canada site, based on stationID; 
 adds a text string at position 21 that combines key elements for a title.
 }
 \examples{

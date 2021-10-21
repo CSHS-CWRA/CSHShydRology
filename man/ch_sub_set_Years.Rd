@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_sub_set_Years.R
 \name{ch_sub_set_Years}
 \alias{ch_sub_set_Years}
-\title{Helper function for selecting points for an axis so not all are necessary}
+\title{Helper function for selecting points for an axis so not all are necessary.}
 \usage{
 ch_sub_set_Years(years, n)
 }
@@ -20,7 +20,7 @@ a list containing:
 }
 \description{
 Sub-samples a vector every n places. Many times there are so many 
-years the labels on the plot overlap. This function returns the position and label 
+years the labels on the plot overlap. \code{ch_sub_set_years} returns the position and label 
 for the subset. The function can be used on any type of simple array.
 }
 \examples{
@@ -33,5 +33,5 @@ my_alpha <- ch_sub_set_Years(a, 5)
 my_alpha
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }

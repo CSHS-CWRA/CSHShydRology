@@ -1,19 +1,19 @@
-#' Plot Flow Duration Curve
+#' Plot Flow Duration Curve.
 #' 
 #' Create a Flow Duration Curve based upon Observations.
 #' 
 #' @description A flow duration curve is a plot of flow magnitude against exceedance probability. 
-#' The plot may contain the Gustard Curves or they can be omitted. The default is for curves to be 
+#' The plot may contain the Gustard Curves (default) or they can be omitted. The default is for curves to be 
 #' plotted against probability, but an option is to plot against the normalized exceedance probability. 
 #' In that case, the x axis represents a normal distribution. 
 #' 
 #'
-#' @param DF - dataframe of daily flows from \code{ch_read_ECDE_flows}
-#' @param normal If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE
-#' @param gust If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added
-#' @param metadata dataframe of metadata, defaults to HYDAT_list
+#' @param DF a dataframe of daily flows from \code{ch_read_ECDE_flows}
+#' @param normal If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE.
+#' @param gust If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added.
+#' @param metadata dataframe of metadata, defaults to HYDAT_list.
 #' 
-#' @return Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
+#' @return Plots the flow duration curve and returns a data frame containing the exceedance probability and flow.
 #'
 #' @author Paul Whitfield 
 #' @references 
@@ -31,11 +31,11 @@
 #' @export 
 #' @examples
 #' data(HYDAT_list)
-#' data(W05AA008)
+#' data(CAN05AA008)
 #' # plot with Gustard 1992 curves
-#' test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
+#' test <- ch_fdcurve(CAN05AA008, normal = FALSE, gust = TRUE)
 #' # plot with normalized exceedance probability
-#' test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
+#' test <- ch_fdcurve(CAN05AA008, normal = TRUE, gust = FALSE)
 #' 
 ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = NULL) {
   

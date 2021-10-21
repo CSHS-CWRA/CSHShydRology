@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_flow_raster.R
 \name{ch_flow_raster}
 \alias{ch_flow_raster}
-\title{Raster plot of daily streamflows}
+\title{Raster plot of daily streamflows.}
 \usage{
 ch_flow_raster(
   DF,
@@ -23,11 +23,11 @@ No value is returned; a standard R graphic is created.
 }
 \description{
 Produces a raster plot: years by day of year, showing magnitude of flow. 
-This produces a plot showing the flow data in colours, showing different context than i
-n a hydrograph. High flows are in warm colours.
+This produces a plot showing the flow data in colours, showing different context than in
+a hydrograph. High flows are in warm colours.
 }
 \examples{
-ch_flow_raster(W05AA008)
+ch_flow_raster(CAN05AA008)
 
 }
 \seealso{

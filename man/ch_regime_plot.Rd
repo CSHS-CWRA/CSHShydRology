@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_regime_plot.R
 \name{ch_regime_plot}
 \alias{ch_regime_plot}
-\title{Plots the regime of daily streamflows}
+\title{Plots the regime of daily streamflows using quantiles.}
 \usage{
 ch_regime_plot(
   DF,
@@ -34,12 +34,12 @@ No value is returned; a standard \R graphic is created.
 }
 \description{
 Produces a regime hydrograph similar to that in the reference. It shows the flow quantiles for each
-day of the year and the maximum and minimum. Parameters can be set to change colours and fix the y scale
+day of the year and the maximum and minimum. Parameters can be set to change colours and set the y-scale
 to allow plots of same scale to be produced.
 }
 \examples{
-data(W05AA008)
-ch_regime_plot(W05AA008, colour = TRUE, wyear = 1)
+data(CAN05AA008)
+ch_regime_plot(CAN05AA008, colour = TRUE, wyear = 1)
 
 }
 \references{

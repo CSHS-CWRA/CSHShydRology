@@ -9,9 +9,9 @@ ch_checkchannels(dem, channels, outlet)
 \arguments{
 \item{dem}{Raster. DEM catchment was generated from}
 
-\item{channels}{sf. channel polyline (or channels list from \code{ch_saga_channels})}
+\item{channels}{sf. Channel polyline (or channels list from \code{ch_saga_channels})}
 
-\item{outlet}{sf. location of catchment outlet}
+\item{outlet}{sf. Location of catchment outlet}
 }
 \value{
 \item{check_map}{generates map with channel layer}

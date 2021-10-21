@@ -1,10 +1,10 @@
-#'   Plots output from ch_binned_MannWhitney on x/y
+#'   Plots output from ch_binned_MannWhitney on x/y plot.
 #'   
-#' @description   creates a simple plot comparing two decades from the output of ch_binned_MannWhitney
+#' @description   Creates a simple plot comparing two decades from the output of \code{ch_binned_MannWhitney}.
 #'   
 #' @author Paul Whitfield 
 #' 
-#' @param mplot output from the function ch_binned_MannWitney
+#' @param mplot output from the function \code{ch_binned_MannWitney}
 #
 #' @return a list containing
 #' @examples 

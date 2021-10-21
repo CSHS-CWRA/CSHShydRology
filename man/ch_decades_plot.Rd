@@ -2,18 +2,18 @@
 % Please edit documentation in R/ch_decades_plot.R
 \name{ch_decades_plot}
 \alias{ch_decades_plot}
-\title{Plots output from ch_binned_MannWhitney on x/y}
+\title{Plots output from ch_binned_MannWhitney on x/y plot.}
 \usage{
 ch_decades_plot(mplot)
 }
 \arguments{
-\item{mplot}{output from the function ch_binned_MannWitney}
+\item{mplot}{output from the function \code{ch_binned_MannWitney}}
 }
 \value{
 a list containing
 }
 \description{
-creates a simple plot comparing two decades from the output of ch_binned_MannWhitney
+Creates a simple plot comparing two decades from the output of \code{ch_binned_MannWhitney}.
 }
 \examples{
 \dontrun{

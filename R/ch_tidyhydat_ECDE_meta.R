@@ -1,5 +1,4 @@
-#' @name ch_tidyhydat_ECDE_meta
-#' @title Creates an ECDE-like dataframe of metadata
+#' @title Creates an ECDE-like dataframe of metadata from \pkg{tidyhydat}.
 #'
 #' @description Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
 #' format similar to that used by the Environment Canada Data Explorer (ECDE). The 
@@ -22,7 +21,7 @@
 #' final values.
 #' 
 #' 
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>, Kevin Shook
+#' @author Paul Whitfield, Kevin Shook
 #' 
 #' @export
 #'
@@ -56,7 +55,7 @@
 #' }
 #' 
 #' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range 
-#' hy_daily hy_reg_office_list hy_datum_list hy_agency_list hy_stn_data_coll
+#' hy_daily hy_reg_office_list hy_datum_list hy_agency_list hy_stn_data_coll hy_sed_daily_loads
 #' @importFrom stringr str_detect
 #' @importFrom dplyr left_join
 #' @importFrom utils txtProgressBar setTxtProgressBar
@@ -83,7 +82,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
   
   if (length(stations) == 1) {
     if (stations == "all") {
-      data(allstations, package = "tidyhydat", verbose = FALSE)
+      data(allstations, package = "tidyhydat", verbose = FALSE, envir = environment())
       allstations <- allstations
       tc <- allstations
       stations <- allstations$STATION_NUMBER

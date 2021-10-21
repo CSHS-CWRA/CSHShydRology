@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_tidyhydat_ECDE_meta.R
 \name{ch_tidyhydat_ECDE_meta}
 \alias{ch_tidyhydat_ECDE_meta}
-\title{Creates an ECDE-like dataframe of metadata}
+\title{Creates an ECDE-like dataframe of metadata from \pkg{tidyhydat}.}
 \usage{
 ch_tidyhydat_ECDE_meta(stations, all_ECDE = FALSE)
 }
@@ -65,7 +65,7 @@ metadata <- result[[1]]
 version <- result[[2]]
 
 \dontrun{
-# This example is not run, as it can take several hours to execute
+# This example is not run, as it can take over an hour to execute
 # It is intended to be used by the package maintainers to update HYDAT_list,
 result <- ch_tidyhydat_ECDE_meta("all", TRUE)
 HYDAT_list <- result$meta
@@ -76,5 +76,5 @@ HYDAT_list <- result$meta
 \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>, Kevin Shook
+Paul Whitfield, Kevin Shook
 }

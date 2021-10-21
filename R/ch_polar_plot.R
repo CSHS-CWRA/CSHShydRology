@@ -1,10 +1,10 @@
-#' Polar plot of daily streamflows
+#' Polar plot of daily streamflows.
 #'
-#' Produces a polar plot similar to that used in \cite{Whitfield and Cannon, 2000}. It uses output 
+#' @description Produces a polar plot similar to that used in \cite{Whitfield and Cannon, 2000}. It uses output 
 #' from the function \code{ch_binned_MannWhitney} or a data structure created using 
 #' the function \code{ch_polar_plot_prep}.
 #'
-#' @param bmw output from binned_MannWhitney
+#' @param bmw output from \code{binned_MannWhitney}
 #' @param lcol1 line colour, default is c("black","gray50")
 #' @param lcol2 point colour, default is c("black","gray50")
 #' @param lfill fill colour, default is c("yellow","green")
@@ -18,7 +18,7 @@
 #' in Canada. Canadian Water Resources Journal 25: 19-65.
 #' @return No value is returned; a standard \R graphic is created.
 #' @keywords plot
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield
 #' @importFrom plotrix radial.plot radial.grid
 #' @importFrom stats approx
 #' @export
@@ -27,7 +27,7 @@
 #' @examples 
 #' range1 <- c(1970,1979)
 #' range2 <- c(1990,1999)
-#' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, 
+#' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, 
 #' ptest = 0.05)
 #' ch_polar_plot(b_MW)
 

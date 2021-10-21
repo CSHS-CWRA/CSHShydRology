@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_doys.R
 \name{ch_doys}
 \alias{ch_doys}
-\title{Days of year and water year}
+\title{Days of year and water year.}
 \usage{
 ch_doys(Date, water_yr = 10)
 }
@@ -12,19 +12,19 @@ ch_doys(Date, water_yr = 10)
 \item{water_yr}{the month starting the water year, default is 10 (October).}
 }
 \value{
-a dataframe with different date information
+a dataframe with different date information:
 
-\code{Date}  in Date format
+\code{Date} - in Date format
 
-\code{year}  numeric calendar year
+\code{year}  - numeric calendar year
 
-\code{month} number calendar month
+\code{month} - number calendar month
 
-\code{doy}   numeric day of year
+\code{doy}   - numeric day of year
 
-\code{wyear} numeric water year starting on day 1 of selected month
+\code{wyear} - numeric water year starting on day 1 of selected month
 
-\code{dwy}   numeric day of water year
+\code{dwy}   - numeric day of water year
 }
 \description{
 Converts an array of dates into a dataframe with date, Year, month, doy,
@@ -33,7 +33,7 @@ Calculates day of year and day of water year since 10.01 of present water year,
  using base::isodate.
 }
 \details{
-Converts a date array and produces a data frame with years, wateryears, and days of year and of water year.
+Converts a date array into a data frame with years, wateryears, and days of year and of water year.
 }
 \examples{
 dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"),by = 1)
