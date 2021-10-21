@@ -1,5 +1,6 @@
 #' Extracts peak flows over a threshold.
 #'
+#' @description 
 #' This function is development code being shared as is. It is expected that the user will be interested in the
 #' dataframe returned for POT analysis and for plotting (i.e. ch_booth_plot).
 #'
@@ -21,7 +22,7 @@
 #' 	when the threshold was exceeded. i.e. 1,2,3, etc}
 #' 	\item{st_date}{start date of events}
 #' 	\item{case}{a list of the flows in each individual event (see details for more information)}
-#'}
+#' }
 #' 	The \code{POTevents} dataframe contains five columns: st_date (starting date), max_date (date of maximum in the event),
 #' 	max (maximum discharge), volume (volume of the event), and duration (in days).
 #'
@@ -122,15 +123,15 @@ ch_get_peaks <- function (dataframe, threshold) {
   
   st_date <- as.Date(st_date, format="%Y-%m-%d")
   
-  volume <- volume *24*60*60 *1e-9   #########################convert volumes to km#
+  volume <- volume *24*60*60 *1e-9   ################### convert volumes to km#
   
   max_date <-as.Date(max_date, format="%Y-%m-%d")
   
   POT_events <- data.frame(st_date, max_date, max, volume, duration)
   
-  head(POT_events)
+
   
-  #################################################################################################  individual events
+  #########  individual events
   
   ##############################################  Make list of individual events 
   #
