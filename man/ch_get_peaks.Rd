@@ -40,7 +40,7 @@ the fragment contains all days above the threshold and eight additional days.
 }
 \examples{
 CAN05AA008 <- CAN05AA008
-threshold <- 0.9*max(CAN05AA008$Flow)  # arbitrary threshold
+threshold <- 0.5*max(CAN05AA008$Flow)  # arbitrary threshold
 my_peaks <- ch_get_peaks(CAN05AA008, threshold)
 str(my_peaks)
 }
