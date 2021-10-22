@@ -23,7 +23,7 @@
 #' @author Paul Whitfield 
 #'
 #' @return Produces a plot and returns a list that contains:
-#' \item{station name or title used}
+#' \item{station name or title used}{}
 #' \item{st_date}{starting date}
 #' \item{end_date}{ending data}
 #' \item{n}{the number of data points}

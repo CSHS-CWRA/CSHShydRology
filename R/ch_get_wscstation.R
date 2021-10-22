@@ -11,7 +11,7 @@
 #' @return Returns a line from a data frame with 21 variables
 #' \item{Station}{StationID}
 #' \item{StationName}{Station Name}
-#' \item{HYDStatus}{ - Active or Discontinued}
+#' \item{HYDStatus}{Active or Discontinued}
 #' \item{Prov}{Province}
 #' \item{Latitude}{}
 #' \item{Longitude}{}
@@ -20,10 +20,10 @@
 #' \item{From}{Start Year}
 #' \item{To}{End Year}
 #' \item{Reg.}{Regulated or natural}
-#' \item{Flow} {- if TRUE/Yes flow data is available}
+#' \item{Flow}{if TRUE/Yes flow data is available}
 #' \item{Level}{if TRUE/Yes water level data is available}
 #' \item{Sed}{if TRUE/Yes sediment data is available}
-#' \item{OperSched} {Current operation schedule- Continuous or Seasonal}
+#' \item{OperSched}{Current operation schedule- Continuous or Seasonal}
 #' \item{RealTime}{if TRUE/Yes real itme data exists}
 #' \item{RHBN}{if TRUE/Yes is in the reference hydrologic basin network}
 #' \item{Region}{WSC Region}

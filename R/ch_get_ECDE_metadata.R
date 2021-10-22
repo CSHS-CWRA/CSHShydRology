@@ -13,7 +13,7 @@
 #'
 #' @export
 #'
-<<<<<<< HEAD
+
 #' @return Returns a dataframe consisting of:
 #' \item{Station}{StationID}
 #' \item{StationName}{Station Name}
@@ -35,32 +35,7 @@
 #' \item{Region}{Name of regional office operating station}
 #' \item{Datum}{Elevation datum}
 #' \item{Operator}{Operator or provider of the data}
-#'
-=======
-#' @return Returns a dataframe consisting of
-#' \itemize{
-#' \item	 {Station} { - StationID}
-#' \item	 {StationName} { - Station Name}
-#' \item	 {HYDStatus} {- Active or Discontinued}
-#' \item	 {Prov} { - Province}
-#' \item	 {Latitude}
-#' \item	 {Longitude}
-#' \item	 {DrainageArea}{ - km2}
-#' \item	 {Years} { - # of years with data}
-#' \item	 {From} { - Start Year}
-#' \item	 {To} { - End Year}
-#' \item	 {Reg.}{ - Regulated?} 
-#' \item	 {Flow}{ - if TRUE/Yes}
-#' \item	 {Level}{ - if TRUE/Yes}
-#' \item	 {Sed}{ - if TRUE/Yes}
-#' \item	 {OperSched}{ - Continuous or Seasonal}
-#' \item	 {RealTime}{ - if TRUE/Yes}
-#' \item	 {RHBN}{ - if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Region}{ - Name of regional office}
-#' \item	 {Datum}{ - Elevation datum}
-#' \item	 {Operator}{ - Operator}
-#' }
->>>>>>> 62b248c04b6dacd328ac596ac5783b624169269e
+
 #' @examples \dontrun{
 #' filename <- "FavHydatStations.tb0"
 #' meta0 <- ch_get_ECDE_metadata (filename)

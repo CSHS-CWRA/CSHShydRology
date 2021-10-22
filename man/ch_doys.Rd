@@ -12,19 +12,13 @@ ch_doys(Date, water_yr = 10)
 \item{water_yr}{the month starting the water year, default is 10 (October).}
 }
 \value{
-a dataframe with different date information:
-
-\code{Date} - in Date format
-
-\code{year}  - numeric calendar year
-
-\code{month} - number calendar month
-
-\code{doy}   - numeric day of year
-
-\code{wyear} - numeric water year starting on day 1 of selected month
-
-\code{dwy}   - numeric day of water year
+Returns a dataframe with different date information:
+\item{Date}{in Date format}
+\item{year}{numeric calendar year}
+\item{month}{number calendar month}
+\item{doy}{numeric day of year}
+\item{wyear}{numeric water year starting on day 1 of selected month}
+\item{dwy}{numeric day of water year}
 }
 \description{
 Converts an array of dates into a dataframe with date, Year, month, doy,

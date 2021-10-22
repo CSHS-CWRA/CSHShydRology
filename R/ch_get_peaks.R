@@ -17,18 +17,17 @@
 #' @return Returns a list containing:
 #' 	\item{POTevents}{a dataframe contining details of the events}
 #' 	\item{events}{a vector with the value 0 when the flow is below the threshold and 1 when above.}
-#' 	\item{event_num}{a vector with the value 0 when the flow is below a threshold or the index of the events
-#' 	when the threshold was exceeded. i.e. 1,2,3, etc}
+#' 	\item{event_num}{a vector with the value 0 when the flow is below a threshold or the index of the events when the threshold was exceeded. i.e. 1,2,3, etc}
 #' 	\item{st_date}{start date of events}
 #' 	\item{case}{a list of the daily flows in each individual event (see details for more information)}
-#' 
+#' 	
 #' 	The \code{POTevents} dataframe contains five columns: 
-#' 	\item(st_date}{starting date of event}
+#' 	\item{st_date}{starting date of event}
 #' 	\item{max_date}{date of maximum in the event}
 #' 	\item{max}{maximum discharge udring event}
-#' 	\item{volume}(flow volume during the event}
+#' 	\item{volume}{flow volume during the event}
 #' 	\item{duration}{length of the event in days}
-#'
+
 #' 	The \code{case} list contains the flows during an event and also for four preceding and subsequent days. Each event will have
 #' 	 a length between nine to n days in length. Note: in rare cases where the event is in progress when data becomes available the 
 #' 	 event might be shorter than nine days long.
@@ -46,12 +45,8 @@
 #' @export
 #' @seealso \code{\link{ch_booth_plot}}
 #' @examples
-<<<<<<< HEAD
-#' threshold <- 0.6*max(CAN05AA008$Flow)  # arbitrary threshold
-=======
 #' CAN05AA008 <- CAN05AA008
 #' threshold <- 0.5*max(CAN05AA008$Flow)  # arbitrary threshold
->>>>>>> 62b248c04b6dacd328ac596ac5783b624169269e
 #' my_peaks <- ch_get_peaks(CAN05AA008, threshold)
 #' str(my_peaks)
 

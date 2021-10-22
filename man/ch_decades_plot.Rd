@@ -7,10 +7,10 @@
 ch_decades_plot(mplot)
 }
 \arguments{
-\item{mplot}{output from the function \code{ch_binned_MannWitney}}
+\item{mplot}{output from the function \code{ch_binned_MannWhitney}}
 }
 \value{
-a list containing
+No value is returned; a standard \R graphic is created.
 }
 \description{
 Creates a simple plot comparing two decades from the output of \code{ch_binned_MannWhitney}.

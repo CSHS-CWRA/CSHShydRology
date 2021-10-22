@@ -10,7 +10,12 @@ ch_tidyhydat_ECDE(data)
 \item{data}{Tibble of daily flows retrieved using \pkg{tidyhydat} function \code{hy_daily_flows}.}
 }
 \value{
-A dataframe or a list of flows with formats consistent with datafiles read using \code{ch_read_ECDE_flows}.
+A dataframe or a list of flows with formats consistent with datafiles read using \code{ch_read_ECDE_flows}:
+\item{ID}{stationID}
+\item{PARAM}{Parameter 1 for Flow 2 for Level}
+\item{Date}{original charater string converted to date format}
+\item{Flow}{Daily mean flow m3/sec}
+\item{SYM}{Quality flag}
 }
 \description{
 Accessing daily flow data using \pkg{tidyhydat} is quick and efficient. However, it 
