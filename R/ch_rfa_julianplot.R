@@ -10,7 +10,7 @@
 #' 
 #' @param ... Other parameter passed to \link{points}.
 #' 
-#' @seealso \link{ch_rfa_SeasonStat}.
+#' @seealso \link{ch_rfa_seasonstat}.
 #'
 #' @export
 #' 
@@ -22,12 +22,12 @@
 #'
 #' data(flowAtlantic)
 #' 
-#' ss <- ch_rfa_SeasonStat(date ~ id, flowAtlantic$ams)
+#' ss <- ch_rfa_seasonstat(date ~ id, flowAtlantic$ams)
 #'
-#' ch_rfa_JulianPlot()
+#' ch_rfa_julianplot()
 #' points(y ~ x, ss, pch = 16, col = cut(ss[,'radius'], c(0,.5,.75,1)))
 #'
-ch_rfa_JulianPlot <- function(rose.col = "gray40", rose.lwd = 1.5,
+ch_rfa_julianplot <- function(rose.col = "gray40", rose.lwd = 1.5,
                        rose.cex = 1.5, rose.radius = seq(.25,1,.25), ...){
 
   plot(1, pch = '', ylim = c(-1,1)*1.2, xlim = c(-1,1)*1.2, axes = FALSE,

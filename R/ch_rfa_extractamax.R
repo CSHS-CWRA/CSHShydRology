@@ -25,21 +25,21 @@
 #'
 #' @examples
 #' 
-#' out <- ch_rfa_ExtractAmax(flow ~ date, flowStJohn, tol = 350)
+#' out <- ch_rfa_extractamax(flow ~ date, flowStJohn, tol = 350)
 #' head(out)
 #'
-ch_rfa_ExtractAmax <- function(x, ...) UseMethod('ch_rfa_ExtractAmax',x)
+ch_rfa_extractamax <- function(x, ...) UseMethod('ch_rfa_extractamax',x)
 
 #' @export
-#' @rdname ch_rfa_ExtractAmax
-ch_rfa_ExtractAmax.formula <- function(form, x, tol = 0, ...){
+#' @rdname ch_rfa_extractamax
+ch_rfa_extractamax.formula <- function(form, x, tol = 0, ...){
 
   ## reformat dataset according to formula
   x <- get_all_vars(form,x)
 
   if (ncol(x) == 2) {
     ## Case of one site
-    ans <- ch_rfa_ExtractAmax(x, tol = tol, ...)
+    ans <- ch_rfa_extractamax(x, tol = tol, ...)
 
   } else {
     ## case multiple sites
@@ -49,7 +49,7 @@ ch_rfa_ExtractAmax.formula <- function(form, x, tol = 0, ...){
     site.value <- sapply(split(x[,2], x[,2]), '[',1)
 
     ## extract all annual maximums
-    ans <- lapply(xlst, ch_rfa_ExtractAmax, tol = tol, ...)
+    ans <- lapply(xlst, ch_rfa_extractamax, tol = tol, ...)
 
     ## merge the results in one dataset
     cname <- c(colnames(ans[[1]]), colnames(x)[2])
@@ -77,8 +77,8 @@ ch_rfa_ExtractAmax.formula <- function(form, x, tol = 0, ...){
 }
 
 #' @export
-#' @rdname ch_rfa_ExtractAmax
-ch_rfa_ExtractAmax.default <- 
+#' @rdname ch_rfa_extractamax
+ch_rfa_extractamax.default <- 
   function(x, 
            tol = 0, 
            nlab = 'n',
