@@ -23,27 +23,26 @@
 #' The default is \code{c("lightblue","cyan", "blue", "slateblue", "darkblue", "red")}.
 #' @param metadata a dataframe of station metadata, default is HYDAT_list.
 #'
-#' @return a list containing:
-#' \itemize{
-#'   \item{stationID}{ - Station ID eg. 05BB001}
-#'   \item{missing}{ - How missing values were used FALSE = used, TRUE = removed}
-#'   \item{step}{ - number of days in a bin}
-#'   \item{periods}{ - number of periods in a year}
-#'   \item{period}{ - period numbers i.e. 1:365/step}
-#'   \item{bins}{ - values for each period in each year}
-#'   \item{med_period}{ - median for each period}
-#'   \item{max_period}{- maximum for each period}
-#'   \item{min_period}{ - minimum for each period}
-#'   \item{tau_period}{ - Kendalls Tau for each period}
-#'   \item{prob_period}{ - probability of Tau for each period}
-#'   \item{year}{ - years spanning the data}
-#'   \item{median_year}{ - median bin for each year}
-#'   \item{max_year}{ - maximum bin for each year}
-#'   \item{min_year}{ - minimum bin for each year}
-#'   \item{tau_median_year}{ - value of tau and probability for annual median}
-#'   \item{tau_maximum_year}{ - value of tau and probability for annual maximum}
-#'   \item{tau_minimum_year}{ - value of tau and probability for annual minimum}
-#'  }
+#' @return Returns a list containing:
+#'   \item{stationID}{Station ID eg. 05BB001}
+#'   \item{missing}{How missing values were used FALSE = used, TRUE = removed}
+#'   \item{step}{number of days in a bin}
+#'   \item{periods}{number of periods in a year}
+#'   \item{period}{period numbers i.e. 1:365/step}
+#'   \item{bins}{values for each period in each year}
+#'   \item{med_period}{median for each period}
+#'   \item{max_period}{maximum for each period}
+#'   \item{min_period}{minimum for each period}
+#'   \item{tau_period}{Kendalls Tau for each period}
+#'   \item{prob_period}{probability of Tau for each period}
+#'   \item{year}{years spanning the data}
+#'   \item{median_year}{median bin for each year}
+#'   \item{max_year}{maximum bin for each year}
+#'   \item{min_year}{minimum bin for each year}
+#'   \item{tau_median_year}{value of tau and probability for annual median}
+#'   \item{tau_maximum_year}{value of tau and probability for annual maximum}
+#'   \item{tau_minimum_year}{value of tau and probability for annual minimum}
+#'  
 #'   
 #' @keywords plot
 #' @importFrom graphics axis legend par plot points polygon image frame mtext layout box

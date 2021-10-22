@@ -7,10 +7,9 @@
 #' @param years a vector of years
 #' @param n sample size
 #' @return a list containing:
-#' \describe{
 #' 	\item{position}{array of axis positions}
 #' 	\item{label}{array of labels}
-#' 	}
+#' 	
 #' @export
 #' @author Paul Whitfield 
 #' @examples

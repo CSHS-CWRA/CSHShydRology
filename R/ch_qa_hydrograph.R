@@ -22,8 +22,15 @@
 #' 
 #' @author Paul Whitfield 
 #'
-#' @return Produces a plot and returns a list that contains the station name, start and end dates provided, the number of 
-#' data points and a summary of the SYMs. 
+#' @return Produces a plot and returns a list that contains:
+#' \item{station name or title used}
+#' \item{st_date}{starting date}
+#' \item{end_date}{ending data}
+#' \item{n}{the number of data points}
+#' \item{sym_count}{summary of the SYM counts}
+#' \item{missing}{number of missing data} 
+#' 
+#' 
 #' @export
 #' 
 #' @importFrom graphics text

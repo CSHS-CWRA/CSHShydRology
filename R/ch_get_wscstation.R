@@ -8,30 +8,29 @@
 #'
 #' @author Paul Whitfield 
 #'
-#' @return Returns a data frame with 21 variables
-#' \itemize{
-#' \item	 {Station}  { - StationID}
-#' \item	 {StationName} { - Station Name}
-#' \item	 {HYDStatus} { - Active or Discontinued}
-#' \item	 {Prov} { - Province}
-#' \item	 {Latitude}{}
-#' \item	 {Longitude}{}
-#' \item	 {DrainageArea} {- -km2}
-#' \item	 {Years} {- # of years with data}
-#' \item	 {From} { - Start Year}
-#' \item	 {To} { - End Year}
-#' \item	 {Reg.} { - Regulated }
-#' \item	 {Flow} {- if TRUE/Yes}
-#' \item	 {Level} { - if TRUE/Yes}
-#' \item	 {Sed} { - if TRUE/Yes}
-#' \item	 {OperSched} {- Continuous or Seasonal}
-#' \item	 {RealTime} { - if TRUE/Yes}
-#' \item	 {RHBN} {- if TRUE/Yes is in the reference hydrologic basin network}
-#' \item	 {Region} { - WSC Region}
-#' \item	 {Datum} {- Datum used}
-#' \item	 {Operator} { - Agency responsible for collecting data}
-#' \item   {Station_lname} {- -Added field combining StationID, StationName, Province and if RHBN an * is added}
-#' }
+#' @return Returns a line from a data frame with 21 variables
+#' \item{Station}{StationID}
+#' \item{StationName}{Station Name}
+#' \item{HYDStatus}{ - Active or Discontinued}
+#' \item{Prov}{Province}
+#' \item{Latitude}{}
+#' \item{Longitude}{}
+#' \item{DrainageArea}{Area in km2}
+#' \item{Years}{# of years with data}
+#' \item{From}{Start Year}
+#' \item{To}{End Year}
+#' \item{Reg.}{Regulated or natural}
+#' \item{Flow} {- if TRUE/Yes flow data is available}
+#' \item{Level}{if TRUE/Yes water level data is available}
+#' \item{Sed}{if TRUE/Yes sediment data is available}
+#' \item{OperSched} {Current operation schedule- Continuous or Seasonal}
+#' \item{RealTime}{if TRUE/Yes real itme data exists}
+#' \item{RHBN}{if TRUE/Yes is in the reference hydrologic basin network}
+#' \item{Region}{WSC Region}
+#' \item{Datum}{Datum used}
+#' \item{Operator}{Agency responsible for collecting data}
+#' \item{Station_lname}{Added field combining StationID, StationName, Province and if station is RHBN an * is added}
+#' 
 #'
 #' @export
 #' 

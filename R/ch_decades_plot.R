@@ -4,9 +4,10 @@
 #'   
 #' @author Paul Whitfield 
 #' 
-#' @param mplot output from the function \code{ch_binned_MannWitney}
+#' @param mplot output from the function \code{ch_binned_MannWhitney}
 #
-#' @return a list containing
+#' @return No value is returned; a standard \R graphic is created.
+#' 
 #' @examples 
 #' \dontrun{
 #' # mplot from ch_binned_MannWhitney
