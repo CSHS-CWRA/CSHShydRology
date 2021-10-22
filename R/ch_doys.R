@@ -11,15 +11,14 @@
 #' @param water_yr the month starting the water year, default is 10 (October).
 #' 
 #' @author Paul Whitfield 
-#' @return a dataframe with different date information:
-#' @return \code{Date} - in Date format
-#' @return \code{year}  - numeric calendar year
-#' @return \code{month} - number calendar month
-#' @return \code{doy}   - numeric day of year
-#' @return \code{wyear} - numeric water year starting on day 1 of selected month
-#' @return \code{dwy}   - numeric day of water year
+#' @return Returns a dataframe with different date information:
+#' \item{Date}{in Date format}
+#' \item{year}{numeric calendar year}
+#' \item{month}{number calendar month}
+#' \item{doy}{numeric day of year}
+#' \item{wyear}{numeric water year starting on day 1 of selected month}
+#' \item{dwy}{numeric day of water year}
 #' 
-
 #'  
 #'  
 #' @export 

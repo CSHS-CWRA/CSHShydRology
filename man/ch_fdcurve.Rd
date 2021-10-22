@@ -16,7 +16,9 @@ ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = NULL)
 \item{metadata}{dataframe of metadata, defaults to HYDAT_list.}
 }
 \value{
-Plots the flow duration curve and returns a data frame containing the exceedance probability and flow.
+Plots the flow duration curve and returns a data frame containing:
+\item{exceedance probability}{probability}
+\item{flow}{d=flow values}
 }
 \description{
 A flow duration curve is a plot of flow magnitude against exceedance probability. 

@@ -7,8 +7,12 @@
 #'
 #' @author Paul Whitfield 
 #'
-#' @return Returns a dataframe with the last three rows removed and the original character field Date to a class "Date" 
-#' for calendar dates.
+#' @return Returns a dataframe with the last three rows removed:
+#' \item{ID}{stationID}
+#' \item{PARAM}{Parameter 1 for Flow 2 for Level}
+#' \item{Date}{original charater string converted to date format}
+#' \item{Flow}{Daily mean flow m3/sec}
+#' \item{SYM}{Quality flag}
 #' 
 #' @importFrom utils read.csv
 #' @export

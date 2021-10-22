@@ -30,8 +30,13 @@ period. If \code{TRUE} then determined by the whole dataset.}
 \item{metadata}{a dataframe of station metadata, default is HYDAT_list.}
 }
 \value{
-Produces a plot and returns a list that contains the station name, start and end dates provided, the number of 
-data points and a summary of the SYMs.
+Produces a plot and returns a list that contains:
+\item{station name or title used}{}
+\item{st_date}{starting date}
+\item{end_date}{ending data}
+\item{n}{the number of data points}
+\item{sym_count}{summary of the SYM counts}
+\item{missing}{number of missing data}
 }
 \description{
 Plots a hydrograph of a WSC daily data file read from from ECDataExplorer (ECDE). 

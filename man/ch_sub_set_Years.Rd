@@ -13,10 +13,8 @@ ch_sub_set_Years(years, n)
 }
 \value{
 a list containing:
-\describe{
 	\item{position}{array of axis positions}
 	\item{label}{array of labels}
-	}
 }
 \description{
 Sub-samples a vector every n places. Many times there are so many 

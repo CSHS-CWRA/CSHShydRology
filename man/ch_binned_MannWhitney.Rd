@@ -31,24 +31,22 @@ ch_binned_MannWhitney(
 }
 \value{
 Returns a list containing:
-\describe{
- \item{StationID}{- ID of station}
- \item{Station_lname}{- Name of station}
- \item{bin_width}{- Smoothing time step}
- \item{range1}{- range1 years}
- \item{range2}{- range2 years}
- \item{p_used}{- p value}
- \item{fail}{- TRUE if test failed due to missing values}
- \item{bin_method}{- method used for binning}
- \item{test_method}{- Mann-Whitney U}
- \item{series}{- a data frame containing:}
-	\item{period}{- period numbers i.e. 1:365/step}
-	\item{period1}{- median values for each bin in period 1}
-	\item{period2}{- median values for each bin in period 2}
-	\item{mwu}{- Mann Whitney U-statistic for each bin between the two periods}
-	\item{prob}{- probability of U for each period}
-	\item{code}{- significance codes for each bin}
-	}
+ \item{StationID}{ID of station}
+ \item{Station_lname}{Name of station}
+ \item{bin_width}{Smoothing time step}
+ \item{range1}{First range of years}
+ \item{range2}{Second range of years}
+ \item{p_used}{p_value}
+ \item{fail}{TRUE if test failed due to missing values}
+ \item{bin_method}{method used for binning}
+ \item{test_method}{Mann-Whitney U}
+ \item{series}{a data frame containing:}
+	\item{period}{period numbers i.e. 1:365/step}
+	\item{period1}{median values for each bin in period 1}
+	\item{period2}{median values for each bin in period 2}
+	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
+	\item{prob}{probability of U for each period}
+	\item{code}{significance codes for each bin}
 }
 \description{
 Compares two time periods of data using the Mann-Whitney test.

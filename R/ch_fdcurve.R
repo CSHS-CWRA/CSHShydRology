@@ -13,7 +13,9 @@
 #' @param gust If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added.
 #' @param metadata dataframe of metadata, defaults to HYDAT_list.
 #' 
-#' @return Plots the flow duration curve and returns a data frame containing the exceedance probability and flow.
+#' @return Plots the flow duration curve and returns a data frame containing:
+#' \item{exceedance probability}{probability}
+#' \item{flow}{d=flow values}
 #'
 #' @author Paul Whitfield 
 #' @references 

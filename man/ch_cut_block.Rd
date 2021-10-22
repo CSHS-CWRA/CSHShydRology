@@ -13,6 +13,9 @@ ch_cut_block(DF, st_date, end_date)
 
 \item{end_date}{ending date format is \%Y/\%m/\%d}
 }
+\value{
+Returns a portion of the original dataframe.
+}
 \description{
 The function could also be used to get the same period of time from several station for comparison.
 }
