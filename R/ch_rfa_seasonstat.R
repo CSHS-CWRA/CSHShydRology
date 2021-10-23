@@ -15,7 +15,7 @@
 #'   
 #' @param ... Other parameters.
 #' 
-#' @seealso \link{ch_rfa_DistSeason}
+#' @seealso \link{ch_rfa_distseason}
 #'
 #' @return Returns the circular or seasonal statistics of flood peaks.
 #' @references 
@@ -30,9 +30,9 @@
 #' 
 #' @examples
 #'
-#' dt <- ch_rfa_ExtractAmax(flow~date, flowStJohn)$date
+#' dt <- ch_rfa_extractamax(flow~date, flowStJohn)$date
 #'
-#' ch_rfa_SeasonStat(dt)
+#' ch_rfa_seasonstat(dt)
 #' 
 #' ## Illustration of the analysis of multiple sites
 #' 
@@ -40,15 +40,15 @@
 #' x <- lapply(1:10, F0)
 #' x <- do.call(rbind, x)
 #'            
-#' st <- ch_rfa_SeasonStat(dt ~ site, x)
+#' st <- ch_rfa_seasonstat(dt ~ site, x)
 #' 
-#' ch_rfa_JulianPlot()
+#' ch_rfa_julianplot()
 #' points(y ~ x, st, col = 2, pch = 16)
 #'
-ch_rfa_SeasonStat <- function(x, ...) UseMethod('ch_rfa_SeasonStat', x)
+ch_rfa_seasonstat <- function(x, ...) UseMethod('ch_rfa_seasonstat', x)
 
 #' @export
-ch_rfa_SeasonStat.default <- function(x, ...){
+ch_rfa_seasonstat.default <- function(x, ...){
 
   x <- as.Date(x)
 
@@ -68,17 +68,17 @@ ch_rfa_SeasonStat.default <- function(x, ...){
 }
 
 #' @export
-#' @rdname ch_rfa_SeasonStat
-ch_rfa_SeasonStat.data.frame <- function(x, ...){
-   ans <- lapply(split(x[,1], as.character(x[,2])), ch_rfa_SeasonStat)
+#' @rdname ch_rfa_seasonstat
+ch_rfa_seasonstat.data.frame <- function(x, ...){
+   ans <- lapply(split(x[,1], as.character(x[,2])), ch_rfa_seasonstat)
    return(do.call('rbind', ans))
 }
 
 #' @export
-#' @rdname ch_rfa_SeasonStat
-ch_rfa_SeasonStat.formula <- function(form, x, ...){
+#' @rdname ch_rfa_seasonstat
+ch_rfa_seasonstat.formula <- function(form, x, ...){
   x <- model.frame(form,as.data.frame(x))
-  return(ch_rfa_SeasonStat(x))
+  return(ch_rfa_seasonstat(x))
 }
 
 ## Convert the day of the year into a decimal value

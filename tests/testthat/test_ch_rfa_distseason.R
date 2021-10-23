@@ -1,5 +1,5 @@
 ######################################################
-## testing ch_rfa_DistSeason
+## testing ch_rfa_distseason
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
@@ -7,7 +7,7 @@ nsite <- 1000
 scoord <- data.frame(angle = runif(nsite,0,2*pi),
                      radius = runif(nsite))
 
-d1 <- ch_rfa_DistSeason(radius ~ angle , scoord)
+d1 <- ch_rfa_distseason(radius ~ angle , scoord)
 
 radMat <- as.matrix(dist(scoord[,2], method = 'man'))
 
