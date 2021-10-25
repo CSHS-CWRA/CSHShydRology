@@ -3,7 +3,7 @@
 #' @return  Returns a data frame containing the annual (Monthly) maxima,
 #' the date and the number of observations during the year.
 #' 
-#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#' @author Martin Durocher
 #'
 #' @param form Formula of the form \code{value ~ date} that specifies the
 #'   variable from which the annual maximums are extracted and a date variable.

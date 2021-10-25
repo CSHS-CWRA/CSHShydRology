@@ -1,11 +1,11 @@
 #' Seasonal statistics for flood peaks
 #'
 #' @description Return the circular or seasonal statistics of flood peaks.
-#' The angle represent the average timing of the floods and the radius its
-#' regularity. For instance a radius of one represents perfect regularity. 
+#' The angle represents the mean timing of the floods and the radius its
+#' regularity. For example, a radius of one represents perfect regularity. 
 #' Can perform the analyses on multiple sites.
 #' 
-#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#' @author Martin Durocher
 #'
 #' @param x Data. If data.frame with two columns, they must be respectively 
 #'   the date and a site variable.

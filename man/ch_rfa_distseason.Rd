@@ -55,5 +55,5 @@ Durocher, M., Burn, D. H., & Ashkar, F. (2019). Comparison of estimation
 \link{ch_rfa_seasonstat}
 }
 \author{
-Martin Durocher <mduroche@uwaterloo.ca>
+Martin Durocher
 }

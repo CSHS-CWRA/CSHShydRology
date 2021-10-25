@@ -15,10 +15,10 @@ flowStJohn
 }
 \description{
 Daily river discharge for the station 01AD002 on
-St-John River at Fort Kent, New Brunswick.
-Data range from 1926 to 2014 and have a drainage area of 14700 sq km.
+St. John River at Fort Kent, New Brunswick.
+Data ranges from 1926 to 2014, for basin area of 14700 sq km.
 }
 \author{
-Martin Durocher <mduroche@uwaterloo.ca>
+Martin Durocher
 }
 \keyword{datasets}

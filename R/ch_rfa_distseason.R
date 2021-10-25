@@ -5,7 +5,7 @@
 #' It is equivalent to Euclidean distance applied to regularity (radius)
 #' and timing (angle) separately.
 #' 
-#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#' @author Martin Durocher
 #'
 #' @param x,a Coordinates in the seasonal space. 
 #'  Can be a data.frame or vectors with radius `x` and angle `a`.

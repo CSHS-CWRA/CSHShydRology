@@ -2,7 +2,7 @@
 #'
 #' @description Create axis for plotting circular statistics in a unitary circle.
 #'
-#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#' @author Martin Durocher
 #' 
 #' @param rose.col,rose.lwd,rose.cex Properties of the polar axes.
 #' 
