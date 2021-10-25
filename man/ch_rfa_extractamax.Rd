@@ -41,5 +41,5 @@ head(out)
 
 }
 \author{
-Martin Durocher <mduroche@uwaterloo.ca>
+Martin Durocher
 }

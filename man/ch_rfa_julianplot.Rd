@@ -39,5 +39,5 @@ points(y ~ x, ss, pch = 16, col = cut(ss[,'radius'], c(0,.5,.75,1)))
 \link{ch_rfa_seasonstat}.
 }
 \author{
-Martin Durocher <mduroche@uwaterloo.ca>
+Martin Durocher
 }
