@@ -29,7 +29,7 @@
 #' ch_regime_plot(CAN05AA008, colour = TRUE, wyear = 1)
 #'
 
-ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
+ch_regime_plot <- function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
                         quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05))
   {
  
@@ -116,7 +116,7 @@ ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
               paste(format( quant[5], nsmall=2),"-", format(quant[3],nsmall = 2), sep = ""),
               "median")
   
-  lcol1 <-c(colr[4],colr[1],colr[2], colr[3],colr[5])
+  lcol1 <- c(colr[4],colr[1],colr[2], colr[3],colr[5])
   legend("topleft", legend = ltext1, col = lcol1, lty = 1, lwd = 3, bty = "n")
   ######################################################################### plot end
 }

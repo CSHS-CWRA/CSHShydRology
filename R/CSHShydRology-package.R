@@ -7,7 +7,7 @@
 #' are suited to Canadian hydrology, such as the important cold-region hydrological processes. \pkg{CSHShydRology} will also contain
 #' functions which work with Canadian hydrological models, such as Raven, CRHM, Watflood, and MESH.
 #' 
-#' This packages has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) \url{https://cshs.cwra.org/}
+#' This packages has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) \url{https://cshs.cwra.org/en}
 #' which is an affiliated society of the Canadian Water Resources Association (CWRA) \url{https://cwra.org/}.
 #' 
 #' The \pkg{CSHShydRology} will contain functions grouped into several themes, including:
