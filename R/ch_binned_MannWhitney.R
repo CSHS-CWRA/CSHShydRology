@@ -98,10 +98,8 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   # qliced contains median for periods and for only year where data existed. Need to reform so missing years are included
   
   
-  
-  for (k in 1:length(aYears)) {
-    qsliced[(aYears[k] - nYear), ] <- q_sliced[k, ]
-  }
+  locs <- 1:length(aYears)
+  qsliced[aYears[locs] - nYear, ] <- q_sliced[locs, ]
   
   colnames(qsliced) <- period
   rownames(qsliced) <- Years
