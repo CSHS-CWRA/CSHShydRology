@@ -7,11 +7,11 @@
 ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 }
 \arguments{
-\item{dem_raw}{Raster object of your raw dem in the desired projection}
+\item{dem_raw}{raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
-\item{saga_env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 {dem_ns}{processed dem as a raster object.}
@@ -22,15 +22,32 @@ the `rsaga.sink.removal` function.
 }
 \examples{
 \dontrun{
-ch_saga_removesinks()
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires a potentially lengthy GIS operation
 
-# consider sample DEM data with this
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download 25m DEM
+ff <- "gs_dem25.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# remove sinks
+removed_dem <-  ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
+
+# plot the difference in raw and sink-removed dem 
+library(raster)
+plot(removed_dem-dem)
 }
 
 }
 \seealso{
-\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+\code{\link{ch_saga_fillsinks}} to fill sinks in a DEM (instead of removing)
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

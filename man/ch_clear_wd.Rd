@@ -13,14 +13,24 @@ ch_clear_wd(wd)
 \item{result}{returns TRUE upon successful execution}
 }
 \description{
-This function empties and removes a SAGA working directory. Note: the data for raster layers read in as SAGA sdat 
+Empties and removes a SAGA working directory.
+}
+\details{
+The data for raster layers read in as SAGA sdat 
 files (e.g. the contributing area, carea) are held on disk rather than in memory; if you clear the working directory you
 will get an error if you try to use the raster layer.
 }
 \examples{
 \dontrun{
-# clear the current working directory
-ch_clear_wd(getwd())
+
+# not run as clearing all files in a given directory cannot be tested in CRAN
+
+# create a saga working directory
+saga_wd <- tempdir()
+ch_create_wd(saga_wd) # confirm creation
+
+# clear the saga working directory
+ch_clear_wd(saga_wd)
 }
 
 }
@@ -28,5 +38,5 @@ ch_clear_wd(getwd())
 \code{\link{ch_create_wd}} to create working SAGA directory
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

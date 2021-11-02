@@ -7,7 +7,7 @@
 ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 }
 \arguments{
-\item{dem}{Raster object of your dem in the desired projection - should have had sinks removed}
+\item{dem}{raster object of your dem in the desired projection (note: should have had sinks removed)}
 
 \item{zmin}{minimum elevation value for contours}
 
@@ -21,16 +21,35 @@ ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 \item{contours_sf}{sf object containing contours}
 }
 \description{
-creates contour lines from a DEM.
+Creates contour lines from a DEM.
 }
 \details{
-This function generates contour lines from a DEM, which are returned as an **sf** object. 
+Generates contour lines from a DEM, which are returned as an sf object. 
 The user can either provide a vector of elevation values by specifying the `z_levels` argument, 
 or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the number of contour lines (`n_levels`).
 }
 \examples{
+
 \dontrun{
-ch_contours()
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires multiple potentially lengthy GIS operations
+
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download 25m DEM
+ff <- "gs_dem25.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# generate contours
+contours <- ch_contours(dem)
+
+# plot contours map
+plot(contours)
 }
 
 }
@@ -38,5 +57,5 @@ ch_contours()
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

@@ -1,20 +1,24 @@
 #' Create Catchment Channels
 #'
-#' determines channel layer spatial files
+#' @description 
+#' Determines channel layer spatial files
 #' 
-#' This function generates a drainage network using the SAGA `ta_channels` module with option 0.
+#' @details
+#' Generates a drainage network using the SAGA `ta_channels` module with option 0.
 #'
 #' The function requires a DEM and a contributing area grid. Like `ch_saga_catchment`, the user can provide the contributing area grid either as a raster object or by reading in a SAGA file; alternatively, the function can compute the contributing area grid from the DEM.
 #'
 #' The SAGA function generates three outputs: 
 #'  
-#'  1. a shape file containing the drainage network, 
-#'  2. a grid containing flow directions, and 
-#'  3. a grid in which, if a cell is part of a channel, its value equals the channel order; otherwise the cell is marked as no-data. 
+#'  1. a shape file containing the drainage network,  
+#'  
+#'  2. a grid containing flow directions, and  
+#'  
+#'  3. a grid in which, if a cell is part of a channel, its value equals the channel order; otherwise the cell is marked as no-data.  
 #'
 #' The output is a list, which will have elements that will include the channel network shape as an **sf** object (if `out_shp = TRUE`), the flow direction grid as a **raster** object (if `out_route = TRUE`) and the network grid as a **raster** object (if `out_ntwrk = TRUE`)
 #'
-#' @param dem Raster object of your dem in the desired projection - should have had sinks removed
+#' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
 #' @param carea_flag if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat
 #' @param saga_wd name of working directory
@@ -25,7 +29,7 @@
 #' @param initmethod parameters for SAGA function
 #' @param divcells parameters for SAGA function
 #' @param minlen parameters for SAGA function
-#' @param saga.env    SAGA environment object.  Default is to let saga find it on its own.
+#' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return 
 #' \item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
 #' 
@@ -33,7 +37,7 @@
 #' @importFrom raster writeRaster raster crs extract 
 #' @importFrom sf st_geometry st_sfc st_crs st_sfc 
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_catchment}} for catchment delineation.
 #' @seealso For more details, see the following: (http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html)
 #' @export

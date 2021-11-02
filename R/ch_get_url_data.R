@@ -6,7 +6,7 @@
 #' @param gd_url url for accessing data set
 #' @param gd_filename name of file on local drive, including full path
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #'
 #' @importFrom httr GET write_disk
 #' @importFrom sf st_read

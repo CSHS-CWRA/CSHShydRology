@@ -1,18 +1,19 @@
 #' Deepen Drainage Network
 #' 
+#' @description 
 #' Removes sinks by deepening drainage network; alternative to ch_saga_fillsinks. This function acts as a wrapper to 
 #' the `rsaga.sink.removal` function.
 #' 
-#' @param dem_raw Raster object of your raw dem in the desired projection
-#' @param saga_wd     working directory to write and read saga files
-#' @param saga_env    SAGA environment object.  Default is to let saga find it on its own.
+#' @param dem_raw  raster object of your raw dem in the desired projection
+#' @param saga_wd  working directory to write and read saga files
+#' @param saga_env SAGA environment object. Default is to let saga find it on its own.
 #' @return {dem_ns}{processed dem as a raster object.}
 #' 
 #' @importFrom RSAGA rsaga.sink.removal 
 #' @importFrom raster writeRaster raster crs extract
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
-#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+#' @author Dan Moore
+#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks in a DEM (instead of removing)
 #' @export
 #' @examples
 #' \dontrun{

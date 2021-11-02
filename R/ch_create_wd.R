@@ -1,12 +1,13 @@
 #' @title Create SAGA Working Directory
 #' 
+#' @description 
 #' This function creates a SAGA working directory.
 #' 
 #' @param wd working directory file path
 #' @return 
-#' \item{TRUE}{returns TRUE upon successful execution}
+#' \item{\code{TRUE}}{returns \code{TRUE} upon successful execution}
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore 
 #' @seealso \code{\link{ch_clear_wd}} to clear the working SAGA directory
 #' @export
 #' @examples
