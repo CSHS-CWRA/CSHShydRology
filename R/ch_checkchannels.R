@@ -59,7 +59,7 @@ ch_checkchannels <- function(dem, channels, outlet) {
   
   # check inputs
   if (missing(dem)) {
-    stop("ch_checkcatchment requires a raster dem to plot")
+    stop("ch_checkchannels requires a raster dem to plot")
   }
   if (missing(channels)) {
     stop("ch_checkchannels requires sf channels polyline to plot")
