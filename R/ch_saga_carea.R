@@ -61,7 +61,7 @@ ch_saga_carea <- function(dem, saga_wd,
   }
   if (missing(saga_wd)) {
     saga_wd <- tempdir()
-    warning(sprinf("ch_saga_carea: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+    warning(sprintf("ch_saga_carea: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
   }
   
   # error trap - saga_wd does not exist

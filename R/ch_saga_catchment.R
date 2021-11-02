@@ -84,7 +84,7 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
   }
   if (missing(saga_wd)) {
     saga_wd <- tempdir()
-    warning(sprinf("ch_saga_catchment: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+    warning(sprintf("ch_saga_catchment: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
   }
   
   # error trap - saga_wd does not exist
