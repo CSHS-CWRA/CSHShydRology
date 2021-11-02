@@ -13,7 +13,7 @@ ch_create_wd(wd)
 \item{\code{TRUE}}{returns \code{TRUE} upon successful execution}
 }
 \description{
-This function creates a SAGA working directory.
+Creates a SAGA working directory.
 }
 \examples{
 ch_create_wd(tempdir())

@@ -74,12 +74,21 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              initmethod = 2, initvalue = 0,
                              divcells = 5, minlen = 10,
                              saga.env = RSAGA::rsaga.env()) {
-
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_saga_channels requires a raster dem")
+  }
+  if (missing(saga_wd)) {
+    saga_wd <- tempdir()
+    warning(sprinf("ch_saga_channels: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+  }
+  
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("saga_wd does not exist")
+    print("Provided saga_wd does not exist")
     return(NA)
   }
+  
   # make a temporary directory within the working directory and store the dem there
   raster::writeRaster(dem, paste0(saga_wd, "/dem.sdat"), format = "SAGA",
                       NAflag = -9999, overwrite = TRUE)

@@ -55,15 +55,21 @@ ch_saga_carea <- function(dem, saga_wd,
                           linear_threshold = Inf,
                           saga_env = RSAGA::rsaga.env()) {
   
-  # require(RSAGA)
-  # require(raster)
-  # require(sf)
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_saga_carea requires a raster dem")
+  }
+  if (missing(saga_wd)) {
+    saga_wd <- tempdir()
+    warning(sprinf("ch_saga_carea: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+  }
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("saga_wd does not exist")
+    print("Provided saga_wd does not exist")
     return(NA)
   }
+  
   # store the dem object in the working directory
   raster::writeRaster(dem, paste0(saga_wd, "/dem.sdat"), format = "SAGA", 
                       NAflag = -9999, overwrite = TRUE)

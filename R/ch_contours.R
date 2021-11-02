@@ -52,6 +52,11 @@ ch_contours <- function(dem,
                         n_levels = 10,
                         z_levels = NULL) {
   
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_contours requires a raster dem")
+  }
+  
   # determine contour levels
   if (is.null(z_levels)) {
     z = raster::getValues(dem)

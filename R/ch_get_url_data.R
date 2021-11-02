@@ -1,7 +1,8 @@
 #' @title Gets remote data sets
-
-#' @description Accesses data sets, via a url the first time,
-#'saves them locally, then accesses them locally after the first time the script is executed.
+#' 
+#' @description 
+#' Accesses data sets, via a url the first time,
+#' saves them locally, then accesses them locally after the first time the script is executed.
 #'
 #' @param gd_url url for accessing data set
 #' @param gd_filename name of file on local drive, including full path

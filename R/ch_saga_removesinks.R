@@ -42,11 +42,21 @@
 ch_saga_removesinks <- function(dem_raw, saga_wd, 
                                 saga_env = RSAGA::rsaga.env()) {
   
+  # check inputs
+  if (missing(dem_raw)) {
+    stop("ch_saga_removesinks requires a raster dem_raw")
+  }
+  if (missing(saga_wd)) {
+    saga_wd <- tempdir()
+    warning(sprinf("ch_saga_removesinks: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+  }
+  
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("saga_wd does not exist")
+    print("Provided saga_wd does not exist")
     return(NA)
   }
+  
   # store the input dem in a file in the working directory
   raster::writeRaster(dem_raw, paste0(saga_wd, "/dem_raw.sdat"), format = "SAGA", 
                       NAflag = -9999, overwrite = TRUE)
