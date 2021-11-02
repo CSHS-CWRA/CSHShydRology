@@ -5,7 +5,7 @@
 #' It is equivalent to Euclidean distance applied to regularity (radius)
 #' and timing (angle) separately.
 #' 
-#' @author Martin Durocher <mduroche@@uwaterloo.ca>
+#' @author Martin Durocher
 #'
 #' @param x,a Coordinates in the seasonal space. 
 #'  Can be a data.frame or vectors with radius `x` and angle `a`.
@@ -18,7 +18,7 @@
 #'   
 #' @param ... Other parameters.
 #' 
-#' @seealso \link{ch_rfa_SeasonStat}
+#' @seealso \link{ch_rfa_seasonstat}
 #'
 #' @references
 #'
@@ -37,14 +37,14 @@
 #' scoord <- data.frame(radius = runif(5), 
 #'                      angle = runif(5,0,2*pi))
 #' 
-#' ch_rfa_DistSeason(radius ~ angle , scoord)
+#' ch_rfa_distseason(radius ~ angle , scoord)
 #'
 #'
-ch_rfa_DistSeason <- function(x, ...)  UseMethod('ch_rfa_DistSeason', x)
+ch_rfa_distseason <- function(x, ...)  UseMethod('ch_rfa_distseason', x)
 
 #' @export
-#' @rdname ch_rfa_DistSeason
-ch_rfa_DistSeason.numeric <- function(x, a, w = 1/pi, ...){
+#' @rdname ch_rfa_distseason
+ch_rfa_distseason.numeric <- function(x, a, w = 1/pi, ...){
 
   ## Extract the pairs or every angles
   n <- length(a)
@@ -70,19 +70,19 @@ ch_rfa_DistSeason.numeric <- function(x, a, w = 1/pi, ...){
 }
 
 #' @export
-ch_rfa_DistSeason.matrix <- function(x, w = 1/pi, ...)
-  ch_rfa_DistSeason(x[,1], x[,2], w)
+ch_rfa_distseason.matrix <- function(x, w = 1/pi, ...)
+  ch_rfa_distseason(x[,1], x[,2], w)
 
 #' @export
-#' @rdname ch_rfa_DistSeason
-ch_rfa_DistSeason.data.frame <- function(x, w = 1/pi, ...)
-  ch_rfa_DistSeason(x[,1], x[,2], w)
+#' @rdname ch_rfa_distseason
+ch_rfa_distseason.data.frame <- function(x, w = 1/pi, ...)
+  ch_rfa_distseason(x[,1], x[,2], w)
 
 #' @export
-#' @rdname ch_rfa_DistSeason
-ch_rfa_DistSeason.formula <- function(form, x, w = 1/pi, ...){
+#' @rdname ch_rfa_distseason
+ch_rfa_distseason.formula <- function(form, x, w = 1/pi, ...){
   x <- as.data.frame(x)
   x <- model.frame(form, x) ## form = r ~ a
   
-  return(ch_rfa_DistSeason(x[,1], x[,2], w))
+  return(ch_rfa_distseason(x[,1], x[,2], w))
 }

@@ -1,34 +1,44 @@
-#'  Plots a hydrograph with the data quality symbols and prints a report
+#'  Plots a hydrograph with the data quality symbols and prints a report.
 #'  
 #' @description Plots a hydrograph of a WSC daily data file read from from ECDataExplorer (ECDE). 
 #' The hydrograph shows individual days with data quality symbols [SYM] 
 #' in colour and counts cases of each and reports them in the legend. The colours and symbols 
-#' are those produced by ECDataExplorer. The option is to provide start and end dates to show 
+#' are those produced by ECDataExplorer. 
+#' 
+#' There is an option is to provide start and end dates to show 
 #' only part of the time period for which data exists and the plot is annotated to indicate this. 
 #' Counts of missing observations is also provided in the legend.
 #'
 #' @param DF Data frame retrieved from ECDataExplorer as returned by the function 
 #' \code{ch_read_ECDE_flows}.
-#' @param st_date Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}
-#' @param end_date Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}
+#' @param st_date Optional start date in the form \option{yyyy-mm-dd}. Default is \code{NULL}.
+#' @param end_date Optional end date in the form \option{yyyy-mm-dd}. Default is \code{NULL}.
 #' @param rescale If \code{FALSE} (the default), the y-axis scaling is determined by the time 
 #' period. If \code{TRUE} then determined by the whole dataset.
 #' @param cts If \code{TRUE} (the default) shows the counts of SYM in the legend. If \code{FALSE} 
+#' the counts are omitted as in ECDE.
 #' @param metadata a dataframe of station metadata, default is HYDAT_list.
-#' counts are not shown, as in ECDE.
-
+#' 
+#' 
 #' @author Paul Whitfield 
 #'
-#' @return Produces a plot and returns a list that contains the station name, start and end dates provided, the number of 
-#' data points and a summary of the SYMs. 
+#' @return Produces a plot and returns a list that contains:
+#' \item{station name or title used}{}
+#' \item{st_date}{starting date}
+#' \item{end_date}{ending data}
+#' \item{n}{the number of data points}
+#' \item{sym_count}{summary of the SYM counts}
+#' \item{missing}{number of missing data} 
+#' 
+#' 
 #' @export
 #' 
 #' @importFrom graphics text
 #'
 #' @examples
-#' m_test <- ch_qa_hydrograph(W05AA008)
+#' m_test <- ch_qa_hydrograph(CAN05AA008)
 #  using a date range
-#' m_test <- ch_qa_hydrograph(W05AA008, st_date="1980-01-01", end_date="1999-12-31")
+#' m_test <- ch_qa_hydrograph(CAN05AA008, st_date="1980-01-01", end_date="1999-12-31")
 #
 
 ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, 

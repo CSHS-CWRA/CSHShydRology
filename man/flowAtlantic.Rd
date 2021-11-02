@@ -3,7 +3,7 @@
 \docType{data}
 \name{flowAtlantic}
 \alias{flowAtlantic}
-\title{Annual maximums from sites in the Atlantic region of Canada}
+\title{Annual maxima from sites in the Atlantic region of Canada}
 \format{
 An object of class \code{list} of length 2.
 }
@@ -14,13 +14,13 @@ An object of class \code{list} of length 2.
 flowAtlantic
 }
 \description{
-Contains the annual maximums of 45 hydrometric stations found in the
-region '01' of Water Survery of Canada.
-Additionaly to the annual maximums, the output list includes catchment
-descriptors (longitude, latitude, drainage area, mean annual precipitation)
+Contains the annual maxima of 45 hydrometric stations found in the
+region '01' of Water Survey of Canada.
+In additional to the annual maxima, the output list includes catchment
+descriptors (longitude, latitude, basin area, mean annual precipitation)
 and the geographical distance between each station.
 }
 \author{
-Martin Durocher <mduroche@uwaterloo.ca>
+Martin Durocher
 }
 \keyword{datasets}

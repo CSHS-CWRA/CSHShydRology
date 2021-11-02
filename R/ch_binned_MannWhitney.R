@@ -1,16 +1,16 @@
-#' Compares two time periods of data using Mann-Whitney test
+#' Compares two time periods of data using Mann-Whitney test.
 #' 
 #' 
 #' Performs a binned Mann-Whitney test on periods of a defined length. 
 #' 
-#' @description Compares two time periods of data using Mann-Whitney.
+#' @description Compares two time periods of data using the Mann-Whitney test.
 #' 
-#' Data are binned based upon a bin size, extracting data for two time periods 
+#' Data are binned based upon a bin size, and data are extracted for two time periods 
 #' and tests for change between two such periods
 #' result can be passed to \code{ch_polar_plot} or \code{ch_decades_plot} 
-#' for visualization
+#' for visualization.
 #' 
-#' @author Paul Whitfield <paul.h.whitfield@gmail.com>
+#' @author Paul Whitfield 
 #' @references
 #' Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and 
 #' hydrology in Canada. Canadian Water Resources Journal 25: 19-65. 
@@ -24,13 +24,12 @@
 #' @param metadata datafframe of station metadata, default is HYDAT_list
 #' 
 #' @return Returns a list containing:
-#' \describe{
 #'  \item{StationID}{ID of station}
 #'  \item{Station_lname}{Name of station}
 #'  \item{bin_width}{Smoothing time step}
-#'  \item{range1}{range1 years}
-#'  \item{range2}{range2 years}
-#'  \item{p_used}{p value used}
+#'  \item{range1}{First range of years}
+#'  \item{range2}{Second range of years}
+#'  \item{p_used}{p_value}
 #'  \item{fail}{TRUE if test failed due to missing values}
 #'  \item{bin_method}{method used for binning}
 #'  \item{test_method}{Mann-Whitney U}
@@ -41,7 +40,7 @@
 #' 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
 #' 	\item{prob}{probability of U for each period}
 #' 	\item{code}{significance codes for each bin}
-#' 	}
+
 #' 
 #' @importFrom stats wilcox.test median
 #' @export
@@ -49,16 +48,16 @@
 #' 
 #' @examples
 #' data(HYDAT_list)
-#' data(W05AA008)
+#' data(CAN05AA008)
 #' \dontrun{
 #' # first example fails due to missing data in both periods
 #' range1 <- c(1960,1969)
 #' range2 <- c(1990,1999)
-#' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
+#' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
 #'
 #' range1 <- c(1970,1979)
 #' range2 <- c(1990,1999)
-#' b_MW <- ch_binned_MannWhitney(W05AA008, step = 5, range1, range2, ptest = 0.05)
+#' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
 #' }
 
 ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", 

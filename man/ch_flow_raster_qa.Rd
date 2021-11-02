@@ -2,16 +2,22 @@
 % Please edit documentation in R/ch_flow_raster_qa.R
 \name{ch_flow_raster_qa}
 \alias{ch_flow_raster_qa}
-\title{Raster plot of daily streamflows with WSC quality flags}
+\title{Raster plot of daily streamflows with WSC quality flags.}
 \usage{
 ch_flow_raster_qa(DF, metadata = NULL)
 }
 \arguments{
 \item{DF}{dataframe of daily streamflow read by ch_read_ECDE_flows}
 
-\item{metadata}{dataframe of metadata or defaults to "HYDAT_lst"}
+\item{metadata}{dataframe of metadata or defaults to "HYDAT_list"}
 }
 \value{
+Produces a raster plot: years against day of year, showing the data flags:
+ \item{A}{(Partial)  in green}
+ \item{B}{(Backwater) in cyan}
+ \item{D}{(Dry) in yellow}
+ \item{E}{(Estimated) in red}
+
 No value is returned; a standard R graphic is created.
 }
 \description{
@@ -21,19 +27,10 @@ overlain by the Water Survey of Canada quality flags.  Colours are consistent wi
 ECDataExplorer. Raster layout lets the use see the flags in a different context than in 
 a hydrograph.
 }
-\details{
-Produces a raster plot: years against day of year, showing the data flags:
-\itemize{
- \item {A}{(Partial) green}
- \item {B}{(Backwater) blue}
- \item {D}{(Dry) yellow}
- \item {E}{Estimated) red}
-}
-}
 \examples{
 data(HYDAT_list)
-data(W05AA008)
-qaplot <- ch_flow_raster_qa(W05AA008)
+data(CAN05AA008)
+qaplot <- ch_flow_raster_qa(CAN05AA008)
 
 }
 \seealso{

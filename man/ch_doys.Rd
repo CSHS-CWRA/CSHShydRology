@@ -2,38 +2,33 @@
 % Please edit documentation in R/ch_doys.R
 \name{ch_doys}
 \alias{ch_doys}
-\title{Days of year and water year}
+\title{Days of year and water year.}
 \usage{
 ch_doys(Date, water_yr = 10)
 }
 \arguments{
-\item{Date}{an array as.Date}
+\item{Date}{an array of \R dates, as produced by \code{as.Date()}}
 
-\item{water_yr}{the month starting the water year, default is 10 (October).}
+\item{water_yr}{the month starting the water year, default is 10 (October). If
+a value of \code{1} is specified, the \code{10} will be used.}
 }
 \value{
-a dataframe with different date information
-
-\code{Date}  in Date format
-
-\code{year}  numeric calendar year
-
-\code{month} number calendar month
-
-\code{doy}   numeric day of year
-
-\code{wyear} numeric water year starting on day 1 of selected month
-
-\code{dwy}   numeric day of water year
+Returns a dataframe with date information:
+\item{Date}{in Date format}
+\item{year}{numeric calendar year}
+\item{month}{number calendar month}
+\item{doy}{numeric day of year}
+\item{wyear}{numeric water year starting on day 1 of selected month}
+\item{dwy}{numeric day of water year}
 }
 \description{
-Converts an array of dates into a dataframe with date, Year, month, doy,
+Converts an array of dates into a dataframe with date, year, month, doy,
 wyear, dowy. 
-Calculates day of year and day of water year since 10.01 of present water year,
- using base::isodate.
+
+The day of water year is computed from the first of the specified water year month.
 }
 \details{
-Converts a date array and produces a data frame with years, wateryears, and days of year and of water year.
+Converts a date array into a data frame with years, wateryears, and days of year and of water year.
 }
 \examples{
 dd <- seq.Date(as.Date("2010-01-01"), as.Date("2018-01-01"),by = 1)
@@ -42,5 +37,5 @@ head(output)
 
 }
 \author{
-Paul Whitfield
+Paul Whitfield Kevin Shook
 }

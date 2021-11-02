@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_ECDE_metadata.R
 \name{ch_get_ECDE_metadata}
 \alias{ch_get_ECDE_metadata}
-\title{Reads Environment Canada Date Explorer (ECDE) meta data file}
+\title{Reads Environment Canada Date Explorer (ECDE) meta data file.}
 \usage{
 ch_get_ECDE_metadata(filename, writefile = NULL)
 }
@@ -13,33 +13,31 @@ ch_get_ECDE_metadata(filename, writefile = NULL)
 then the dataframe is saved to a csv file.}
 }
 \value{
-Returns a dataframe consisting of
-\itemize{
-\item	 {Station - StationID}
-\item	 {StationName - Station Name}
-\item	 {HYDStatus - Active or Discontinued}
-\item	 {Prov - Province}
-\item	 {Latitude}{}
-\item	 {Longitude}{}
-\item	 {DrainageArea - km2}
-\item	 {Years - # of years with data}
-\item	 {From - Start Year}
-\item	 {To - End Year}
-\item	 {Reg. - Regulated?} 
-\item	 {Flow - if TRUE/Yes}
-\item	 {Level - if TRUE/Yes}
-\item	 {Sed - if TRUE/Yes}
-\item	 {OperSched - Continuous or Seasonal}
-\item	 {RealTime - if TRUE/Yes}
-\item	 {RHBN - if TRUE/Yes is in the reference hydrologic basin network}
-\item	 {Region - Name of regional office}
-\item	 {Datum - Elevation datum}
-\item	 {Operator - Operator}
-}
+Returns a dataframe consisting of:
+\item{Station}{StationID}
+\item{StationName}{Station Name}
+\item{HYDStatus}{Active or Discontinued}
+\item{Prov}{Province}
+\item{Latitude}{}
+\item{Longitude}{}
+\item{DrainageArea}{km2}
+\item{Years}{# of years with data}
+\item{From}{Start Year}
+\item{To}{End Year}
+\item{Reg.}{Regulated?} 
+\item{Flow}{if TRUE/Yes flow data exists}
+\item{Level}{if TRUE/Yes level data exists}
+\item{Sed}{if TRUE/Yes sediment data exists}
+\item{OperSched}{Operations current - Continuous or Seasonal}
+\item{RealTime}{ - if TRUE/Yes real time data is available}
+\item{RHBN}{if TRUE/Yes the stations is in the reference hydrologic basin network}
+\item{Region}{Name of regional office operating station}
+\item{Datum}{Elevation datum}
+\item{Operator}{Operator or provider of the data}
 }
 \description{
 Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
-The dataframe returned contains 21 fields of metadata for each station.
+The dataframe returned contains 20 fields from ECDE.
 }
 \examples{
 \dontrun{

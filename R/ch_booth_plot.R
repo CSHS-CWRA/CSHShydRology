@@ -1,7 +1,7 @@
-#' Create a Booth plot of peaks over a threshold
+#' Create a Booth plot(s) of peaks over a threshold.
 #'
 #' A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
-#' either magnitude (default) or volume on the vertical axis
+#' either magnitude (default) or volume on the vertical axis.
 #'
 #' @param events A data frame of POT events from the function \code{ch_get_peaks}
 #' @param threshold The threshold used by \code{ch_get_peaks}
@@ -9,7 +9,8 @@
 #' @param type The plot type, either \option{mag} (magnitude, the default) or \option{vol} (volume)
 #' @param colour1 A vector of length 12 with line colours of rings or symbols. Defaults to those used by Booth.
 #' @param colour2 A vector of length 12 with fill colours of rings or symbols. Defaults to those used by Booth.
-#'
+#' @author Paul Whitfield 
+#' 
 #' @references
 #' Booth, E.G., Mount, J.F., Viers, J.H. 2006. Hydrologic Variability of the Cosumnes River Floodplain.
 #' San Francisco Estuary & Watershed Science 4:21.
@@ -23,8 +24,8 @@
 #' @keywords plot
 #' @seealso \code{\link{ch_get_peaks}}
 #' @examples
-#' threshold <- 0.1 * max(W05AA008$Flow)  # arbitrary threshold
-#' peaks <- ch_get_peaks(W05AA008, threshold)
+#' threshold <- 0.1 * max(CAN05AA008$Flow)  # arbitrary threshold
+#' peaks <- ch_get_peaks(CAN05AA008, threshold)
 #' events <- peaks$POTevents
 #' ch_booth_plot(events, threshold, title = "05AA008", type='mag')
 #' ch_booth_plot(events, threshold, title = "05AA008", type='vol')

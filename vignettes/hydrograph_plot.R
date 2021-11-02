@@ -4,10 +4,10 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 library(CSHShydRology)
-W05AA008 <- W05AA008
+CAN05AA008 <- CAN05AA008
 
 ## -----------------------------------------------------------------------------
-daily_flows <- W05AA008[, c(3, 4)]
+daily_flows <- CAN05AA008[, c(3, 4)]
 result1 <- ch_hydrograph_plot(flows = daily_flows, winter_shading = FALSE)
 result2 <- ch_hydrograph_plot(flows = daily_flows, winter_shading = TRUE)
 

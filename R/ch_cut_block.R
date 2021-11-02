@@ -1,14 +1,17 @@
 #' Allows the user to extract a specific time period from a longer record.
 #' 
-#' @description Could be used to get the same period of time from several station for comparison.
+#' @description The function could also be used to get the same period of time from several station for comparison.
 #' @param DF A daily streamflow data frame as from \code{ch_read_ECDE_flows}
 #' @param st_date starting date format is \%Y/\%m/\%d
 #' @param end_date ending date format is \%Y/\%m/\%d
+#' 
+#' @return Returns a portion of the original dataframe.
+#' 
 #' @export
 #' @author Paul Whitfield  
 #' @examples
-#' data(W05AA008)
-#' subset <- ch_cut_block(W05AA008,"2000/01/01", "2010/12/31")
+#' data(CAN05AA008)
+#' subset <- ch_cut_block(CAN05AA008,"2000/01/01", "2010/12/31")
 
 ch_cut_block <- function (DF, st_date, end_date) 
 {

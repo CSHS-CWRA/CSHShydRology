@@ -1,7 +1,7 @@
-#' Plots the regime of daily streamflows
+#' Plots the regime of daily streamflows using quantiles.
 #'
-#' Produces a regime hydrograph similar to that in the reference. It shows the flow quantiles for each
-#' day of the year and the maximum and minimum. Parameters can be set to change colours and fix the y scale
+#' @description Produces a regime hydrograph similar to that in the reference. It shows the flow quantiles for each
+#' day of the year and the maximum and minimum. Parameters can be set to change colours and set the y-scale
 #' to allow plots of same scale to be produced.
 #'
 #'
@@ -25,11 +25,11 @@
 #' for the Canadian Prairie Provinces. Canadian Water Resources Journal 37: 311-332.
 #'
 #' @examples
-#' data(W05AA008)
-#' ch_regime_plot(W05AA008, colour = TRUE, wyear = 1)
+#' data(CAN05AA008)
+#' ch_regime_plot(CAN05AA008, colour = TRUE, wyear = 1)
 #'
 
-ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
+ch_regime_plot <- function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
                         quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05))
   {
  
@@ -116,7 +116,7 @@ ch_regime_plot <-function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL,
               paste(format( quant[5], nsmall=2),"-", format(quant[3],nsmall = 2), sep = ""),
               "median")
   
-  lcol1 <-c(colr[4],colr[1],colr[2], colr[3],colr[5])
+  lcol1 <- c(colr[4],colr[1],colr[2], colr[3],colr[5])
   legend("topleft", legend = ltext1, col = lcol1, lty = 1, lwd = 3, bty = "n")
   ######################################################################### plot end
 }

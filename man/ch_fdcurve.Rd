@@ -2,25 +2,27 @@
 % Please edit documentation in R/ch_fdcurve.R
 \name{ch_fdcurve}
 \alias{ch_fdcurve}
-\title{Plot Flow Duration Curve}
+\title{Plot Flow Duration Curve.}
 \usage{
 ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = NULL)
 }
 \arguments{
-\item{DF}{- dataframe of daily flows from \code{ch_read_ECDE_flows}}
+\item{DF}{a dataframe of daily flows from \code{ch_read_ECDE_flows}}
 
-\item{normal}{If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE}
+\item{normal}{If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE.}
 
-\item{gust}{If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added}
+\item{gust}{If \code{TRUE} (the default), adds the curves from Gustard et al. 1992 are added.}
 
-\item{metadata}{dataframe of metadata, defaults to HYDAT_list}
+\item{metadata}{dataframe of metadata, defaults to HYDAT_list.}
 }
 \value{
-Plots the flow duration curve and returns a data frame containing the exceedance probability and flow
+Plots the flow duration curve and returns a data frame containing:
+\item{exceedance probability}{probability}
+\item{flow}{d=flow values}
 }
 \description{
 A flow duration curve is a plot of flow magnitude against exceedance probability. 
-The plot may contain the Gustard Curves or they can be omitted. The default is for curves to be 
+The plot may contain the Gustard Curves (default) or they can be omitted. The default is for curves to be 
 plotted against probability, but an option is to plot against the normalized exceedance probability. 
 In that case, the x axis represents a normal distribution.
 }
@@ -29,11 +31,11 @@ Create a Flow Duration Curve based upon Observations.
 }
 \examples{
 data(HYDAT_list)
-data(W05AA008)
+data(CAN05AA008)
 # plot with Gustard 1992 curves
-test <- ch_fdcurve(W05AA008, normal = FALSE, gust = TRUE)
+test <- ch_fdcurve(CAN05AA008, normal = FALSE, gust = TRUE)
 # plot with normalized exceedance probability
-test <- ch_fdcurve(W05AA008, normal = TRUE, gust = FALSE)
+test <- ch_fdcurve(CAN05AA008, normal = TRUE, gust = FALSE)
 
 }
 \references{

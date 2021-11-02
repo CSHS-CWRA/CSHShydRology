@@ -8,8 +8,8 @@
 #' Currently, only a few of the functions have been added to \pkg{CSHShydRology}. 
 #' We are adding more as time permits.
 #' \describe{
-#'  \item{ch_rfa_ExtractAmax}{Extracts the annual maxima of a daily time series}
-#'  \item{ch_rfa_DistSeason}{Distances between points in seasonal space}
-#'  \item{ch_rfa_JulianPlot}{Empty rose plot by day of year}
-#'  \item{ch_rfa_SeasonStat}{Seasonal statistics for flood peaks}
+#'  \item{ch_rfa_extractamax}{Extracts the annual maxima of a daily time series}
+#'  \item{ch_rfa_distseason}{Distances between points in seasonal space}
+#'  \item{ch_rfa_julianplot}{Empty rose plot by day of year}
+#'  \item{ch_rfa_seasonstat}{Seasonal statistics for flood peaks}
 #' } 

@@ -2,22 +2,24 @@
 % Please edit documentation in R/ch_read_ECDE_flows.R
 \name{ch_read_ECDE_flows}
 \alias{ch_read_ECDE_flows}
-\title{Reads a file of WSC daily flows from ECDataExplorer
-Reads in a file WSC daily flows as returned from the program ECDataExplorer,
-and omits the last 3 lines as these contain the data disclaimer.}
+\title{Reads a file of WSC daily flows from ECDataExplorer (ECDE).}
 \usage{
 ch_read_ECDE_flows(filename)
 }
 \arguments{
-\item{filename}{Datafile retrieved from ECDataExplorer}
+\item{filename}{Datafile retrieved from ECDataExplorer.}
 }
 \value{
-Returns a dataframe with the last three rows removed and the Date as Date
+Returns a dataframe with the last three rows removed:
+\item{ID}{stationID}
+\item{PARAM}{Parameter 1 for Flow 2 for Level}
+\item{Date}{original charater string converted to date format}
+\item{Flow}{Daily mean flow m3/sec}
+\item{SYM}{Quality flag}
 }
 \description{
-Reads a file of WSC daily flows from ECDataExplorer
-Reads in a file WSC daily flows as returned from the program ECDataExplorer,
-and omits the last 3 lines as these contain the data disclaimer.
+Reads in a file WSC daily flows as returned from the Windows program ECDataExplorer, converts the Date,
+and omits the last 3 lines as these contain the data disclaimer and not data.
 }
 \examples{
 \dontrun{
@@ -27,5 +29,5 @@ mdata <- ch_read_ECDE_flows(mfile)}
 
 }
 \author{
-Paul Whitfield <paul.h.whitfield@gmail.com>
+Paul Whitfield
 }

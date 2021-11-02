@@ -1,12 +1,40 @@
 Type: Package
 Package: CSHShydRology
-Title: Canadian hydrological analyses
-Version: 1.1.2
-Date: 2021-04-07
-Authors@R: c(person("Kevin", "Shook", email = "Kevin.Shook@usask.ca", role = c("cre","aut")),
-             person("Paul", "Whitfield", email = "paul.h.whitfield@gmail.com", role = c("aut","ctb")),
-             person("Robert", "Chlumsky", email = "rchlumsk@uwaterloo.ca", role = c("aut","ctb"))
-             )
+Title: Canadian Hydrological Analyses
+Version: 1.1.3
+Date: 2021-10-22
+Authors@R: c(person("Kevin", "Shook", 
+              email = "kevin.shook@usask.ca", 
+              role = c("cre", "aut")),
+             person("Paul", "Whitfield", 
+                email = "paul.h.whitfield@gmail.com", 
+                role = c("aut")),
+             person("Robert", "Chlumsky",
+                email = "rchlumsk@uwaterloo.ca", 
+                role = c("aut")),
+             person("Daniel", "Moore", 
+                email = "dan.moore@ubc.ca", 
+                role = c("aut")),
+             person("Martin", "Durocher", 
+                role = c("aut")),
+             person("Matthew", "Lemieux", 
+                role = c("ctb")),
+             person("Jason", "Chiang", 
+                role = c("ctb")),
+             person("Joel", "Trubilowicz", 
+                role = c("ctb")),
+             person("SJ", "Kim", 
+                role = c("ctb"))
+Author: Kevin Shook [cre, aut],
+  Paul Whitfield [aut],
+  Robert Chlumsky [aut],
+  Daniel Moore [aut],
+  Martin Durocher [aut],
+  Matthew Lemieux [ctb],
+  Jason Chiang [ctb],
+  Joel Trubilowicz [ctb],
+  SJ Kim [ctb]
+Maintainer: Kevin Shook <kevin.shook@usask.ca>
 Description: A collection of user submitted functions to aid in the analysis of hydrological data.
 License: AGPL-3 | file LICENSE
 URL: https://github.com/CSHS-hydRology/CSHShydRology
@@ -38,4 +66,4 @@ Suggests:
     readr
 VignetteBuilder: knitr
 LazyData: true
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2

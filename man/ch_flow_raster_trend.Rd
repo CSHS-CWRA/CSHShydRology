@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_flow_raster_trend.R
 \name{ch_flow_raster_trend}
 \alias{ch_flow_raster_trend}
-\title{Raster plot and simple trends of observed streamflows by periods}
+\title{Raster plot and simple trends of observed streamflows by periods.}
 \usage{
 ch_flow_raster_trend(
   DF,
@@ -26,8 +26,7 @@ If \code{TRUE} partial years are included.}
 The default is \code{c("lightblue","cyan", "blue", "slateblue", "darkblue", "red")}.}
 }
 \value{
-a list containing:
-\itemize{
+Returns a list containing:
   \item{stationID}{Station ID eg. 05BB001}
   \item{missing}{How missing values were used FALSE = used, TRUE = removed}
   \item{step}{number of days in a bin}
@@ -46,31 +45,30 @@ a list containing:
   \item{tau_median_year}{value of tau and probability for annual median}
   \item{tau_maximum_year}{value of tau and probability for annual maximum}
   \item{tau_minimum_year}{value of tau and probability for annual minimum}
- }
 }
 \description{
 Creates a raster plot plus trend plots for day of year, 
-which may be binned by a number of days (step = ),
-and the max, min and median across years. The plot contains four panels based upon binned data.
+which are binned by a number of days (step),
+and the max, min, and median annual discharge across years. The plot contains four panels based upon binned data.
 }
 \details{
-The annual maximum,minimum,and median flow with a trend test
-for each period: red arrows indicate decreases, blue arrows indicate increases.
-The scale bar for the colours used in the raster plot,
-The raster plot with a colour for each period and each year where data exist, and
-A time series plot of the minimum, median, and maximum annual bin values.
+The four plots are: (1) The maximum,minimum,and median flow with a trend test for each 
+period: red arrows indicate decreases, blue arrows indicate increases.
+(2) The scale bar for the colours used in the raster plot,
+(3) The raster plot with a colour for each period and each year where data exist, and
+(4) A time series plot of the minimum, median, and maximum annual bin values.
 If there is no trend (p > 0.05) the points are black. Decreasing trend are in red, increasing trends are in blue.
 }
 \examples{
- data(W05AA008)
- mplot <- ch_flow_raster_trend(W05AA008, step=5)
+ data(CAN05AA008)
+ mplot <- ch_flow_raster_trend(CAN05AA008, step=5)
 
 }
 \references{
 Whitfield, P. H., Kraaijenbrink, P. D. A., Shook, K. R., and Pomeroy, J. W. 2021.
  The Spatial Extent of Hydrological and Landscape Changes across the Mountains and Prairies 
  of Canada in the Mackenzie and Nelson River Basins Based on data from a Warm Season Time Window, 
- Hydrology and Earth Systems Sciences Discussions.
+ Hydrology and Earth Systems Sciences 25: 2513-2541.
 }
 \seealso{
 \code{\link{ch_flow_raster}}
