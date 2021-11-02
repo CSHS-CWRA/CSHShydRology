@@ -1,25 +1,27 @@
 #' Fill DEM
 #' 
-#' This removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
+#' @description
+#' Removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
 #' 
-#' This function removes sinks by filling them. To ensure continuous flow through the DEM, 
+#' @details
+#' Removes sinks by filling them. To ensure continuous flow through the DEM, 
 #' a minimum slope can be imposed on cells. Although there are other options, the most imporant 
 #' are method and minslope; these are implemented in the function. For a full list of available options type 
 #' `?rsaga.fill.sinks`` at the console. 
 #' The main input is a DEM as a raster object. The main output will be a sink-filled DEM with the 
 #' same topology and coordinate reference system as the input raster.
 #' 
-#' @param dem_raw Raster object of your raw dem in the desired projection
+#' @param dem_raw     raster object of your raw dem in the desired projection
 #' @param saga_wd     working directory to write and read saga files
 #' @param sinkmethod  options are planchon.darboux.2001" (default), "xxl.wang.liu.2006" and "wang.liu.2006"
-#' @param minslope    minimum slope to impose on filled cells to force drainage. Default = 0.1
-#' @param saga.env    SAGA environment object.  Default is to let saga find it on its own.
+#' @param minslope    minimum slope to impose on filled cells to force drainage (default = 0.1)
+#' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return \item{dem_ns}{filled dem as a raster object.}
 #' 
 #' @importFrom RSAGA rsaga.fill.sinks 
 #' @importFrom raster writeRaster raster crs extract
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
 #' @export
 #' @examples
@@ -51,11 +53,21 @@ ch_saga_fillsinks <- function(dem_raw, saga_wd,
                               minslope = 0.1,
                               saga.env = RSAGA::rsaga.env()) {
   
+  # check inputs
+  if (missing(dem_raw)) {
+    stop("ch_saga_fillsinks requires a raster dem_raw")
+  }
+  if (missing(saga_wd)) {
+    saga_wd <- tempdir()
+    warning(sprinf("ch_saga_fillsinks: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+  }
+  
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("saga_wd does not exist")
+    print("Provided saga_wd does not exist")
     return(NA)
   }
+  
   # store the input dem in a file in the working directory
   raster::writeRaster(dem_raw, paste0(saga_wd, "/dem_raw.sdat"), format = "SAGA", 
                       NAflag = -9999, overwrite = TRUE)

@@ -1,12 +1,14 @@
 #' Create Contours
 #'
-#' creates contour lines from a DEM.
+#' @description 
+#' Creates contour lines from a DEM.
 #' 
-#' This function generates contour lines from a DEM, which are returned as an **sf** object. 
+#' @details
+#' Generates contour lines from a DEM, which are returned as an sf object. 
 #' The user can either provide a vector of elevation values by specifying the `z_levels` argument, 
 #' or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the number of contour lines (`n_levels`).
 #'
-#' @param dem Raster object of your dem in the desired projection - should have had sinks removed
+#' @param dem raster object of your dem in the desired projection (note: should have had sinks removed)
 #' @param zmin minimum elevation value for contours
 #' @param zmax maximum elevation value for contours
 #' @param n_levels number of contour lines
@@ -14,8 +16,7 @@
 #' @return  
 #' \item{contours_sf}{sf object containing contours}
 #' 
-#' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' 
 #' @examples
@@ -50,6 +51,11 @@ ch_contours <- function(dem,
                         zmin = NULL, zmax = NULL,
                         n_levels = 10,
                         z_levels = NULL) {
+  
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_contours requires a raster dem")
+  }
   
   # determine contour levels
   if (is.null(z_levels)) {

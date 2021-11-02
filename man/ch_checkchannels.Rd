@@ -7,11 +7,11 @@
 ch_checkchannels(dem, channels, outlet)
 }
 \arguments{
-\item{dem}{Raster. DEM catchment was generated from}
+\item{dem}{raster DEM that catchments were generated from}
 
-\item{channels}{sf. channel polyline}
+\item{channels}{channel polyline (or channels list from \code{ch_saga_channels}) (sf object)}
 
-\item{outlet}{sf. location of catchment outlet}
+\item{outlet}{location of catchment outlet (sf object)}
 }
 \value{
 \item{check_map}{generates map with channel layer}
@@ -20,11 +20,42 @@ ch_checkchannels(dem, channels, outlet)
 Generates a map of the generated channel layer.
 }
 \details{
-This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
+Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 }
 \examples{
+
 \dontrun{
-map <-  ch_checkchannels(dem, channels, outlet)
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires multiple potentially lengthy GIS operations
+
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download 25m DEM
+ff <- "gs_dem25.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# fill sinks
+filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+
+# determine contributing area raster using filled_dem
+carea <- ch_saga_carea(filled_dem, saga_wd)
+
+# generate channels sf object
+channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
+
+# download station locations (use as catchment outlets)
+ff <- "gs_weirs.GeoJSON"
+gs_fn <- file.path(saga_wd, ff)
+gs_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+stns <- ch_get_url_data(gs_url, gs_fn)
+
+# check channels
+ch_checkchannels(dem=filled_dem, channels, outlet=stns)
 }
 
 }
@@ -32,5 +63,5 @@ map <-  ch_checkchannels(dem, channels, outlet)
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

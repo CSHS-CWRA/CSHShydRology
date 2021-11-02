@@ -2,9 +2,7 @@
 % Please edit documentation in R/ch_create_wd.R
 \name{ch_create_wd}
 \alias{ch_create_wd}
-\title{Create SAGA Working Directory
-
-This function creates a SAGA working directory.}
+\title{Create SAGA Working Directory}
 \usage{
 ch_create_wd(wd)
 }
@@ -12,23 +10,18 @@ ch_create_wd(wd)
 \item{wd}{working directory file path}
 }
 \value{
-\item{TRUE}{returns TRUE upon successful execution}
+\item{\code{TRUE}}{returns \code{TRUE} upon successful execution}
 }
 \description{
-Create SAGA Working Directory
-
-This function creates a SAGA working directory.
+Creates a SAGA working directory.
 }
 \examples{
-\dontrun{
-ch_create_wd()
-
-}
+ch_create_wd(tempdir())
 
 }
 \seealso{
 \code{\link{ch_clear_wd}} to clear the working SAGA directory
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

@@ -1,9 +1,12 @@
 #' Plot hydrographs
 #'
+#' @description 
 #' Creates a hydrograph plot for simulated, observed, and inflow
 #' hydrograph series, including precipitation if provided. The secondary y axis 
 #' will be used to plot the precip time series.
-#' The function assumes that the supplied time series have the same length and
+#' 
+#' @details
+#' Assumes that the supplied time series have the same length and
 #' duration in time. If this is not true, then the defined period or period
 #' calculated from the first available flow series will be used to determine
 #' the plotting limits in time. If the data is take from output from the \strong{Raven} model,
@@ -43,11 +46,11 @@
 #' @param plot_mode plot mode as \option{base} or \option{ggplot}. Currently only 
 #' \option{base} plot type is supported, \option{ggplot} is under construction.
 #' @return Returns \code{TRUE} if the function is executed properly.
-#' @keywords plot hydrograph
+#' 
 #' @author Robert Chlumsky
 #' @importFrom lubridate year month day date
 #' @importFrom graphics grid lines
-#' @export
+#' 
 #' @examples
 #' # example with synthetic random data
 #' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"),by = 1)
@@ -70,7 +73,10 @@
 #' # increase the plot ranges to separate flows and precip; add a legend box
 #' ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 #' range_mult_precip = 2, leg_box = TRUE)
-
+#' 
+#' 
+#' @export
+#' 
 ch_hydrograph_plot <- function(flows = NULL, 
                             precip = NULL, 
                             prd = NULL, 

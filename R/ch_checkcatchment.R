@@ -1,18 +1,21 @@
 #' Check Catchments
 #'
-#' This function generates a simple map to allow a visual assessment of the catchment 
-#' boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
+#' @description
+#' Generates a simple map to allow a visual assessment of the catchment 
+#' boundaries relative to the elevation contours. 
+#' 
+#' @details 
+#' Also generates a table summarizing the catchments, 
 #' including the coordinates of the outlet point and the catchment area.
 #'
-#' @param dem Raster. DEM that catchment was generated from
-#' @param catchment sf. catchment polygon
-#' @param outlet sf. location of catchment outlet
-#' @param outlet_label string. Label for outlet
+#' @param dem raster DEM that catchments were generated from
+#' @param catchment catchment polygon (sf object)
+#' @param outlet location of catchment outlet (sf object)
+#' @param outlet_label character label for outlet
 #' @return 
 #' \item{area_df}{Generates contour map with catchment polygon and outlet check}
 #' 
-#' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' 
 #' @examples
@@ -59,7 +62,16 @@
 #' @export
 ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL) {
 
-  # require some error checking here on inputs
+  # check inputs
+  if (missing(catchment)) {
+    stop("ch_checkcatchment requires sf catchment polygons to plot")
+  }
+  if (missing(dem)) {
+    stop("ch_checkcatchment requires a raster dem to plot")
+  }
+  if (missing(outlet)) {
+    stop("ch_checkcatchment requires an sf outlet to plot")
+  }
   
   # create contours and get bounding box to set map limits
   contours <- ch_contours(dem)

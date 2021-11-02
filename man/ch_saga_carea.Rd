@@ -13,7 +13,7 @@ ch_saga_carea(
 )
 }
 \arguments{
-\item{dem}{Raster object of your raw dem in the desired projection}
+\item{dem}{raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
@@ -21,7 +21,7 @@ ch_saga_carea(
 
 \item{linear_threshold}{numeric (number of grid cells): threshold above which linear flow (i.e. the Deterministic 8 algorithm) will be used; linear flow is disabled for linear_threshold=Inf (the default)}
 
-\item{saga_env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 \item{carea}{raster of contributing areas for each pixel.}
@@ -30,13 +30,35 @@ ch_saga_carea(
 Generates a grid of contributing area for each grid cell.
 }
 \details{
-This function generates a raster of contributing areas based on a DEM, 
+Generates a raster of contributing areas based on a DEM, 
 which should have had sinks removed in a pre-processing step. For more information, see 
 ?`rsaga.topdown.processing`.
 }
 \examples{
 \dontrun{
-ch_saga_carea()
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires a potentially lengthy GIS operation
+
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download LiDAR DEM for 240 and 241 creek
+ff <- "gs_be240.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# fill sinks
+filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+
+# determine contributing area raster using filled_dem
+carea <- ch_saga_carea(filled_dem, saga_wd)
+
+# plot contributing area raster
+library(raster)
+plot(carea)
 }
 
 }
@@ -46,5 +68,5 @@ ch_saga_carea()
 \code{\link{rsaga.topdown.processing}} for more information
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

@@ -13,24 +13,24 @@ ch_saga_fillsinks(
 )
 }
 \arguments{
-\item{dem_raw}{Raster object of your raw dem in the desired projection}
+\item{dem_raw}{raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
 \item{sinkmethod}{options are planchon.darboux.2001" (default), "xxl.wang.liu.2006" and "wang.liu.2006"}
 
-\item{minslope}{minimum slope to impose on filled cells to force drainage. Default = 0.1}
+\item{minslope}{minimum slope to impose on filled cells to force drainage (default = 0.1)}
 
-\item{saga.env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga.env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 \item{dem_ns}{filled dem as a raster object.}
 }
 \description{
-This removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
+Removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
 }
 \details{
-This function removes sinks by filling them. To ensure continuous flow through the DEM, 
+Removes sinks by filling them. To ensure continuous flow through the DEM, 
 a minimum slope can be imposed on cells. Although there are other options, the most imporant 
 are method and minslope; these are implemented in the function. For a full list of available options type 
 `?rsaga.fill.sinks`` at the console. 
@@ -39,9 +39,26 @@ same topology and coordinate reference system as the input raster.
 }
 \examples{
 \dontrun{
-ch_saga_fillsinks()
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires a potentially lengthy GIS operation
 
-# consider sample DEM data with this
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download 25m DEM
+ff <- "gs_dem25.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# fill sinks
+filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+
+# plot the difference in raw and filled dem (positive -> filled)
+library(raster)
+plot(filled_dem-dem)
 }
 
 }
@@ -49,5 +66,5 @@ ch_saga_fillsinks()
 \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

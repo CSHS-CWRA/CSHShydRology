@@ -1,20 +1,20 @@
 #' Check Channels
 #' 
+#' @description
 #' Generates a map of the generated channel layer.
 #' 
-#' This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
+#' @details
+#' Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 #' 
-#' @param dem Raster. DEM catchment was generated from
-#' @param channels sf. channel polyline (or channels list from \code{ch_saga_channels})
-#' @param outlet sf. location of catchment outlet
+#' @param dem raster DEM that catchments were generated from
+#' @param channels channel polyline (or channels list from \code{ch_saga_channels}) (sf object)
+#' @param outlet location of catchment outlet (sf object)
 #' @return 
 #' \item{check_map}{generates map with channel layer}
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' 
-#' 
-#' @examples 
 #' @examples
 #' 
 #' \dontrun{
@@ -56,6 +56,17 @@
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
 #' @export
 ch_checkchannels <- function(dem, channels, outlet) {
+  
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_checkchannels requires a raster dem to plot")
+  }
+  if (missing(channels)) {
+    stop("ch_checkchannels requires sf channels polyline to plot")
+  }
+  if (missing(outlet)) {
+    stop("ch_checkchannels requires an sf outlet to plot")
+  }
   
   # add handling for directly passing output from ch_saga_channels function
   if (class(channels) == "list" & "channels" %in% names(channels)) {

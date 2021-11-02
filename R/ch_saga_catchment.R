@@ -1,31 +1,33 @@
 #' Create Catchment Polygons
 #'
-#' This function generates catchment boundaries for a set of specified points of interest along a stream network. The output is a **sf** object containing the polygons. 
+#' @description 
+#' Generates catchment boundaries for a set of specified points of interest along a stream network. The output is a **sf** object containing the polygons. 
 #' 
+#' @details
 #' The function has two gridded inputs: a DEM (with sinks removed as appropriate) and a grid of contributing areas. Other inputs include `outlet`, a **sf** object containing the coordinates of the catchment outlets, and `outlet_label`, an optional vector of character strings that serve as labels or descriptions of the outlet points.
 #' 
 #' The DEM is input as a raster object via the `dem` argument.
 #' 
 #' There are three ways to provide the contributing area grid, which can be accomplished using the `carea` and `carea_flag` arguments, as summarized below. 
 #' 
-#' The first option (`carea = NULL` and `carea_flag = 0`) would be appropriate if you have not generated a contributing area grid prior to application of `ch_saga_catchment`. If you use this option, the contributing area grid is generated using the standard SAGA defaults, with no options for the user to change them.
+#'   1. The first option (`carea = NULL` and `carea_flag = 0`) would be appropriate if you have not generated a contributing area grid prior to application of `ch_saga_catchment`. If you use this option, the contributing area grid is generated using the standard SAGA defaults, with no options for the user to change them.  
 #' 
-#' The second option (`carea = NULL` and `carea_flag = 1`) would be appropriate if you have run the `ch_saga_carea` function and have not cleared the working directory.
+#'   2. The second option (`carea = NULL` and `carea_flag = 1`) would be appropriate if you have run the `ch_saga_carea` function and have not cleared the working directory.  
 #' 
-#' The third option would be appropriate if you have generated a contributing area grid as a raster object using either `ch_saga_carea` or another function.
+#'   3. The third option would be appropriate if you have generated a contributing area grid as a raster object using either `ch_saga_carea` or another function.  
 #' 
 #' The second and third options are particularly useful if the user either (a) wants to use a different approach than the SAGA defaults to generate the contributing area grid or (b) wants to use the contributing area grid in other analyses (e.g., computing a topographic wetness index).
 #' 
 #' Note that only one of the `carea` and `carea_flag` arguments need be specified.
 #'
-#' @param dem Raster object of your dem in the desired projection - should have had sinks removed
+#' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
 #' @param carea_flag if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat
 #' @param saga_wd name of working directory
 #' @param outlet sf point object with coordinates of catchment outlets in the same projection as the dem
 #' @param outlet_label character vector of labels; if "NULL", numbers are assigned
 #' @param buffsize numeric; the buffer radius (m) around catchment outlet to find location on digital stream network.
-#' @param saga.env SAGA environment object.  Default is to let saga find it on its own.
+#' @param saga.env SAGA environment object. Default is to let saga find it on its own.
 #' @return  
 #' \item{catchment_sf}{Returns an sf object containing catchment polygons}
 #' 
@@ -34,7 +36,7 @@
 #' @importFrom sf st_coordinates st_geometry st_sfc st_as_sf
 #' @importFrom sp bbox
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' @export
 #' @examples
@@ -76,9 +78,18 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
                               buffsize = 100,
                               saga.env = RSAGA::rsaga.env()) {
   
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_saga_catchment requires a raster dem")
+  }
+  if (missing(saga_wd)) {
+    saga_wd <- tempdir()
+    warning(sprinf("ch_saga_catchment: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+  }
+  
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("saga_wd does not exist")
+    print("Provided saga_wd does not exist")
     return(NA)
   }
   

@@ -7,25 +7,59 @@
 ch_checkcatchment(dem, catchment, outlet, outlet_label = NULL)
 }
 \arguments{
-\item{dem}{Raster. DEM that catchment was generated from}
+\item{dem}{raster DEM that catchments were generated from}
 
-\item{catchment}{sf. catchment polygon}
+\item{catchment}{catchment polygon (sf object)}
 
-\item{outlet}{sf. location of catchment outlet}
+\item{outlet}{location of catchment outlet (sf object)}
 
-\item{outlet_label}{string. Label for outlet}
+\item{outlet_label}{character label for outlet}
 }
 \value{
 \item{area_df}{Generates contour map with catchment polygon and outlet check}
 }
 \description{
-This function generates a simple map to allow a visual assessment of the catchment 
-boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
+Generates a simple map to allow a visual assessment of the catchment 
+boundaries relative to the elevation contours.
+}
+\details{
+Also generates a table summarizing the catchments, 
 including the coordinates of the outlet point and the catchment area.
 }
 \examples{
+
 \dontrun{
-ch_checkcatchment()
+# note: example not run in package compilation
+# - requires creating and accessing a temporary directory
+# - requires downloading spatial data from Zenodo repository
+# - requires multiple potentially lengthy GIS operations
+
+# create saga wd using base::tempdir()
+saga_wd <- tempdir()
+
+# download LiDAR DEM for 240 and 241 creek
+ff <- "gs_be240.tif"
+ra_fn <- file.path(saga_wd, ff)
+ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+dem <- ch_get_url_data(ra_url, ra_fn)
+
+# fill sinks
+filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+
+# download station locations for 240, 241 (use as catchment outlets)
+ff <- "gs_weirs.GeoJSON"
+gs_fn <- file.path(saga_wd, ff)
+gs_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
+stns <- ch_get_url_data(gs_url, gs_fn)[1:2,]
+
+# determine contributing area raster using filled_dem
+carea <- ch_saga_carea(filled_dem, saga_wd)
+
+# run catchment delineation
+catchments <-  ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, outlet=stns, carea=carea)
+
+# check catchments
+ch_checkcatchment(filled_dem, catchments, stns)
 }
 
 }
@@ -33,5 +67,5 @@ ch_checkcatchment()
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }
