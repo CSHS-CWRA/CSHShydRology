@@ -7,11 +7,11 @@
 ch_checkchannels(dem, channels, outlet)
 }
 \arguments{
-\item{dem}{Raster. DEM catchment was generated from}
+\item{dem}{raster DEM that catchments were generated from}
 
-\item{channels}{sf. Channel polyline (or channels list from \code{ch_saga_channels})}
+\item{channels}{channel polyline (or channels list from \code{ch_saga_channels}) (sf object)}
 
-\item{outlet}{sf. Location of catchment outlet}
+\item{outlet}{location of catchment outlet (sf object)}
 }
 \value{
 \item{check_map}{generates map with channel layer}
@@ -20,7 +20,7 @@ ch_checkchannels(dem, channels, outlet)
 Generates a map of the generated channel layer.
 }
 \details{
-This function generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
+Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 }
 \examples{
 
@@ -63,5 +63,5 @@ ch_checkchannels(dem=filled_dem, channels, outlet=stns)
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

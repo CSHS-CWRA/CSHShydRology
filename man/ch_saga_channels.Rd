@@ -20,7 +20,7 @@ ch_saga_channels(
 )
 }
 \arguments{
-\item{dem}{Raster object of your dem in the desired projection - should have had sinks removed}
+\item{dem}{raster object of your dem in the desired projection - should have had sinks removed}
 
 \item{saga_wd}{name of working directory}
 
@@ -42,24 +42,26 @@ ch_saga_channels(
 
 \item{minlen}{parameters for SAGA function}
 
-\item{saga.env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga.env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 \item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
 }
 \description{
-determines channel layer spatial files
+Determines channel layer spatial files
 }
 \details{
-This function generates a drainage network using the SAGA `ta_channels` module with option 0.
+Generates a drainage network using the SAGA `ta_channels` module with option 0.
 
 The function requires a DEM and a contributing area grid. Like `ch_saga_catchment`, the user can provide the contributing area grid either as a raster object or by reading in a SAGA file; alternatively, the function can compute the contributing area grid from the DEM.
 
 The SAGA function generates three outputs: 
  
- 1. a shape file containing the drainage network, 
- 2. a grid containing flow directions, and 
- 3. a grid in which, if a cell is part of a channel, its value equals the channel order; otherwise the cell is marked as no-data. 
+ 1. a shape file containing the drainage network,  
+ 
+ 2. a grid containing flow directions, and  
+ 
+ 3. a grid in which, if a cell is part of a channel, its value equals the channel order; otherwise the cell is marked as no-data.  
 
 The output is a list, which will have elements that will include the channel network shape as an **sf** object (if `out_shp = TRUE`), the flow direction grid as a **raster** object (if `out_route = TRUE`) and the network grid as a **raster** object (if `out_ntwrk = TRUE`)
 }
@@ -97,5 +99,5 @@ channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
 For more details, see the following: (http://www.saga-gis.org/saga_tool_doc/2.2.5/ta_channels_0.html)
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

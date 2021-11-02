@@ -25,7 +25,7 @@ Authors@R: c(person("Kevin", "Shook",
                 role = c("ctb")),
              person("SJ", "Kim", 
                 role = c("ctb"))
-             )
+             )                
 Author: Kevin Shook [cre, aut],
   Paul Whitfield [aut],
   Robert Chlumsky [aut],

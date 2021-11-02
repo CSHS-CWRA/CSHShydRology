@@ -1,23 +1,25 @@
 #' Contributing Area Grid
 #' 
+#' @description 
 #' Generates a grid of contributing area for each grid cell.
 #' 
-#' This function generates a raster of contributing areas based on a DEM, 
+#' @details
+#' Generates a raster of contributing areas based on a DEM, 
 #' which should have had sinks removed in a pre-processing step. For more information, see 
 #' ?`rsaga.topdown.processing`.
 #' 
-#' @param dem     Raster object of your raw dem in the desired projection
+#' @param dem     raster object of your raw dem in the desired projection
 #' @param saga_wd     working directory to write and read saga files
 #' @param method      character or numeric: choice of processing algorithm (default "mfd", or 4)
 #' @param linear_threshold 	numeric (number of grid cells): threshold above which linear flow (i.e. the Deterministic 8 algorithm) will be used; linear flow is disabled for linear_threshold=Inf (the default)
-#' @param saga_env    SAGA environment object.  Default is to let saga find it on its own.
+#' @param saga_env    SAGA environment object. Default is to let saga find it on its own.
 #' @return  
 #' \item{carea}{raster of contributing areas for each pixel.}
 #' 
 #' @importFrom RSAGA rsaga.topdown.processing
 #' @importFrom raster writeRaster raster crs 
 #' 
-#' @author Dan Moore <dan.moore@ubc.ca>
+#' @author Dan Moore
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' @seealso \code{\link{rsaga.topdown.processing}} for more information
 #' @export
@@ -53,15 +55,21 @@ ch_saga_carea <- function(dem, saga_wd,
                           linear_threshold = Inf,
                           saga_env = RSAGA::rsaga.env()) {
   
-  # require(RSAGA)
-  # require(raster)
-  # require(sf)
+  # check inputs
+  if (missing(dem)) {
+    stop("ch_saga_carea requires a raster dem")
+  }
+  if (missing(saga_wd)) {
+    saga_wd <- tempdir()
+    warning(sprintf("ch_saga_carea: no saga_wd defined; setting temporary saga_wd with tempdir as:\n%s",saga_wd))
+  }
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("saga_wd does not exist")
+    print("Provided saga_wd does not exist")
     return(NA)
   }
+  
   # store the dem object in the working directory
   raster::writeRaster(dem, paste0(saga_wd, "/dem.sdat"), format = "SAGA", 
                       NAflag = -9999, overwrite = TRUE)

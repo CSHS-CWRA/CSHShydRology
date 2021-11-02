@@ -13,7 +13,7 @@ ch_saga_carea(
 )
 }
 \arguments{
-\item{dem}{Raster object of your raw dem in the desired projection}
+\item{dem}{raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
@@ -21,7 +21,7 @@ ch_saga_carea(
 
 \item{linear_threshold}{numeric (number of grid cells): threshold above which linear flow (i.e. the Deterministic 8 algorithm) will be used; linear flow is disabled for linear_threshold=Inf (the default)}
 
-\item{saga_env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 \item{carea}{raster of contributing areas for each pixel.}
@@ -30,7 +30,7 @@ ch_saga_carea(
 Generates a grid of contributing area for each grid cell.
 }
 \details{
-This function generates a raster of contributing areas based on a DEM, 
+Generates a raster of contributing areas based on a DEM, 
 which should have had sinks removed in a pre-processing step. For more information, see 
 ?`rsaga.topdown.processing`.
 }
@@ -68,5 +68,5 @@ plot(carea)
 \code{\link{rsaga.topdown.processing}} for more information
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

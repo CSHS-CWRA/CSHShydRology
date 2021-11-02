@@ -13,24 +13,24 @@ ch_saga_fillsinks(
 )
 }
 \arguments{
-\item{dem_raw}{Raster object of your raw dem in the desired projection}
+\item{dem_raw}{raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
 \item{sinkmethod}{options are planchon.darboux.2001" (default), "xxl.wang.liu.2006" and "wang.liu.2006"}
 
-\item{minslope}{minimum slope to impose on filled cells to force drainage. Default = 0.1}
+\item{minslope}{minimum slope to impose on filled cells to force drainage (default = 0.1)}
 
-\item{saga.env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga.env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 \item{dem_ns}{filled dem as a raster object.}
 }
 \description{
-This removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
+Removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
 }
 \details{
-This function removes sinks by filling them. To ensure continuous flow through the DEM, 
+Removes sinks by filling them. To ensure continuous flow through the DEM, 
 a minimum slope can be imposed on cells. Although there are other options, the most imporant 
 are method and minslope; these are implemented in the function. For a full list of available options type 
 `?rsaga.fill.sinks`` at the console. 
@@ -66,5 +66,5 @@ plot(filled_dem-dem)
 \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

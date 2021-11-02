@@ -70,7 +70,9 @@ Returns \code{TRUE} if the function is executed properly.
 Creates a hydrograph plot for simulated, observed, and inflow
 hydrograph series, including precipitation if provided. The secondary y axis 
 will be used to plot the precip time series.
-The function assumes that the supplied time series have the same length and
+}
+\details{
+Assumes that the supplied time series have the same length and
 duration in time. If this is not true, then the defined period or period
 calculated from the first available flow series will be used to determine
 the plotting limits in time. If the data is take from output from the \strong{Raven} model,
@@ -102,9 +104,9 @@ ch_hydrograph_plot(flows = df, precip = precip)
 # increase the plot ranges to separate flows and precip; add a legend box
 ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 range_mult_precip = 2, leg_box = TRUE)
+
+
 }
 \author{
 Robert Chlumsky
 }
-\keyword{hydrograph}
-\keyword{plot}

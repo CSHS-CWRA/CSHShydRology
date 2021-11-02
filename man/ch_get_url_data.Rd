@@ -62,5 +62,5 @@ ggplot(gs_data) +
 }
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

@@ -7,20 +7,23 @@
 ch_checkcatchment(dem, catchment, outlet, outlet_label = NULL)
 }
 \arguments{
-\item{dem}{Raster. DEM that catchment was generated from}
+\item{dem}{raster DEM that catchments were generated from}
 
-\item{catchment}{sf. catchment polygon}
+\item{catchment}{catchment polygon (sf object)}
 
-\item{outlet}{sf. location of catchment outlet}
+\item{outlet}{location of catchment outlet (sf object)}
 
-\item{outlet_label}{string. Label for outlet}
+\item{outlet_label}{character label for outlet}
 }
 \value{
 \item{area_df}{Generates contour map with catchment polygon and outlet check}
 }
 \description{
-This function generates a simple map to allow a visual assessment of the catchment 
-boundaries relative to the elevation contours. It also generates a table summarizing the catchments, 
+Generates a simple map to allow a visual assessment of the catchment 
+boundaries relative to the elevation contours.
+}
+\details{
+Also generates a table summarizing the catchments, 
 including the coordinates of the outlet point and the catchment area.
 }
 \examples{
@@ -64,5 +67,5 @@ ch_checkcatchment(filled_dem, catchments, stns)
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }

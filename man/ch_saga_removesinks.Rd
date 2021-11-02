@@ -7,11 +7,11 @@
 ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 }
 \arguments{
-\item{dem_raw}{Raster object of your raw dem in the desired projection}
+\item{dem_raw}{raster object of your raw dem in the desired projection}
 
 \item{saga_wd}{working directory to write and read saga files}
 
-\item{saga_env}{SAGA environment object.  Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
 {dem_ns}{processed dem as a raster object.}
@@ -46,8 +46,8 @@ plot(removed_dem-dem)
 
 }
 \seealso{
-\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+\code{\link{ch_saga_fillsinks}} to fill sinks in a DEM (instead of removing)
 }
 \author{
-Dan Moore <dan.moore@ubc.ca>
+Dan Moore
 }
