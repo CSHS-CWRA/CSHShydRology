@@ -31,13 +31,14 @@
 #'  \item{bin_method}{method used for binning}
 #'  \item{test_method}{Mann-Whitney U}
 #'  \item{series}{a data frame containing:}
-#'  \itemize{
-#' 	\item{period (period numbers i.e. 1:365/step)}
-#' 	\item{period1 (median values for each bin in period 1)}
-#' 	\item{period2 (median values for each bin in period 2)}
-#' 	\item{mwu (Mann Whitney U-statistic for each bin between the two periods)}
-#' 	\item{prob (probability of U for each period)}
-#' 	\item{code (significance codes for each bin)}
+#' 	
+#' 	The \code{series} dataframe contains six columns: 
+#' 	\item{period}{period numbers i.e. 1:365/step}
+#' 	\item{period1}{median values for each bin in period 1}
+#' 	\item{period2}{median values for each bin in period 2}
+#' 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
+#' 	\item{prob}{probability of U for each period}
+#' 	\item{code{}significance codes for each bin}
 #' }
 #' 
 #' 
