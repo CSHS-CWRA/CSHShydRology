@@ -63,15 +63,15 @@ Returns a list containing:
  \item{fail}{TRUE if test failed due to missing values}
  \item{bin_method}{method used for binning}
  \item{test_method}{Mann-Whitney U}
- \item{series}{a data frame containing:
+ \item{series}{a data frame containing six columns}
+	
+	The \code{series} {data frame contains} 
 	\item{period}{period numbers i.e. 1:365/step}
 	\item{period1}{median values for each bin in period 1}
 	\item{period2}{median values for each bin in period 2}
 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
 	\item{prob}{probability of U for each period}
 	\item{code}{significance codes for each bin}
-}
-
 }
 \description{
 Could be used to move data from a different type of analysis different to 

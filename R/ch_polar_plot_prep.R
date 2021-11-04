@@ -34,7 +34,7 @@
 #'  \item{test_method}{Mann-Whitney U}
 #'  \item{series}{a data frame containing six columns}
 #' 	
-#' 	The \code{series} dataframe contains} 
+#' 	The \code{series} {data frame contains} 
 #' 	\item{period}{period numbers i.e. 1:365/step}
 #' 	\item{period1}{median values for each bin in period 1}
 #' 	\item{period2}{median values for each bin in period 2}
