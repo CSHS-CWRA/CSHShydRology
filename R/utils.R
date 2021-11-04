@@ -52,7 +52,7 @@ ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
 #' @param prd date range as string formatted as \option{YYYY-MM-DD/YYYY-MM-DD}
 #' @return \item{df}{subsetted data frame}
 #' @keywords date data subset
-#' @author Robert Chlumsky <rchlumsk@gmail.com>
+#' @author Robert Chlumsky
 #' @export
 #' @examples{
 #' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"), by = 1)

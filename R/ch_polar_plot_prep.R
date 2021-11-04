@@ -30,15 +30,15 @@
 #'  \item{fail}{TRUE if test failed due to missing values}
 #'  \item{bin_method}{method used for binning}
 #'  \item{test_method}{Mann-Whitney U}
-#'  \item{series}{a data frame containing:}
-#' 	
-#' 	The \code{series} dataframe contains six columns: 
+#'  \item{series}{a data frame containing:
+#'  \itemize{
 #' 	\item{period}{period numbers i.e. 1:365/step}
 #' 	\item{period1}{median values for each bin in period 1}
 #' 	\item{period2}{median values for each bin in period 2}
 #' 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
 #' 	\item{prob}{probability of U for each period}
 #' 	\item{code}{significance codes for each bin}
+#' 	}  
 #' }
 #' 
 #' 
@@ -54,8 +54,7 @@
 #'
 #' @export
 #' @seealso \code{\link{ch_binned_MannWhitney}} \code{\link{ch_polar_plot}}
-
-
+#' 
 ch_polar_plot_prep <- function(station, plot_title, step, x0, x1, stat, prob, test_s, variable = "discharge",
                             bin_method = "unstated", test_method = "unstated",
                             lline1 = "Period 1", lline2 = "Period 2", pvalue = 0.05) {

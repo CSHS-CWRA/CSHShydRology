@@ -13,10 +13,9 @@ ch_flow_raster(
 \arguments{
 \item{DF}{A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.}
 
-\item{rastercolours}{A vector of colours used for the flow magnitudes.}
+\item{rastercolours}{A vector of colours used for flow magnitudes (default \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}).}
 
-\item{metadata}{a dataframe of station metadata, defaults to HYDAT_list
-The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}}
+\item{metadata}{A dataframe of station metadata, defaults to \code{HYDAT_list}.}
 }
 \value{
 No value is returned; a standard R graphic is created.

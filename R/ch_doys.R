@@ -12,7 +12,7 @@
 #' @param water_yr the month starting the water year, default is 10 (October). If
 #' a value of \code{1} is specified, the \code{10} will be used.
 #' 
-#' @author Paul Whitfield, Kevin Shook
+#' @author Paul Whitfield Kevin Shook
 #' @return Returns a dataframe with date information:
 #' \item{Date}{in Date format}
 #' \item{year}{numeric calendar year}
