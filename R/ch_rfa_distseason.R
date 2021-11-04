@@ -8,10 +8,10 @@
 #' @author Martin Durocher
 #'
 #' @param x,a Coordinates in the seasonal space. 
-#'  Can be a data.frame or vectors with radius `x` and angle `a`.
+#'  Can be a data.frame or vectors with radius \code{x} and angle \code{a}.
 #'
 #' @param form Formula and dataset providing the coordinates of the
-#'   seasonal space. Must be of the form `radius ~ angle`.
+#'   seasonal space. Must be of the form \code{radius ~ angle}.
 #'
 #' @param w Weight to favor angle over radius. 
 #'   By default it is 1/pi, which bring angle in the interval [0,1]. 
