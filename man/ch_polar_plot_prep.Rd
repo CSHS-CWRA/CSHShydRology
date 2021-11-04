@@ -36,17 +36,18 @@ ch_polar_plot_prep(
 
 \item{prob}{Time series of length n of probability of test value}
 
-\item{test_s}{Vector with values of -1, 0, 1 for significance, -1 negative, 1 positive, 0 not significant}
+\item{test_s}{Vector with values of -1, 0, 1 for significance, -1 negative, 
+1 positive, 0 not significant}
 
-\item{variable}{Name of variable plotted. Default is "discharge"}
+\item{variable}{Name of variable plotted. Default is \option{discharge}}
 
-\item{bin_method}{Default is "unstated"}
+\item{bin_method}{Default is \option{unstated}}
 
-\item{test_method}{Default is "unstated"}
+\item{test_method}{Default is \option{unstated}}
 
-\item{lline1}{Names of first period, default is "Period 1"}
+\item{lline1}{Names of first period, default is \option{Period 1}}
 
-\item{lline2}{Names of second period, default is "Period 2"}
+\item{lline2}{Names of second period, default is \option{Period 2}}
 
 \item{pvalue}{Value of p used. Default is 0.05}
 }
@@ -63,20 +64,20 @@ Returns a list containing:
  \item{bin_method}{method used for binning}
  \item{test_method}{Mann-Whitney U}
  \item{series}{a data frame containing:
- \itemize{
 	\item{period}{period numbers i.e. 1:365/step}
 	\item{period1}{median values for each bin in period 1}
 	\item{period2}{median values for each bin in period 2}
 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
 	\item{prob}{probability of U for each period}
 	\item{code}{significance codes for each bin}
-	}  
 }
+
 }
 \description{
 Could be used to move data from a different type of analysis different to 
 the \code{binned_MannWhitney} function which uses flows. The two series need to be of the 
-same length and their length is related to the step size. For examples, for five day periods there will be 73 periods.
+same length and their length is related to the step size. For examples, 
+for five day periods there will be 73 periods.
 }
 \references{
 Whitfield, P.H. and A.J. Cannon. 2000. Polar plotting of seasonal hydrologic
