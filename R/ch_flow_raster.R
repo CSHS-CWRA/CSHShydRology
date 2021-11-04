@@ -6,8 +6,9 @@
 #' 
 #' @param DF A data frame of daily flow data as read by \code{ch_read_ECDE_flows}.
 #' @param rastercolours A vector of colours used for the flow magnitudes. 
+#'  The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
 #' @param metadata a dataframe of station metadata, defaults to HYDAT_list
-#' The default is \code{c("lightblue","cyan", "blue", "slateblue", "orange", "red")}
+#'
 #' 
 #' @return No value is returned; a standard R graphic is created.
 #' @author Paul Whitfield 
