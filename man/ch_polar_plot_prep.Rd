@@ -52,26 +52,7 @@ ch_polar_plot_prep(
 \item{pvalue}{Value of p used. Default is 0.05}
 }
 \value{
-Returns a list containing:
- \item{StationID}{ID of station}
- \item{Station_lname}{Name of station}
- \item{variable}{Name of variable}
- \item{bin_width}{Smoothing time step in days}
- \item{range1}{First range of years}
- \item{range2}{Second range of years}
- \item{p_used}{p_value}
- \item{fail}{TRUE if test failed due to missing values}
- \item{bin_method}{method used for binning}
- \item{test_method}{Mann-Whitney U}
- \item{series}{a data frame containing:}
-	
-	The \code{series} dataframe contains six columns: 
-	\item{period}{period numbers i.e. 1:365/step}
-	\item{period1}{median values for each bin in period 1}
-	\item{period2}{median values for each bin in period 2}
-	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
-	\item{prob}{probability of U for each period}
-	\item{code}{significance codes for each bin}
+
 }
 \description{
 Could be used to move data from a different type of analysis different to 
