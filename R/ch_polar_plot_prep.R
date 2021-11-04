@@ -38,7 +38,7 @@
 #' 	\item{period2}{median values for each bin in period 2}
 #' 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
 #' 	\item{prob}{probability of U for each period}
-#' 	\item{code{}significance codes for each bin}
+#' 	\item{code}{significance codes for each bin}
 #' }
 #' 
 #' 
