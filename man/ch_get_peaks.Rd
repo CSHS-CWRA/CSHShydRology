@@ -22,7 +22,7 @@ Returns a list containing:
 	The \code{POTevents} dataframe contains five columns: 
 	\item{st_date}{starting date of event}
 	\item{max_date}{date of maximum in the event}
-	\item{max}{maximum discharge udring event}
+	\item{max}{maximum discharge during event}
 	\item{volume}{flow volume during the event}
 	\item{duration}{length of the event in days}
 	The \code{case} list contains the flows during an event and also for four preceding and subsequent days. Each event will have

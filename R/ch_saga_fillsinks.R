@@ -1,7 +1,8 @@
 #' Fill DEM
 #' 
 #' @description
-#' Removes sinks in a DEM by filling. This function as a wrapper to the `RSAGA::rsaga.fill.sinks` function.
+#' Removes sinks in a DEM by filling. This function as a wrapper to the
+#' \pkg{RSAGA} function \code{rsaga.fill.sinks}.
 #' 
 #' @details
 #' Removes sinks by filling them. To ensure continuous flow through the DEM, 
