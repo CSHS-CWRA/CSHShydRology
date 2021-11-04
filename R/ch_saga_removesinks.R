@@ -1,8 +1,9 @@
 #' Deepen Drainage Network
 #' 
 #' @description 
-#' Removes sinks by deepening drainage network; alternative to ch_saga_fillsinks. This function acts as a wrapper to 
-#' the `rsaga.sink.removal` function.
+#' Removes sinks by deepening drainage network; alternative to \code{ch_saga_fillsinks}. This 
+#' function acts as a wrapper to 
+#' the \code{rsaga.sink.removal} function.
 #' 
 #' @param dem_raw  raster object of your raw dem in the desired projection
 #' @param saga_wd  working directory to write and read saga files

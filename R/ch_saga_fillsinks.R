@@ -5,15 +5,16 @@
 #' 
 #' @details
 #' Removes sinks by filling them. To ensure continuous flow through the DEM, 
-#' a minimum slope can be imposed on cells. Although there are other options, the most imporant 
+#' a minimum slope can be imposed on cells. Although there are other options, the most important 
 #' are method and minslope; these are implemented in the function. For a full list of available options type 
-#' `?rsaga.fill.sinks`` at the console. 
+#' \code{?rsaga.fill.sinks} at the console. 
 #' The main input is a DEM as a raster object. The main output will be a sink-filled DEM with the 
 #' same topology and coordinate reference system as the input raster.
 #' 
 #' @param dem_raw     raster object of your raw dem in the desired projection
 #' @param saga_wd     working directory to write and read saga files
-#' @param sinkmethod  options are planchon.darboux.2001" (default), "xxl.wang.liu.2006" and "wang.liu.2006"
+#' @param sinkmethod  options are \option{planchon.darboux.2001} (default), 
+#' \option{xxl.wang.liu.2006} and \option{wang.liu.2006}
 #' @param minslope    minimum slope to impose on filled cells to force drainage (default = 0.1)
 #' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return \item{dem_ns}{filled dem as a raster object.}
