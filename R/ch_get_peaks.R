@@ -24,7 +24,7 @@
 #' 	The \code{POTevents} dataframe contains five columns: 
 #' 	\item{st_date}{starting date of event}
 #' 	\item{max_date}{date of maximum in the event}
-#' 	\item{max}{maximum discharge udring event}
+#' 	\item{max}{maximum discharge during event}
 #' 	\item{volume}{flow volume during the event}
 #' 	\item{duration}{length of the event in days}
 
