@@ -43,5 +43,5 @@ plot(doy, dice)
 \code{\link{ch_binned_MannWhitney}} \code{\link{ch_flow_raster_trend}}
 }
 \author{
-Paul Whitfield
+Paul Whitfield, Kevin Shook
 }

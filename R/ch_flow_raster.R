@@ -29,7 +29,7 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   
   ##### Fixed labels and text strings
   DOY <- "Day of Year"
-  ylabelq <- expression( paste("Discharge m" ^{3}, "/sec"))
+  ylabelq <- expression( paste("Discharge m"^{3}, "/sec"))
   
   qcols <- colorRampPalette(rastercolours)
   
@@ -47,11 +47,11 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   Years <- mYear - nYear
   
   qdata <- array(dim = c(366, Years))
-  
-  for (k in 1:length(DF[,1])) {
-    qdata[doy[k], (Year[k] - nYear)] <- DF$Flow[k]
-  }
-  
+ 
+  rows <- doy[1:nrow(DF)]
+  cols <- Year - nYear
+  locs <- cbind(rows, cols)
+  qdata[locs] <- DF$Flow
   qmax <- max(qdata, na.rm = TRUE)
   qmin <- min(qdata, na.rm = TRUE)
   
@@ -109,8 +109,8 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   
   ##############################################################  Add title
   tscale <- 1.1
-  if(nchar(title) >= 45) tscale <- 0.9
-  if(nchar(title) >= 50) tscale <- 0.7
+  if (nchar(title) >= 45) tscale <- 0.9
+  if (nchar(title) >= 50) tscale <- 0.7
   mtext(title, side = 3, line = 1, cex = tscale, outer = TRUE)
   
   ############################################################### end plotting section

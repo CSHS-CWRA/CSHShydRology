@@ -71,7 +71,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   # get title information
   station <- DF[1, 1]
   sname <- ch_get_wscstation(station, metadata = metadata)
-  title=sname$Station_lname
+  title <- sname$Station_lname
   
   
   Date <- DF$Date
@@ -113,8 +113,8 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
       qsliced[kk, (aYears[k] - nYear)] <- q_sliced[k, kk]
     }
   }
-  
-  
+
+
   colnames(qsliced) <- Years
   rownames(qsliced) <- period
   

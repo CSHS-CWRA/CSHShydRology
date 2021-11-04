@@ -1,10 +1,3 @@
-#' ch_axis_doy moved to own file 2021/04/03
-#' ch_slice move to own file 2021/04/03
-#' ch_sub_set_years moved to own file 2021/04/03
-
-
-
-
 #' Stacks EC values
 #' 
 #' @description Converts data frames of Environment Canada year x month or 
@@ -12,7 +5,7 @@
 #' @param data_values Required. Data frame of year x month or month x day values.
 #' @param data_codes Required. Data frame of year x month or month x day data codes.
 #'
-#' @return Returns a data frame with two colums: the data values, and the data codes.
+#' @return Returns a data frame with two columns: the data values, and the data codes.
 #' @export
 #' @keywords internal
 #' @author Kevin Shook

@@ -21,7 +21,7 @@
 #' @param doy A vector of the day of calendar year for the dataset
 #' @param step Width of bin in days
 #'
-#' @author Paul Whitfield 
+#' @author Paul Whitfield, Kevin Shook
 #' @return Returns a vector of bin numbers that is used as a factor for each day 
 #' in the dataset and prints a message indicating the handling of partial bins
 #' @export
@@ -41,10 +41,8 @@ ch_slice <- function(doy, step) {
   
   extra <- 366 - limit * step
   
-  for (k in 1:length(doy)) {
-    if (period[k] > limit) period[k] <- limit
-  }
-  
+  period <- pmin(period, limit)
+
   llevels <- as.character(c(1:limit))
   period <- factor(period, levels = llevels)
   
