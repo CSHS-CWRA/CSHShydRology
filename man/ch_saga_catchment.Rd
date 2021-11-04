@@ -24,9 +24,9 @@ ch_saga_catchment(
 
 \item{carea}{raster object containing contributing areas (default none provided)}
 
-\item{carea_flag}{if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat}
+\item{carea_flag}{if \code{carea = NULL}, 0 = create carea from dem; 1 = read in carea.sdat}
 
-\item{outlet_label}{character vector of labels; if "NULL", numbers are assigned}
+\item{outlet_label}{character vector of labels; if \code{NULL}, numbers are assigned}
 
 \item{buffsize}{numeric; the buffer radius (m) around catchment outlet to find location on digital stream network.}
 
@@ -36,24 +36,24 @@ ch_saga_catchment(
 \item{catchment_sf}{Returns an sf object containing catchment polygons}
 }
 \description{
-Generates catchment boundaries for a set of specified points of interest along a stream network. The output is a **sf** object containing the polygons.
+Generates catchment boundaries for a set of specified points of interest along a stream network. The output is a sf object containing the polygons.
 }
 \details{
-The function has two gridded inputs: a DEM (with sinks removed as appropriate) and a grid of contributing areas. Other inputs include `outlet`, a **sf** object containing the coordinates of the catchment outlets, and `outlet_label`, an optional vector of character strings that serve as labels or descriptions of the outlet points.
+The function has two gridded inputs: a DEM (with sinks removed as appropriate) and a grid of contributing areas. Other inputs include \code{outlet}, a sf object containing the coordinates of the catchment outlets, and \code{outlet_label}, an optional vector of character strings that serve as labels or descriptions of the outlet points.
 
-The DEM is input as a raster object via the `dem` argument.
+The DEM is input as a raster object via the \code{dem} argument.
 
-There are three ways to provide the contributing area grid, which can be accomplished using the `carea` and `carea_flag` arguments, as summarized below. 
+There are three ways to provide the contributing area grid, which can be accomplished using the \code{carea} and \code{carea_flag} arguments, as summarized below. 
 
-  1. The first option (`carea = NULL` and `carea_flag = 0`) would be appropriate if you have not generated a contributing area grid prior to application of `ch_saga_catchment`. If you use this option, the contributing area grid is generated using the standard SAGA defaults, with no options for the user to change them.  
+  1. The first option (\code{carea = NULL} and \code{carea_flag = 0}) would be appropriate if you have not generated a contributing area grid prior to application of \code{ch_saga_catchment}. If you use this option, the contributing area grid is generated using the standard SAGA defaults, with no options for the user to change them.  
 
-  2. The second option (`carea = NULL` and `carea_flag = 1`) would be appropriate if you have run the `ch_saga_carea` function and have not cleared the working directory.  
+  2. The second option (\code{carea = NULL} and \code{carea_flag = 1}) would be appropriate if you have run the \code{ch_saga_carea} function and have not cleared the working directory.  
 
-  3. The third option would be appropriate if you have generated a contributing area grid as a raster object using either `ch_saga_carea` or another function.  
+  3. The third option would be appropriate if you have generated a contributing area grid as a raster object using either \code{ch_saga_carea} or another function.  
 
 The second and third options are particularly useful if the user either (a) wants to use a different approach than the SAGA defaults to generate the contributing area grid or (b) wants to use the contributing area grid in other analyses (e.g., computing a topographic wetness index).
 
-Note that only one of the `carea` and `carea_flag` arguments need be specified.
+Note that only one of the \code{carea} and \code{carea_flag} arguments need be specified.
 }
 \examples{
 

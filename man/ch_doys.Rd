@@ -37,5 +37,5 @@ head(output)
 
 }
 \author{
-Paul Whitfield Kevin Shook
+Paul Whitfield, Kevin Shook
 }
