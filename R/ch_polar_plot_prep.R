@@ -55,8 +55,7 @@
 #'
 #' @export
 #' @seealso \code{\link{ch_binned_MannWhitney}} \code{\link{ch_polar_plot}}
-
-
+#' 
 ch_polar_plot_prep <- function(station, plot_title, step, x0, x1, stat, prob, test_s, variable = "discharge",
                             bin_method = "unstated", test_method = "unstated",
                             lline1 = "Period 1", lline2 = "Period 2", pvalue = 0.05) {

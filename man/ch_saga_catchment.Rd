@@ -24,7 +24,7 @@ ch_saga_catchment(
 
 \item{carea}{raster object containing contributing areas (default none provided)}
 
-\item{carea_flag}{if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat}
+\item{carea_flag}{if \code{carea = NULL}, 0 = create carea from dem; 1 = read in carea.sdat}
 
 \item{outlet_label}{character vector of labels; if \option{NULL}, numbers are assigned}
 

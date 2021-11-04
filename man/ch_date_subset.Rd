@@ -29,7 +29,7 @@ prd <- "2011-10-01/2012-09-30"
 summary(ch_date_subset(df,prd))}
 }
 \author{
-Robert Chlumsky <rchlumsk@gmail.com>
+Robert Chlumsky
 }
 \keyword{data}
 \keyword{date}

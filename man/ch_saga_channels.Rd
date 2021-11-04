@@ -26,7 +26,7 @@ ch_saga_channels(
 
 \item{carea}{raster object containing contributing areas (default none provided)}
 
-\item{carea_flag}{if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat}
+\item{carea_flag}{if \code{carea = NULL}, 0 = create carea from dem; 1 = read in carea.sdat}
 
 \item{out_shp}{if TRUE, return channel network as sf object}
 

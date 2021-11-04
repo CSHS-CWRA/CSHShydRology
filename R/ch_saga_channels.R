@@ -25,7 +25,7 @@
 #'
 #' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
-#' @param carea_flag if carea = NULL, 0 = create carea from dem; 1 = read in carea.sdat
+#' @param carea_flag if \code{carea = NULL}, 0 = create carea from dem; 1 = read in carea.sdat
 #' @param saga_wd name of working directory
 #' @param out_shp if TRUE, return channel network as sf object
 #' @param out_ntwrk if TRUE, return specified object (channel network) as a raster

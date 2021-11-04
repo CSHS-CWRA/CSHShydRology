@@ -6,7 +6,6 @@
 #' wyear, dowy. 
 #' 
 #' The day of water year is computed from the first of the specified water year month.
-
 #'
 #' @param Date an array of \R dates, as produced by \code{as.Date()}
 #' @param water_yr the month starting the water year, default is 10 (October). If
