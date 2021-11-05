@@ -14,20 +14,20 @@ ch_regime_plot(
 )
 }
 \arguments{
-\item{DF}{dataframe of daily flow data}
+\item{DF}{data frame of daily flow data}
 
-\item{wyear}{set wyear = 10 for October water year, = 1 for calendar year, can be any month}
+\item{wyear}{set \code{wyear = 10} for October, \code{water year = 1} for calendar year, can be any month}
 
 \item{colour}{if \code{TRUE} plot is in colour, if \code{FALSE} plot is grayscale.}
 
 \item{mx}{set the maximum y value; if = 1 then maximum value of the flows is used to set}
 
-\item{metadata}{a dataframe of metadata, defaults to HYDAT_list.
+\item{metadata}{a data frame of metadata, defaults to HYDAT_list.
 the y-axis value. The value of \code{mx} can be specified to produce a series of plots with the 
 same scale.}
 
-\item{quant}{quantiles; default is quant= c(0.95,0.9,0.75,0.5,0.25,0.1,0.05).  Can be changed
-but the length must be 7 and the 4th value must be 0.5 (median)}
+\item{quant}{quantiles; default is \code{quant = c(0.95,0.9,0.75,0.5,0.25,0.1,0.05)}. 
+Can be changed but the length must be 7 and the 4th value must be 0.5 (median)}
 }
 \value{
 No value is returned; a standard \R graphic is created.

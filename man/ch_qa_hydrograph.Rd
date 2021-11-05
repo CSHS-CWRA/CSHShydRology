@@ -27,7 +27,7 @@ the counts are omitted as in ECDE.}
 \item{rescale}{If \code{FALSE} (the default), the y-axis scaling is determined by the time 
 period. If \code{TRUE} then determined by the whole dataset.}
 
-\item{metadata}{a dataframe of station metadata, default is HYDAT_list.}
+\item{metadata}{a dataframe of station metadata, default is \code{HYDAT_list}.}
 }
 \value{
 Produces a plot and returns a list that contains:

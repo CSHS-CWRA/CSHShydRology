@@ -17,7 +17,7 @@
 #' period. If \code{TRUE} then determined by the whole dataset.
 #' @param cts If \code{TRUE} (the default) shows the counts of SYM in the legend. If \code{FALSE} 
 #' the counts are omitted as in ECDE.
-#' @param metadata a dataframe of station metadata, default is HYDAT_list.
+#' @param metadata a dataframe of station metadata, default is \code{HYDAT_list}.
 #' 
 #' 
 #' @author Paul Whitfield 

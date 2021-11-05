@@ -6,7 +6,7 @@
 #' @details
 #' Generates a raster of contributing areas based on a DEM, 
 #' which should have had sinks removed in a pre-processing step. For more information, see 
-#' \code{?rsaga.topdown.processing}.
+#' \command{?rsaga.topdown.processing}.
 #' 
 #' @param dem     raster object of your raw dem in the desired projection
 #' @param saga_wd     working directory to write and read saga files
@@ -23,7 +23,7 @@
 #' 
 #' @author Dan Moore
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
-#' @seealso \code{\link{rsaga.topdown.processing}} for more information
+#' @seealso \code{\link[RSAGA]{rsaga.topdown.processing}} for more information
 #' @export
 #' @examples
 #' \dontrun{
