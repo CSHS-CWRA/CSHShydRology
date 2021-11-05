@@ -21,17 +21,17 @@
 #' \item{Prov}{Province}
 #' \item{Latitude}{}
 #' \item{Longitude}{}
-#' \item{DrainageArea}{km2}
-#' \item{Years}{# of years with data}
+#' \item{DrainageArea}{km\eqn{^2}{^2}}
+#' \item{Years}{Number of years with data}
 #' \item{From}{Start Year}
 #' \item{To}{End Year}
 #' \item{Reg.}{Regulated?} 
-#' \item{Flow}{if TRUE/Yes flow data exists}
-#' \item{Level}{if TRUE/Yes level data exists}
-#' \item{Sed}{if TRUE/Yes sediment data exists}
+#' \item{Flow}{If TRUE/Yes flow data exists}
+#' \item{Level}{If TRUE/Yes level data exists}
+#' \item{Sed}{If TRUE/Yes sediment data exists}
 #' \item{OperSched}{Operations current - Continuous or Seasonal}
-#' \item{RealTime}{ - if TRUE/Yes real time data is available}
-#' \item{RHBN}{if TRUE/Yes the stations is in the reference hydrologic basin network}
+#' \item{RealTime}{If TRUE/Yes real time data is available}
+#' \item{RHBN}{If TRUE/Yes the stations is in the reference hydrologic basin network}
 #' \item{Region}{Name of regional office operating station}
 #' \item{Datum}{Elevation datum}
 #' \item{Operator}{Operator or provider of the data}

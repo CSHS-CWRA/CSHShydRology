@@ -4,10 +4,10 @@
 #' 
 #' @format A dateframe with 25252 rows and 5 columns spanning the period 1910-2013.
 #' @source Water Survey of Canada
-#' 
+#' @details 
 #' Variables: 
-#' \itemize{
-#' \item{ID} {StationID}
+#' \describe{
+#' \item{ID}{StationID}
 #' \item{PARAM}{Parameter 1=Flow, 2=Level}
 #' \item{Date}{\R date}
 #' \item{Flow}{Daily flow in  m\eqn{^3}{^3}/s}

@@ -34,7 +34,7 @@ Generates a grid of contributing area for each grid cell.
 \details{
 Generates a raster of contributing areas based on a DEM, 
 which should have had sinks removed in a pre-processing step. For more information, see 
-\code{?rsaga.topdown.processing}.
+\command{?rsaga.topdown.processing}.
 }
 \examples{
 \dontrun{
@@ -67,7 +67,7 @@ plot(carea)
 \seealso{
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 
-\code{\link{rsaga.topdown.processing}} for more information
+\code{\link[RSAGA]{rsaga.topdown.processing}} for more information
 }
 \author{
 Dan Moore

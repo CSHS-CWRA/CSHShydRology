@@ -30,11 +30,11 @@
 #'  \item{range2}{Second range of years}
 #'  \item{p_used}{p_value}
 #'  \item{fail}{TRUE if test failed due to missing values}
-#'  \item{bin_method}{method used for binning}
+#'  \item{bin_method}{Method used for binning}
 #'  \item{test_method}{Mann-Whitney U}
-#'  \item{series}{a data frame containing six columns}
+#'  \item{series}{A data frame containing six columns}
 #' 	
-#' 	The \code{series} {data frame contains} 
+#' 	The \code{series} data frame contains 
 #' 	\item{period}{period numbers i.e. 1:365/step}
 #' 	\item{period1}{median values for each bin in period 1}
 #' 	\item{period2}{median values for each bin in period 2}

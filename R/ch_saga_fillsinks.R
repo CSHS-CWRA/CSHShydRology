@@ -8,7 +8,7 @@
 #' Removes sinks by filling them. To ensure continuous flow through the DEM, 
 #' a minimum slope can be imposed on cells. Although there are other options, the most important 
 #' are method and minslope; these are implemented in the function. For a full list of 
-#' available options type \code{?rsaga.fill.sinks} at the console. 
+#' available options type \command{?rsaga.fill.sinks} at the console. 
 #' The main input is a DEM as a raster object. The main output will be a sink-filled DEM with the 
 #' same topology and coordinate reference system as the input raster.
 #' 
