@@ -5,8 +5,9 @@
 #' 
 #' @details
 #' Generates contour lines from a DEM, which are returned as an sf object. 
-#' The user can either provide a vector of elevation values by specifying the `z_levels` argument, 
-#' or by supplying the minimum and maximum elevations (`zmin` and `zmax`) and the number of contour lines (`n_levels`).
+#' The user can either provide a vector of elevation values by specifying the \code{z_levels} argument, 
+#' or by supplying the minimum and maximum elevations (\code{zmin} and \code{zmax}) 
+#' and the number of contour lines (\code{n_levels}).
 #'
 #' @param dem raster object of your dem in the desired projection (note: should have had sinks removed)
 #' @param zmin minimum elevation value for contours

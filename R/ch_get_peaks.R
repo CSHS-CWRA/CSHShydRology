@@ -2,9 +2,9 @@
 #'
 #' @description 
 #' This function is development code being shared as is. It is expected that the user will be interested in the
-#' dataframe returned for POT analysis and for plotting (i.e. ch_booth_plot).
+#' data frame returned for POT analysis and for plotting (i.e. ch_booth_plot).
 #'
-#' This function retrieves peaks greater than or equal to the prescribed threshold.  It returns a dataframe of peak characteristics
+#' This function retrieves peaks greater than or equal to the prescribed threshold.  It returns a data frame of peak characteristics
 #' suitable for subsequent analysis.
 #'
 #' The portion under development is returns a list of the flows during an event with the values of the four
@@ -21,7 +21,7 @@
 #' 	\item{st_date}{start date of events}
 #' 	\item{case}{a list of the daily flows in each individual event (see details for more information)}
 #' 	
-#' 	The \code{POTevents} dataframe contains five columns: 
+#' 	The \code{POTevents} data frame contains five columns: 
 #' 	\item{st_date}{starting date of event}
 #' 	\item{max_date}{date of maximum in the event}
 #' 	\item{max}{maximum discharge during event}

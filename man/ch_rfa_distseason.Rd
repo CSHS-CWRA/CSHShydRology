@@ -17,7 +17,7 @@ ch_rfa_distseason(x, ...)
 }
 \arguments{
 \item{x, a}{Coordinates in the seasonal space. 
-Can be a data.frame or vectors with radius `x` and angle `a`.}
+Can be a data.frame or vectors with radius \code{x} and angle \code{a}.}
 
 \item{...}{Other parameters.}
 
@@ -25,7 +25,7 @@ Can be a data.frame or vectors with radius `x` and angle `a`.}
 By default it is 1/pi, which bring angle in the interval [0,1].}
 
 \item{form}{Formula and dataset providing the coordinates of the
-seasonal space. Must be of the form `radius ~ angle`.}
+seasonal space. Must be of the form \code{radius ~ angle}.}
 }
 \value{
 Returns a matrix of distances between points in the seasonal 
