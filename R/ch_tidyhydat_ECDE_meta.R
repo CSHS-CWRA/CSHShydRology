@@ -61,11 +61,14 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 #' @examples 
+#' \dontrun{
+#' # This example is disabled as it requires \pkg{tidyhydat} to have installed
+#' # the \code{HYDAT} database, which makes automatic checking slow
 #' stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 #' result <- ch_tidyhydat_ECDE_meta(stations)
 #' metadata <- result[[1]]
 #' version <- result[[2]]
-#' 
+#' }
 #' \dontrun{
 #' # This example is not run, as it can take over an hour to execute
 #' # It is intended to be used by the package maintainers to update HYDAT_list,
