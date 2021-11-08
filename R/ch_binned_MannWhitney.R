@@ -44,7 +44,8 @@
 #' 
 #' @importFrom stats wilcox.test median
 #' @export
-#' @seealso \code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}}
+#' @seealso \code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}} 
+#' \code{\link{ch_decades_plot}}
 #' 
 #' @examples
 #' data(HYDAT_list)

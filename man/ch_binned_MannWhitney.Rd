@@ -78,7 +78,8 @@ Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and
 hydrology in Canada. Canadian Water Resources Journal 25: 19-65.
 }
 \seealso{
-\code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}}
+\code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}} 
+\code{\link{ch_decades_plot}}
 }
 \author{
 Paul Whitfield

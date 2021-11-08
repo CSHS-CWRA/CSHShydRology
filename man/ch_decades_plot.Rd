@@ -2,25 +2,28 @@
 % Please edit documentation in R/ch_decades_plot.R
 \name{ch_decades_plot}
 \alias{ch_decades_plot}
-\title{Plots output from ch_binned_MannWhitney on x/y plot.}
+\title{Plots output from ch_binned_MannWhitney for decades}
 \usage{
 ch_decades_plot(mplot)
 }
 \arguments{
-\item{mplot}{output from the function \code{ch_binned_MannWhitney}}
+\item{mplot}{List output by the function \code{ch_binned_MannWhitney}}
 }
 \value{
-No value is returned; a standard \R graphic is created.
+A standard \R graphic is created.
 }
 \description{
-Creates a simple plot comparing two decades from the output of \code{ch_binned_MannWhitney}.
+Creates a simple plot comparing two decades from the 
+output of \code{ch_binned_MannWhitney}.
 }
 \examples{
-\dontrun{
-# mplot from ch_binned_MannWhitney
-ch_decades_plot(mplot)   
-}   
-
+range1 <- c(1970, 1979)
+range2 <- c(1990, 1999)
+b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
+ch_decades_plot(b_MW)
+}
+\seealso{
+\code{\link{ch_decades_plot}}
 }
 \author{
 Paul Whitfield
