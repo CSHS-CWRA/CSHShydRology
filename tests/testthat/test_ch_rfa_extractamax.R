@@ -3,8 +3,6 @@
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
-rm(list = ls())
-
 ## Verify that the function return the right output
 x <- ch_rfa_extractamax(flow~date, flowStJohn)
 expect_equal(dim(x), c(89,4))
