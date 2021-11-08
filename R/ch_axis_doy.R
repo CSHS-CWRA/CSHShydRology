@@ -11,6 +11,7 @@
 #' 
 #' @author Paul Whitfield 
 #' @seealso \code{\link{ch_regime_plot}}
+#' @return Plots a water year axis on a standard R plot
 #' @export
 
 #' @examples 
