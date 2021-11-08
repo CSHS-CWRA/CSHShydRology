@@ -8,6 +8,7 @@
 #
 #' @return No value is returned; a standard \R graphic is created.
 #' 
+#' @export
 #' @examples 
 #' \dontrun{
 #' # mplot from ch_binned_MannWhitney
