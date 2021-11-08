@@ -3,8 +3,6 @@
 ## Martin Durocher <mduroche@uwaterloo.ca>
 #######################################################
 
-rm(list = ls())
-
 date.lst <- seq(as.Date('1950/1/1'),as.Date('2009/12/31'), 'days')
 
 set.seed(843)

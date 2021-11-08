@@ -37,7 +37,7 @@ Author: Kevin Shook [cre, aut],
   SJ Kim [ctb]
 Maintainer: Kevin Shook <kevin.shook@usask.ca>
 Description: A collection of user submitted functions to aid in the analysis of hydrological data.
-License: AGPL-3 | file LICENSE
+License: AGPL-3 
 URL: https://github.com/CSHS-hydRology/CSHShydRology
 Depends: 
     R (>= 3.5.0)
