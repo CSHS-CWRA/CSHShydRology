@@ -1,4 +1,4 @@
-#' Plot Flow Duration Curve.
+#' Plot Flow Duration Curve
 #' 
 #' Create a Flow Duration Curve based upon Observations.
 #' 

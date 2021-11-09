@@ -1,4 +1,4 @@
-#' Raster plot of daily streamflows.
+#' Raster plot of daily streamflows
 #'
 #' @description Produces a raster plot: years by day of year, showing magnitude of flow. 
 #' This produces a plot showing the flow data in colours, showing different context than in

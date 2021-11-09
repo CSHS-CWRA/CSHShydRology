@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_flow_raster.R
 \name{ch_flow_raster}
 \alias{ch_flow_raster}
-\title{Raster plot of daily streamflows.}
+\title{Raster plot of daily streamflows}
 \usage{
 ch_flow_raster(
   DF,

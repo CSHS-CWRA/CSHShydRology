@@ -1,4 +1,4 @@
-#' Extracts peak flows over a threshold.
+#' Extracts peak flows over a threshold
 #'
 #' @description 
 #' This function is development code being shared as is. It is expected that the user will be interested in the

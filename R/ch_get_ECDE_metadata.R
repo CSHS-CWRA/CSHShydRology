@@ -1,4 +1,4 @@
-#' Reads Environment Canada Date Explorer (ECDE) meta data file.
+#' Reads Environment Canada Date Explorer (ECDE) meta data file
 #'
 #' @description Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
 #' The dataframe returned contains 20 fields from ECDE.

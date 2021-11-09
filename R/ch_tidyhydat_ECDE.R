@@ -1,4 +1,4 @@
-#'  Converts a tidyhydat daily flow data tibble to ECDE format.
+#'  Converts a tidyhydat daily flow data tibble to ECDE format
 #'
 
 #' @description Accessing daily flow data using \pkg{tidyhydat} is quick and efficient. However, it 

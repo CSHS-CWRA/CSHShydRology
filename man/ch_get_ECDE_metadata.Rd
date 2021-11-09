@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_ECDE_metadata.R
 \name{ch_get_ECDE_metadata}
 \alias{ch_get_ECDE_metadata}
-\title{Reads Environment Canada Date Explorer (ECDE) meta data file.}
+\title{Reads Environment Canada Date Explorer (ECDE) meta data file}
 \usage{
 ch_get_ECDE_metadata(filename, writefile = NULL)
 }

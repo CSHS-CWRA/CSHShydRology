@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_cut_block.R
 \name{ch_cut_block}
 \alias{ch_cut_block}
-\title{Allows the user to extract a specific time period from a longer record.}
+\title{Extracts a specified time period from a longer record}
 \usage{
 ch_cut_block(DF, st_date, end_date)
 }

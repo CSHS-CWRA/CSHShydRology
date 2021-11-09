@@ -1,7 +1,5 @@
 #' Generates the x axis beginning on specified day of year
-#'  
-#' Produce a date axis starting in a specific month.
-#'  
+#'
 #' @description Generates an axis for day of year or day of water year; used by 
 #' \code{ch_regime_plot}. Obtaining the day of water year needs to be done separately.
 #'  

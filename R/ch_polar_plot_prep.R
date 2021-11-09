@@ -1,4 +1,4 @@
-#' Creates a data structure to be passed to \code{ch_polar_plot}.
+#' Creates a data structure to be passed to \code{ch_polar_plot}
 #'
 #' @description Could be used to move data from a different type of analysis different to 
 #' the \code{binned_MannWhitney} function which uses flows. The two series need to be of the 

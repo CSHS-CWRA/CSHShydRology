@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_slice.R
 \name{ch_slice}
 \alias{ch_slice}
-\title{Converts doy or dwy into a factor that is used to bin data.}
+\title{Converts doy or dwy into a factor that is used to bin data}
 \usage{
 ch_slice(doy, step)
 }

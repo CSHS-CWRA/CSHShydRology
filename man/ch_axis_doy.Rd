@@ -2,9 +2,7 @@
 % Please edit documentation in R/ch_axis_doy.R
 \name{ch_axis_doy}
 \alias{ch_axis_doy}
-\title{Generates the x axis beginning on specified day of year
- 
-Produce a date axis starting in a specific month.}
+\title{Generates the x axis beginning on specified day of year}
 \usage{
 ch_axis_doy(wyear = 1)
 }

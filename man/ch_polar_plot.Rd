@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_polar_plot.R
 \name{ch_polar_plot}
 \alias{ch_polar_plot}
-\title{Polar plot of daily streamflows.}
+\title{Polar plot of daily streamflows}
 \usage{
 ch_polar_plot(
   bmw,

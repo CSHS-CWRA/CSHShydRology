@@ -1,4 +1,4 @@
-#'Plots output from ch_binned_MannWhitney for decades
+#' Plots output from ch_binned_MannWhitney for decades
 #'   
 #' @description  Creates a simple plot comparing two decades from the 
 #' output of \code{ch_binned_MannWhitney}.

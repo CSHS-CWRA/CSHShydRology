@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_read_ECDE_flows.R
 \name{ch_read_ECDE_flows}
 \alias{ch_read_ECDE_flows}
-\title{Reads a file of WSC daily flows from ECDataExplorer (ECDE).}
+\title{Reads a file of WSC daily flows from ECDataExplorer (ECDE)}
 \usage{
 ch_read_ECDE_flows(filename)
 }

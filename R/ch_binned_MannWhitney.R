@@ -1,10 +1,6 @@
-#' Compares two time periods of data using Mann-Whitney test.
+#' Compares two time periods of data using Mann-Whitney test
 #' 
-#' 
-#' Performs a binned Mann-Whitney test on periods of a defined length. 
-#' 
-#' @description Compares two time periods of data using the Mann-Whitney test.
-#' 
+#' @description Compares two time periods of data using the Mann-Whitney test. 
 #' Data are binned based upon a bin size, and data are extracted for two time periods 
 #' and tests for change between two such periods
 #' result can be passed to \code{ch_polar_plot} or \code{ch_decades_plot} 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_tidyhydat_ECDE.R
 \name{ch_tidyhydat_ECDE}
 \alias{ch_tidyhydat_ECDE}
-\title{Converts a tidyhydat daily flow data tibble to ECDE format.}
+\title{Converts a tidyhydat daily flow data tibble to ECDE format}
 \usage{
 ch_tidyhydat_ECDE(data)
 }

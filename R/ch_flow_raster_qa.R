@@ -1,4 +1,4 @@
-#' Raster plot of daily streamflows with WSC quality flags.
+#' Raster plot of daily streamflows with WSC quality flags
 #'
 #' @description Raster plot with WSC quality flags. 
 #' This produces a plot showing the flow data in grayscale 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_flow_raster_qa.R
 \name{ch_flow_raster_qa}
 \alias{ch_flow_raster_qa}
-\title{Raster plot of daily streamflows with WSC quality flags.}
+\title{Raster plot of daily streamflows with WSC quality flags}
 \usage{
 ch_flow_raster_qa(DF, metadata = NULL)
 }

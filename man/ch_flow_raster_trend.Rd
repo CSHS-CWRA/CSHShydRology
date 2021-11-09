@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_flow_raster_trend.R
 \name{ch_flow_raster_trend}
 \alias{ch_flow_raster_trend}
-\title{Raster plot and simple trends of observed streamflows by periods.}
+\title{Raster plot and simple trends of observed streamflows by periods}
 \usage{
 ch_flow_raster_trend(
   DF,
@@ -23,7 +23,8 @@ If \code{TRUE} partial years are included.}
 \item{metadata}{a dataframe of station metadata, default is HYDAT_list.}
 
 \item{colours}{A vector of colours used for the raster plot. 
-The default is \code{c("lightblue","cyan", "blue", "slateblue", "darkblue", "red")}.}
+The default is \code{c("lightblue","cyan", "blue", "slateblue", 
+"darkblue", "red")}.}
 }
 \value{
 Returns a list containing:
@@ -57,7 +58,7 @@ period: red arrows indicate decreases, blue arrows indicate increases.
 (2) The scale bar for the colours used in the raster plot,
 (3) The raster plot with a colour for each period and each year where data exist, and
 (4) A time series plot of the minimum, median, and maximum annual bin values.
-If there is no trend (p > 0.05) the points are black. Decreasing trend are in red, increasing trends are in blue.
+If there is no trend (p > 0.05) the points are black. Decreasing trends are in red, increasing trends are in blue.
 }
 \examples{
  data(CAN05AA008)

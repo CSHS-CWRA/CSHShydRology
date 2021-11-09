@@ -1,4 +1,4 @@
-#'  Plots a hydrograph with the data quality symbols and returns a report on qa symbols and missing data.
+#'  Plots a hydrograph with the data quality symbols and returns a report on qa symbols and missing data
 #'  
 #' @description Plots a hydrograph of a WSC daily data file read from from ECDataExplorer (ECDE). 
 #' The hydrograph shows individual days with data quality symbols [SYM] 

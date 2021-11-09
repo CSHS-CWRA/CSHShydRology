@@ -1,4 +1,4 @@
-#' Allows the user to extract a specific time period from a longer record.
+#' Extracts a specified time period from a longer record
 #' 
 #' @description The function could also be used to get the same period of time from several station for comparison.
 #' @param DF A daily streamflow data frame as from \code{ch_read_ECDE_flows}

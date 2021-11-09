@@ -1,4 +1,4 @@
-#' Create a Booth plot(s) of peaks over a threshold.
+#' Create Booth plot of peaks over a threshold
 #'
 #' A Booth plot is a plot of peaks over threshold flood events with duration on the horizontal and
 #' either magnitude (default) or volume on the vertical axis.
