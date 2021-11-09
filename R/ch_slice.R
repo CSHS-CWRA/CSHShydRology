@@ -1,9 +1,10 @@
 
 #'@title Converts doy or dwy into a factor that is used to bin data.
 #'
-#'@description Converts a series of a variable such as day of year into numbered bins. Whenever the number of bins does not divide in 365 evenly a 
-#'message is printed showing the number of bins created and the number of days 
-#'added to the last bin. 
+#'@description Converts a series of a variable such as day of year into numbered bins. 
+#'Whenever the number of bins does not divide in 365 evenly a 
+#'message showing the number of bins created and the number of days 
+#'added to the last bin is provided. 
 #'
 #'Simply put, \code{ch_slice} is used to convert doy into a 
 #'factor which is a number of bins per year. A year can be converted into any 
@@ -23,7 +24,7 @@
 #'
 #' @author Paul Whitfield, Kevin Shook
 #' @return Returns a vector of bin numbers that is used as a factor for each day 
-#' in the dataset and prints a message indicating the handling of partial bins
+#' in the dataset and provides a message indicating the handling of partial bins
 #' @export
 #' 
 #'
@@ -46,7 +47,7 @@ ch_slice <- function(doy, step) {
   llevels <- as.character(c(1:limit))
   period <- factor(period, levels = llevels)
   
-  print(paste("Bins =", limit, " The number of extra points in last bin is up to ", 
+  message(paste("Bins =", limit, " The number of extra points in last bin is up to ", 
               extra, " per year"))
   return(period)
 }

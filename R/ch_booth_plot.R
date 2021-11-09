@@ -40,13 +40,13 @@ ch_booth_plot <- function(events, threshold, title, type = "mag", colour1 = 1, c
   if (length(colour1) == 12) {
     ocol <- colour1
   } else {
-    print(paste("length of colour1 is", length(colour1), " Using defaults"))
+    message(paste("length of colour1 is", length(colour1), " must be of length 12; Using defaults"))
   }
 
   if (length(colour2) == 12) {
     mcol <- colour2
   } else {
-    print(paste("length of colour2 is", length(colour2), " Using defaults"))
+    message(paste("length of colour2 is", length(colour2), " must be of length 12;Using defaults"))
   }
 
   xlabel <- "Duration (days)"

@@ -81,7 +81,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
 
   H_version <- hy_version()  
   H_version <- data.frame(H_version)
-  print(H_version)
+  message(H_version)
   
   if (length(stations) == 1) {
     if (stations == "all") {
@@ -226,8 +226,8 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
 
     result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
     
-    print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
-    print("All ECDE fields are reproduced in this summary")
+    message("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
+    message("All ECDE fields are reproduced in this summary")
    }
     else {  
       t1 <- merge(tc, td, by.x = "Station", by.y = "Station")
@@ -240,8 +240,8 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       
       result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
       
-     print("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
-     print("not all ECDE fields are reproduced in this summary")
+     message("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
+     message("not all ECDE fields are reproduced in this summary")
     }
   
   return(result)
