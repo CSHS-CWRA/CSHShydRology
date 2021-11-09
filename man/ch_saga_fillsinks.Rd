@@ -40,8 +40,8 @@ The main input is a DEM as a raster object. The main output will be a sink-fille
 same topology and coordinate reference system as the input raster.
 }
 \examples{
-\dontrun{
-# note: example not run in package compilation
+\donttest{
+# note: example not tested in package compilation
 # - requires creating and accessing a temporary directory
 # - requires downloading spatial data from Zenodo repository
 # - requires a potentially lengthy GIS operation

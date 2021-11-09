@@ -17,7 +17,7 @@
 #' @importFrom utils read.csv
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #' # Using a dummy file name as an example
 #' mfile <- "04JD005_Daily_Flow_ts.csv"
 #' mdata <- ch_read_ECDE_flows(mfile)}

@@ -40,7 +40,8 @@ Reads the file that is generated from ECDE 'save favourite stations' to capture 
 The dataframe returned contains 20 fields from ECDE.
 }
 \examples{
-\dontrun{
+\donttest{
+# Not tested by check() as requires downloaded file
 filename <- "FavHydatStations.tb0"
 meta0 <- ch_get_ECDE_metadata(filename)
 meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")

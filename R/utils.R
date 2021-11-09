@@ -10,7 +10,7 @@
 #' @keywords internal
 #' @author Kevin Shook
 #'
-#' @examples \dontrun{df <- ch_stack_EC(data_values, data_codes)}
+#' @examples \donttest{df <- ch_stack_EC(data_values, data_codes)}
 #' 
 ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
   #check parameters
