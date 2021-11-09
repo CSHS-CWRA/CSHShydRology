@@ -56,7 +56,7 @@ ch_get_wscstation <- function(stnID, metadata = NULL) {
   stninfo <- metadata[metadata$Station == stnID, ]
 
   if (length(stninfo[, 1]) == 0) {
-    print(paste("WSC Station ", stnID, " not found"))
+    message(paste("WSC Station ", stnID, " not found"))
     return(stnID)
   }
 

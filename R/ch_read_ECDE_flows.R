@@ -33,7 +33,7 @@ ch_read_ECDE_flows <- function(filename) {
   names(mdata)[4] <- substr(names(mdata)[4],1,4)
 
   if (names(mdata)[4] != "Flow") 
-    print("File format error")
+    message("Input data file format error")
   
   return(mdata)
 }
