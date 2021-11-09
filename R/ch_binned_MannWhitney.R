@@ -50,7 +50,6 @@
 #' @examples
 #' data(HYDAT_list)
 #' data(CAN05AA008)
-#' \dontrun{
 #' # first example fails due to missing data in both periods
 #' range1 <- c(1960,1969)
 #' range2 <- c(1990,1999)
@@ -59,7 +58,6 @@
 #' range1 <- c(1970,1979)
 #' range2 <- c(1990,1999)
 #' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
-#' }
 
 ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", 
                                   metadata = NULL) {
@@ -129,11 +127,11 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   }
   
   if (length(period1[!is.na(period1)]) != length(period1)) {
-    print("Range_1 contains missing values")
+    message("Range_1 contains missing values")
     fail <- TRUE
   }
   if (length(period2[!is.na(period2)]) != length(period2)) {
-    print("Range_2 contains missing values")
+    message("Range_2 contains missing values")
     fail <- TRUE
   }
   

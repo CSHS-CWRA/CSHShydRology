@@ -46,7 +46,7 @@ ch_slice <- function(doy, step) {
   llevels <- as.character(c(1:limit))
   period <- factor(period, levels = llevels)
   
-  print(paste("Bins =", limit, " The number of extra points in last bin is up to ", 
+  message(paste("Bins =", limit, " The number of extra points in last bin is up to ", 
               extra, " per year"))
   return(period)
 }
