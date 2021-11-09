@@ -24,23 +24,23 @@ ch_cut_block <- function (DF, st_date, end_date)
     st_date  <- as.Date(st_date, format = "%Y-%m-%d")
     end_date <- as.Date(end_date, format = "%Y-%m-%d")
   } else {
-    print( paste("incorrect date format", st_date, "must be like  2010/01/01"))
+    message( paste("incorrect date format", st_date, "must be like  2010/01/01"))
     return ()
   }
 
   if (!st_date >= min(DF$Date)){
-    print(paste("Starting Date",st_date, "is before records are available"))
+    message(paste("Starting Date",st_date, "is before records are available"))
     return()
   }
 
   if (!end_date <= max(DF$Date)){
-    print(paste("Ending Date",end_date, "is after records are available"))
+    message(paste("Ending Date",end_date, "is after records are available"))
     }
 
   result1 <- DF[DF$Date >= st_date, ]
   result <- result1[result1$Date <= end_date, ]
   
-  print(paste("between",st_date,"and", end_date, length(result[ , 1]),
+  message(paste("between",st_date,"and", end_date, length(result[ , 1]),
               "records were selected"))
   
   return(result)

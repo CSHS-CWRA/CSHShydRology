@@ -83,7 +83,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   DOY <- paste("Period of Year (", step, " day)", sep = "")
   
   if (step >= 31) {
-    print("step has been reset to the maximum allowed [30] ")
+    message(paste("step of", step, "larger than acceptable; has been reset to the maximum allowed [30] "))
     step <- 30
   }
   

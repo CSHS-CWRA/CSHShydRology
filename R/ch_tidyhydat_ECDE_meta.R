@@ -81,7 +81,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
 
   H_version <- hy_version()  
   H_version <- data.frame(H_version)
-  print(H_version)
+  message(H_version)
   
   if (length(stations) == 1) {
     if (stations == "all") {

@@ -56,7 +56,7 @@ ch_get_peaks <- function(dataframe, threshold) {
   maxflow <- max(dataframe$Flow)
   
   if (maxflow < threshold) {
-    print(paste("Threshold of", threshold, "
+    message(paste("Threshold of", threshold, "
                 is greater than maximum observed flow", maxflow))
     return()
   }  

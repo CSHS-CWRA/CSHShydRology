@@ -129,11 +129,11 @@ ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable
   }
   
   if (length(period1[!is.na(period1)]) != length(period1)) {
-    print("Range_1 contains missing values")
+    message("Range_1 contains missing values")
     fail <- TRUE
   }
   if (length(period2[!is.na(period2)]) != length(period2)) {
-    print("Range_2 contains missing values")
+    message("Range_2 contains missing values")
     fail <- TRUE
   }
   

@@ -52,7 +52,7 @@ ch_tidyhydat_ECDE <- function(data) {
   }
   
   if (length(nstations != 1)) {
-  print(paste("Original tibble contained ",length(nstations),
+  message(paste("Original tibble contained ",length(nstations),
               " stations. A list of dataframes is returned"))
    
   resulta <- split(result,result$ID)
