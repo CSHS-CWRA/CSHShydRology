@@ -30,8 +30,8 @@ ch_get_AHCCD_monthly(
  \item{SLP}{sea level pressure}
  }}
 
-\item{url}{Required. The default url currently works to access the data on the Environment Canada server. The
-url can be changed in case the site is moved.}
+\item{url}{Required. The default url currently works to access the data on the 
+Environment Canada server. The url can be changed in case the site is moved.}
 }
 \value{
 Returns a data frame with the monthly values and associated variables.
@@ -41,7 +41,7 @@ Retrieve AHCCD data from EC datamart
 }
 \note{
 Not all variables are available at all stations. Attempting to retrieve a non-existent variable 
-will result in an error being returned.
+will result in an error message being displayed.
 }
 \examples{
 stoon_monthly_precip <- ch_get_AHCCD_monthly("4057120", "SK", "PCP")

@@ -4,8 +4,8 @@
 #' precipitation or temperatures. The values are arranged as
 #' month x day, which makes them difficult to read using standard \R functions.
 #' @param daily_file Required. Name of the file to be read.
-#' @return If successful, returns the values in a dataframe, consisting of the date, 
-#' the value and the data code. If unsuccessful, returns the value \code{FALSE}.
+#' @return If successful, returns the values in a data frame, consisting of the date, 
+#' the value and the data code.
 #' @author Kevin Shook
 #' @seealso  \code{\link{ch_read_AHCCD_monthly}} \code{\link{ch_get_AHCCD_monthly}}
 #' @references Daily AHCCD data are available from \url{http://crd-data-donnees-rdc.ec.gc.ca/CDAS/products/EC_data/AHCCD_daily/}. 
@@ -15,7 +15,8 @@
 #'Atmosphere-Ocean, 49 (2), 163-177.}
 #' 
 #' @examples
-#' \dontrun{
+#' \donttest{
+#' # Not tested automatically as requires a file
 #'stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}
 #' @importFrom stringr str_split_fixed str_detect fixed
 #' @importFrom utils read.fwf
