@@ -37,7 +37,7 @@ which should have had sinks removed in a pre-processing step. For more informati
 \command{?rsaga.topdown.processing}.
 }
 \examples{
-\dontest{
+\donttest{
 # note: example not tested in package compilation
 # - requires creating and accessing a temporary directory
 # - requires downloading spatial data from Zenodo repository

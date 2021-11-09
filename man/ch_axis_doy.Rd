@@ -12,6 +12,9 @@ ch_axis_doy(wyear = 1)
 \item{wyear}{Month of beginning of water year, \code{wyear = 1} (the default) for 
 calendar year, \code{wyear = 10} to start October 1.}
 }
+\value{
+Plots a water year axis on a standard R plot
+}
 \description{
 Generates an axis for day of year or day of water year; used by 
 \code{ch_regime_plot}. Obtaining the day of water year needs to be done separately.

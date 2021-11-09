@@ -26,7 +26,7 @@
 #' @seealso \code{\link[RSAGA]{rsaga.topdown.processing}} for more information
 #' @export
 #' @examples
-#' \dontest{
+#' \donttest{
 #' # note: example not tested in package compilation
 #' # - requires creating and accessing a temporary directory
 #' # - requires downloading spatial data from Zenodo repository
