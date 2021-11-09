@@ -20,8 +20,8 @@ Accesses data sets, via a url the first time,
 saves them locally, then accesses them locally after the first time the script is executed.
 }
 \examples{
-\dontrun{
-# example not run since multiple large data files are downloaded
+\donttest{
+# example not tested automatically as multiple large data files are downloaded
 
 # Tested using files in the Upper Penticton Creek
 # zenodo repository https://zenodo.org/record/4781469

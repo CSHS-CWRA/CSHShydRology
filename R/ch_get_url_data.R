@@ -17,8 +17,8 @@
 #'or an \code{sf} object (from a GeoJSON file).
 #'
 #' @examples
-#' \dontrun{
-#' # example not run since multiple large data files are downloaded
+#' \donttest{
+#' # example not tested automatically as multiple large data files are downloaded
 #' 
 #' # Tested using files in the Upper Penticton Creek
 #' # zenodo repository https://zenodo.org/record/4781469

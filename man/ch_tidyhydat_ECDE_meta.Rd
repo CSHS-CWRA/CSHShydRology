@@ -59,15 +59,15 @@ of many fields such as operating schedule. Returning these values slows the func
 particularly when all WSC stations are selected.
 }
 \examples{
-\dontrun{
-# This example is disabled as it requires \pkg{tidyhydat} to have installed
+\donttest{
+# This example requires \pkg{tidyhydat} to have installed
 # the \code{HYDAT} database, which makes automatic checking slow
 stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 result <- ch_tidyhydat_ECDE_meta(stations)
 metadata <- result[[1]]
 version <- result[[2]]
 }
-\dontrun{
+\donttest{
 # This example is not run, as it can take over an hour to execute
 # It is intended to be used by the package maintainers to update HYDAT_list,
 result <- ch_tidyhydat_ECDE_meta("all", TRUE)
