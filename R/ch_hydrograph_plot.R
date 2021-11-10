@@ -1,4 +1,4 @@
-#' Plot hydrographs
+#' @title Hydrograph plot
 #'
 #' @description 
 #' Creates a hydrograph plot for simulated, observed, and inflow
@@ -28,7 +28,7 @@
 #' cutoff in the plot.
 #' @param range_mult_precip range multiplier for max value in precipitation plot (default 1.5)
 #' @param flow_labels string vector of labels for flow values
-#' @param ylabel text label for y-axis of the plot (default 'Flow [m3/s]')
+#' @param ylabel text label for y-axis of the plot (default 'Flow [m^3/s]')
 #' @param precip_label text label for precipitation y-axis (default 'Precipitation [mm]')
 #' @param leg_pos string specifying legend placement on plot e.g. \option{topleft},
 #' \option{right}, etc., and is consistent with the legend function options. If \code{NULL}, 
@@ -37,19 +37,16 @@
 #' @param leg_box boolean on whether to put legend in an opaque white box
 #' or not. If \code{NULL} (the default), the function will automatically not use a white box
 #' and leave the background of the legend transparent.
-#' @param zero_axis fixes the y axis to start exactly at zero (default TRUE). 
+#' @param zero_axis fixes the y axis to start exactly at zero (default \code{TRUE}). 
 #' By default, R will plot the values with a
 #' small buffer for presentation. Be warned that if this option is set to
 #' TRUE, the minimum value is set to zero without checking if any flow values
 #' are less than zero. This option should not be used for reservoir stage plotting, since
 #' most reservoir stage is typically reported as an elevation.
-#' @param plot_mode plot mode as \option{base} or \option{ggplot}. Currently only 
-#' \option{base} plot type is supported, \option{ggplot} is under construction.
+#' 
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' 
 #' @author Robert Chlumsky
-#' @importFrom lubridate year month day date
-#' @importFrom graphics grid lines
 #' 
 #' @examples
 #' # example with synthetic random data
@@ -74,7 +71,8 @@
 #' ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 #' range_mult_precip = 2, leg_box = TRUE)
 #' 
-#' 
+#' @importFrom lubridate year month day date
+#' @importFrom graphics grid lines
 #' @export
 #' 
 ch_hydrograph_plot <- function(flows = NULL, 
@@ -84,17 +82,11 @@ ch_hydrograph_plot <- function(flows = NULL,
                             range_mult_flow = NULL, 
                             range_mult_precip = 1.5,
                             flow_labels = NULL, 
-                            ylabel = "Flow [m3/s]",
+                            ylabel = NULL,
                             precip_label = "Precipitation [mm]",
                             leg_pos = NULL, 
                             leg_box = NULL, 
-                            zero_axis = TRUE,
-                            plot_mode = "base") {
-
-  # check plot mode
-  if (plot_mode == "ggplot") {
-    warning("ggplot plotting is under construction, defaulting to base plot type.")
-  }
+                            zero_axis = TRUE) {
 
   # check flows data frame
   if (is.null(flows) | class(flows) != "data.frame") {
@@ -121,6 +113,11 @@ ch_hydrograph_plot <- function(flows = NULL,
     }
   } else {
     flow_labels <- colnames(flows)[2:ncol(flows)]
+  }
+  
+  # check ylabel
+  if (is.null(ylabel)) {
+    ylabel <- expression(paste("Flow [m" ^{3}, "/s]"))
   }
 
   # check precip data frame
@@ -214,8 +211,9 @@ ch_hydrograph_plot <- function(flows = NULL,
     }
   }
 
-  # capture plotting parameters, restore afterwards
-  .pardefault <- par(no.readonly = T)
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
 
   # set parameters for plotting; then plot
   if (!(is.null(precip))) {
@@ -227,12 +225,12 @@ ch_hydrograph_plot <- function(flows = NULL,
     par(yaxs = "i")
   }
 
-  y.hmax <- max(flows[, 2:ncol(flows)], na.rm = T) * range_mult_flow
+  y.hmax <- max(flows[, 2:ncol(flows)], na.rm = TRUE) * range_mult_flow
 
   if (zero_axis) {
     y.hmin <- 0
   } else {
-    y.hmin <- min(flows[, 2:(ncol(flows))], na.rm = T)
+    y.hmin <- min(flows[, 2:(ncol(flows))], na.rm = TRUE)
   }
 
   plot(flows$Date, flows[, 2],
@@ -278,11 +276,11 @@ ch_hydrograph_plot <- function(flows = NULL,
 
   # add precip data if not null
   if (!(is.null(precip))) {
-    par(new = T)
+    par(new = TRUE)
     precip.col <- "#0000FF64"
     plot(precip$Date, precip[, 2],
       col = precip.col, lty = 1, lwd = 1,
-      type = "h", ylim = rev(c(0, max(precip[, 2], na.rm = T) * range_mult_precip)), xaxt = "n", yaxt = "n",
+      type = "h", ylim = rev(c(0, max(precip[, 2], na.rm = TRUE) * range_mult_precip)), xaxt = "n", yaxt = "n",
       xlab = "", ylab = ""
     )
     axis(4)
@@ -321,9 +319,6 @@ ch_hydrograph_plot <- function(flows = NULL,
     bty = leg_box, 
     cex = 0.8, inset = 0.01
   )
-
-  # restore plotting parameters
-  par(.pardefault)
 
   return(TRUE)
 }
