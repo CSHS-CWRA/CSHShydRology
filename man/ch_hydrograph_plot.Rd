@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_hydrograph_plot.R
 \name{ch_hydrograph_plot}
 \alias{ch_hydrograph_plot}
-\title{Plot hydrographs}
+\title{Hydrograph plot}
 \usage{
 ch_hydrograph_plot(
   flows = NULL,
@@ -12,12 +12,11 @@ ch_hydrograph_plot(
   range_mult_flow = NULL,
   range_mult_precip = 1.5,
   flow_labels = NULL,
-  ylabel = "Flow [m3/s]",
+  ylabel = NULL,
   precip_label = "Precipitation [mm]",
   leg_pos = NULL,
   leg_box = NULL,
-  zero_axis = TRUE,
-  plot_mode = "base"
+  zero_axis = TRUE
 )
 }
 \arguments{
@@ -40,7 +39,7 @@ cutoff in the plot.}
 
 \item{flow_labels}{string vector of labels for flow values}
 
-\item{ylabel}{text label for y-axis of the plot (default 'Flow [m3/s]')}
+\item{ylabel}{text label for y-axis of the plot (default 'Flow [m^3/s]')}
 
 \item{precip_label}{text label for precipitation y-axis (default 'Precipitation [mm]')}
 
@@ -53,15 +52,12 @@ otherwise).}
 or not. If \code{NULL} (the default), the function will automatically not use a white box
 and leave the background of the legend transparent.}
 
-\item{zero_axis}{fixes the y axis to start exactly at zero (default TRUE). 
+\item{zero_axis}{fixes the y axis to start exactly at zero (default \code{TRUE}). 
 By default, R will plot the values with a
 small buffer for presentation. Be warned that if this option is set to
 TRUE, the minimum value is set to zero without checking if any flow values
 are less than zero. This option should not be used for reservoir stage plotting, since
 most reservoir stage is typically reported as an elevation.}
-
-\item{plot_mode}{plot mode as \option{base} or \option{ggplot}. Currently only 
-\option{base} plot type is supported, \option{ggplot} is under construction.}
 }
 \value{
 Returns \code{TRUE} if the function is executed properly.
@@ -104,7 +100,6 @@ ch_hydrograph_plot(flows = df, precip = precip)
 # increase the plot ranges to separate flows and precip; add a legend box
 ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 range_mult_precip = 2, leg_box = TRUE)
-
 
 }
 \author{
