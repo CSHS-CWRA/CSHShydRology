@@ -39,13 +39,12 @@
 #' m_test <- ch_qa_hydrograph(CAN05AA008)
 #  using a date range
 #' m_test <- ch_qa_hydrograph(CAN05AA008, st_date="1980-01-01", end_date="1999-12-31")
-#
-
+#' 
 ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, rescale = FALSE, 
                              metadata = NULL) {
 
     mcol <- c("black", "green", "cyan", "white","yellow", "red")
-    dish <-expression(paste("Mean Daily Discharge m" ^{3}, "/sec"))
+    dish <- expression(paste("Mean Daily Discharge m"^{3}, "/sec"))
   
     m_station <- ch_get_wscstation(DF[1, 1], metadata = metadata)
     title <- paste(m_station$Station, "  ", m_station$StationName)
@@ -67,14 +66,18 @@ ch_qa_hydrograph <- function(DF, st_date = NULL, end_date = NULL, cts = TRUE, re
    
  if (!rescale) ylims <- c(min(DF[ , 4]), max(DF[ , 4]))
 
-  for (k in 1: length(DF$dcol))
+  for (k in 1:length(DF$dcol))
     {
-    if (!is.na (DF$SYM[k]) && DF$SYM[k] == "A") {DF$dcol[k] <- 2; sym_count[2] <- sym_count[2] + 1}
-    if (!is.na (DF$SYM[k]) && DF$SYM[k] == "B") {DF$dcol[k] <- 3; sym_count[3] <- sym_count[3] + 1}
-    if (!is.na (DF$SYM[k]) && DF$SYM[k] == "C") {DF$dcol[k] <- 4; sym_count[4] <- sym_count[4] + 1}
-    if (!is.na (DF$SYM[k]) && DF$SYM[k] == "D") {DF$dcol[k] <- 5; sym_count[5] <- sym_count[5] + 1}
-    if (!is.na (DF$SYM[k]) && DF$SYM[k] == "E") {DF$dcol[k] <- 6; sym_count[6] <- sym_count[6] + 1}
+    if (!is.na(DF$SYM[k]) && DF$SYM[k] == "A") {DF$dcol[k] <- 2; sym_count[2] <- sym_count[2] + 1}
+    if (!is.na(DF$SYM[k]) && DF$SYM[k] == "B") {DF$dcol[k] <- 3; sym_count[3] <- sym_count[3] + 1}
+    if (!is.na(DF$SYM[k]) && DF$SYM[k] == "C") {DF$dcol[k] <- 4; sym_count[4] <- sym_count[4] + 1}
+    if (!is.na(DF$SYM[k]) && DF$SYM[k] == "D") {DF$dcol[k] <- 5; sym_count[5] <- sym_count[5] + 1}
+    if (!is.na(DF$SYM[k]) && DF$SYM[k] == "E") {DF$dcol[k] <- 6; sym_count[6] <- sym_count[6] + 1}
   }
+    
+    # capture plotting parameters, restore on exit
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
 
   par(mar = c(2.5, 4.5, 3, 1))
   plot(DF$Date, DF[ , 4],

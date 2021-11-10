@@ -98,8 +98,12 @@ ch_regime_plot <- function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL
   if (nchar(title) >= 45) tscale <- 1.0
   if (nchar(title) >= 50) tscale <- 0.8
   
-  par(las=1)
-  par(mar=c(3,5,3,1))
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
+  par(las = 1)
+  par(mar = c(3,5,3,1))
   plot(doy1, regime[9,], type = "p", xlab = "", xaxt = "n", col = colr[4],
        cex = 0.5, ylab = dmf, ylim = ylims, xlim = c(1, 366), 
        main = title, cex.main = tscale)
@@ -111,9 +115,9 @@ ch_regime_plot <- function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL
   points(doy1, regime[5, ], type = "l", col = colr[5], lwd = 3)
   
   ltext1 <- c("min / max",
-              paste(format( quant[7], nsmall=2),"-", format(quant[1],nsmall = 2), sep = ""),
-              paste(format( quant[6], nsmall=2),"-", format(quant[2],nsmall = 2), sep = ""),
-              paste(format( quant[5], nsmall=2),"-", format(quant[3],nsmall = 2), sep = ""),
+              paste(format( quant[7], nsmall = 2),"-", format(quant[1],nsmall = 2), sep = ""),
+              paste(format( quant[6], nsmall = 2),"-", format(quant[2],nsmall = 2), sep = ""),
+              paste(format( quant[5], nsmall = 2),"-", format(quant[3],nsmall = 2), sep = ""),
               "median")
   
   lcol1 <- c(colr[4],colr[1],colr[2], colr[3],colr[5])

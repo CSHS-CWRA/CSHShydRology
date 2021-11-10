@@ -51,6 +51,7 @@ Counts of missing observations is also provided in the legend.
 \examples{
 m_test <- ch_qa_hydrograph(CAN05AA008)
 m_test <- ch_qa_hydrograph(CAN05AA008, st_date="1980-01-01", end_date="1999-12-31")
+
 }
 \author{
 Paul Whitfield

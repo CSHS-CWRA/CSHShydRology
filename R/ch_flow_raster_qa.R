@@ -18,7 +18,7 @@
 #' @seealso \code{\link{ch_read_ECDE_flows}}
 #' @param metadata dataframe of metadata or defaults to "HYDAT_list"
 #' 
-#' @return No value is returned; a standard R graphic is created.
+#' @return Returns \code{TRUE} if executed properly; a standard R graphic is created.
 #' 
 #' @author Paul Whitfield 
 #' @importFrom graphics axis legend par plot points polygon image frame mtext layout box
@@ -41,7 +41,7 @@ ch_flow_raster_qa <- function(DF, metadata = NULL) {
   rastercolours <- c("gray90", "gray80", "gray70", "gray60", "gray50", "gray40", "gray30", "gray20", "gray10")
   qcols <- colorRampPalette(rastercolours)
   
-  fcols <-c("black", "red", "green", "blue", "cyan", "magenta", "yellow", "gray")
+  fcols <- c("black", "red", "green", "blue", "cyan", "magenta", "yellow", "gray")
   
   station <- as.character(DF$ID[1])
   sname <- ch_get_wscstation(station, metadata = metadata)
@@ -84,6 +84,10 @@ ch_flow_raster_qa <- function(DF, metadata = NULL) {
   qdata <- as.matrix(qdata)
   
   ########################################################### start  plotting section
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   par(oma = c(0, 0, 3, 0))
   layout(matrix(c(1, 1, 1, 1, 2, 1, 1, 1, 1, 3), 2, 5, byrow = TRUE))
   par(mar = c(4, 4, 0, 0))
@@ -91,7 +95,7 @@ ch_flow_raster_qa <- function(DF, metadata = NULL) {
   #################################################################  panel one
   
   doys <- c(1:366)
-  lyears <- c((nYear + 1): mYear)
+  lyears <- c((nYear + 1):mYear)
   
   image(1:366, 1:length(lyears), qdata,
         axes = FALSE, col = qcols(9),
@@ -108,7 +112,7 @@ ch_flow_raster_qa <- function(DF, metadata = NULL) {
   mtext(DOY, side = 1, line = 2.2, cex = 0.9)
   
   for (ii in 1:366) {
-    for (jj in 1: length(lyears)) {
+    for (jj in 1:length(lyears)) {
       points(ii, jj,pch = 15,col = flag[ii, jj])
     }
   }
@@ -151,5 +155,5 @@ ch_flow_raster_qa <- function(DF, metadata = NULL) {
   mtext(title, side = 3, line = 1, cex = tscale, outer = TRUE)
   
   ############################################################### end plotting section
-  
+  return(TRUE)
 }
