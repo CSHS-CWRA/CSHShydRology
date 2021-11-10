@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_polar_plot_prep.R
 \name{ch_polar_plot_prep}
 \alias{ch_polar_plot_prep}
-\title{Creates a data structure to be passed to \code{ch_polar_plot}.}
+\title{Creates a data structure to be passed to \code{ch_polar_plot}}
 \usage{
 ch_polar_plot_prep(
   station,

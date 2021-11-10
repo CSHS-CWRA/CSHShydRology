@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_wscstation.R
 \name{ch_get_wscstation}
 \alias{ch_get_wscstation}
-\title{Reads station information from a data file produced by ECDE.}
+\title{Reads station information from a data file produced by ECDE}
 \usage{
 ch_get_wscstation(stnID, metadata = NULL)
 }

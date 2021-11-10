@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_read_ECDE_flows.R
 \name{ch_read_ECDE_flows}
 \alias{ch_read_ECDE_flows}
-\title{Reads a file of WSC daily flows from ECDataExplorer (ECDE).}
+\title{Reads a file of WSC daily flows from ECDataExplorer (ECDE)}
 \usage{
 ch_read_ECDE_flows(filename)
 }
@@ -22,7 +22,7 @@ Reads in a file WSC daily flows as returned from the Windows program ECDataExplo
 and omits the last 3 lines as these contain the data disclaimer and not data.
 }
 \examples{
-\dontrun{
+\donttest{
 # Using a dummy file name as an example
 mfile <- "04JD005_Daily_Flow_ts.csv"
 mdata <- ch_read_ECDE_flows(mfile)}

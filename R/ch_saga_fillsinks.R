@@ -27,8 +27,8 @@
 #' @seealso \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
 #' @export
 #' @examples
-#' \dontrun{
-#' # note: example not run in package compilation
+#' \donttest{
+#' # note: example not tested in package compilation
 #' # - requires creating and accessing a temporary directory
 #' # - requires downloading spatial data from Zenodo repository
 #' # - requires a potentially lengthy GIS operation

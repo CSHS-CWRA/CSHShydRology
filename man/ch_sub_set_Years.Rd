@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_sub_set_Years.R
 \name{ch_sub_set_Years}
 \alias{ch_sub_set_Years}
-\title{Helper function for selecting points for an axis so not all are necessary.}
+\title{Helper function for selecting points for an axis}
 \usage{
 ch_sub_set_Years(years, n)
 }

@@ -1,26 +1,26 @@
-#'   Plots output from ch_binned_MannWhitney on x/y plot.
+#' Plots output from ch_binned_MannWhitney for decades
 #'   
-#' @description   Creates a simple plot comparing two decades from the output of \code{ch_binned_MannWhitney}.
+#' @description  Creates a simple plot comparing two decades from the 
+#' output of \code{ch_binned_MannWhitney}.
 #'   
 #' @author Paul Whitfield 
 #' 
-#' @param mplot output from the function \code{ch_binned_MannWhitney}
+#' @param mplot List output by the function \code{ch_binned_MannWhitney}
 #
-#' @return No value is returned; a standard \R graphic is created.
+#' @return A standard \R graphic is created.
 #' 
 #' @export
-#' @examples 
-#' \dontrun{
-#' # mplot from ch_binned_MannWhitney
-#' ch_decades_plot(mplot)   
-#' }   
-#'
+#' @seealso \code{\link{ch_decades_plot}}
+#' @examples
+#' range1 <- c(1970, 1979)
+#' range2 <- c(1990, 1999)
+#' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
+#' ch_decades_plot(b_MW)
 
-ch_decades_plot <- function (mplot)
-  {
+ch_decades_plot <- function(mplot) {
   
   mch <- c(24, NA, 25)
-  disch <- expression( paste( "Median Period Discharge m"^{3}, "/sec"))
+  disch <- expression( paste( "Median Period Discharge (m"^{3}, "/sec)"))
   scol <- c("blue", NA, "red")
   
   series <- mplot$series

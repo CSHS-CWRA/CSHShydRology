@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_qa_hydrograph.R
 \name{ch_qa_hydrograph}
 \alias{ch_qa_hydrograph}
-\title{Plots a hydrograph with the data quality symbols and prints a report.}
+\title{Plots a hydrograph with the data quality symbols and returns a report on qa symbols and missing data}
 \usage{
 ch_qa_hydrograph(
   DF,

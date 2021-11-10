@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_doys.R
 \name{ch_doys}
 \alias{ch_doys}
-\title{Days of year and water year.}
+\title{Days of year and water year}
 \usage{
 ch_doys(Date, water_yr = 10)
 }

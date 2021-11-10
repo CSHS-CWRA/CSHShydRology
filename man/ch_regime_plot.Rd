@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_regime_plot.R
 \name{ch_regime_plot}
 \alias{ch_regime_plot}
-\title{Plots the regime of daily streamflows using quantiles.}
+\title{Plots the regime of daily streamflows using quantiles}
 \usage{
 ch_regime_plot(
   DF,

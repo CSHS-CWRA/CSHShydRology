@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_booth_plot.R
 \name{ch_booth_plot}
 \alias{ch_booth_plot}
-\title{Create a Booth plot(s) of peaks over a threshold.}
+\title{Create Booth plot of peaks over a threshold}
 \usage{
 ch_booth_plot(events, threshold, title, type = "mag", colour1 = 1, colour2 = 1)
 }

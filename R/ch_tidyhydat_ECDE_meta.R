@@ -1,4 +1,4 @@
-#' @title Creates an ECDE-like dataframe of metadata from \pkg{tidyhydat}.
+#' @title Creates an ECDE-like dataframe of metadata from \pkg{tidyhydat}
 #'
 #' @description Extracts tombstone (meta) data for stations from \pkg{tidyhydat} in a 
 #' format similar to that used by the Environment Canada Data Explorer (ECDE). The 
@@ -61,17 +61,17 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 #' @examples 
-#' \dontrun{
-#' # This example is disabled as it requires \pkg{tidyhydat} to have installed
+#' \donttest{
+#' # This example requires \pkg{tidyhydat} to be installed
 #' # the \code{HYDAT} database, which makes automatic checking slow
 #' stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 #' result <- ch_tidyhydat_ECDE_meta(stations)
 #' metadata <- result[[1]]
 #' version <- result[[2]]
 #' }
-#' \dontrun{
+#' \donttest{
 #' # This example is not run, as it can take over an hour to execute
-#' # It is intended to be used by the package maintainers to update HYDAT_list,
+#' # It is intended to be used by the package maintainers to update \code{HYDAT_list}
 #' result <- ch_tidyhydat_ECDE_meta("all", TRUE)
 #' HYDAT_list <- result$meta
 #' }
@@ -226,8 +226,11 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
 
     result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
     
-    message("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
-    message("All ECDE fields are reproduced in this summary")
+    message("Result is a list that contains", "\n", 
+            "[1] metadata from tidyhydat in ECDE form,", "\n",
+            "[2] H_version information, and", "\n",
+            "[3] th_meta - tidyhydat meta", "\n", 
+            "All ECDE fields are reproduced in this summary")
    }
     else {  
       t1 <- merge(tc, td, by.x = "Station", by.y = "Station")
@@ -240,8 +243,11 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       
       result <- list(meta = meta, H_version = H_version, th_meta = th_meta )
       
-     message("Result is a list that contains [1] metadata from tidyhydat in ECDE form, [2] H_version information, and [3] th_meta - tidyhydat meta")
-     message("not all ECDE fields are reproduced in this summary")
+      message("Result is a list that contains", "\n", 
+              "[1] metadata from tidyhydat in ECDE form,", "\n",
+              "[2] H_version information, and", "\n",
+              "[3] th_meta - tidyhydat meta", "\n", 
+              "NOT all ECDE fields are reproduced in this summary")
     }
   
   return(result)

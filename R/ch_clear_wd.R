@@ -16,9 +16,9 @@
 #' @author Dan Moore 
 #' @seealso \code{\link{ch_create_wd}} to create working SAGA directory
 #' @export
-#' @examples \dontrun{
+#' @examples \donttest{
 #' 
-#' # not run as clearing all files in a given directory cannot be tested in CRAN
+#' # not tested as clearing all files in a given directory cannot be tested in CRAN
 #' 
 #' # create a saga working directory
 #' saga_wd <- tempdir()

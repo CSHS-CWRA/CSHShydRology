@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_tidyhydat_ECDE.R
 \name{ch_tidyhydat_ECDE}
 \alias{ch_tidyhydat_ECDE}
-\title{Converts a tidyhydat daily flow data tibble to ECDE format.}
+\title{Converts a tidyhydat daily flow data tibble to ECDE format}
 \usage{
 ch_tidyhydat_ECDE(data)
 }
@@ -24,7 +24,7 @@ entries. This function converts a tibble obtained from a \pkg{tidyhydat} tibble 
 with standard Environment and Climate Change Canada Data Explorer (ECDE) names.
 }
 \examples{
-\dontrun{
+\donttest{
 library(tidyhydat)
 mdata <- hy_daily_flow(station_number=c("05CK004"))
 m_data <- ch_tidyhydat_ECDE(mdata)

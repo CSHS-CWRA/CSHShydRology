@@ -1,4 +1,4 @@
-#' Plots the regime of daily streamflows using quantiles.
+#' Plots the regime of daily streamflows using quantiles
 #'
 #' @description Produces a regime hydrograph similar to that in the reference. It shows the flow quantiles for each
 #' day of the year and the maximum and minimum. Parameters can be set to change colours and set the y-scale

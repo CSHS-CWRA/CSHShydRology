@@ -10,8 +10,8 @@ ch_read_AHCCD_daily(daily_file)
 \item{daily_file}{Required. Name of the file to be read.}
 }
 \value{
-If successful, returns the values in a dataframe, consisting of the date, 
-the value and the data code. If unsuccessful, returns the value \code{FALSE}.
+If successful, returns the values in a data frame, consisting of the date, 
+the value and the data code.
 }
 \description{
 This program reads an Adjusted and Homogenized Canadian Climate Data (AHCCD) of daily 
@@ -19,7 +19,8 @@ precipitation or temperatures. The values are arranged as
 month x day, which makes them difficult to read using standard \R functions.
 }
 \examples{
-\dontrun{
+\donttest{
+# Not tested automatically as requires a file
 stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}
 }
 \references{

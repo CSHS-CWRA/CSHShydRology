@@ -1,4 +1,4 @@
-#' Reads Environment Canada Date Explorer (ECDE) meta data file.
+#' Reads Environment Canada Date Explorer (ECDE) meta data file
 #'
 #' @description Reads the file that is generated from ECDE 'save favourite stations' to capture the ECDE metadata. 
 #' The dataframe returned contains 20 fields from ECDE.
@@ -36,9 +36,10 @@
 #' \item{Datum}{Elevation datum}
 #' \item{Operator}{Operator or provider of the data}
 
-#' @examples \dontrun{
+#' @examples \donttest{
+#' # Not tested by check() as requires downloaded file
 #' filename <- "FavHydatStations.tb0"
-#' meta0 <- ch_get_ECDE_metadata (filename)
+#' meta0 <- ch_get_ECDE_metadata(filename)
 #' meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
 #' }
 ch_get_ECDE_metadata  <- function(filename, writefile=NULL){

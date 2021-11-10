@@ -1,4 +1,4 @@
-#' Reads station information from a data file produced by ECDE.
+#' Reads station information from a data file produced by ECDE
 #'
 #' @description Retrieves station information for an individual Water Survey of Canada site, based on stationID; 
 #' adds a text string at position 21 that combines key elements for a title.

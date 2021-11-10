@@ -16,7 +16,7 @@ ch_hydrograph_plot(
   precip_label = "Precipitation [mm]",
   leg_pos = NULL,
   leg_box = NULL,
-  zero_axis = T,
+  zero_axis = TRUE,
   plot_mode = "base"
 )
 }

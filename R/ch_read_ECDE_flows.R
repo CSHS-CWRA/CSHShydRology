@@ -1,4 +1,4 @@
-#' Reads a file of WSC daily flows from ECDataExplorer (ECDE).
+#' Reads a file of WSC daily flows from ECDataExplorer (ECDE)
 #'
 #' @description Reads in a file WSC daily flows as returned from the Windows program ECDataExplorer, converts the Date,
 #' and omits the last 3 lines as these contain the data disclaimer and not data.
@@ -17,7 +17,7 @@
 #' @importFrom utils read.csv
 #' @export
 #'
-#' @examples \dontrun{
+#' @examples \donttest{
 #' # Using a dummy file name as an example
 #' mfile <- "04JD005_Daily_Flow_ts.csv"
 #' mdata <- ch_read_ECDE_flows(mfile)}

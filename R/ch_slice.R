@@ -1,5 +1,5 @@
 
-#'@title Converts doy or dwy into a factor that is used to bin data.
+#'@title Converts doy or dwy into a factor that is used to bin data
 #'
 #'@description Converts a series of a variable such as day of year into numbered bins. 
 #'Whenever the number of bins does not divide in 365 evenly a 

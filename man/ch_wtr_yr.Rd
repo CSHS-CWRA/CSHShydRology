@@ -23,5 +23,5 @@ Display water year
 \examples{
 date <- seq(as.Date("1910/1/1"), as.Date("1912/1/1"), "days")
 wtr_yr_date <- ch_wtr_yr(dates=date, start_month=10)
-data.frame(wtr_yr_date,date)
+data.frame(wtr_yr_date, date)
 }

@@ -1,4 +1,4 @@
-#' @title Helper function for selecting points for an axis so not all are necessary.
+#' @title Helper function for selecting points for an axis 
 #'
 #' @description Sub-samples a vector every n places. Many times there are so many 
 #' years the labels on the plot overlap. \code{ch_sub_set_years} returns the position and label 

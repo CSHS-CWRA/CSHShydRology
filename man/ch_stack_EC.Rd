@@ -19,7 +19,7 @@ Converts data frames of Environment Canada year x month or
 month x day data to vectors.
 }
 \examples{
-\dontrun{df <- ch_stack_EC(data_values, data_codes)}
+\donttest{df <- ch_stack_EC(data_values, data_codes)}
 
 }
 \author{

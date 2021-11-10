@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_get_peaks.R
 \name{ch_get_peaks}
 \alias{ch_get_peaks}
-\title{Extracts peak flows over a threshold.}
+\title{Extracts peak flows over a threshold}
 \usage{
 ch_get_peaks(dataframe, threshold)
 }

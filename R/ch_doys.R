@@ -1,4 +1,4 @@
-#' Days of year and water year.
+#' Days of year and water year
 #' 
 #' Converts a date array into a data frame with years, wateryears, and days of year and of water year.
 #'

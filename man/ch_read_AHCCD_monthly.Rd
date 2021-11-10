@@ -19,7 +19,8 @@ precipitation or temperatures. The values are arranged as year x month,
 which makes them difficult to read using standard \R functions.
 }
 \examples{
-\dontrun{
+\donttest{
+# Not tested automatically as requires a file
 Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")
 NB_monthly_tmean <- ch_read_AHCCD_monthly("mm4045695.txt") }
 }

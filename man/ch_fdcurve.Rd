@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_fdcurve.R
 \name{ch_fdcurve}
 \alias{ch_fdcurve}
-\title{Plot Flow Duration Curve.}
+\title{Plot Flow Duration Curve}
 \usage{
 ch_fdcurve(DF, normal = FALSE, gust = TRUE, metadata = NULL)
 }

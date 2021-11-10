@@ -1,10 +1,6 @@
-#' Compares two time periods of data using Mann-Whitney test.
+#' Compares two time periods of data using Mann-Whitney test
 #' 
-#' 
-#' Performs a binned Mann-Whitney test on periods of a defined length. 
-#' 
-#' @description Compares two time periods of data using the Mann-Whitney test.
-#' 
+#' @description Compares two time periods of data using the Mann-Whitney test. 
 #' Data are binned based upon a bin size, and data are extracted for two time periods 
 #' and tests for change between two such periods
 #' result can be passed to \code{ch_polar_plot} or \code{ch_decades_plot} 
@@ -44,12 +40,12 @@
 #' 
 #' @importFrom stats wilcox.test median
 #' @export
-#' @seealso \code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}}
+#' @seealso \code{\link{ch_polar_plot}} \code{\link{ch_polar_plot_prep}} 
+#' \code{\link{ch_decades_plot}}
 #' 
 #' @examples
 #' data(HYDAT_list)
 #' data(CAN05AA008)
-#' \dontrun{
 #' # first example fails due to missing data in both periods
 #' range1 <- c(1960,1969)
 #' range2 <- c(1990,1999)
@@ -58,7 +54,6 @@
 #' range1 <- c(1970,1979)
 #' range2 <- c(1990,1999)
 #' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
-#' }
 
 ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", 
                                   metadata = NULL) {

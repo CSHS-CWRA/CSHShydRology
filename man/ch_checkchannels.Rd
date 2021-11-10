@@ -24,8 +24,8 @@ Generates a simple map of the drainage network plotted over the contours to allo
 }
 \examples{
 
-\dontrun{
-# note: example not run in package compilation
+\donttest{
+# note: example not tested in package compilation
 # - requires creating and accessing a temporary directory
 # - requires downloading spatial data from Zenodo repository
 # - requires multiple potentially lengthy GIS operations
