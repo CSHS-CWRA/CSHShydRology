@@ -6,7 +6,6 @@
 #' The plot may contain the Gustard Curves (default) or they can be omitted. The default is for curves to be 
 #' plotted against probability, but an option is to plot against the normalized exceedance probability. 
 #' In that case, the x axis represents a normal distribution. 
-#' 
 #'
 #' @param DF a dataframe of daily flows from \code{ch_read_ECDE_flows}
 #' @param normal If \code{normal = TRUE} then exceedance probability is normalized. Default is FALSE.
@@ -79,6 +78,10 @@ ch_fdcurve <- function(DF, normal = FALSE, gust = TRUE, metadata = NULL) {
   xl <- "Exceedance probability (%)"
   xla <- "Normalized Exceedance probability (%)"
   ylims <- c(1, max(q))
+  
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   
   par(mfrow = c(1, 1))
   par(mar = c(4, 4, 2, 1))

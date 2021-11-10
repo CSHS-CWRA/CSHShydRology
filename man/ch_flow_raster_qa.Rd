@@ -18,7 +18,7 @@ Produces a raster plot: years against day of year, showing the data flags:
  \item{D}{(Dry) in yellow}
  \item{E}{(Estimated) in red}
 
-No value is returned; a standard R graphic is created.
+Returns \code{TRUE} if executed properly; a standard R graphic is created.
 }
 \description{
 Raster plot with WSC quality flags. 

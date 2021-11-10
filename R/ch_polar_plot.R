@@ -54,6 +54,10 @@ ch_polar_plot <- function(bmw, lcol1 = c("black", "gray50"), lcol2 = c("black", 
 
   xmax <- array(data = NA, dim = length(series[, 1]))
   xmin <- array(data = NA, dim = length(series[, 1]))
+  
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
 
   par(mfrow = c(1, 1))
 

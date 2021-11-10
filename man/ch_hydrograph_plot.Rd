@@ -9,6 +9,7 @@ ch_hydrograph_plot(
   precip = NULL,
   prd = NULL,
   winter_shading = FALSE,
+  winter_colour = "cyan",
   range_mult_flow = NULL,
   range_mult_precip = 1.5,
   flow_labels = NULL,
@@ -29,6 +30,8 @@ ch_hydrograph_plot(
 \item{winter_shading}{optionally adds a transparent cyan shading for the
 December 1st to March 31st period in each year that is plotted. Default is
 \code{FALSE}.}
+
+\item{winter_colour}{colour to use in winter shading polygons}
 
 \item{range_mult_flow}{range multiplier for max value in hydrograph. This is 
 useful in preventing overlap if precip is also plotted. This value should not 
@@ -91,13 +94,11 @@ precip <- data.frame("Date" = dd," precip" = abs(rnorm(length(dd))) * 10)
 # basic hydrograph plot
 ch_hydrograph_plot(flows = df, winter_shading = FALSE)
 
-# with different labels
-ch_hydrograph_plot(flows = df, winter_shading = FALSE, flow_labels = c("simulated", "observed"))
+# with different labels and winter shading
+ch_hydrograph_plot(flows = df, winter_shading = TRUE,
+ flow_labels = c("simulated", "observed"))
 
-# with a few more options turned on
-ch_hydrograph_plot(flows = df, precip = precip)
-
-# increase the plot ranges to separate flows and precip; add a legend box
+# add precipitation, increase the plot ranges to separate flows and precip, and add a legend box
 ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 range_mult_precip = 2, leg_box = TRUE)
 

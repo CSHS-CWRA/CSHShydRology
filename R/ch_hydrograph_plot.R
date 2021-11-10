@@ -22,6 +22,7 @@
 #' @param winter_shading optionally adds a transparent cyan shading for the
 #' December 1st to March 31st period in each year that is plotted. Default is
 #' \code{FALSE}.
+#' @param winter_colour colour to use in winter shading polygons
 #' @param range_mult_flow range multiplier for max value in hydrograph. This is 
 #' useful in preventing overlap if precip is also plotted. This value should not 
 #' be less than 1.0, otherwise the values will be
@@ -61,13 +62,11 @@
 #' # basic hydrograph plot
 #' ch_hydrograph_plot(flows = df, winter_shading = FALSE)
 #'
-#' # with different labels
-#' ch_hydrograph_plot(flows = df, winter_shading = FALSE, flow_labels = c("simulated", "observed"))
+#' # with different labels and winter shading
+#' ch_hydrograph_plot(flows = df, winter_shading = TRUE,
+#'  flow_labels = c("simulated", "observed"))
 #'
-#' # with a few more options turned on
-#' ch_hydrograph_plot(flows = df, precip = precip)
-#'
-#' # increase the plot ranges to separate flows and precip; add a legend box
+#' # add precipitation, increase the plot ranges to separate flows and precip, and add a legend box
 #' ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
 #' range_mult_precip = 2, leg_box = TRUE)
 #' 
@@ -79,6 +78,7 @@ ch_hydrograph_plot <- function(flows = NULL,
                             precip = NULL, 
                             prd = NULL, 
                             winter_shading = FALSE, 
+                            winter_colour='cyan',
                             range_mult_flow = NULL, 
                             range_mult_precip = 1.5,
                             flow_labels = NULL, 
@@ -250,14 +250,14 @@ ch_hydrograph_plot <- function(flows = NULL,
       # ep <- ep[-length(ep)]
       ep <- c(ep, nrow(flows))
     }
-    bc <- "#00FFFF32"
+    # bc <- "#FF0000E6" #  "#00FFFF32"
     for (k in seq(1, length(ep), 2)) {
       cord.x <- c(
         date(flows$Date[ep[k]]), date(flows$Date[ep[k]]),
         date(flows$Date[ep[k + 1]]), date(flows$Date[ep[k + 1]])
       )
       cord.y <- c(-1e3, y.hmax * 1e3, y.hmax * 1e3, -1e3)
-      polygon(cord.x, cord.y, col = bc, border = NA)
+      polygon(cord.x, cord.y, col = winter_colour, border = NA)
     }
   }
 

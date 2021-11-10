@@ -57,6 +57,10 @@ ch_flow_raster <- function(DF, rastercolours = c("lightblue","cyan", "blue", "sl
   qdata <- as.matrix(qdata)
   
   ########################################################### start  plotting section
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
+  
   par(oma = c(0, 0, 3, 0))
   layout(matrix(c(1, 1, 1, 1, 2, 1, 1, 1, 1, 3), 2, 5, byrow = TRUE))
   par(mar = c(4, 4, 0, 0))

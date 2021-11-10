@@ -175,11 +175,15 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   tmaxy <- MannKendall(ymax_n)
   
   t1 <- ifelse(as.numeric(tmy[2])  > 0.05, 2, ifelse(tmy[1]  >= 0, 3, 1))
-  t2 <- ifelse(as.numeric(tminy[2])> 0.05, 2, ifelse(tminy[1]>= 0, 3, 1))
-  t3 <- ifelse(as.numeric(tmaxy[2])> 0.05, 2, ifelse(tmaxy[1]>= 0, 3, 1))
+  t2 <- ifelse(as.numeric(tminy[2]) > 0.05, 2, ifelse(tminy[1] >= 0, 3, 1))
+  t3 <- ifelse(as.numeric(tmaxy[2]) > 0.05, 2, ifelse(tmaxy[1] >= 0, 3, 1))
   
   
   #####################################################  three panel output
+  
+  # capture plotting parameters, restore on exit
+  oldpar <- par(no.readonly = TRUE)
+  on.exit(par(oldpar))
   
   par(oma = c(1, 1, 3, 1))
   qcols <- colorRampPalette(colours)
@@ -193,7 +197,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   image(1:periods, 1:length(Years), qsliced, axes = FALSE, col = qcols(9),
         zlim = c(qmin, qmax),  xlab = "", ylab = "")  
   
-  sstep <-round(periods/5)
+  sstep <- round(periods/5)
   speriod <- ch_sub_set_Years(period,sstep)
   axis(1, at = speriod$position, labels = speriod$label, cex = 1.2)
   
@@ -234,8 +238,8 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   
   xy <- c(1:length(Years))
   ylimits <- c(min(qsliced, na.rm = TRUE), max(qsliced, na.rm = TRUE))
-  if(ylimits[1] == 0) (ylimits[1] <- 0.001)
-  par(mar=c(6,4,0,0))
+  if (ylimits[1] == 0) (ylimits[1] <- 0.001)
+  par(mar = c(6,4,0,0))
   plot(ymed_n, xy, col = tcol[t1], xlim = ylimits, xlab = l_disch, yaxt = "n", yaxt = "n",
        yaxs = "i", log = "x", ylab = "")
   points(ymax_n, xy, col = tcol[t3], pch = 19, cex = 0.7)
@@ -244,8 +248,8 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   
   ########################################################  Add title
   tscale <- 1.2
-  if(nchar(title) >= 45) tscale <- 1.0
-  if(nchar(title) >= 50) tscale <- 0.8
+  if (nchar(title) >= 45) tscale <- 1.0
+  if (nchar(title) >= 50) tscale <- 0.8
   mtext(title, side = 3, line = 1, cex = tscale,outer = TRUE)
   
   
@@ -259,7 +263,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   zr = c(qmin, qmax)
   
   image.plot(zlim = zr, 
-             col=qcols(9),legend.only = TRUE,
+             col = qcols(9),legend.only = TRUE,
              legend.width = 4.5, legend.shrink = 0.8,
              bigplot = c(0.1, 0.2, 0.1, 0.2),
              legend.args = list(text = l_disch, side = 2, line = 0.5, cex = 0.9))
@@ -268,7 +272,7 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
   
   line1 <- list(sID, missing, step, periods, qsliced, period, med_n, max_n, min_n,
                 tau, prob, Years, ymed_n, ymax_n, ymin_n, tmy, tmaxy, tminy)
-  names(line1) <-c("sID", "na.rm =", "step", "periods", "bins","period", "med_period", "max_period",
+  names(line1) <- c("sID", "na.rm =", "step", "periods", "bins","period", "med_period", "max_period",
                    "min_period", "tau_period", "prob_period", "year", "median_year", "max_year", "min_year", 
                    "tau_median_year", "tau_maximum_year", "tau_minimum_year")
   return(line1)
