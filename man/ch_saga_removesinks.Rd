@@ -14,7 +14,7 @@ ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 \item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
-{dem_ns}{processed dem as a raster object.}
+\item{dem_ns}{processed dem as a raster object.}
 }
 \description{
 Removes sinks by deepening drainage network; alternative to \code{ch_saga_fillsinks}. This 
