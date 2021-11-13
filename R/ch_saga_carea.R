@@ -8,7 +8,7 @@
 #' which should have had sinks removed in a pre-processing step. For more information, see 
 #' \command{?rsaga.topdown.processing}.
 #' 
-#' @param dem     raster object of your raw dem in the desired projection
+#' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param saga_wd     working directory to write and read saga files
 #' @param method      character or numeric: choice of processing algorithm (default \option{mfd}, or \code{4})
 #' @param linear_threshold 	numeric (number of grid cells): threshold above which 
@@ -32,7 +32,7 @@
 #' # - requires downloading spatial data from Zenodo repository
 #' # - requires a potentially lengthy GIS operation
 #' 
-#' # create saga wd using base::tempdir()
+#' # create saga wd using tempdir()
 #' saga_wd <- tempdir()
 #'
 #' # download LiDAR DEM for 240 and 241 creek

@@ -28,7 +28,7 @@ ch_saga_fillsinks(
 \item{dem_ns}{filled dem as a raster object.}
 }
 \description{
-Removes sinks in a DEM by filling. This function as a wrapper to the
+Removes sinks in a DEM by filling. This function is a wrapper to the
 \pkg{RSAGA} function \code{rsaga.fill.sinks}.
 }
 \details{

@@ -1,4 +1,4 @@
-#' Create Catchment Channels
+#' Create Channel Network
 #'
 #' @description 
 #' Determines channel layer spatial files
@@ -36,7 +36,7 @@
 #' @param minlen parameters for SAGA function
 #' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return 
-#' \item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
+#' \item{out_list}{list containing (as specified) channels (sf), ntwrk (raster) and route (raster)}
 #' 
 #' @importFrom RSAGA rsaga.topdown.processing rsaga.geoprocessor 
 #' @importFrom raster writeRaster raster crs extract 

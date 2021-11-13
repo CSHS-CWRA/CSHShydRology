@@ -18,7 +18,7 @@ ch_saga_catchment(
 \arguments{
 \item{dem}{raster object of your dem in the desired projection - should have had sinks removed}
 
-\item{saga_wd}{name of working directory}
+\item{saga_wd}{name of working directory to write and read SAGA files}
 
 \item{outlet}{sf point object with coordinates of catchment outlets in the same projection as the dem}
 

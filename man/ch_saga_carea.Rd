@@ -13,7 +13,7 @@ ch_saga_carea(
 )
 }
 \arguments{
-\item{dem}{raster object of your raw dem in the desired projection}
+\item{dem}{raster object of your dem in the desired projection - should have had sinks removed}
 
 \item{saga_wd}{working directory to write and read saga files}
 
@@ -43,7 +43,7 @@ which should have had sinks removed in a pre-processing step. For more informati
 # - requires downloading spatial data from Zenodo repository
 # - requires a potentially lengthy GIS operation
 
-# create saga wd using base::tempdir()
+# create saga wd using tempdir()
 saga_wd <- tempdir()
 
 # download LiDAR DEM for 240 and 241 creek

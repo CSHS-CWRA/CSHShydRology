@@ -36,7 +36,7 @@
 #' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
 #' @param carea_flag if \code{carea = NULL}, 0 = create carea from dem; 1 = read in carea.sdat
-#' @param saga_wd name of working directory
+#' @param saga_wd name of working directory to write and read SAGA files
 #' @param outlet sf point object with coordinates of catchment outlets in the same projection as the dem
 #' @param outlet_label character vector of labels; if \option{NULL}, numbers are assigned
 #' @param buffsize numeric; the buffer radius (m) around catchment outlet to find location on digital stream network.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_saga_removesinks.R
 \name{ch_saga_removesinks}
 \alias{ch_saga_removesinks}
-\title{Deepen Drainage Network}
+\title{Remove Sinks by Deepening the Drainage Network}
 \usage{
 ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 }

@@ -1,4 +1,4 @@
-#' Deepen Drainage Network
+#' Remove Sinks by Deepening the Drainage Network
 #' 
 #' @description 
 #' Removes sinks by deepening drainage network; alternative to \code{ch_saga_fillsinks}. This 
@@ -8,7 +8,8 @@
 #' @param dem_raw  raster object of your raw dem in the desired projection
 #' @param saga_wd  working directory to write and read saga files
 #' @param saga_env SAGA environment object. Default is to let saga find it on its own.
-#' @return \item{dem_ns}{processed dem as a raster object.}
+#' @return
+#' \item{dem_ns}{processed dem as a raster object.}
 #' 
 #' @importFrom RSAGA rsaga.sink.removal 
 #' @importFrom raster writeRaster raster crs extract

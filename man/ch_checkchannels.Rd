@@ -17,7 +17,7 @@ ch_checkchannels(dem, channels, outlet)
 \item{check_map}{generates map with channel layer}
 }
 \description{
-Generates a map of the generated channel layer.
+Generates a map of the generated channel network layer.
 }
 \details{
 Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.

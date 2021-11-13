@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_saga_channels.R
 \name{ch_saga_channels}
 \alias{ch_saga_channels}
-\title{Create Catchment Channels}
+\title{Create Channel Network}
 \usage{
 ch_saga_channels(
   dem,
@@ -45,7 +45,7 @@ ch_saga_channels(
 \item{saga.env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
-\item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
+\item{out_list}{list containing (as specified) channels (sf), ntwrk (raster) and route (raster)}
 }
 \description{
 Determines channel layer spatial files
