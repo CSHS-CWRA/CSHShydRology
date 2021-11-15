@@ -48,21 +48,10 @@
 #' @export
 #' @examples
 #' 
-#' \donttest{
-#' # note: example not tested in package compilation
-#' # - requires creating and accessing a temporary directory
-#' # - requires downloading spatial data from Zenodo repository
-#' # - requires multiple potentially lengthy GIS operations
-#' 
 #' # create saga wd using base::tempdir()
 #' saga_wd <- tempdir()
-#'
-#' # download 25m DEM
-#' ff <- "gs_dem25.tif"
-#' ra_fn <- file.path(saga_wd, ff)
-#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
-#' dem <- ch_get_url_data(ra_url, ra_fn)
-#' 
+#' # use volcano DEM
+#' dem <- ch_volcano_raster()
 #' # fill sinks
 #' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
 #' 
@@ -71,7 +60,6 @@
 #' 
 #' # generate channels sf object
 #' channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
-#' }
 #' 
 ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              out_shp = TRUE,

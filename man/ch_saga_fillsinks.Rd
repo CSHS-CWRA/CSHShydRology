@@ -40,20 +40,10 @@ The main input is a DEM as a raster object. The main output will be a sink-fille
 same topology and coordinate reference system as the input raster.
 }
 \examples{
-\donttest{
-# note: example not tested in package compilation
-# - requires creating and accessing a temporary directory
-# - requires downloading spatial data from Zenodo repository
-# - requires a potentially lengthy GIS operation
-
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
-
-# download 25m DEM
-ff <- "gs_dem25.tif"
-ra_fn <- file.path(saga_wd, ff)
-ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-dem <- ch_get_url_data(ra_url, ra_fn)
+# use volcano DEM
+dem <- ch_volcano_raster()
 
 # fill sinks
 filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
@@ -61,8 +51,6 @@ filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
 # plot the difference in raw and filled dem (positive -> filled)
 library(raster)
 plot(filled_dem-dem)
-}
-
 }
 \seealso{
 \code{\link{ch_saga_removesinks}} to remove sinks instead of filling

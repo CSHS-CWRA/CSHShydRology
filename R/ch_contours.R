@@ -21,28 +21,14 @@
 #' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' 
 #' @examples
-#' 
-#' \donttest{
-#' # note: example not tested in package compilation
-#' # - requires creating and accessing a temporary directory
-#' # - requires downloading spatial data from Zenodo repository
-#' # - requires multiple potentially lengthy GIS operations
-#' 
-#' # create saga wd using base::tempdir()
-#' saga_wd <- tempdir()
-#'
-#' # download 25m DEM
-#' ff <- "gs_dem25.tif"
-#' ra_fn <- file.path(saga_wd, ff)
-#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
-#' dem <- ch_get_url_data(ra_url, ra_fn)
-#' 
+#' # use volcano DEM
+#' dem <- ch_volcano_raster()
 #' # generate contours
 #' contours <- ch_contours(dem)
 #' 
 #' # plot contours map
 #' plot(contours)
-#' }
+
 #' 
 #' @importFrom raster raster getValues rasterToContour crs
 #' @importFrom sf st_as_sf st_crs
