@@ -20,7 +20,7 @@
 #' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return \item{dem_ns}{filled dem as a raster object.}
 #' 
-#' @importFrom RSAGA rsaga.fill.sinks 
+#' @importFrom RSAGA rsaga.fill.sinks rsaga.env
 #' @importFrom raster writeRaster raster crs extract
 #' 
 #' @author Dan Moore
@@ -33,8 +33,14 @@
 #' dem <- ch_volcano_raster()
 #' 
 #' # fill sinks
-#' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
-#' 
+#' # disable warnings caused by 2.3.1 < SAGA > 6.3.0  
+#' version <- rsaga.env(saga_env)
+#' if ((version < "2.3.1")|(version > "6.3.0"))
+#'   options(warn = -1)
+#' filled_dem <- ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+#' # re-enable warnings
+#' options(warn = 0)
+#'
 #' # plot the difference in raw and filled dem (positive -> filled)
 #' library(raster)
 #' plot(filled_dem-dem)

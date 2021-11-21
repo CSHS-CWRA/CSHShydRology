@@ -9,6 +9,9 @@
 #' will get an error if you try to use the raster layer.
 #'
 #' @param wd working directory file path
+#' @param do_check If \code{TRUE}, the default, the user is asked to confirm the
+#' deletion of the working directory. If \code{TRUE}, the directory is deleted
+#' without confirmation.
 #' 
 #' @return
 #'  \item{result}{returns TRUE upon successful execution}
@@ -17,7 +20,6 @@
 #' @seealso \code{\link{ch_create_wd}} to create working SAGA directory
 #' @export
 #' @examples \donttest{
-#' 
 #' # not tested as clearing all files in a given directory cannot be tested in CRAN
 #' 
 #' # create a saga working directory
@@ -28,9 +30,18 @@
 #' ch_clear_wd(saga_wd)
 #' }
 #' 
-ch_clear_wd <- function(wd) {
-  filelist = list.files(wd)
+ch_clear_wd <- function(wd, do_check = TRUE) {
+  if (do_check) {
+    prompt <- paste(
+      "Are you certain you want to remove",
+      wd,
+      " (y/n): "
+    )
+    response <- readline(prompt)
+    if (response == "n") return(paste(wd, "not removed"))
+  }
+  filelist <- list.files(wd)
   file.remove(paste0(wd, "/", filelist))
   unlink(wd, recursive = TRUE)
-  return(TRUE)
+  return(paste(wd, "removed"))
 }

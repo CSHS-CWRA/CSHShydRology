@@ -7,11 +7,11 @@
 #' 
 #' @param dem_raw  raster object of your raw dem in the desired projection
 #' @param saga_wd  working directory to write and read saga files
-#' @param saga_env SAGA environment object. Default is to let saga find it on its own.
+#' @param saga_env SAGA environment object. Default is to let SAGA find it on its own.
 #' @return
 #' \item{dem_ns}{processed dem as a raster object.}
 #' 
-#' @importFrom RSAGA rsaga.sink.removal 
+#' @importFrom RSAGA rsaga.sink.removal rsaga.env
 #' @importFrom raster writeRaster raster crs extract
 #' 
 #' @author Dan Moore
@@ -24,16 +24,20 @@
 #' # use volcano DEM
 #' dem <- ch_volcano_raster()
 #' 
+#' # disable warnings caused by 2.3.1 < SAGA > 6.3.0  
+#' version <- rsaga.env(saga_env)
+#' if ((version < "2.3.1")|(version > "6.3.0"))
+#'   options(warn = -1)
 #' # remove sinks
-#' removed_dem <-  ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
-#' 
+#' removed_dem <- ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
+#' # re-enable warnings
+#' options(warn = 0)
 #' # plot the difference in raw and sink-removed dem 
 #' library(raster)
 #' plot(removed_dem-dem)
 #' 
 ch_saga_removesinks <- function(dem_raw, saga_wd, 
                                 saga_env = RSAGA::rsaga.env()) {
-  
   # check inputs
   if (missing(dem_raw)) {
     stop("ch_saga_removesinks requires a raster dem_raw")

@@ -12,6 +12,10 @@
 #' @param catchment catchment polygon (sf object)
 #' @param outlet location of catchment outlet (sf object)
 #' @param outlet_label character label for outlet
+#' @param main_label main label for catchment
+#' @param bbox_type type of bounding box. If \option{catchment}, then
+#' the contours are bounded by the catchment, otherwise they are plotted
+#' to the extent of the DEM
 #' @return 
 #' \item{area_df}{Generates contour map with catchment polygon and outlet check}
 #' 
@@ -48,7 +52,8 @@
 #' carea <- ch_saga_carea(filled_dem, saga_wd)
 #' 
 #' # run catchment delineation
-#' catchments <-  ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, outlet=stns, carea=carea)
+#' catchments <- ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, 
+#' outlet=stns, carea=carea)
 #' 
 #' # check catchments
 #' ch_checkcatchment(filled_dem, catchments, stns)
@@ -60,8 +65,9 @@
 #' @importFrom dplyr mutate 
 #' @importFrom grid unit
 #' @export
-ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL) {
 
+ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
+                                main_label = "", bbox_type = "catchment") {
   # check inputs
   if (missing(catchment)) {
     stop("ch_checkcatchment requires sf catchment polygons to plot")
@@ -74,37 +80,41 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL) {
   }
   
   # create contours and get bounding box to set map limits
-  contours <- ch_contours(dem)
-  bb <- st_bbox(contours)
+  # create contours 
+  contours = ch_contours(dem)
+  # generate bounding box
+  if (bbox_type == "catchment") {
+    bb = sf::st_bbox(catchment)
+  } else {
+    bb <- sf::st_bbox(contours)
+  }
   # generate map
-  check_map <- ggplot(data = contours) +
+  check_map <- ggplot2::ggplot() +
     geom_sf(data = contours, color = "grey") +
     geom_sf(data = outlet, pch = 21, bg = "blue") +
-    geom_sf(data = st_geometry(catchment), fill = NA, color = "red") +
-    annotation_north_arrow(style = north_arrow_fancy_orienteering,
+    geom_sf(data = sf::st_geometry(catchment), fill = NA, color = "red") +
+    ggspatial::annotation_north_arrow(style = north_arrow_fancy_orienteering, 
                                       location = "tr",
-                                      pad_x = unit(4, "mm"),
+                                      pad_x = unit(4, "mm"), 
                                       pad_y = unit(6.5, "mm")) +
-    annotation_scale() +
+    ggspatial::annotation_scale() +
     coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4])) +
+    labs(title = main_label) +
     theme_bw()
-  
   print(check_map)
-  nc <- nrow(catchment)
-  
+  nc <- nrow(outlet)
   # print catchment area with units
   if (is.null(outlet_label)) {
-    labels <- as.character(1:nc)
+    labels <- as.character(1:nc) 
   } else {
     labels <- outlet_label
   }
-  
-  area <- st_area(catchment)
+  area <- sf::st_area(catchment)
   units <- rep(paste0(attr(area, "units")$numerator[1], "^2"), length(area))
   value <- round(as.numeric(area))
   area_df <- outlet %>%
-    mutate(label = labels, area = value, area_units = units)
-  
+    mutate(label = labels, area = value, units = units)
+
   return(area_df)
 }
 
