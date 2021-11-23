@@ -20,7 +20,7 @@
 #' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return \item{dem_ns}{filled dem as a raster object.}
 #' 
-#' @importFrom RSAGA rsaga.fill.sinks rsaga.env
+#' @importFrom RSAGA rsaga.fill.sinks rsaga.env 
 #' @importFrom raster writeRaster raster crs extract
 #' 
 #' @author Dan Moore
@@ -34,7 +34,9 @@
 #' 
 #' # fill sinks
 #' # disable warnings caused by 2.3.1 < SAGA > 6.3.0  
-#' version <- rsaga.env(saga_env)
+#' library(RSAGA)
+#' saga_env <- rsaga.env()
+#' version <- saga_env$version
 #' if ((version < "2.3.1")|(version > "6.3.0"))
 #'   options(warn = -1)
 #' filled_dem <- ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)

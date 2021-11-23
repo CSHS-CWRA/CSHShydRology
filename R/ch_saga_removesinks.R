@@ -24,8 +24,10 @@
 #' # use volcano DEM
 #' dem <- ch_volcano_raster()
 #' 
-#' # disable warnings caused by 2.3.1 < SAGA > 6.3.0  
-#' version <- rsaga.env(saga_env)
+#' # disable warnings caused by 2.3.1 < SAGA > 6.3.0 
+#' library(RSAGA) 
+#' saga_env <- rsaga.env()
+#' version <- saga_env$version
 #' if ((version < "2.3.1")|(version > "6.3.0"))
 #'   options(warn = -1)
 #' # remove sinks

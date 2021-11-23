@@ -60,7 +60,7 @@
 #' }
 #' 
 #' @importFrom sf st_bbox st_area
-#' @importFrom ggplot2 ggplot geom_sf coord_sf theme_bw 
+#' @importFrom ggplot2 ggplot geom_sf coord_sf theme_bw labs
 #' @importFrom ggspatial annotation_north_arrow north_arrow_fancy_orienteering annotation_scale 
 #' @importFrom dplyr mutate 
 #' @importFrom grid unit

@@ -11,7 +11,7 @@ ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 
 \item{saga_wd}{working directory to write and read saga files}
 
-\item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object. Default is to let SAGA find it on its own.}
 }
 \value{
 \item{dem_ns}{processed dem as a raster object.}
@@ -28,9 +28,16 @@ saga_wd <- tempdir()
 # use volcano DEM
 dem <- ch_volcano_raster()
 
+# disable warnings caused by 2.3.1 < SAGA > 6.3.0 
+library(RSAGA) 
+saga_env <- rsaga.env()
+version <- saga_env$version
+if ((version < "2.3.1")|(version > "6.3.0"))
+  options(warn = -1)
 # remove sinks
-removed_dem <-  ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
-
+removed_dem <- ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
+# re-enable warnings
+options(warn = 0)
 # plot the difference in raw and sink-removed dem 
 library(raster)
 plot(removed_dem-dem)

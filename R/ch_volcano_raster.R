@@ -7,12 +7,13 @@
 #' @export 
 #' @return Returns a raster object of land surface elevations. 
 #' @author Dan Moore and Kevin Shook
-#' @importFrom raster raster t
+#' @importFrom raster rasterFromXYZ
+#' @import datasets
 #' @seealso \code{\link{ch_saga_fillsinks}} \code{\link{ch_saga_carea}}
 #' @examples
 #' test_raster <- ch_volcano_raster()
 ch_volcano_raster <- function() {
-  vol_mat <- volcano
+  vol_mat <- datasets::volcano
   nr <- nrow(vol_mat)
   nc <- ncol(vol_mat)
   dx <- 10
@@ -23,6 +24,6 @@ ch_volcano_raster <- function() {
   x <- rep(seq(xmax, xmin, -dx), each = nr)
   y <- rep(seq(ymin, ymax, dx), times = nc)
   vol_ras <- data.frame(x, y, z = as.numeric(vol_mat)) %>%
-    raster::rasterFromXYZ()
+    rasterFromXYZ()
   return(vol_ras)
 }
