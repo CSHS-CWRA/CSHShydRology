@@ -28,7 +28,7 @@
 #' @param ... Other parameters for the graph
 #'
 #' @importFrom sf as_Spatial
-#' @importFrom raster mask minValue maxValue quantile
+#' @importFrom raster mask minValue maxValue 
 #' @importFrom here here
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore
