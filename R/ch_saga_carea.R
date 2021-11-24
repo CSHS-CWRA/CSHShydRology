@@ -64,8 +64,7 @@ ch_saga_carea <- function(dem, saga_wd,
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("Provided saga_wd does not exist")
-    return(NA)
+    stop("Provided saga_wd does not exist")
   }
   
   # store the dem object in the working directory
