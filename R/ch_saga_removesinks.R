@@ -50,8 +50,7 @@ ch_saga_removesinks <- function(dem_raw, saga_wd,
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("Provided saga_wd does not exist")
-    return(NA)
+    stop("Provided saga_wd does not exist")
   }
   
   # store the input dem in a file in the working directory

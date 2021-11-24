@@ -86,8 +86,7 @@ ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("Provided saga_wd does not exist")
-    return(NA)
+    stop("Provided saga_wd does not exist")
   }
   
   # make a temporary directory within the working directory and store the dem there
