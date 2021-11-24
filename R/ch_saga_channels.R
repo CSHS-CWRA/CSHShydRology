@@ -48,6 +48,13 @@
 #' @export
 #' @examples
 #' 
+#' # These examples are not executed if the installed version of 
+#' # SAGA is outside the allowed range of 2.3.1 - 6.3.0
+#' # as calling RSAGA functions will cause warnings
+#' library(RSAGA)
+#' saga_env <- rsaga.env()
+#' version <- saga_env$version
+#' if ((version >= "2.3.1") & (version <= "6.3.0")) {
 #' # create saga wd using base::tempdir()
 #' saga_wd <- tempdir()
 #' # use volcano DEM
@@ -60,6 +67,7 @@
 #' 
 #' # generate channels sf object
 #' channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
+#' }
 #' 
 ch_saga_channels <- function(dem, saga_wd, carea = NULL, carea_flag = 0,
                              out_shp = TRUE,

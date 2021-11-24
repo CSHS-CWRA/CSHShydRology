@@ -22,26 +22,25 @@ function acts as a wrapper to
 the \code{rsaga.sink.removal} function.
 }
 \examples{
+# These examples are not executed if the installed version of 
+# SAGA is outside the allowed range of 2.3.1 - 6.3.0
+# as calling RSAGA functions will cause warnings
+library(RSAGA)
+saga_env <- rsaga.env()
+version <- saga_env$version
+if ((version >= "2.3.1") & (version <= "6.3.0")) {
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
 
 # use volcano DEM
 dem <- ch_volcano_raster()
 
-# disable warnings caused by 2.3.1 < SAGA > 6.3.0 
-library(RSAGA) 
-saga_env <- rsaga.env()
-version <- saga_env$version
-if ((version < "2.3.1")|(version > "6.3.0"))
-  options(warn = -1)
 # remove sinks
 removed_dem <- ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
-# re-enable warnings
-options(warn = 0)
 # plot the difference in raw and sink-removed dem 
 library(raster)
 plot(removed_dem-dem)
-
+}
 }
 \seealso{
 \code{\link{ch_saga_fillsinks}} to fill sinks in a DEM (instead of removing)

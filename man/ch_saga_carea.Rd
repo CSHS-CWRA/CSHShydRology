@@ -37,6 +37,13 @@ which should have had sinks removed in a pre-processing step. For more informati
 \command{?rsaga.topdown.processing}.
 }
 \examples{
+# These examples are not executed if the installed version of 
+# SAGA is outside the allowed range of 2.3.1 - 6.3.0
+# as calling RSAGA functions will cause warnings
+library(RSAGA)
+saga_env <- rsaga.env()
+version <- saga_env$version
+if ((version >= "2.3.1") & (version <= "6.3.0")) {
 # create saga wd using tempdir()
 saga_wd <- tempdir()
 # use volcano DEM
@@ -51,7 +58,7 @@ carea <- ch_saga_carea(filled_dem, saga_wd)
 # plot contributing area raster
 library(raster)
 plot(carea)
-
+}
 }
 \seealso{
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing

@@ -29,7 +29,8 @@ Generates a simple map of the drainage network plotted over the contours to allo
 # - requires creating and accessing a temporary directory
 # - requires downloading spatial data from Zenodo repository
 # - requires multiple potentially lengthy GIS operations
-
+# Note that using this function with SAGA versions outside
+# 2.3.1 through 6.3.0 will cause warnings from RSAGA
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
 

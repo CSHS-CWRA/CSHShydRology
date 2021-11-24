@@ -28,12 +28,60 @@
 #' @param ... Other parameters for the graph
 #'
 #' @importFrom sf as_Spatial
-#' @impportFrom raster mask minValue maxValue quantile
+#' @importFrom raster mask minValue maxValue quantile
+#' @importFrom here here
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore
 #' @export
 #'
-#' @examples
+#' @examples \donttest{
+#' library(here)
+#' # change the following line to specify a directory to hold the data
+#' dir_name <- here::here("helper_functions", "test_data")
+#' # create directory to store data sets
+#' if (!dir.exists(dir_name)) {
+#'   dir.create(dir_name)
+#' }
+#' # get 25-m dem
+#' dem_fn <- here::here("helper_functions", "test_data", "gs_dem25.tif")
+#' dem_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
+#' dem_upc <- ch_geturldata(dem_url, dem_fn)
+#' 
+#' # get catchment boundaries
+#' cb_fn <- here::here("helper_functions", "test_data", "gs_catchments.GeoJSON")
+#' cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
+#' cb <- ch_geturldata(cb_url, cb_fn)
+#' 
+#' # quick check plot - all catchments
+#' plot(dem_upc)
+#' plot(cb, add = TRUE, col = NA)
+#' 
+#' # subset 240 catchment
+#' cb_240 <- cb %>% dplyr::filter(wsc_name == "240")
+#' plot(cb_240, col = NA)
+#' 
+#' # test function 
+#' 
+#' # test different combinations of arguments
+#' ch_catch_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
+#' ch_catch_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
+#' ch_catch_hyps(cb_240, dem_upc, n_levels = 6)
+#' ch_catch_hyps(cb_240, dem_upc)
+#' ch_catch_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
+#' ch_catch_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
+#' 
+#' # generate a graph
+#' ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE)
+#' ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+#'               col = "blue", type = "l", ylim = c(1500, 2200))
+#' ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+#'               add_grid = TRUE, quantiles = seq(0, 1, 0.1))
+#' ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE,
+#'               ylab = expression("z ("*10^{-3} ~ "km)"))
+#' 
+#' # extract a specific quantile (e.g., median)
+#' ch_catch_hyps(cb_240, dem_upc, quantiles = 0.5)
+#' }
 ch_catchment_hyps <- function(catchment, dem,
                           z_levels = NULL, n_levels = 10,
                           zmin = NULL, zmax = NULL, 

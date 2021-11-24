@@ -52,7 +52,9 @@ Imports:
     RSAGA,
     ggplot2,
     ggspatial,
+    stats,
     raster,
+    here,
     sf,
     sp,
     dplyr,
@@ -63,7 +65,6 @@ Suggests:
     knitr,
     testthat, 
     rmarkdown,
-    here,
     readr
 VignetteBuilder: knitr
 LazyData: true
