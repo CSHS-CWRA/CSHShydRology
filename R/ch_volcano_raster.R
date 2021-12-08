@@ -1,9 +1,14 @@
 #' Create Test Raster
 #'
-#' @description Creates a \pkg{raster} object of land surface elevations, as
+#' @description 
+#' Creates a \pkg{raster} object of land surface elevations, as
 #' used to test/demonstrate many functions requiring a digital elevation model 
-#' (DEM. No arguments are required as the DEM is created from the \pkg{base} 
+#' (DEM). 
+#' 
+#' @details
+#' No arguments are required as the DEM is created from the \pkg{base} 
 #' \code{volcano} matrix of elevations.
+#' 
 #' @export 
 #' @return Returns a raster object of land surface elevations. 
 #' @author Dan Moore and Kevin Shook
