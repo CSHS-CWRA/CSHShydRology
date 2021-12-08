@@ -28,7 +28,6 @@
 #' 
 #' # plot contours map
 #' plot(contours)
-
 #' 
 #' @importFrom raster raster getValues rasterToContour crs
 #' @importFrom sf st_as_sf st_crs
