@@ -1,7 +1,8 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width=8,fig.height=4
 )
 library(CSHShydRology)
 CAN05AA008 <- CAN05AA008
@@ -33,7 +34,6 @@ result5 <- ch_hydrograph_plot(
 
 ## -----------------------------------------------------------------------------
 ylab <- expression(paste("Discharge [m"^"3", "/s]"))
-par(mgp = c(2.5, 1, 0)) # move axis labels closer to plot
 result6 <- ch_hydrograph_plot(
   flows = daily_flows, precip = precip,
   prd = myprd, ylabel = ylab

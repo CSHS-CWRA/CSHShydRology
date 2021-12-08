@@ -40,17 +40,17 @@
 #' dir_name <- here::here("helper_functions", "test_data")
 #' # create directory to store data sets
 #' if (!dir.exists(dir_name)) {
-#'   dir.create(dir_name)
+#'   dir.create(dir_name, recursive = TRUE)
 #' }
 #' # get 25-m dem
 #' dem_fn <- here::here("helper_functions", "test_data", "gs_dem25.tif")
 #' dem_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
-#' dem_upc <- ch_geturldata(dem_url, dem_fn)
+#' dem_upc <- ch_get_url_data(dem_url, dem_fn)
 #' 
 #' # get catchment boundaries
 #' cb_fn <- here::here("helper_functions", "test_data", "gs_catchments.GeoJSON")
 #' cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
-#' cb <- ch_geturldata(cb_url, cb_fn)
+#' cb <- ch_get_url_data(cb_url, cb_fn)
 #' 
 #' # quick check plot - all catchments
 #' plot(dem_upc)
