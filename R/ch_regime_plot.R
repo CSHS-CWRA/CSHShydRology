@@ -77,7 +77,7 @@ ch_regime_plot <- function(DF, wyear = 1, colour = TRUE, mx = 1, metadata = NULL
     regime[1, jj] <- min(q[, jj], na.rm = TRUE)
     regime[9, jj] <- max(q[, jj], na.rm = TRUE)
     for (j in 2:8) {
-      regime[j, jj] <- quantile(q[, jj], probs = qquantiles[j - 1], na.rm = TRUE)
+      regime[j, jj] <- stats::quantile(q[, jj], probs = qquantiles[j - 1], na.rm = TRUE)
     }
   }
 

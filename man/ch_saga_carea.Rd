@@ -13,7 +13,7 @@ ch_saga_carea(
 )
 }
 \arguments{
-\item{dem}{raster object of your raw dem in the desired projection}
+\item{dem}{raster object of your dem in the desired projection - should have had sinks removed}
 
 \item{saga_wd}{working directory to write and read saga files}
 
@@ -37,20 +37,17 @@ which should have had sinks removed in a pre-processing step. For more informati
 \command{?rsaga.topdown.processing}.
 }
 \examples{
-\donttest{
-# note: example not tested in package compilation
-# - requires creating and accessing a temporary directory
-# - requires downloading spatial data from Zenodo repository
-# - requires a potentially lengthy GIS operation
-
-# create saga wd using base::tempdir()
+# These examples are not executed if the installed version of 
+# SAGA is outside the allowed range of 2.3.1 - 6.3.0
+# as calling RSAGA functions will cause warnings
+library(RSAGA)
+saga_env <- rsaga.env()
+version <- saga_env$version
+if ((version >= "2.3.1") & (version <= "6.3.0")) {
+# create saga wd using tempdir()
 saga_wd <- tempdir()
-
-# download LiDAR DEM for 240 and 241 creek
-ff <- "gs_be240.tif"
-ra_fn <- file.path(saga_wd, ff)
-ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-dem <- ch_get_url_data(ra_url, ra_fn)
+# use volcano DEM
+dem <- ch_volcano_raster()
 
 # fill sinks
 filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
@@ -62,7 +59,6 @@ carea <- ch_saga_carea(filled_dem, saga_wd)
 library(raster)
 plot(carea)
 }
-
 }
 \seealso{
 \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing

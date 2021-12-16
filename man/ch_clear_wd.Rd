@@ -4,10 +4,14 @@
 \alias{ch_clear_wd}
 \title{Clear SAGA Working Directory}
 \usage{
-ch_clear_wd(wd)
+ch_clear_wd(wd, do_check = TRUE)
 }
 \arguments{
 \item{wd}{working directory file path}
+
+\item{do_check}{If \code{TRUE}, the default, the user is asked to confirm the
+deletion of the working directory. If \code{TRUE}, the directory is deleted
+without confirmation.}
 }
 \value{
 \item{result}{returns TRUE upon successful execution}
@@ -22,7 +26,6 @@ will get an error if you try to use the raster layer.
 }
 \examples{
 \donttest{
-
 # not tested as clearing all files in a given directory cannot be tested in CRAN
 
 # create a saga working directory

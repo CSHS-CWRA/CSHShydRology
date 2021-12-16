@@ -17,7 +17,7 @@ ch_checkchannels(dem, channels, outlet)
 \item{check_map}{generates map with channel layer}
 }
 \description{
-Generates a map of the generated channel layer.
+Generates a map of the generated channel network layer.
 }
 \details{
 Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
@@ -29,7 +29,8 @@ Generates a simple map of the drainage network plotted over the contours to allo
 # - requires creating and accessing a temporary directory
 # - requires downloading spatial data from Zenodo repository
 # - requires multiple potentially lengthy GIS operations
-
+# Note that using this function with SAGA versions outside
+# 2.3.1 through 6.3.0 will cause warnings from RSAGA
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
 

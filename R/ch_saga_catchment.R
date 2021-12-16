@@ -36,7 +36,7 @@
 #' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param carea raster object containing contributing areas (default none provided)
 #' @param carea_flag if \code{carea = NULL}, 0 = create carea from dem; 1 = read in carea.sdat
-#' @param saga_wd name of working directory
+#' @param saga_wd name of working directory to write and read SAGA files
 #' @param outlet sf point object with coordinates of catchment outlets in the same projection as the dem
 #' @param outlet_label character vector of labels; if \option{NULL}, numbers are assigned
 #' @param buffsize numeric; the buffer radius (m) around catchment outlet to find location on digital stream network.
@@ -59,7 +59,8 @@
 #' # - requires creating and accessing a temporary directory
 #' # - requires downloading spatial data from Zenodo repository
 #' # - requires multiple potentially lengthy GIS operations
-#' 
+#' # Note that using this function with SAGA versions outside
+#' # 2.3.1 through 6.3.0 will cause warnings from RSAGA
 #' # create saga wd using base::tempdir()
 #' saga_wd <- tempdir()
 #' 
@@ -102,8 +103,7 @@ ch_saga_catchment <- function(dem, saga_wd, outlet,
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("Provided saga_wd does not exist")
-    return(NA)
+    stop("Provided saga_wd does not exist")
   }
   
   # store the dem in the working directory

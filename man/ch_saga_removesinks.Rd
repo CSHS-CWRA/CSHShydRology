@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_saga_removesinks.R
 \name{ch_saga_removesinks}
 \alias{ch_saga_removesinks}
-\title{Deepen Drainage Network}
+\title{Remove Sinks by Deepening the Drainage Network}
 \usage{
 ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 }
@@ -11,7 +11,7 @@ ch_saga_removesinks(dem_raw, saga_wd, saga_env = RSAGA::rsaga.env())
 
 \item{saga_wd}{working directory to write and read saga files}
 
-\item{saga_env}{SAGA environment object. Default is to let saga find it on its own.}
+\item{saga_env}{SAGA environment object. Default is to let SAGA find it on its own.}
 }
 \value{
 \item{dem_ns}{processed dem as a raster object.}
@@ -22,29 +22,25 @@ function acts as a wrapper to
 the \code{rsaga.sink.removal} function.
 }
 \examples{
-\donttest{
-# note: example not tested in package compilation
-# - requires creating and accessing a temporary directory
-# - requires downloading spatial data from Zenodo repository
-# - requires a potentially lengthy GIS operation
-
+# These examples are not executed if the installed version of 
+# SAGA is outside the allowed range of 2.3.1 - 6.3.0
+# as calling RSAGA functions will cause warnings
+library(RSAGA)
+saga_env <- rsaga.env()
+version <- saga_env$version
+if ((version >= "2.3.1") & (version <= "6.3.0")) {
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
 
-# download 25m DEM
-ff <- "gs_dem25.tif"
-ra_fn <- file.path(saga_wd, ff)
-ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-dem <- ch_get_url_data(ra_url, ra_fn)
+# use volcano DEM
+dem <- ch_volcano_raster()
 
 # remove sinks
-removed_dem <-  ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
-
+removed_dem <- ch_saga_removesinks(dem_raw=dem, saga_wd=saga_wd)
 # plot the difference in raw and sink-removed dem 
 library(raster)
 plot(removed_dem-dem)
 }
-
 }
 \seealso{
 \code{\link{ch_saga_fillsinks}} to fill sinks in a DEM (instead of removing)

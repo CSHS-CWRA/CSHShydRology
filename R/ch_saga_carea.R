@@ -8,7 +8,7 @@
 #' which should have had sinks removed in a pre-processing step. For more information, see 
 #' \command{?rsaga.topdown.processing}.
 #' 
-#' @param dem     raster object of your raw dem in the desired projection
+#' @param dem raster object of your dem in the desired projection - should have had sinks removed
 #' @param saga_wd     working directory to write and read saga files
 #' @param method      character or numeric: choice of processing algorithm (default \option{mfd}, or \code{4})
 #' @param linear_threshold 	numeric (number of grid cells): threshold above which 
@@ -26,20 +26,17 @@
 #' @seealso \code{\link[RSAGA]{rsaga.topdown.processing}} for more information
 #' @export
 #' @examples
-#' \donttest{
-#' # note: example not tested in package compilation
-#' # - requires creating and accessing a temporary directory
-#' # - requires downloading spatial data from Zenodo repository
-#' # - requires a potentially lengthy GIS operation
-#' 
-#' # create saga wd using base::tempdir()
+#' # These examples are not executed if the installed version of 
+#' # SAGA is outside the allowed range of 2.3.1 - 6.3.0
+#' # as calling RSAGA functions will cause warnings
+#' library(RSAGA)
+#' saga_env <- rsaga.env()
+#' version <- saga_env$version
+#' if ((version >= "2.3.1") & (version <= "6.3.0")) {
+#' # create saga wd using tempdir()
 #' saga_wd <- tempdir()
-#'
-#' # download LiDAR DEM for 240 and 241 creek
-#' ff <- "gs_be240.tif"
-#' ra_fn <- file.path(saga_wd, ff)
-#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
-#' dem <- ch_get_url_data(ra_url, ra_fn)
+#' # use volcano DEM
+#' dem <- ch_volcano_raster()
 #' 
 #' # fill sinks
 #' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
@@ -51,7 +48,6 @@
 #' library(raster)
 #' plot(carea)
 #' }
-#' 
 ch_saga_carea <- function(dem, saga_wd, 
                           method = 4,
                           linear_threshold = Inf,
@@ -68,8 +64,7 @@ ch_saga_carea <- function(dem, saga_wd,
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("Provided saga_wd does not exist")
-    return(NA)
+    stop("Provided saga_wd does not exist")
   }
   
   # store the dem object in the working directory

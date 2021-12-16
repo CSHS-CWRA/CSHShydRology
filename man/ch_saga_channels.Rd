@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_saga_channels.R
 \name{ch_saga_channels}
 \alias{ch_saga_channels}
-\title{Create Catchment Channels}
+\title{Create Channel Network}
 \usage{
 ch_saga_channels(
   dem,
@@ -45,7 +45,7 @@ ch_saga_channels(
 \item{saga.env}{SAGA environment object. Default is to let saga find it on its own.}
 }
 \value{
-\item{out_list}{list containing (as specified) channels (shp), ntwrk (raster) and route (raster)}
+\item{out_list}{list containing (as specified) channels (sf), ntwrk (raster) and route (raster)}
 }
 \description{
 Determines channel layer spatial files
@@ -72,21 +72,17 @@ The output is a list, which will have elements that will include the channel net
 }
 \examples{
 
-\donttest{
-# note: example not tested in package compilation
-# - requires creating and accessing a temporary directory
-# - requires downloading spatial data from Zenodo repository
-# - requires multiple potentially lengthy GIS operations
-
+# These examples are not executed if the installed version of 
+# SAGA is outside the allowed range of 2.3.1 - 6.3.0
+# as calling RSAGA functions will cause warnings
+library(RSAGA)
+saga_env <- rsaga.env()
+version <- saga_env$version
+if ((version >= "2.3.1") & (version <= "6.3.0")) {
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
-
-# download 25m DEM
-ff <- "gs_dem25.tif"
-ra_fn <- file.path(saga_wd, ff)
-ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-dem <- ch_get_url_data(ra_url, ra_fn)
-
+# use volcano DEM
+dem <- ch_volcano_raster()
 # fill sinks
 filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
 
