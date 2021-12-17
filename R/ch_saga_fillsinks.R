@@ -1,7 +1,7 @@
 #' Fill DEM
 #' 
 #' @description
-#' Removes sinks in a DEM by filling. This function as a wrapper to the
+#' Removes sinks in a DEM by filling. This function is a wrapper to the
 #' \pkg{RSAGA} function \code{rsaga.fill.sinks}.
 #' 
 #' @details
@@ -20,36 +20,33 @@
 #' @param saga.env    SAGA environment object. Default is to let saga find it on its own.
 #' @return \item{dem_ns}{filled dem as a raster object.}
 #' 
-#' @importFrom RSAGA rsaga.fill.sinks 
+#' @importFrom RSAGA rsaga.fill.sinks rsaga.env 
 #' @importFrom raster writeRaster raster crs extract
 #' 
 #' @author Dan Moore
 #' @seealso \code{\link{ch_saga_removesinks}} to remove sinks instead of filling
 #' @export
 #' @examples
-#' \donttest{
-#' # note: example not tested in package compilation
-#' # - requires creating and accessing a temporary directory
-#' # - requires downloading spatial data from Zenodo repository
-#' # - requires a potentially lengthy GIS operation
-#' 
+#' # These examples are not executed if the installed version of 
+#' # SAGA is outside the allowed range of 2.3.1 - 6.3.0
+#' # as calling RSAGA functions will cause warnings
+#' library(RSAGA)
+#' saga_env <- rsaga.env()
+#' version <- saga_env$version
+#' if ((version >= "2.3.1") & (version <= "6.3.0")) {
 #' # create saga wd using base::tempdir()
 #' saga_wd <- tempdir()
-#'
-#' # download 25m DEM
-#' ff <- "gs_dem25.tif"
-#' ra_fn <- file.path(saga_wd, ff)
-#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
-#' dem <- ch_get_url_data(ra_url, ra_fn)
+#' # use volcano DEM
+#' dem <- ch_volcano_raster()
 #' 
 #' # fill sinks
-#' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
-#' 
+#' # disable warnings caused by 2.3.1 < SAGA > 6.3.0  
+#' filled_dem <- ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
 #' # plot the difference in raw and filled dem (positive -> filled)
 #' library(raster)
 #' plot(filled_dem-dem)
 #' }
-#' 
+
 ch_saga_fillsinks <- function(dem_raw, saga_wd, 
                               sinkmethod = "planchon.darboux.2001", 
                               minslope = 0.1,
@@ -66,8 +63,7 @@ ch_saga_fillsinks <- function(dem_raw, saga_wd,
   
   # error trap - saga_wd does not exist
   if (!dir.exists(saga_wd)) {
-    print("Provided saga_wd does not exist")
-    return(NA)
+    stop("Provided saga_wd does not exist")
   }
   
   # store the input dem in a file in the working directory

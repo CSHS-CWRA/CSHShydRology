@@ -18,7 +18,7 @@ ch_saga_catchment(
 \arguments{
 \item{dem}{raster object of your dem in the desired projection - should have had sinks removed}
 
-\item{saga_wd}{name of working directory}
+\item{saga_wd}{name of working directory to write and read SAGA files}
 
 \item{outlet}{sf point object with coordinates of catchment outlets in the same projection as the dem}
 
@@ -75,7 +75,8 @@ Note that only one of the \code{carea} and \code{carea_flag} arguments need be s
 # - requires creating and accessing a temporary directory
 # - requires downloading spatial data from Zenodo repository
 # - requires multiple potentially lengthy GIS operations
-
+# Note that using this function with SAGA versions outside
+# 2.3.1 through 6.3.0 will cause warnings from RSAGA
 # create saga wd using base::tempdir()
 saga_wd <- tempdir()
 

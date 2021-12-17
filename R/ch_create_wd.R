@@ -20,7 +20,7 @@ ch_create_wd <- function(wd) {
     print(paste("Warning: a directory named", wd, "exists"))
   } else {
     # create directory
-    dir.create(wd)
+    dir.create(wd, recursive = TRUE)
   }
   return(TRUE)
 }

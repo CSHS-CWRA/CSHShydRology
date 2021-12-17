@@ -4,7 +4,14 @@
 \alias{ch_checkcatchment}
 \title{Check Catchments}
 \usage{
-ch_checkcatchment(dem, catchment, outlet, outlet_label = NULL)
+ch_checkcatchment(
+  dem,
+  catchment,
+  outlet,
+  outlet_label = NULL,
+  main_label = "",
+  bbox_type = "catchment"
+)
 }
 \arguments{
 \item{dem}{raster DEM that catchments were generated from}
@@ -14,6 +21,12 @@ ch_checkcatchment(dem, catchment, outlet, outlet_label = NULL)
 \item{outlet}{location of catchment outlet (sf object)}
 
 \item{outlet_label}{character label for outlet}
+
+\item{main_label}{main label for catchment}
+
+\item{bbox_type}{type of bounding box. If \option{catchment}, then
+the contours are bounded by the catchment, otherwise they are plotted
+to the extent of the DEM}
 }
 \value{
 \item{area_df}{Generates contour map with catchment polygon and outlet check}
@@ -56,7 +69,8 @@ stns <- ch_get_url_data(gs_url, gs_fn)[1:2,]
 carea <- ch_saga_carea(filled_dem, saga_wd)
 
 # run catchment delineation
-catchments <-  ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, outlet=stns, carea=carea)
+catchments <- ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, 
+outlet=stns, carea=carea)
 
 # check catchments
 ch_checkcatchment(filled_dem, catchments, stns)
