@@ -2,7 +2,7 @@ Type: Package
 Package: CSHShydRology
 Title: Canadian Hydrological Analyses
 Version: 1.2.0
-Date: 2021-12-17
+Date: 2022-01-22
 Authors@R: c(person("Kevin", "Shook", 
               email = "kevin.shook@usask.ca", 
               role = c("cre", "aut")),
@@ -40,7 +40,7 @@ Description: A collection of user submitted functions to aid in the analysis of 
 License: AGPL-3 
 URL: https://github.com/CSHS-hydRology/CSHShydRology
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.0.0)
 Imports: 
     fields,
     Kendall,
@@ -60,7 +60,8 @@ Imports:
     dplyr,
     magrittr,
     httr,
-    tidyhydat
+    tidyhydat,
+    plotKML
 Suggests: 
     knitr,
     testthat, 
