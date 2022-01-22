@@ -49,7 +49,6 @@ Imports:
     timeDate,
     stringr,
     jsonlite,
-    RSAGA,
     ggplot2,
     ggspatial,
     stats,
