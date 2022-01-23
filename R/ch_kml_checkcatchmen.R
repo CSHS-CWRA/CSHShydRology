@@ -7,7 +7,9 @@
 #' @param channels 
 #' @param pp 
 #' @param pp_labels 
-#'
+#' @author Dan Moore
+#' @importFrom sf st_cast
+#' @importFrom plotKML kml_open kml_layer kml_close
 #' @return
 #' @export
 #'
@@ -27,19 +29,19 @@ ch_kml_checkcatchment <- function(file, folder_name = "",
     labels <- rep("", np)
   }
   # create layers
-  plotKML::kml_open(file.name = fn_kml, folder.name = folder_name)
-  plotKML::kml_layer(as_Spatial(contours), colour = "#aaaa7f",
+  kml_open(file.name = fn_kml, folder.name = folder_name)
+  kml_layer(as_Spatial(contours), colour = "#aaaa7f",
                      subfolder.name = "Contours")
-  plotKML::kml_layer(as_Spatial(channels), colour = "lightblue",
+  kml_layer(as_Spatial(channels), colour = "lightblue",
                      subfolder.name = "Channels")
-  plotKML::kml_layer(as_Spatial(catchments), colour = "yellow",
+  kml_layer(as_Spatial(catchments), colour = "yellow",
                      #outline = TRUE, alpha = 0.1,
                      subfolder.name = "Catchments")
-  plotKML::kml_layer(as_Spatial(pp), 
+  :kml_layer(as_Spatial(pp), 
                      colour = "red", 
                      shape = paste0("https://maps.google.com/mapfiles/kml/shapes",
                                     "/placemark_circle_highlight.png"),
                      subfolder.name = "Catchment outlets",
                      points_name = labels)
-  plotKML::kml_close(file.name = fn_kml)
+  kml_close(file.name = fn_kml)
 }
