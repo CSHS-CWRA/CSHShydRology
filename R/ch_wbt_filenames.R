@@ -16,6 +16,7 @@
 #' @param fn_pp 
 #' @param fn_pp_snap 
 #'
+#' @author Dan Moore
 #' @return Returns a list of the input and output file names
 #' @export
 #'

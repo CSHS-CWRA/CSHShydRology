@@ -1,4 +1,4 @@
-#' Generate kml file to check delineation in Google Eart
+#' Generate kml file to check delineation in Google Earth
 #'
 #' @param file 
 #' @param folder_name 
