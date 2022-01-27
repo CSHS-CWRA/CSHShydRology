@@ -6,7 +6,10 @@
 #' @param fn_channel_vec 
 #' @param threshold 
 #' @param ... 
-#'
+#' @author Dan Moore
+#' @importFrom raster raster
+#' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector
+#' @importFrom sf st_crs write_sf
 #' @return
 #' @export
 #'
@@ -15,16 +18,14 @@ ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
                             fn_channel_ras, fn_channel_vec, 
                             threshold = NULL, ...) {
   if (!file.exists(fn_flowacc)) {
-    msg <- "Error: input flow accumulation file does not exist"
-    print(msg)
-    return(msg)
+    stop("Error: input flow accumulation file does not exist")
   }
   if (is.null(threshold)) {
-    msg <- "Error: threshold for channel initiation not specified"
-    print(msg)
-    return(msg)
+    step("Error: threshold for channel initiation not specified")
   }
-  print("ch_wbt: Generating stream network")
+  
+  message("ch_wbt: Generating stream network")
+  
   wbt_extract_streams(fn_flowacc, fn_channel_ras, threshold = threshold, ...)
   wbt_raster_streams_to_vector(fn_channel_ras, fn_flowdir, fn_channel_vec)
   channel_vec <- st_read(fn_channel_vec)

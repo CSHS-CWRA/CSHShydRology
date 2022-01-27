@@ -17,7 +17,7 @@ ch_create_wd <- function(wd) {
   # creates working directory
   if (dir.exists(wd)) {
     # print warning if directory already exists
-    print(paste("Warning: a directory named", wd, "exists"))
+    warning(paste("A directory named", wd, "exists"))
   } else {
     # create directory
     dir.create(wd, recursive = TRUE)

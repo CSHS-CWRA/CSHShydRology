@@ -7,6 +7,10 @@
 #' @param fn_dem_fsc 
 #' @param ... 
 #'
+#' @author Dan Moore
+#' @importFrom raster raster
+#' @importFrom whitebox wbt_fill_single_cell_pits wbt_breach_depressions_least_cost wbt_fill_depressions_wang_and_liu
+#' @importFrom whitebox wbt_breach_depressions wbt_fill_depressions wbt_fill_depressions_planchon_and_darboux
 #' @return
 #' @export
 #'
@@ -14,32 +18,25 @@
 ch_wbt_removesinks <- function(in_dem, out_dem, method = "breach_leastcost", 
                                dist = NULL, fn_dem_fsc = NULL, ...) {
   if (!file.exists(in_dem)) {
-    msg <- "Error: input dem file does not exist"
-    print(msg)
-    return(msg)
+    stop("Error: input dem file does not exist")
   }
   if (method == "breach_leastcost") {
     if (is.null(dist)) {
-      msg <- paste("Error: no value for dist, which is required for",
-                   "wbt_breach_depressions_least_cost")
-      print(msg)
-      return(msg)
+      stop("Error: no value for dist, which is required for wbt_breach_depressions_least_cost")
     }
-    whitebox::wbt_fill_single_cell_pits(in_dem, fn_dem_fsc)
-    whitebox::wbt_breach_depressions_least_cost(fn_dem_fsc, out_dem, dist, ...)
+    wbt_fill_single_cell_pits(in_dem, fn_dem_fsc)
+    wbt_breach_depressions_least_cost(fn_dem_fsc, out_dem, dist, ...)
   } else if (method == "breach") {
-    whitebox::wbt_fill_single_cell_pits(in_dem, fn_dem_fsc)
-    whitebox::wbt_breach_depressions(fn_dem_fsc, out_dem, ...)
+    wbt_fill_single_cell_pits(in_dem, fn_dem_fsc)
+    wbt_breach_depressions(fn_dem_fsc, out_dem, ...)
   } else if (method == "fill") {
-    whitebox::wbt_fill_depressions(in_dem, out_dem, ...)
+    wbt_fill_depressions(in_dem, out_dem, ...)
   } else if (method == "fill_pd") {
-    whitebox::wbt_fill_depressions_planchon_and_darboux(in_dem, out_dem, ...)
+    wbt_fill_depressions_planchon_and_darboux(in_dem, out_dem, ...)
   } else if (method == "fill_wl") {
-    whitebox::wbt_fill_depressions_wang_and_liu(in_dem, out_dem, ...)
+    wbt_fill_depressions_wang_and_liu(in_dem, out_dem, ...)
   } else {
-    msg <- "Error: incorrect method for sink removal specified"
-    print(msg)
-    return(msg)
+    stop("Error: incorrect method for sink removal specified")
   }
-  return(raster::raster(out_dem))
+  return(raster(out_dem))
 }

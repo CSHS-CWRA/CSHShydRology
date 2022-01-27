@@ -4,12 +4,12 @@
 #' @param fn_flowdir 
 #' @param fn_catchment_ras 
 #' @param fn_catchment_vec 
-#' @param return_vector 
+#' @param return_vector If \code{TRUE} (the default) a vector of the catchment will be returned.
 #' @param ... 
 #' 
 #' @author Dan Moore
 #' @importFrom raster raster
-#' @importFrom  whitebox wbt_watershed wbt_raster_to_vector_polygons
+#' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
 #' @importFrom sf st_crs write_sf st_read
 #' @return
 #' @export
@@ -26,15 +26,15 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   
   message("ch_wbt: Delineating catchment boundaries")
   crs_pp <- st_crs(st_read(fn_pp_snap))$epsg
-  crs_fd <- st_crs(raster::raster(fn_flowdir))$epsg
+  crs_fd <- st_crs(raster(fn_flowdir))$epsg
   if (crs_pp != crs_fd) {
     stop("Error: pour points and flow direction grid have different crs")
   }
-  whitebox::wbt_watershed(d8_pntr = fn_flowdir, pour_pts = fn_pp_snap, 
+  wbt_watershed(d8_pntr = fn_flowdir, pour_pts = fn_pp_snap, 
                           output = fn_catchment_ras)
-  whitebox::wbt_raster_to_vector_polygons(fn$catchment_ras, fn$catchment_vec)
+  wbt_raster_to_vector_polygons(fn$catchment_ras, fn$catchment_vec)
   catchment_vec <- st_read(fn_catchment_vec) %>% st_as_sf()
-  if(is.na(st_crs(catchment_vec))){
+  if (is.na(st_crs(catchment_vec))){
     st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
     write_sf(catchment_vec, fn_catchment_vec)
   }
