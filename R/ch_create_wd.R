@@ -1,9 +1,9 @@
-#' @title Create working wirectory
+#' @title Create working directory
 #' 
 #' @description 
 #' Creates a working directory.
 #' 
-#' @param wd working directory file path
+#' @param wd name of a directory in which to store files created by WhiteboxTools functions
 #' @return 
 #' \item{\code{TRUE}}{returns \code{TRUE} upon successful execution}
 #' 
@@ -21,6 +21,7 @@ ch_create_wd <- function(wd) {
   } else {
     # create directory
     dir.create(wd, recursive = TRUE)
+    message(paste("A directory named", wd, "has been created"))
   }
   return(TRUE)
 }

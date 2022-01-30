@@ -1,9 +1,14 @@
 #' Removes sinks from a DEM
+#' 
+#' @description Sinks are removed from a DEM using one of several methods. The raster file
+#' types supported are listed in \code{\link{SpatialHydrology-functions}}.
 #'
-#' @param in_dem 
-#' @param out_dem 
-#' @param method 
-#' @param dist 
+#' @param in_dem File path for original dem. Required.
+#' @param out_dem File path for dem after removing sinks.
+#' @param method Method for removing sinks. Default method is \option{breach_leastcost}. Other methods include
+#' \option{breach}, \option{fill}, \option{fill_pd} (Planchot and Darboux), and \option{fill_wl} (Wang and Liu).
+#' 
+#' @param dist Maximum search distance for breach paths in cells. Required if \code{method = "breach_leastcost"}.
 #' @param fn_dem_fsc 
 #' @param ... 
 #'
@@ -11,7 +16,7 @@
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_fill_single_cell_pits wbt_breach_depressions_least_cost wbt_fill_depressions_wang_and_liu
 #' @importFrom whitebox wbt_breach_depressions wbt_fill_depressions wbt_fill_depressions_planchon_and_darboux
-#' @return
+#' @return Returns 
 #' @export
 #'
 #' @examples

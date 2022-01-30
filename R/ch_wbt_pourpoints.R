@@ -14,7 +14,6 @@
 #' @importFrom sf st_crs st_write
 #' @return
 #' @export 
-#'
 #' @examples
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {

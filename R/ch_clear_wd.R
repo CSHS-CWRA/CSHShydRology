@@ -1,12 +1,11 @@
 #' Clear SAGA Working Directory
 #'
 #' @description 
-#' Empties and removes a SAGA working directory. 
+#' Empties and removes a working directory. 
 #' 
 #' @details
-#' The data for raster layers read in as SAGA sdat 
-#' files (e.g. the contributing area, carea) are held on disk rather than in memory; if you clear the working directory you
-#' will get an error if you try to use the raster layer.
+#' The data for raster layers read in as Whitebox
+#' files are held on disk rather than in memory
 #'
 #' @param wd working directory file path
 #' @param do_check If \code{TRUE}, the default, the user is asked to confirm the
@@ -17,7 +16,7 @@
 #'  \item{result}{returns TRUE upon successful execution}
 #' 
 #' @author Dan Moore 
-#' @seealso \code{\link{ch_create_wd}} to create working SAGA directory
+#' @seealso \code{\link{ch_create_wd}} to create working directory
 #' @export
 #' @examples \donttest{
 #' # not tested as clearing all files in a given directory cannot be tested in CRAN
