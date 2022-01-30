@@ -1,8 +1,11 @@
-# Creates flow accumulation grid file
+#' Creates flow accumulation grid file
 #'
-#' @param fn_dem_ns 
-#' @param fn_flowacc 
-#' @param return_raster 
+#' @param fn_dem_ns File name of dem with sinks removed.
+#' @param fn_flowacc File name for flow accumulation grid to be created.
+#' @param return_raster If \code{TRUE} (the default), the flow accumulation
+#' grid will be returned as a raster object, in addition to being written to
+#' \option{fn_flowacc}. If \code{FALSE}, the output file will still be created
+#' but a \code{NULL} value is returned.
 #'
 #' @author Dan Moore
 #' @importFrom raster raster

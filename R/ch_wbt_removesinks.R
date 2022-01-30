@@ -6,17 +6,16 @@
 #' @param in_dem File path for original dem. Required.
 #' @param out_dem File path for dem after removing sinks.
 #' @param method Method for removing sinks. Default method is \option{breach_leastcost}. Other methods include
-#' \option{breach}, \option{fill}, \option{fill_pd} (Planchot and Darboux), and \option{fill_wl} (Wang and Liu).
-#' 
+#' \option{breach}, \option{fill}, \option{fill_pd} (Planchon and Darboux), and \option{fill_wl} (Wang and Liu).
 #' @param dist Maximum search distance for breach paths in cells. Required if \code{method = "breach_leastcost"}.
-#' @param fn_dem_fsc 
-#' @param ... 
+#' @param fn_dem_fsc File path for dem after removing single-cell pits.
+#' @param ... Additional arguments to be passed to functions to remove sinks.
 #'
 #' @author Dan Moore
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_fill_single_cell_pits wbt_breach_depressions_least_cost wbt_fill_depressions_wang_and_liu
 #' @importFrom whitebox wbt_breach_depressions wbt_fill_depressions wbt_fill_depressions_planchon_and_darboux
-#' @return Returns 
+#' @return Returns a raster object containing the processed dem. 
 #' @export
 #'
 #' @examples

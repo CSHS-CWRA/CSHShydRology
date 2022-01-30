@@ -1,8 +1,11 @@
 #' Creates flow direction grid file
 #'
-#' @param fn_dem_ns 
-#' @param fn_flowdir 
-#' @param return_raster 
+#' @param fn_dem_ns File name of dem with sinks removed.
+#' @param fn_flowdir File name for flow direction grid to be created.
+#' @param return_raster If \code{TRUE} (the default), the flow direction
+#' grid will be returned as a raster object, in addition to being written to
+#' \option{fn_flowdir}. If \code{FALSE}, the output file will still be created
+#' but a \code{NULL} value is returned.
 #'
 #' @author Dan Moore
 #' @importFrom raster raster
