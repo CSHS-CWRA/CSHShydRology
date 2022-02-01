@@ -10,9 +10,10 @@
 #' @author Dan Moore 
 #' @seealso \code{\link{ch_clear_wd}} to clear the working directory
 #' @export
-#' @examples
+#' @examples \donttest{
+#' # not tested automatically as will return a warning
 #' ch_create_wd(tempdir())
-#' 
+#' }
 ch_create_wd <- function(wd) {
   # creates working directory
   if (dir.exists(wd)) {

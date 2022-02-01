@@ -37,7 +37,7 @@ ch_kml_checkcatchment <- function(file, folder_name = "",
   kml_layer(as_Spatial(catchments), colour = "yellow",
                      #outline = TRUE, alpha = 0.1,
                      subfolder.name = "Catchments")
-  :kml_layer(as_Spatial(pp), 
+  kml_layer(as_Spatial(pp), 
                      colour = "red", 
                      shape = paste0("https://maps.google.com/mapfiles/kml/shapes",
                                     "/placemark_circle_highlight.png"),

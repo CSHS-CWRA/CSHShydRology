@@ -19,7 +19,7 @@
 #' 
 #' The \pkg{Whitebox} functions support the following file types for raster data:
 #' \describe{
-#' \item{type}(extension)
+#' \item{type}{extension}
 #' \item{GeoTIFF}{*.tif, *.tiff}
 #' \item{Big GeoTIFF}{*.tif, *.tiff}
 #' \item{Esri ASCII}{*.txt, *.asc}
@@ -31,6 +31,4 @@
 #' \item{Surfer Binary}{*.grd}
 #' \item{Whitebox}{*.tas, *.dep}
 #' }
-
-
 NULL

@@ -26,22 +26,17 @@ Generates a simple map of the drainage network plotted over the contours to allo
 
 \donttest{
 # note: example not tested in package compilation
-# - requires creating and accessing a temporary directory
-# - requires downloading spatial data from Zenodo repository
-# - requires multiple potentially lengthy GIS operations
-# Note that using this function with SAGA versions outside
-# 2.3.1 through 6.3.0 will cause warnings from RSAGA
-# create saga wd using base::tempdir()
-saga_wd <- tempdir()
+# create wd using base::tempdir()
+wd <- tempdir()
 
 # download 25m DEM
 ff <- "gs_dem25.tif"
-ra_fn <- file.path(saga_wd, ff)
+ra_fn <- file.path(wd, ff)
 ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
 dem <- ch_get_url_data(ra_url, ra_fn)
 
 # fill sinks
-filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+filled_dem <-  ch_wbt_removesinks(dem_raw=dem, saga_wd=saga_wd)
 
 # determine contributing area raster using filled_dem
 carea <- ch_saga_carea(filled_dem, saga_wd)

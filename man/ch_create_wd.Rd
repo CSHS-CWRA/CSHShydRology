@@ -2,25 +2,27 @@
 % Please edit documentation in R/ch_create_wd.R
 \name{ch_create_wd}
 \alias{ch_create_wd}
-\title{Create SAGA Working Directory}
+\title{Create working directory}
 \usage{
 ch_create_wd(wd)
 }
 \arguments{
-\item{wd}{working directory file path}
+\item{wd}{name of a directory in which to store files created by WhiteboxTools functions}
 }
 \value{
 \item{\code{TRUE}}{returns \code{TRUE} upon successful execution}
 }
 \description{
-Creates a SAGA working directory.
+Creates a working directory.
 }
 \examples{
+\donttest{
+# not tested automatically as will return a warning
 ch_create_wd(tempdir())
-
+}
 }
 \seealso{
-\code{\link{ch_clear_wd}} to clear the working SAGA directory
+\code{\link{ch_clear_wd}} to clear the working directory
 }
 \author{
 Dan Moore

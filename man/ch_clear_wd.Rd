@@ -17,12 +17,11 @@ without confirmation.}
 \item{result}{returns TRUE upon successful execution}
 }
 \description{
-Empties and removes a SAGA working directory.
+Empties and removes a working directory.
 }
 \details{
-The data for raster layers read in as SAGA sdat 
-files (e.g. the contributing area, carea) are held on disk rather than in memory; if you clear the working directory you
-will get an error if you try to use the raster layer.
+The data for raster layers read in as Whitebox
+files are held on disk rather than in memory
 }
 \examples{
 \donttest{
@@ -38,7 +37,7 @@ ch_clear_wd(saga_wd)
 
 }
 \seealso{
-\code{\link{ch_create_wd}} to create working SAGA directory
+\code{\link{ch_create_wd}} to create working directory
 }
 \author{
 Dan Moore

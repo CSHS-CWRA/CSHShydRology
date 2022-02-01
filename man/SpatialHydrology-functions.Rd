@@ -4,15 +4,35 @@
 \alias{SpatialHydrology-functions}
 \title{Spatial Hydrology functions}
 \description{
-These functions perform spatial analyses important in hydrology
+These functions perform spatial analyses important in hydrology. All
+of the functions with the prefix \code{ch_wbt} require the installation of the
+package \pkg{Whitebox}. The functions include
 \describe{
- \item{ch_saga_carea}{Generates a grid of contributing area for each grid cell}
- \item{ch_saga_removesinks}{Removes sinks from a DEM by deepening drainage network}
- \item{ch_saga_fillsinks}{Removes sinks from a DEM by filling them}
- \item{ch_saga_catchment}{Generates catchment boundaries for a conditioned DEM based on specified points of interest}
- \item{ch_saga_channels}{Generates a drainage network from DEM}
+ \item{ch_wbt_removesinks}{Removes sinks from a DEM by deepening drainage network}
+ \item{ch_wbt_fillsinks}{Removes sinks from a DEM by filling them}
+ \item{ch_wbt_catchment}{Generates catchment boundaries for a conditioned DEM based on specified points of interest}
+ \item{ch_wbt_channels}{Generates a drainage network from DEM}
+ \item{ch_wbt_flow_accumulation}{Accumulates flows downstream in a cathcment}
+ \item{ch_wbt_flow_direction}{Calcualted flow directions for each cell in DEM}
+ \item{ch_wbt_pourpoints}{Snaps pour points to channel}
+ \item{ch_wbt_catchment_onestep}{Perfors}
  \item{ch_contours}{Creates contour lines from DEM}
  \item{ch_checkcatchment}{Provides a simple map to check the outputs from ch_saga_catchment}
  \item{ch_checkchannels}{Provides a simple map to check the outputs from ch_saga_channels}
+}
+
+The \pkg{Whitebox} functions support the following file types for raster data:
+\describe{
+\item{type}{extension}
+\item{GeoTIFF}{*.tif, *.tiff}
+\item{Big GeoTIFF}{*.tif, *.tiff}
+\item{Esri ASCII}{*.txt, *.asc}
+\item{Esri BIL}{*.flt, *.hdr}
+\item{GRASS ASCII}{*.txt, *.asc}
+\item{Idrisi}{*.rdc, *.rst}
+\item{SAGA Binary}{*.sdat, *.sgrd}
+\item{Surfer ASCII}{*.grd}
+\item{Surfer Binary}{*.grd}
+\item{Whitebox}{*.tas, *.dep}
 }
 }
