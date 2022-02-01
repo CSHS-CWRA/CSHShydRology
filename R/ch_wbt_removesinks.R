@@ -21,13 +21,13 @@
 #' @examples 
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
-#' input_raster_file <- tempfile(fileext = c(".tif"))
-#' output_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+#' dem_raster_file <- tempfile(fileext = c(".tif"))
+#' no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
 #' # write test raster to file
-#' writeRaster(test_raster, input_raster_file, format = "GTiff")
+#' writeRaster(test_raster, dem_raster_file, format = "GTiff")
 #' # remove sinks
-#' removed_sinks <- ch_wbt_removesinks(input_raster_file, output_raster_file, method = "fill")
-#
+#' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+#' 
 ch_wbt_removesinks <- function(in_dem, out_dem, method = "breach_leastcost", 
                                dist = NULL, fn_dem_fsc = NULL, ...) {
   if (!file.exists(in_dem)) {
