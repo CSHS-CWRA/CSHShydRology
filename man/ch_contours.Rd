@@ -7,15 +7,16 @@
 ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 }
 \arguments{
-\item{dem}{raster object of your dem in the desired projection (note: should have had sinks removed)}
+\item{dem}{Raster object of your dem in the desired projection (note: should have had sinks removed).}
 
-\item{zmin}{minimum elevation value for contours}
+\item{zmin}{Minimum elevation value for contours. If not specified, minimum value \option{dem} is used.}
 
-\item{zmax}{maximum elevation value for contours}
+\item{zmax}{Maximum elevation value for contours. If not specified, maximum value \option{dem} is used.}
 
-\item{n_levels}{number of contour lines}
+\item{n_levels}{Number of contour lines. Default is 10.}
 
-\item{z_levels}{levels at which to plot contours}
+\item{z_levels}{Levels at which to plot contours. If specified, overrides \option{zmin}, \option{zmax} and
+\option{n_levels}.}
 }
 \value{
 \item{contours_sf}{sf object containing contours}
@@ -24,7 +25,7 @@ ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 Creates contour lines from a DEM.
 }
 \details{
-Generates contour lines from a DEM, which are returned as an sf object. 
+Generates contour lines from a DEM, which are returned as an \pkg{sf} object. 
 The user can either provide a vector of elevation values by specifying the \code{z_levels} argument, 
 or by supplying the minimum and maximum elevations (\code{zmin} and \code{zmax}) 
 and the number of contour lines (\code{n_levels}).
