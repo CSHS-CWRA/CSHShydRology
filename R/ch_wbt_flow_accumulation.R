@@ -14,7 +14,7 @@
 #' @export
 #'
 #' @examples
-#' #' library(raster)
+#' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
 #' no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
@@ -22,7 +22,7 @@
 #' writeRaster(test_raster, dem_raster_file, format = "GTiff")
 #' # remove sinks
 #' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
-#' # get flow directions
+#' # get flow accumulations
 #' flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
 #' flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
 #' plot(flow_acc)

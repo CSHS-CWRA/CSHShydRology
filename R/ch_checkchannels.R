@@ -7,13 +7,13 @@
 #' Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 #' 
 #' @param dem raster DEM that catchments were generated from
-#' @param channels channel polyline (or channels list from \code{ch_saga_channels}) (sf object)
+#' @param channels channel polyline (or channels list from \code{ch_wbt_channels}) (sf object)
 #' @param outlet location of catchment outlet (sf object)
 #' @return 
 #' \item{check_map}{generates map with channel layer}
 #' 
 #' @author Dan Moore
-#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+#' @seealso \code{\link{ch_wbt_fillsinks}} to fill sinks instead of removing
 #' 
 #' @examples
 #' 
@@ -36,7 +36,7 @@
 #' carea <- ch_saga_carea(filled_dem, saga_wd)
 #' 
 #' # generate channels sf object
-#' channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
+#' channels <- ch_wbt_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
 #' 
 #' # download station locations (use as catchment outlets)
 #' ff <- "gs_weirs.GeoJSON"

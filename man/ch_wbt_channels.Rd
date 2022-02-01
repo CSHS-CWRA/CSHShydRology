@@ -14,23 +14,43 @@ ch_wbt_channels(
 )
 }
 \arguments{
-\item{fn_flowacc}{}
+\item{fn_flowacc}{File name for flow accumulation grid.}
 
-\item{fn_flowdir}{}
+\item{fn_flowdir}{File name for flow direction grid.}
 
-\item{fn_channel_ras}{}
+\item{fn_channel_ras}{File name for raster version of channel network.}
 
-\item{fn_channel_vec}{}
+\item{fn_channel_vec}{File name for vector version of channel networks.}
 
-\item{threshold}{}
+\item{threshold}{Threshold for channel initiation.}
 
-\item{...}{}
+\item{...}{Other parameters for \pkg{whitebox} function \code{wbt_extract_streams}}
 }
 \value{
-
+Returns a \pkg{sf} vector object of the stream channels.
 }
 \description{
 Generate stream network
+}
+\examples{
+library(raster)
+test_raster <- ch_volcano_raster()
+dem_raster_file <- tempfile(fileext = c(".tif"))
+no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+# write test raster to file
+writeRaster(test_raster, dem_raster_file, format = "GTiff")
+# remove sinks
+removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+# get flow accumulations
+flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
+flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+# get flow directions
+flow_dir_file <- tempfile("flow_dir", fileext = c(".tif"))
+flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
+channel_raster_file <- tempfile("channels", fileext = c(".tif"))
+channel_vector_file <- tempfile("channels", fileext = c(".shp"))
+channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
+channel_vector_file, 1)
 }
 \author{
 Dan Moore
