@@ -51,6 +51,7 @@ channel_raster_file <- tempfile("channels", fileext = c(".tif"))
 channel_vector_file <- tempfile("channels", fileext = c(".shp"))
 channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
 channel_vector_file, 1)
+plot(channels)
 }
 \author{
 Dan Moore

@@ -1,18 +1,24 @@
 #' Snap pour points to channels
-#' @param pp_sf 
+#' 
+#' @description Pour points describe the outlets of sub-basins within a DEM. To use
+#' the pour points to delineate catchments, they must align with the drainage
+#' network. This function snaps (forces the locations) of pour points to the
+#' channels.
+#' @param pp_sf File name containing pour points. These must be supplied by the user.
 #' @param fn_flowacc Name of file containing flow accumulations.
 #' @param fn_pp 
 #' @param fn_pp_snap 
 #' @param check_crs If \code{TRUE} the projections of the pour points and flow
 #' accumulation files will be checked to ensure they are identical.
 #' @param snap_dist 
-#' @param ... 
+#' @param ... Additional parameters for \pkg{whitebox} function \code{wbt_snap_pour_points}.
 #'
 #' @author Dan Moore
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_snap_pour_points
 #' @importFrom sf st_crs st_write
-#' @return
+#' @return Returns a \pkg{sf} object of the specified pour points snapped to the
+#' channel network.
 #' @export 
 #' @examples
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 

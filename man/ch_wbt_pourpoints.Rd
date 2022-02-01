@@ -15,7 +15,7 @@ ch_wbt_pourpoints(
 )
 }
 \arguments{
-\item{pp_sf}{}
+\item{pp_sf}{File name containing pour points. These must be supplied by the user.}
 
 \item{fn_flowacc}{Name of file containing flow accumulations.}
 
@@ -28,13 +28,17 @@ accumulation files will be checked to ensure they are identical.}
 
 \item{snap_dist}{}
 
-\item{...}{}
+\item{...}{Additional parameters for \pkg{whitebox} function \code{wbt_snap_pour_points}.}
 }
 \value{
-
+Returns a \pkg{sf} object of the specified pour points snapped to the
+channel network.
 }
 \description{
-Snap pour points to channels
+Pour points describe the outlets of sub-basins within a DEM. To use
+the pour points to delineate catchments, they must align with the drainage
+network. This function snaps (forces the locations) of pour points to the
+channels.
 }
 \author{
 Dan Moore

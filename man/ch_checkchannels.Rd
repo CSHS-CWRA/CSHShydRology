@@ -9,7 +9,7 @@ ch_checkchannels(dem, channels, outlet)
 \arguments{
 \item{dem}{raster DEM that catchments were generated from}
 
-\item{channels}{channel polyline (or channels list from \code{ch_saga_channels}) (sf object)}
+\item{channels}{channel polyline (or channels list from \code{ch_wbt_channels}) (sf object)}
 
 \item{outlet}{location of catchment outlet (sf object)}
 }
@@ -42,7 +42,7 @@ filled_dem <-  ch_wbt_removesinks(dem_raw=dem, saga_wd=saga_wd)
 carea <- ch_saga_carea(filled_dem, saga_wd)
 
 # generate channels sf object
-channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
+channels <- ch_wbt_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
 
 # download station locations (use as catchment outlets)
 ff <- "gs_weirs.GeoJSON"
@@ -56,7 +56,7 @@ ch_checkchannels(dem=filled_dem, channels, outlet=stns)
 
 }
 \seealso{
-\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+\code{\link{ch_wbt_fillsinks}} to fill sinks instead of removing
 }
 \author{
 Dan Moore
