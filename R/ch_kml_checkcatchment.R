@@ -1,20 +1,53 @@
 #' Generate kml file to check delineation in Google Earth
 #'
-#' @param file 
-#' @param folder_name 
-#' @param contours 
-#' @param catchments 
-#' @param channels 
-#' @param pp 
-#' @param pp_labels 
-#' @author Dan Moore
-#' @importFrom sf st_cast
+#' @param fn_kml Name of the KML file to be crearted
+#' @param folder_name name of the KML folder.
+#' @param contours \pkg{sp} object of contours.
+#' @param catchments \pkg{sp} object of catchments.
+#' @param channels \pkg{sp} object of channels.
+#' @param pp \pkg{sp} object of pour points.
+#' @param pp_labels A vector of names for the pour points. If not specified, the 
+#' pour points will be numbered.
+#' @author Dan Moore and Kevin Shook
+#' @importFrom sf st_cast st_crs
 #' @importFrom plotKML kml_open kml_layer kml_close
-#' @return
+#' @return No value is returned. A kml file is created.
 #' @export
 #'
 #' @examples
-ch_kml_checkcatchment <- function(file, folder_name = "",
+#' library(raster)
+#' test_raster <- ch_volcano_raster()
+#' dem_raster_file <- tempfile(fileext = c(".tif"))
+#' no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+#' # write test raster to file
+#' writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#' # remove sinks
+#' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+#' # get flow accumulations
+#' flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
+#' flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+#' # get pour points
+#' pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
+#' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+#' snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = c(".shp"))
+#' snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
+#' snapped_pourpoint_file, snap_dist = 10)
+#' # get flow directions
+#' flow_dir_file <- tempfile("flow_dir", fileext = ".tif")
+#' flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
+#' fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
+#' fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
+#' # generate contours
+#' contours <- ch_contours(test_raster)
+#' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, fn_catchment_ras, fn_catchment_vec)
+#' # get channels
+#' channel_raster_file <- tempfile("channels", fileext = c(".tif"))
+#' channel_vector_file <- tempfile("channels", fileext = c(".shp"))
+#' channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
+#' channel_vector_file, 1)
+#' fn_kml <- tempfile("volcano", fileext = ".KML")
+#' ch_kml_checkcatchment(fn_kml, "test", contours, catchments, channels, pourpoints)
+ch_kml_checkcatchment <- function(fn_kml, folder_name = "",
                                   contours, catchments, channels, 
                                   pp, pp_labels = NULL) {
   catchments <- st_cast(catchments, 'MULTILINESTRING') %>%
