@@ -9,8 +9,7 @@ ch_wbt_catchment(
   fn_flowdir,
   fn_catchment_ras,
   fn_catchment_vec,
-  return_vector = TRUE,
-  ...
+  return_vector = TRUE
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ ch_wbt_catchment(
 \item{fn_catchment_vec}{Vector file to contain delineated catchment.}
 
 \item{return_vector}{If \code{TRUE} (the default) a vector of the catchment will be returned.}
-
-\item{...}{Additional parameters to be passed to what?}
 }
 \value{
 If \code{return_vector = TRUE} a vector of the catchement is returned. Otherwise

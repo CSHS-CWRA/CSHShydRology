@@ -27,7 +27,7 @@ ch_kml_checkcatchment(
 
 \item{pp}{\pkg{sp} object of pour points.}
 
-\item{pp_labels}{A vector of names for the pour points. If not specified the 
+\item{pp_labels}{A vector of names for the pour points. If not specified, the 
 pour points will be numbered.}
 }
 \value{
@@ -68,7 +68,8 @@ channel_vector_file <- tempfile("channels", fileext = c(".shp"))
 channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
 channel_vector_file, 1)
 fn_kml <- tempfile("volcano", fileext = ".KML")
-ch_kml_checkcatchment(fn_kml, "test", contours, catchments, channels, pourpoints)
+# create KML files, supressing warnings caused by other functions
+suppressWarnings(ch_kml_checkcatchment(fn_kml, "test", contours, catchments, channels, pourpoints))
 }
 \author{
 Dan Moore and Kevin Shook

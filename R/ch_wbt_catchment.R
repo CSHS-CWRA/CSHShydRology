@@ -5,7 +5,6 @@
 #' @param fn_catchment_ras Raster file to contain delineated catchment.
 #' @param fn_catchment_vec Vector file to contain delineated catchment.
 #' @param return_vector If \code{TRUE} (the default) a vector of the catchment will be returned.
-#' @param ... Additional parameters to be passed to what?
 #' 
 #' @author Dan Moore and Kevin Shook
 #' @importFrom raster raster
@@ -41,7 +40,7 @@
 #' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, fn_catchment_ras, fn_catchment_vec)
 #' 
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 
-                             fn_catchment_vec, return_vector = TRUE, ...) {
+                             fn_catchment_vec, return_vector = TRUE) {
   if (!file.exists(fn_pp_snap)) {
     stop("Error: file containing snapped pour points does not exist")
   }

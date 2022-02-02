@@ -46,7 +46,8 @@
 #' channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
 #' channel_vector_file, 1)
 #' fn_kml <- tempfile("volcano", fileext = ".KML")
-#' ch_kml_checkcatchment(fn_kml, "test", contours, catchments, channels, pourpoints)
+#' # create KML files, supressing warnings caused by other functions
+#' suppressWarnings(ch_kml_checkcatchment(fn_kml, "test", contours, catchments, channels, pourpoints))
 ch_kml_checkcatchment <- function(fn_kml, folder_name = "",
                                   contours, catchments, channels, 
                                   pp, pp_labels = NULL) {
