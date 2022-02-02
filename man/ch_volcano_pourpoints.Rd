@@ -10,14 +10,22 @@ ch_volcano_pourpoints(pp_shp)
 \item{pp_shp}{Name for shapefile to hold pour points}
 }
 \value{
-Returns \code{NULL}. Writes pour points to specified file.
+Returns an \pkg{sf} object containing 2 pour points for the 
+\code{volcano} DEM. The pour points are also written to the specified file.
 }
 \description{
-Creates a file of pour points for the \code{volcano} DEM
+Creates a file of pour points for the \code{volcano} DEM. The 
+pour points define the outlets of sub-basins. These pour points are used
+by examples within other functions.
+}
+\examples{
+pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
+pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+plot(pourpoints)
 }
 \seealso{
 \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}}
 }
 \author{
-Dan Moore
+Dan Moore and Kevin Shook
 }
