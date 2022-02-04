@@ -11,13 +11,13 @@ ch_wbt_flow_direction(fn_dem_ns, fn_flowdir, return_raster = TRUE)
 
 \item{fn_flowdir}{File name for flow direction grid to be created.}
 
-\item{return_raster}{If \code{TRUE} (the default), the flow direction
-grid will be returned as a raster object, in addition to being written to
-\option{fn_flowdir}. If \code{FALSE}, the output file will still be created
-but a \code{NULL} value is returned.}
+\item{return_raster}{Should a raster object be returned?}
 }
 \value{
-
+If \code{return_raster = TRUE} (the default), the flow direction
+grid will be returned as a raster object, in addition to being written to
+\option{fn_flowdir}. If \code{return_raster = FALSE}, the output file will still be created
+but a \code{NULL} value is returned.
 }
 \description{
 Creates flow direction grid file

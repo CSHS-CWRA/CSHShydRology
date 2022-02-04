@@ -14,12 +14,11 @@
 #' @author Dan Moore and Kevin Shook
 #' @importFrom raster rasterFromXYZ crs
 #' @importFrom magrittr %>%
-#' @import datasets
 #' @examples
 #' test_raster <- ch_volcano_raster()
 #' 
 ch_volcano_raster <- function() {
-  vol_mat <- volcano
+  vol_mat <- datasets::volcano
   nr <- nrow(vol_mat)
   nc <- ncol(vol_mat)
   dx <- 10
