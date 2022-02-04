@@ -14,6 +14,7 @@
 #' @author Dan Moore and Kevin Shook
 #' @importFrom raster rasterFromXYZ crs
 #' @importFrom magrittr %>%
+#' @import datasets
 #' @examples
 #' test_raster <- ch_volcano_raster()
 #' 

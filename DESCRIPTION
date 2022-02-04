@@ -61,7 +61,8 @@ Imports:
     httr,
     tidyhydat,
     whitebox,
-    plotKML
+    plotKML,
+    datasets
 Suggests: 
     knitr,
     testthat, 
