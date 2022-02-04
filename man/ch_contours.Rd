@@ -40,9 +40,6 @@ contours <- ch_contours(dem)
 plot(contours)
 
 }
-\seealso{
-\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
-}
 \author{
 Dan Moore
 }

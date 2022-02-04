@@ -53,7 +53,8 @@ flow_dir_file <- tempfile("flow_dir", fileext = ".tif")
 flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
 fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
 fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
-catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, fn_catchment_ras, fn_catchment_vec)
+catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
+fn_catchment_ras, fn_catchment_vec)
 
 }
 \seealso{

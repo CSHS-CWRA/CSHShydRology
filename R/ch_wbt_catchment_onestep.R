@@ -1,36 +1,56 @@
-#' Title
+#' Delineates a catchment in a single step
+#' 
+#' @description Calls all of the \code{ch_wbt} and other functions required to do the sub-tasks
+#' required to delineate a catchment. The names of files to be created
+#' are taken from the list created by the function \code{ch_wbt_filenames}.
 #'
-#' @param wd 
-#' @param in_dem 
-#' @param pp_sf 
-#' @param sink_method 
-#' @param dist 
-#' @param check_catchment 
-#' @param threshold 
-#' @param snap_dist 
-#' @param cb_colour 
-#' @param pp_colour 
-#' @param channel_colour 
-#' @param contour_colour 
-#' @param plot_na 
-#' @param plot_scale 
-#' @param na_location 
-#' @param scale_location 
-#' @param ... 
-#'
-#' @return
+#' @param wd Name of working directory.
+#' @param in_dem  File name for original DEM. 
+#' @param pp_sf Vector containing pour points.
+#' @param sink_method Method for sink removal as used by \code{ch_wbt_removesinks}.
+#' @param dist Maximum search distance for breach paths in cells. Required if \code{sink_method = "breach_leastcost"}.
+#' @param check_catchment If \code{TRUE} (the default) \code{ch_checkcatchment} will be called
+#' after the catchment is created.
+#' @param threshold Threshold for channel initiation.
+#' @param snap_dist Maximum pour point snap distance in map units. 
+#' @param cb_colour Colour for catchment outline. Default is "red".
+#' @param pp_colour Colour for catchment pour points. Default is "red".
+#' @param channel_colour Colour for channel. Default is "blue".
+#' @param contour_colour Colour for contours Default is "grey".
+#' @param plot_na If \code{TRUE} (the default) a north arrow is added to the plot.
+#' @param plot_scale If \code{TRUE} (the default) a scale bar is added to the plot.
+#' @param na_location Location for the north arrow. Default is \option{tr}, i.e. top-right.
+#' @param scale_location Location for the scale bar. Default is \option{bl}, i.e. bottom-left.
+#' @param ... Extra parameters for \code{ch_wbt_removesinks}.
+#' @author Dan Moore and Kevin Shook
+#' @seealso \code{\link{ch_wbt_filenames}}
+#' @importFrom raster raster
+#' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons
+#' @importFrom sf st_crs write_sf st_write
+#' @return Returns an \pkg{sp} object of the delineated catchment.
 #' @export
 #'
 #' @examples
+#' library(raster)
+#' test_raster <- ch_volcano_raster()
+#' dem_raster_file <- tempfile(fileext = c(".tif"))
+#' # write test raster to file
+#' writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#' wd <- tempdir()
+#' pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
+#' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+#' catchment <- ch_wbt_catchment_onestep(wd, dem_raster_file, pourpoint_file, "fill")
 ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf, 
                                      sink_method = "breach_leastcost", dist = NULL, 
                                      check_catchment = TRUE, threshold = NULL, snap_dist = NULL, 
                                      cb_colour = "red", pp_colour = "red",
                                      channel_colour = "blue", contour_colour = "grey",       
                                      plot_na = TRUE, plot_scale = TRUE,
-                                     na_location = "bl", scale_location = "bl", ...) {
+                                     na_location = "tr", scale_location = "bl", ...) {
   
   fn <- ch_wbt_filenames(wd)
+  # define 
+  
   dem_ns <- ch_wbt_removesinks(in_dem = in_dem, out_dem = fn$dem_ns, 
                                method = sink_method, dist = dist, 
                                fn_dem_fsc = fn$dem_fsc, ...)
@@ -39,21 +59,21 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                            return_raster = FALSE)
   ch_wbt_flow_direction(fn_dem = fn$dem_ns, fn_flowdir = fn$flowdir,
                         return_raster = FALSE)
-  whitebox::wbt_extract_streams(fn$flowacc, fn$channel_ras, threshold = threshold)
-  whitebox::wbt_raster_streams_to_vector(fn$channel_ras, fn$flowdir, fn$channel_vec)
+  wbt_extract_streams(fn$flowacc, fn$channel_ras, threshold = threshold)
+  wbt_raster_streams_to_vector(fn$channel_ras, fn$flowdir, fn$channel_vec)
   st_write(pp_sf, fn$pp, quiet = TRUE, delete_layer = TRUE)
-  whitebox::wbt_snap_pour_points(fn$pp, fn$flowacc, fn$pp_snap, snap_dist)
-  whitebox::wbt_watershed(fn$flowdir, fn$pp_snap, fn$catchment_ras)
-  whitebox::wbt_raster_to_vector_polygons(fn$catchment_ras, fn$catchment_vec)
+  wbt_snap_pour_points(fn$pp, fn$flowacc, fn$pp_snap, snap_dist)
+  wbt_watershed(fn$flowdir, fn$pp_snap, fn$catchment_ras)
+  wbt_raster_to_vector_polygons(fn$catchment_ras, fn$catchment_vec)
   catchment_vec <- st_read(fn$catchment_vec) %>% st_as_sf()
-  if(is.na(st_crs(catchment_vec))){
-    st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
+  if(is.na(sf::st_crs(catchment_vec))){
+    sf::st_crs(catchment_vec) <- sf::st_crs(raster(fn_catchment_ras))
     write_sf(catchment_vec, fn$catchment_vec)
   }
   
   channel_vec <- st_read(fn$channel_vec) %>% st_as_sf()
-  if (is.na(st_crs(channel_vec))) {
-    st_crs(channel_vec) <- st_crs(catchment_vec)
+  if (is.na(sf::st_crs(channel_vec))) {
+    sf::st_crs(channel_vec) <- sf::st_crs(catchment_vec)
     write_sf(channel_vec, fn$catchment_vec)
   }
   

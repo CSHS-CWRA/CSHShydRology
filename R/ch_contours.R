@@ -19,7 +19,6 @@
 #' \item{contours_sf}{sf object containing contours}
 #' 
 #' @author Dan Moore
-#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
 #' 
 #' @examples
 #' # use volcano DEM
@@ -56,6 +55,6 @@ ch_contours <- function(dem,
   # generate contours as a sf object
   contours_sf <- rasterToContour(dem, levels = z_levels) %>%
     st_as_sf()
-  st_crs(contours_sf) <- crs(dem)
+  sf::st_crs(contours_sf) <- crs(dem)
   return(contours_sf)
 }

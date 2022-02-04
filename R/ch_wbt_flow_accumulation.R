@@ -10,7 +10,8 @@
 #' @author Dan Moore
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_d8_flow_accumulation
-#' @return
+#' @return If \code{return_raster = TRUE}, the flow accumulation
+#' grid will be returned as a raster object, otherwise \code{NULL} is returned.
 #' @export
 #'
 #' @examples

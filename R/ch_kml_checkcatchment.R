@@ -39,7 +39,8 @@
 #' fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
 #' # generate contours
 #' contours <- ch_contours(test_raster)
-#' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, fn_catchment_ras, fn_catchment_vec)
+#' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
+#' fn_catchment_ras, fn_catchment_vec)
 #' # get channels
 #' channel_raster_file <- tempfile("channels", fileext = c(".tif"))
 #' channel_vector_file <- tempfile("channels", fileext = c(".shp"))
@@ -47,7 +48,8 @@
 #' channel_vector_file, 1)
 #' fn_kml <- tempfile("volcano", fileext = ".KML")
 #' # create KML files, suppressing warnings caused by other functions
-#' suppressWarnings(ch_kml_checkcatchment(fn_kml, "test", contours, catchments, channels, pourpoints))
+#' suppressWarnings(ch_kml_checkcatchment(fn_kml, "test", contours, catchments, 
+#' channels, pourpoints))
 ch_kml_checkcatchment <- function(fn_kml, folder_name = "",
                                   contours, catchments, channels, 
                                   pp, pp_labels = NULL) {

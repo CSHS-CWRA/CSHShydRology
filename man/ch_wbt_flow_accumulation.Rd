@@ -17,7 +17,8 @@ grid will be returned as a raster object, in addition to being written to
 but a \code{NULL} value is returned.}
 }
 \value{
-
+If \code{return_raster = TRUE}, the flow accumulation
+grid will be returned as a raster object, otherwise \code{NULL} is returned.
 }
 \description{
 Creates flow accumulation grid file

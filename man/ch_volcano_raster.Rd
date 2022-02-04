@@ -22,9 +22,6 @@ No arguments are required as the DEM is created from the \pkg{base}
 test_raster <- ch_volcano_raster()
 
 }
-\seealso{
-\code{\link{ch_saga_fillsinks}} \code{\link{ch_saga_carea}}
-}
 \author{
 Dan Moore and Kevin Shook
 }

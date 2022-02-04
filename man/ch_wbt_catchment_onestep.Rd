@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_wbt_catchment_onestep.R
 \name{ch_wbt_catchment_onestep}
 \alias{ch_wbt_catchment_onestep}
-\title{Title}
+\title{Delineates a catchment in a single step}
 \usage{
 ch_wbt_catchment_onestep(
   wd,
@@ -19,49 +19,69 @@ ch_wbt_catchment_onestep(
   contour_colour = "grey",
   plot_na = TRUE,
   plot_scale = TRUE,
-  na_location = "bl",
+  na_location = "tr",
   scale_location = "bl",
   ...
 )
 }
 \arguments{
-\item{wd}{}
+\item{wd}{Name of working directory.}
 
-\item{in_dem}{}
+\item{in_dem}{File name for original DEM.}
 
-\item{pp_sf}{}
+\item{pp_sf}{Vector containing pour points.}
 
-\item{sink_method}{}
+\item{sink_method}{Method for sink removal as used by \code{ch_wbt_removesinks}.}
 
-\item{dist}{}
+\item{dist}{Maximum search distance for breach paths in cells. Required if \code{sink_method = "breach_leastcost"}.}
 
-\item{check_catchment}{}
+\item{check_catchment}{If \code{TRUE} (the default) \code{ch_checkcatchment} will be called
+after the catchment is created.}
 
-\item{threshold}{}
+\item{threshold}{Threshold for channel initiation.}
 
-\item{snap_dist}{}
+\item{snap_dist}{Maximum pour point snap distance in map units.}
 
-\item{cb_colour}{}
+\item{cb_colour}{Colour for catchment outline. Default is "red".}
 
-\item{pp_colour}{}
+\item{pp_colour}{Colour for catchment pour points. Default is "red".}
 
-\item{channel_colour}{}
+\item{channel_colour}{Colour for channel. Default is "blue".}
 
-\item{contour_colour}{}
+\item{contour_colour}{Colour for contours Default is "grey".}
 
-\item{plot_na}{}
+\item{plot_na}{If \code{TRUE} (the default) a north arrow is added to the plot.}
 
-\item{plot_scale}{}
+\item{plot_scale}{If \code{TRUE} (the default) a scale bar is added to the plot.}
 
-\item{na_location}{}
+\item{na_location}{Location for the north arrow. Default is \option{tr}, i.e. top-right.}
 
-\item{scale_location}{}
+\item{scale_location}{Location for the scale bar. Default is \option{bl}, i.e. bottom-left.}
 
-\item{...}{}
+\item{...}{Extra parameters for \code{ch_wbt_removesinks}.}
 }
 \value{
-
+Returns an \pkg{sp} object of the delineated catchment.
 }
 \description{
-Title
+Calls all of the \code{ch_wbt} and other functions required to do the sub-tasks
+required to delineate a catchment. The names of files to be created
+are taken from the list created by the function \code{ch_wbt_filenames}.
+}
+\examples{
+library(raster)
+test_raster <- ch_volcano_raster()
+dem_raster_file <- tempfile(fileext = c(".tif"))
+# write test raster to file
+writeRaster(test_raster, dem_raster_file, format = "GTiff")
+wd <- tempdir()
+pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
+pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+catchment <- ch_wbt_catchment_onestep(wd, dem_raster_file, pourpoint_file, "fill")
+}
+\seealso{
+\code{\link{ch_wbt_filenames}}
+}
+\author{
+Dan Moore and Kevin Shook
 }

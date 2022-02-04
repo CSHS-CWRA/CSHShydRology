@@ -37,7 +37,8 @@
 #' flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
 #' fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
 #' fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
-#' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, fn_catchment_ras, fn_catchment_vec)
+#' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
+#' fn_catchment_ras, fn_catchment_vec)
 #' 
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 
                              fn_catchment_vec, return_vector = TRUE) {
@@ -49,8 +50,8 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   }
   
   message("ch_wbt: Delineating catchment boundaries")
-  crs_pp <- st_crs(st_read(fn_pp_snap))$epsg
-  crs_fd <- st_crs(raster(fn_flowdir))$epsg
+  crs_pp <- sf::st_crs(st_read(fn_pp_snap))$epsg
+  crs_fd <- sf::st_crs(raster(fn_flowdir))$epsg
   if (crs_pp != crs_fd) {
     stop("Error: pour points and flow direction grid have different crs")
   }
@@ -59,7 +60,7 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   wbt_raster_to_vector_polygons(fn_catchment_ras, fn_catchment_vec)
   catchment_vec <- st_read(fn_catchment_vec) %>% st_as_sf()
   if (is.na(st_crs(catchment_vec))){
-    st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
+    sf::st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
     write_sf(catchment_vec, fn_catchment_vec)
   }
   if (return_vector) {

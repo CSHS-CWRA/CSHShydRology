@@ -12,10 +12,8 @@
 #' @export 
 #' @return Returns a raster object of land surface elevations. 
 #' @author Dan Moore and Kevin Shook
-#' @importFrom raster rasterFromXYZ
-#' @import datasets
+#' @importFrom raster rasterFromXYZ crs
 #' @importFrom magrittr %>%
-#' @seealso \code{\link{ch_saga_fillsinks}} \code{\link{ch_saga_carea}}
 #' @examples
 #' test_raster <- ch_volcano_raster()
 #' 
@@ -32,6 +30,6 @@ ch_volcano_raster <- function() {
   y <- rep(seq(ymin, ymax, dx), times = nc)
   vol_ras <- data.frame(x, y, z = as.numeric(vol_mat)) %>%
     raster::rasterFromXYZ()
-  crs(vol_ras) <- "+proj=utm +zone=60 +south +datum=WGS84 +units=m +no_defs" 
+  raster::crs(vol_ras) <- "+proj=utm +zone=60 +south +datum=WGS84 +units=m +no_defs" 
   return(vol_ras)
 }

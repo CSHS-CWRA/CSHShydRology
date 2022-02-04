@@ -14,7 +14,7 @@ ch_checkchannels(dem, channels, outlet)
 \item{outlet}{location of catchment outlet (sf object)}
 }
 \value{
-\item{check_map}{generates map with channel layer}
+\item{check_map}{a \pkg{ggplot} object of a map with channel layer}
 }
 \description{
 Generates a map of the generated channel network layer.
@@ -23,40 +23,35 @@ Generates a map of the generated channel network layer.
 Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 }
 \examples{
-
-\donttest{
-# note: example not tested in package compilation
-# create wd using base::tempdir()
-wd <- tempdir()
-
-# download 25m DEM
-ff <- "gs_dem25.tif"
-ra_fn <- file.path(wd, ff)
-ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-dem <- ch_get_url_data(ra_url, ra_fn)
-
-# fill sinks
-filled_dem <-  ch_wbt_removesinks(dem_raw=dem, saga_wd=saga_wd)
-
-# determine contributing area raster using filled_dem
-carea <- ch_saga_carea(filled_dem, saga_wd)
-
-# generate channels sf object
-channels <- ch_wbt_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
-
-# download station locations (use as catchment outlets)
-ff <- "gs_weirs.GeoJSON"
-gs_fn <- file.path(saga_wd, ff)
-gs_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-stns <- ch_get_url_data(gs_url, gs_fn)
-
-# check channels
-ch_checkchannels(dem=filled_dem, channels, outlet=stns)
-}
-
+library(raster)
+test_raster <- ch_volcano_raster()
+dem_raster_file <- tempfile(fileext = c(".tif"))
+no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+# write test raster to file
+writeRaster(test_raster, dem_raster_file, format = "GTiff")
+# remove sinks
+removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+# get flow accumulations
+flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
+flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+# get flow directions
+flow_dir_file <- tempfile("flow_dir", fileext = c(".tif"))
+flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
+channel_raster_file <- tempfile("channels", fileext = c(".tif"))
+channel_vector_file <- tempfile("channels", fileext = c(".shp"))
+channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
+channel_vector_file, 1)
+# get pour points
+pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
+pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
+snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
+snapped_pourpoint_file, snap_dist = 10)
+check_map <- ch_checkchannels(test_raster, channels, snapped_pourpoints)
+check_map
 }
 \seealso{
-\code{\link{ch_wbt_fillsinks}} to fill sinks instead of removing
+\code{\link{ch_checkcatchment}}
 }
 \author{
 Dan Moore
