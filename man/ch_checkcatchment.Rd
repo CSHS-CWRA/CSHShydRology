@@ -23,15 +23,15 @@ ch_checkcatchment(
 )
 }
 \arguments{
-\item{dem}{raster DEM that catchments were generated from}
+\item{dem}{raster DEM that catchments were generated from.}
 
-\item{catchment}{catchment polygon (sf object)}
+\item{catchment}{Catchment polygon (sf object).}
 
-\item{outlet}{location of catchment outlet (sf object)}
+\item{outlet}{Location of catchment outlet (sf object).}
 
-\item{outlet_label}{character label for outlet}
+\item{outlet_label}{Character label for outlet.}
 
-\item{main_label}{main label for catchment}
+\item{main_label}{Main label for catchment plot.}
 
 \item{bbox_type}{type of bounding box. If \option{catchment}, then
 the contours are bounded by the catchment, otherwise they are plotted 

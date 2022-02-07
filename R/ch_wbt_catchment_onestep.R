@@ -61,20 +61,20 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                         return_raster = FALSE)
   wbt_extract_streams(file_names$flowacc, file_names$channel_ras, threshold = threshold)
   wbt_raster_streams_to_vector(file_names$channel_ras, file_names$flowdir, file_names$channel_vec)
-  st_write(pp_sf, file_names$pp, quiet = TRUE, delete_layer = TRUE)
+  sf::st_write(pp_sf, file_names$pp, quiet = TRUE, delete_layer = TRUE)
   wbt_snap_pour_points(file_names$pp, file_names$flowacc, file_names$pp_snap, snap_dist)
   wbt_watershed(file_names$flowdir, file_names$pp_snap, file_names$catchment_ras)
   wbt_raster_to_vector_polygons(file_names$catchment_ras, file_names$catchment_vec)
   catchment_vec <- st_read(file_names$catchment_vec) %>% st_as_sf()
   if(is.na(sf::st_crs(catchment_vec))){
     sf::st_crs(catchment_vec) <- sf::st_crs(raster(file_names$catchment_ras))
-    write_sf(catchment_vec, file_names$catchment_vec)
+    sf::write_sf(catchment_vec, file_names$catchment_vec)
   }
   
   channel_vec <- st_read(file_names$channel_vec) %>% st_as_sf()
   if (is.na(sf::st_crs(channel_vec))) {
     sf::st_crs(channel_vec) <- sf::st_crs(catchment_vec)
-    write_sf(channel_vec, file_names$catchment_vec)
+    sf::write_sf(channel_vec, file_names$catchment_vec)
   }
   
   if (check_catchment) {

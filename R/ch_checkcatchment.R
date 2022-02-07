@@ -8,11 +8,11 @@
 #' Also generates a table summarizing the catchments, 
 #' including the coordinates of the outlet point and the catchment area.
 #'
-#' @param dem raster DEM that catchments were generated from
-#' @param catchment catchment polygon (sf object)
-#' @param outlet location of catchment outlet (sf object)
-#' @param outlet_label character label for outlet
-#' @param main_label main label for catchment
+#' @param dem raster DEM that catchments were generated from.
+#' @param catchment Catchment polygon (sf object).
+#' @param outlet Location of catchment outlet (sf object).
+#' @param outlet_label Character label for outlet.
+#' @param main_label Main label for catchment plot.
 #' @param bbox_type type of bounding box. If \option{catchment}, then
 #' the contours are bounded by the catchment, otherwise they are plotted 
 #' to the extent of the DEM

@@ -4,7 +4,15 @@
 \alias{ch_checkchannels}
 \title{Check Channels}
 \usage{
-ch_checkchannels(dem, channels, outlet)
+ch_checkchannels(
+  dem,
+  channels,
+  outlet = NULL,
+  main_label = "",
+  channel_colour = "blue",
+  pp_colour = "red",
+  contour_colour = "grey"
+)
 }
 \arguments{
 \item{dem}{raster DEM that catchments were generated from}
@@ -12,6 +20,14 @@ ch_checkchannels(dem, channels, outlet)
 \item{channels}{channel polyline (or channels list from \code{ch_wbt_channels}) (sf object)}
 
 \item{outlet}{location of catchment outlet (sf object)}
+
+\item{main_label}{Main label for channel plot.}
+
+\item{channel_colour}{Colour for channel. Default is "blue".}
+
+\item{pp_colour}{Colour for catchment pour points. Default is "red".}
+
+\item{contour_colour}{Colour for contours Default is "grey".}
 }
 \value{
 \item{check_map}{a \pkg{ggplot} object of a map with channel layer}
@@ -47,8 +63,7 @@ pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
 snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
 snapped_pourpoint_file, snap_dist = 10)
-check_map <- ch_checkchannels(test_raster, channels, snapped_pourpoints)
-check_map
+ch_checkchannels(test_raster, channels, snapped_pourpoints)
 }
 \seealso{
 \code{\link{ch_checkcatchment}}
