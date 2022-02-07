@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_kml_checkcatchment.R
 \name{ch_kml_checkcatchment}
 \alias{ch_kml_checkcatchment}
-\title{Generate kml file to check delineation in Google Earth}
+\title{Generate KML file to check delineation in Google Earth}
 \usage{
 ch_kml_checkcatchment(
   fn_kml,
@@ -34,7 +34,7 @@ pour points will be numbered.}
 No value is returned. A kml file is created.
 }
 \description{
-Generate kml file to check delineation in Google Earth
+Generate KML file to check delineation in Google Earth
 }
 \examples{
 library(raster)

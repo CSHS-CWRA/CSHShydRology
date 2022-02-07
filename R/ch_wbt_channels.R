@@ -40,6 +40,10 @@ ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
   if (!file.exists(fn_flowacc)) {
     stop("Error: input flow accumulation file does not exist")
   }
+  
+  if (!file.exists(fn_flowdir)) {
+    stop("Error: input flow direction file does not exist")
+  }
   if (is.null(threshold)) {
     step("Error: threshold for channel initiation not specified")
   }

@@ -15,10 +15,12 @@ package \pkg{Whitebox}. The functions include
  \item{ch_wbt_flow_accumulation}{Accumulates flows downstream in a cathcment}
  \item{ch_wbt_flow_direction}{Calcualted flow directions for each cell in DEM}
  \item{ch_wbt_pourpoints}{Snaps pour points to channel}
- \item{ch_wbt_catchment_onestep}{Perfors}
+ \item{ch_wbt_catchment_onestep}{Performs all catchment delineations in a single function}
  \item{ch_contours}{Creates contour lines from DEM}
  \item{ch_checkcatchment}{Provides a simple map to check the outputs from ch_saga_catchment}
  \item{ch_checkchannels}{Provides a simple map to check the outputs from ch_saga_channels}
+ \item{ch_kml_checkcatchment}{Generates KML file to check delineation in Google Earth}
+ \item{ch_volcano_raster}{Returns a raster object of land surface elevations}
 }
 
 The \pkg{Whitebox} functions support the following file types for raster data:
