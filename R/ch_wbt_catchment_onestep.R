@@ -49,6 +49,23 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                                      plot_na = TRUE, plot_scale = TRUE,
                                      na_location = "tr", scale_location = "bl", ...) {
   
+  if (missing(wd)) {
+    step("Error: name of working directory not specified")
+  }
+  
+  if (missing(in_dem)) {
+    step("Error: file name for original DEM not specified")
+  }
+  
+  
+  if (is.null(threshold)) {
+    step("Error: threshold for channel initiation not specified")
+  }
+  
+  if (is.null(snap_dist)) {
+    step("Error: maximum pour point snap distance not specified")
+  }
+  
   file_names <- ch_wbt_filenames(wd)
   # define 
   
