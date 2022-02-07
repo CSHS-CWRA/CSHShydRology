@@ -39,7 +39,8 @@
 #' wd <- tempdir()
 #' pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
 #' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-#' catchment <- ch_wbt_catchment_onestep(wd, dem_raster_file, pourpoint_file, "fill")
+#' catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
+#' pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
 ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf, 
                                      sink_method = "breach_leastcost", dist = NULL, 
                                      check_catchment = TRUE, threshold = NULL, snap_dist = NULL, 
@@ -78,7 +79,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
   }
   
   if (check_catchment) {
-    ch_checkcatchment(dem = dem_ns, catchment = catchment_vec, outlet = pp_sf, 
+    result <- ch_checkcatchment(dem = dem_ns, catchment = catchment_vec, outlet = pp_sf, 
                       channel_vec = channel_vec, cb_colour = cb_colour, pp_colour = pp_colour, 
                       channel_colour = channel_colour, contour_colour = contour_colour, 
                       plot_na = plot_na, plot_scale = plot_scale,

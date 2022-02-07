@@ -77,7 +77,8 @@ writeRaster(test_raster, dem_raster_file, format = "GTiff")
 wd <- tempdir()
 pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
 pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-catchment <- ch_wbt_catchment_onestep(wd, dem_raster_file, pourpoint_file, "fill")
+catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
+pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
 }
 \seealso{
 \code{\link{ch_wbt_filenames}}

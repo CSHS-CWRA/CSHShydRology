@@ -89,4 +89,5 @@ ch_checkchannels <- function(dem, channels, outlet = NULL, main_label = "",
                datum = st_crs(channels))
   }
   print(check_map)
+  return(check_map)
 } 
