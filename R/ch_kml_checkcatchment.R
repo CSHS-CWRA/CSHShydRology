@@ -1,4 +1,4 @@
-#' Generate kml file to check delineation in Google Earth
+#' Generate KML file to check delineation in Google Earth
 #'
 #' @param fn_kml Name of the KML file to be crearted
 #' @param folder_name name of the KML folder.
