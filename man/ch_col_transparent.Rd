@@ -2,26 +2,25 @@
 % Please edit documentation in R/utils.R
 \name{ch_col_transparent}
 \alias{ch_col_transparent}
-\title{Add Transparency to Colours
+\title{Adjusts colour codes to introduce transparency
 
-ch_col_transparent is used to adjust colour codes to introduce transparency}
+\code{ch_col_transparent} is used to adjust colour codes to introduce transparency.}
 \usage{
 ch_col_transparent(colour, trans)
 }
 \arguments{
-\item{colour}{time series containing columns you wish to reseasonalize. xts
-object}
+\item{colour}{Vector of colours you wish to add transparency to.}
 
-\item{trans}{integer describing the degree of transparency, from ~200
-(slightly transparent) to <10 (very transparent)}
+\item{trans}{Integer describing the degree of transparency, from ~200
+(slightly transparent) to <10 (very transparent).}
 }
 \value{
 \item{res}{returned updated colour code with transparency}
 }
 \description{
-Add Transparency to Colours
+Adjusts colour codes to introduce transparency
 
-ch_col_transparent is used to adjust colour codes to introduce transparency
+\code{ch_col_transparent} is used to adjust colour codes to introduce transparency.
 }
 \examples{
 
@@ -33,6 +32,9 @@ mycol <- ch_col_transparent('blue',100)
 
 # plot more random points in transparent blue colour
 points(rnorm(20),col=mycol)
+
+# add transparency to multiple colours
+ch_col_transparent( c('red','blue','green'), c(50,100,200))
 
 }
 \seealso{

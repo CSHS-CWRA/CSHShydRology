@@ -61,15 +61,13 @@ ch_date_subset <- function(df, prd) {
   return(df)
 }
 
-
-#' @title Add Transparency to Colours
+#' @title Adjusts colour codes to introduce transparency
 #'
-#' ch_col_transparent is used to adjust colour codes to introduce transparency
+#' \code{ch_col_transparent} is used to adjust colour codes to introduce transparency.
 #'
-#' @param colour time series containing columns you wish to reseasonalize. xts
-#' object
-#' @param trans integer describing the degree of transparency, from ~200
-#' (slightly transparent) to <10 (very transparent)
+#' @param colour Vector of colours you wish to add transparency to.
+#' @param trans Integer(s) describing the degree of transparency, from ~200
+#' (slightly transparent) to <10 (very transparent).
 #' @return \item{res}{returned updated colour code with transparency}
 #' 
 #' @seealso See original code on post in Stack Overflow
@@ -87,6 +85,9 @@ ch_date_subset <- function(df, prd) {
 #'
 #' # plot more random points in transparent blue colour
 #' points(rnorm(20),col=mycol)
+#' 
+#' # add transparency to multiple colours
+#' ch_col_transparent( c('red','blue','green'), c(50,100,200))
 #'
 #' @importFrom grDevices col2rgb
 #' @export ch_col_transparent
