@@ -27,7 +27,7 @@ ch_binned_MannWhitney(
 
 \item{variable}{Name of variable. Default is \option{discharge}}
 
-\item{metadata}{datafframe of station metadata, default is HYDAT_list}
+\item{metadata}{dataframe of station metadata, default is HYDAT_list}
 }
 \value{
 Returns a list containing:
@@ -39,13 +39,13 @@ Returns a list containing:
  \item{p_used}{p_value}
  \item{fail}{TRUE if test failed due to missing values}
  \item{bin_method}{method used for binning}
- \item{test_method}{Mann-Whitney U}
+ \item{test_method}{Mann-Whitney U-statistic}
  \item{series}{a data frame containing:}
 	\item{period}{period numbers i.e. 1:365/step}
 	\item{period1}{median values for each bin in period 1}
 	\item{period2}{median values for each bin in period 2}
-	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
-	\item{prob}{probability of U for each period}
+	\item{mwu}{Mann-Whitney U-statistic for each bin between the two periods}
+	\item{prob}{probability of U-statistic for each period}
 	\item{code}{significance codes for each bin}
 }
 \description{
@@ -66,6 +66,7 @@ b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05
 range1 <- c(1970,1979)
 range2 <- c(1990,1999)
 b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
+
 }
 \references{
 Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and 

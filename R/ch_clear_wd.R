@@ -1,4 +1,4 @@
-#' Clear SAGA Working Directory
+#' Clear Working Directory
 #'
 #' @description 
 #' Empties and removes a working directory. 
@@ -21,12 +21,12 @@
 #' @examples \donttest{
 #' # not tested as clearing all files in a given directory cannot be tested in CRAN
 #' 
-#' # create a saga working directory
-#' saga_wd <- tempdir()
-#' ch_create_wd(saga_wd) # confirm creation
+#' # create an empty working directory
+#' my_wd <- tempdir()
+#' ch_create_wd(my_wd) # confirm creation
 #' 
-#' # clear the saga working directory
-#' ch_clear_wd(saga_wd)
+#' # clear the working directory
+#' ch_clear_wd(my_wd)
 #' }
 #' 
 ch_clear_wd <- function(wd, do_check = TRUE) {

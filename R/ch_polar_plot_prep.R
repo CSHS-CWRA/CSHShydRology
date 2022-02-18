@@ -1,7 +1,7 @@
 #' Creates a data structure to be passed to \code{ch_polar_plot}
 #'
 #' @description Could be used to move data from a different type of analysis different to 
-#' the \code{binned_MannWhitney} function which uses flows. The two series need to be of the 
+#' the \code{\link{ch_binned_MannWhitney}} function which uses flows. The two series need to be of the 
 #' same length and their length is related to the step size. For examples, 
 #' for five day periods there will be 73 periods.
 #'
@@ -49,7 +49,6 @@
 #'
 #' Whitfield, P.H., Cannon, A.J., 2000. Recent variations in climate and hydrology
 #' in Canada. Canadian Water Resources Journal 25: 19-65.
-
 #'
 #' @author Paul Whitfield 
 #'

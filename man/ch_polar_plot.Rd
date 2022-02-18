@@ -13,23 +13,23 @@ ch_polar_plot(
 )
 }
 \arguments{
-\item{bmw}{output from \code{binned_MannWhitney}}
+\item{bmw}{output from \code{\link{ch_binned_MannWhitney}}}
 
-\item{lcol1}{line colour, default is c("black","gray50")}
+\item{lcol1}{line colour, default is \code{c("black","gray50")}}
 
-\item{lcol2}{point colour, default is c("black","gray50")}
+\item{lcol2}{point colour, default is \code{c("black","gray50")}}
 
-\item{lfill}{fill colour, default is c("yellow","green")}
+\item{lfill}{fill colour, default is \code{c("yellow","green")}}
 
-\item{lsig}{significance symbol colour, default is ("red","blue")}
+\item{lsig}{significance symbol colour, default is \code{c("red","blue")}}
 }
 \value{
 No value is returned; a standard \R graphic is created.
 }
 \description{
 Produces a polar plot similar to that used in \cite{Whitfield and Cannon, 2000}. It uses output 
-from the function \code{ch_binned_MannWhitney} or a data structure created using 
-the function \code{ch_polar_plot_prep}.
+from the function \code{\link{ch_binned_MannWhitney}} or a data structure created using 
+the function \code{\link{ch_polar_plot_prep}}.
 }
 \examples{
 range1 <- c(1970,1979)

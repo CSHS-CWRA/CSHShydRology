@@ -27,6 +27,7 @@ y <- abs(rnorm(length(dd)))*2
 df <- data.frame("Date" = dd,x,y)
 prd <- "2011-10-01/2012-09-30"
 summary(ch_date_subset(df,prd))}
+
 }
 \author{
 Robert Chlumsky

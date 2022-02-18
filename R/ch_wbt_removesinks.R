@@ -23,8 +23,10 @@
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
 #' no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+#' 
 #' # write test raster to file
 #' writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#' 
 #' # remove sinks
 #' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
 #' 
