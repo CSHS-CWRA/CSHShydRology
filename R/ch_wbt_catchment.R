@@ -59,7 +59,7 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
                           output = fn_catchment_ras)
   wbt_raster_to_vector_polygons(fn_catchment_ras, fn_catchment_vec)
   catchment_vec <- st_read(fn_catchment_vec) %>% st_as_sf()
-  if (is.na(st_crs(catchment_vec))){
+  if (is.na(st_crs(catchment_vec))) {
     sf::st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
     write_sf(catchment_vec, fn_catchment_vec)
   }
