@@ -17,7 +17,7 @@
 #' @param range2 The first and last year of second period, as \code{c(first,last)}
 #' @param ptest The significance level default is \code{0.05}.
 #' @param variable Name of variable. Default is \option{discharge}
-#' @param metadata datafframe of station metadata, default is HYDAT_list
+#' @param metadata dataframe of station metadata, default is HYDAT_list
 #' 
 #' @return Returns a list containing:
 #'  \item{StationID}{ID of station}
@@ -28,15 +28,14 @@
 #'  \item{p_used}{p_value}
 #'  \item{fail}{TRUE if test failed due to missing values}
 #'  \item{bin_method}{method used for binning}
-#'  \item{test_method}{Mann-Whitney U}
+#'  \item{test_method}{Mann-Whitney U-statistic}
 #'  \item{series}{a data frame containing:}
 #' 	\item{period}{period numbers i.e. 1:365/step}
 #' 	\item{period1}{median values for each bin in period 1}
 #' 	\item{period2}{median values for each bin in period 2}
-#' 	\item{mwu}{Mann Whitney U-statistic for each bin between the two periods}
-#' 	\item{prob}{probability of U for each period}
+#' 	\item{mwu}{Mann-Whitney U-statistic for each bin between the two periods}
+#' 	\item{prob}{probability of U-statistic for each period}
 #' 	\item{code}{significance codes for each bin}
-
 #' 
 #' @importFrom stats wilcox.test median
 #' @export
@@ -54,7 +53,7 @@
 #' range1 <- c(1970,1979)
 #' range2 <- c(1990,1999)
 #' b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05)
-
+#' 
 ch_binned_MannWhitney <- function(DF, step, range1, range2, ptest=0.05, variable="discharge", 
                                   metadata = NULL) {
   

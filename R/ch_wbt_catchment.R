@@ -10,7 +10,7 @@
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
 #' @importFrom sf st_crs write_sf st_read
-#' @return If \code{return_vector = TRUE} a vector of the catchement is returned. Otherwise
+#' @return If \code{return_vector == TRUE} a vector of the catchment is returned. Otherwise
 #' nothing is returned.
 #' @export
 #' @seealso  \code{\link{ch_wbt_catchment_onestep}}
@@ -19,19 +19,24 @@
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = ".tif")
 #' no_sink_raster_file <- tempfile("no_sinks", fileext = ".tif")
+#' 
 #' # write test raster to file
 #' writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#' 
 #' # remove sinks
 #' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+#' 
 #' # get flow accumulations
 #' flow_acc_file <- tempfile("flow_acc", fileext = ".tif")
 #' flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+#' 
 #' # get pour points
 #' pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
 #' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #' snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
 #' snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
 #' snapped_pourpoint_file, snap_dist = 10)
+#' 
 #' # get flow directions
 #' flow_dir_file <- tempfile("flow_dir", fileext = ".tif")
 #' flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)

@@ -15,7 +15,7 @@
 #' 
 #' @param nlab,ylab Names for the added columns representing respectively 
 #'   the number of yearly observations and the year. 
-#'   If set to NULL the given column is not added. 
+#'   If set to \code{NULL} the given column is not added. 
 #'    
 #' @param ... Other parameters.
 #' 
@@ -107,5 +107,5 @@ ch_rfa_extractamax.default <-
 	  ans[,ylab] <- yy[mx]
 
 	return(ans)
-  }
+}
 

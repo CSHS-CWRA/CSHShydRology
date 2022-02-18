@@ -36,7 +36,7 @@ ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
 
  
 #' Subsets dates by string
-
+#' 
 #' @description Subsets a data frame by an specified date range, provided as
 #' a string by the \code{prd} argument. This function is meant to emulate the subsetting
 #' capability of the \pkg{xts} package.
@@ -54,9 +54,55 @@ ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
 #' df <- data.frame("Date" = dd,x,y)
 #' prd <- "2011-10-01/2012-09-30"
 #' summary(ch_date_subset(df,prd))}
-
+#' 
 ch_date_subset <- function(df, prd) {
   ss <- unlist(strsplit(prd, split = "/"))
   df <- df[df$Date >= as.Date(ss[1]) & df$Date <= as.Date(ss[2]), ]
   return(df)
+}
+
+
+#' @title Add Transparency to Colours
+#'
+#' ch_col_transparent is used to adjust colour codes to introduce transparency
+#'
+#' @param colour time series containing columns you wish to reseasonalize. xts
+#' object
+#' @param trans integer describing the degree of transparency, from ~200
+#' (slightly transparent) to <10 (very transparent)
+#' @return \item{res}{returned updated colour code with transparency}
+#' 
+#' @seealso See original code on post in Stack Overflow
+#' \href{http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-rmaking}{
+#' plot points transparent in R}
+#' 
+#' @keywords colour transparency
+#' @examples
+#'
+#' # plot randomly distributed data
+#' plot(rnorm(20),col='black')
+#'
+#' # create a transparent blue colour for plotting
+#' mycol <- ch_col_transparent('blue',100)
+#'
+#' # plot more random points in transparent blue colour
+#' points(rnorm(20),col=mycol)
+#'
+#' @importFrom grDevices col2rgb
+#' @export ch_col_transparent
+ch_col_transparent <- function(colour, trans)
+{
+  
+  if (length(colour) != length(trans) & !any(c(length(colour),length(trans)) == 1)) stop("Vector lengths not correct")
+  if (length(colour) == 1 & length(trans) > 1) colour <- rep(colour,length(trans))
+  if (length(trans) == 1 & length(colour) > 1) trans <- rep(trans,length(colour))
+  
+  num2hex <- function(x)
+  {
+    hex <- unlist(strsplit("0123456789ABCDEF",split = ""))
+    return(paste(hex[(x - x %% 16)/16 + 1],hex[x %% 16 + 1],sep = ""))
+  }
+  rgb <- rbind(col2rgb(colour),trans)
+  res <- paste("#",apply(apply(rgb,2,num2hex),2,paste,collapse = ""),sep = "")
+  return(res)
 }

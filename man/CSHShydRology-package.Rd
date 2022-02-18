@@ -27,5 +27,5 @@ The \pkg{CSHShydRology} will contain functions grouped into several themes, incl
 }
 \references{
 To cite \pkg{CSHShydRology} in publications, use the command \code{citation("CSHShydRology")} 
-to get the current version of the citation.\cr
+to get the current version of this citation.\cr
 }

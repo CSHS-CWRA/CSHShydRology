@@ -75,7 +75,7 @@ Returns a list containing:
 }
 \description{
 Could be used to move data from a different type of analysis different to 
-the \code{binned_MannWhitney} function which uses flows. The two series need to be of the 
+the \code{\link{ch_binned_MannWhitney}} function which uses flows. The two series need to be of the 
 same length and their length is related to the step size. For examples, 
 for five day periods there will be 73 periods.
 }

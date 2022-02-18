@@ -7,8 +7,8 @@
 ch_tidyhydat_ECDE_meta(stations, all_ECDE = FALSE)
 }
 \arguments{
-\item{stations}{A vector of WSC station IDs, i.e. c("05BB001", "05BB003", "05BB004", 
-"05BB005"). If \code{stations = "all"} then values are returned for all stations. Note
+\item{stations}{A vector of WSC station IDs, i.e. \code{c("05BB001", "05BB003", "05BB004", 
+"05BB005")}. If \code{stations = "all"} then values are returned for all stations. Note
 that you should ensure that that the \pkg{tidyhydat} database is up to date, if you
 select  \code{stations = "all"}, so that the most recent set of stations is used.}
 

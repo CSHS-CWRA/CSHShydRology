@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_clear_wd.R
 \name{ch_clear_wd}
 \alias{ch_clear_wd}
-\title{Clear SAGA Working Directory}
+\title{Clear Working Directory}
 \usage{
 ch_clear_wd(wd, do_check = TRUE)
 }
@@ -27,12 +27,12 @@ files are held on disk rather than in memory
 \donttest{
 # not tested as clearing all files in a given directory cannot be tested in CRAN
 
-# create a saga working directory
-saga_wd <- tempdir()
-ch_create_wd(saga_wd) # confirm creation
+# create an empty working directory
+my_wd <- tempdir()
+ch_create_wd(my_wd) # confirm creation
 
-# clear the saga working directory
-ch_clear_wd(saga_wd)
+# clear the working directory
+ch_clear_wd(my_wd)
 }
 
 }
