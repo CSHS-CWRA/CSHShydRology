@@ -22,8 +22,6 @@
 #' mfile <- "04JD005_Daily_Flow_ts.csv"
 #' mdata <- ch_read_ECDE_flows(mfile)}
 #' 
-
-
 ch_read_ECDE_flows <- function(filename) {
   mdata <- read.csv(filename)
   mdata$Date <- as.Date(mdata$Date, format = "%Y/%m/%d")

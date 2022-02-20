@@ -1,14 +1,14 @@
 #' Polar plot of daily streamflows
 #'
 #' @description Produces a polar plot similar to that used in \cite{Whitfield and Cannon, 2000}. It uses output 
-#' from the function \code{ch_binned_MannWhitney} or a data structure created using 
-#' the function \code{ch_polar_plot_prep}.
+#' from the function \code{\link{ch_binned_MannWhitney}} or a data structure created using 
+#' the function \code{\link{ch_polar_plot_prep}}.
 #'
-#' @param bmw output from \code{binned_MannWhitney}
-#' @param lcol1 line colour, default is c("black","gray50")
-#' @param lcol2 point colour, default is c("black","gray50")
-#' @param lfill fill colour, default is c("yellow","green")
-#' @param lsig significance symbol colour, default is ("red","blue")
+#' @param bmw output from \code{\link{ch_binned_MannWhitney}}
+#' @param lcol1 line colour, default is \code{c("black","gray50")}
+#' @param lcol2 point colour, default is \code{c("black","gray50")}
+#' @param lfill fill colour, default is \code{c("yellow","green")}
+#' @param lsig significance symbol colour, default is \code{c("red","blue")}
 #'
 #' @references
 #' Whitfield, P.H. and A.J. Cannon. 2000. Polar plotting of seasonal hydrologic

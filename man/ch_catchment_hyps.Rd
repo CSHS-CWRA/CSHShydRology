@@ -65,14 +65,18 @@ Returns a data frame of elevations and catchment fractions below.
 }
 \description{
 Finds the hypsometric curve, which is the total fraction of
-the area below vs. elevation, for a given basin. The elevations may be
-passed as a vector of elevations, or of elevation quantiles, or as minimum
+the area below vs. elevation, for a given basin.
+}
+\details{
+The elevations may be passed as a vector of elevations, or of elevation quantiles, or as minimum
 and maximum elevations and the number of elevation intervals. A plot of the 
 curve may also be created.
 }
 \examples{
 \donttest{
+## note: example tagged as 'donttest'
 library(here)
+library(raster)
 # change the following line to specify a directory to hold the data
 dir_name <- here::here("helper_functions", "test_data")
 # create directory to store data sets
@@ -97,27 +101,27 @@ plot(cb, add = TRUE, col = NA)
 cb_240 <- cb \%>\% dplyr::filter(wsc_name == "240")
 plot(cb_240, col = NA)
 
-# test function 
+## test function 
 
 # test different combinations of arguments
-ch_catch_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
-ch_catch_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
-ch_catch_hyps(cb_240, dem_upc, n_levels = 6)
-ch_catch_hyps(cb_240, dem_upc)
-ch_catch_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
-ch_catch_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
+ch_catchment_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
+ch_catchment_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
+ch_catchment_hyps(cb_240, dem_upc, n_levels = 6)
+ch_catchment_hyps(cb_240, dem_upc)
+ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
+ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
 
 # generate a graph
-ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE)
-ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE)
+ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               col = "blue", type = "l", ylim = c(1500, 2200))
-ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               add_grid = TRUE, quantiles = seq(0, 1, 0.1))
-ch_catch_hyps(cb_240, dem_upc, hypso_plot = TRUE,
+ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE,
               ylab = expression("z ("*10^{-3} ~ "km)"))
 
-# extract a specific quantile (e.g., median)
-ch_catch_hyps(cb_240, dem_upc, quantiles = 0.5)
+# extract specific quantiles (e.g., median and 90\%)
+ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
 }
 }
 \author{

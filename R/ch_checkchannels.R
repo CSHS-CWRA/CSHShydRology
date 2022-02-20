@@ -1,62 +1,63 @@
 #' Check Channels
 #' 
 #' @description
-#' Generates a map of the generated channel network layer.
+#' Generates a map of the generated channel network layer. 
 #' 
 #' @details
 #' Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 #' 
 #' @param dem raster DEM that catchments were generated from
-#' @param channels channel polyline (or channels list from \code{ch_saga_channels}) (sf object)
+#' @param channels channel polyline (or channels list from \code{ch_wbt_channels}) (sf object)
+#' @param main_label Main label for channel plot.
+#' @param channel_colour Colour for channel. Default is "blue".
+#' @param pp_colour Colour for catchment pour points. Default is "red".
+#' @param contour_colour Colour for contours Default is "grey".
 #' @param outlet location of catchment outlet (sf object)
+#'
 #' @return 
-#' \item{check_map}{generates map with channel layer}
+#' \item{check_map}{a \pkg{ggplot} object of a map with channel layer}
 #' 
 #' @author Dan Moore
-#' @seealso \code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
-#' 
-#' @examples
-#' 
-#' \donttest{
-#' # note: example not tested in package compilation
-#' # - requires creating and accessing a temporary directory
-#' # - requires downloading spatial data from Zenodo repository
-#' # - requires multiple potentially lengthy GIS operations
-#' # Note that using this function with SAGA versions outside
-#' # 2.3.1 through 6.3.0 will cause warnings from RSAGA
-#' # create saga wd using base::tempdir()
-#' saga_wd <- tempdir()
-#'
-#' # download 25m DEM
-#' ff <- "gs_dem25.tif"
-#' ra_fn <- file.path(saga_wd, ff)
-#' ra_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
-#' dem <- ch_get_url_data(ra_url, ra_fn)
-#' 
-#' # fill sinks
-#' filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
-#' 
-#' # determine contributing area raster using filled_dem
-#' carea <- ch_saga_carea(filled_dem, saga_wd)
-#' 
-#' # generate channels sf object
-#' channels <- ch_saga_channels(dem=filled_dem, saga_wd=saga_wd, carea=carea)
-#' 
-#' # download station locations (use as catchment outlets)
-#' ff <- "gs_weirs.GeoJSON"
-#' gs_fn <- file.path(saga_wd, ff)
-#' gs_url <- sprintf("https://zenodo.org/record/4781469/files/%s",ff)
-#' stns <- ch_get_url_data(gs_url, gs_fn)
-#' 
-#' # check channels
-#' ch_checkchannels(dem=filled_dem, channels, outlet=stns)
-#' }
-#' 
+#' @seealso \code{\link{ch_checkcatchment}}  
 #' @importFrom sf st_bbox st_geometry
 #' @importFrom ggplot2 ggplot geom_sf coord_sf theme_bw 
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
 #' @export
-ch_checkchannels <- function(dem, channels, outlet) {
+#' @examples 
+#' library(raster)
+#' test_raster <- ch_volcano_raster()
+#' dem_raster_file <- tempfile(fileext = c(".tif"))
+#' no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+#' 
+#' # write test raster to file
+#' writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#' 
+#' # remove sinks
+#' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+#' 
+#' # get flow accumulations
+#' flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
+#' flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+#' 
+#' # get flow directions
+#' flow_dir_file <- tempfile("flow_dir", fileext = c(".tif"))
+#' flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
+#' channel_raster_file <- tempfile("channels", fileext = c(".tif"))
+#' channel_vector_file <- tempfile("channels", fileext = c(".shp"))
+#' channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
+#' channel_vector_file, 1)
+#' 
+#' # get pour points
+#' pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
+#' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+#' snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
+#' snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
+#' snapped_pourpoint_file, snap_dist = 10)
+#' ch_checkchannels(test_raster, channels, snapped_pourpoints)
+#' 
+ch_checkchannels <- function(dem, channels, outlet = NULL, main_label = "",
+                             channel_colour = "blue", pp_colour = "red",
+                             contour_colour = "grey") {
   
   # check inputs
   if (missing(dem)) {
@@ -69,25 +70,29 @@ ch_checkchannels <- function(dem, channels, outlet) {
     stop("ch_checkchannels requires an sf outlet to plot")
   }
   
-  # add handling for directly passing output from ch_saga_channels function
-  if (class(channels) == "list" & "channels" %in% names(channels)) {
-    channels <- channels$channels
-  }
-  
+
   contours <- ch_contours(dem)
   # get bounding box for contours to set map limits
-  bb <- st_bbox(contours)
+  bb <- sf::st_bbox(contours)
   # generate map
-  check_map <- ggplot(data = contours) +
-    geom_sf(data = contours, color = "grey") +
-    geom_sf(data = outlet, pch = 21, bg = "black") +
-    geom_sf(data = sf::st_geometry(channels), color = "blue") +
-    annotation_north_arrow(style = north_arrow_fancy_orienteering, 
+  check_map <- ggplot2::ggplot(data = contours) +
+    geom_sf(data = contours, color = contour_colour) +
+    geom_sf(data = sf::st_geometry(channels), color = channel_colour) +
+    ggspatial::annotation_north_arrow(style = north_arrow_fancy_orienteering, 
                                       location = "tr",
                                       pad_x = unit(4, "mm"), 
                                       pad_y = unit(6.5, "mm")) +
-    annotation_scale() +
-    coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4])) +
+    ggspatial::annotation_scale() +
+    coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4]), 
+             datum = st_crs(channels)) +
+    labs(title = main_label) +
     theme_bw()
+  if (!is.null(outlet)) {
+    check_map <- check_map +
+      geom_sf(data = outlet, pch = 21, bg = pp_colour) +
+      coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4]), 
+               datum = st_crs(channels))
+  }
+  print(check_map)
   return(check_map)
-}
+} 

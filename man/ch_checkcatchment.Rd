@@ -10,26 +10,54 @@ ch_checkcatchment(
   outlet,
   outlet_label = NULL,
   main_label = "",
-  bbox_type = "catchment"
+  bbox_type = "catchment",
+  channel_vec = NULL,
+  cb_colour = "red",
+  pp_colour = "red",
+  channel_colour = "blue",
+  contour_colour = "grey",
+  plot_na = TRUE,
+  plot_scale = TRUE,
+  na_location = "tr",
+  scale_location = "bl"
 )
 }
 \arguments{
-\item{dem}{raster DEM that catchments were generated from}
+\item{dem}{raster DEM that catchments were generated from.}
 
-\item{catchment}{catchment polygon (sf object)}
+\item{catchment}{Catchment polygon (sf object).}
 
-\item{outlet}{location of catchment outlet (sf object)}
+\item{outlet}{Location of catchment outlet (sf object).}
 
-\item{outlet_label}{character label for outlet}
+\item{outlet_label}{Character label for outlet.}
 
-\item{main_label}{main label for catchment}
+\item{main_label}{Main label for catchment plot.}
 
 \item{bbox_type}{type of bounding box. If \option{catchment}, then
-the contours are bounded by the catchment, otherwise they are plotted
+the contours are bounded by the catchment, otherwise they are plotted 
 to the extent of the DEM}
+
+\item{channel_vec}{Vectors of the channels will be plotted if specified.}
+
+\item{cb_colour}{Colour for catchment outline. Default is "red".}
+
+\item{pp_colour}{Colour for catchment pour points. Default is "red".}
+
+\item{channel_colour}{Colour for channel. Default is "blue".}
+
+\item{contour_colour}{Colour for contours Default is "grey".}
+
+\item{plot_na}{If \code{TRUE} (the default) a north arrow is added to the plot.}
+
+\item{plot_scale}{If \code{TRUE} (the default) a scale bar is added to the plot.}
+
+\item{na_location}{Location for the north arrow. Default is \option{tr}, i.e. top-right.}
+
+\item{scale_location}{Location for the scale bar. Default is \option{bl}, i.e. bottom-left.}
 }
 \value{
-\item{area_df}{Generates contour map with catchment polygon and outlet check}
+\code{TRUE}. A map of the catchments is also plotted and 
+the catchment parameters are printed.
 }
 \description{
 Generates a simple map to allow a visual assessment of the catchment 
@@ -40,46 +68,44 @@ Also generates a table summarizing the catchments,
 including the coordinates of the outlet point and the catchment area.
 }
 \examples{
+library(raster)
+test_raster <- ch_volcano_raster()
+dem_raster_file <- tempfile(fileext = ".tif")
+no_sink_raster_file <- tempfile("no_sinks", fileext = ".tif")
 
-\donttest{
-# note: example not tested in package compilation
-# - requires creating and accessing a temporary directory
-# - requires downloading spatial data from Zenodo repository
-# - requires multiple potentially lengthy GIS operations
+# write test raster to file
+writeRaster(test_raster, dem_raster_file, format = "GTiff")
 
-# create saga wd using base::tempdir()
-saga_wd <- tempdir()
+# remove sinks
+removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, 
+method = "fill")
 
-# download LiDAR DEM for 240 and 241 creek
-ff <- "gs_be240.tif"
-ra_fn <- file.path(saga_wd, ff)
-ra_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-dem <- ch_get_url_data(ra_url, ra_fn)
+# get flow accumulations
+flow_acc_file <- tempfile("flow_acc", fileext = ".tif")
+flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
 
-# fill sinks
-filled_dem <-  ch_saga_fillsinks(dem_raw=dem, saga_wd=saga_wd)
+# get pour points
+pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
+pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
+snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
+snapped_pourpoint_file, snap_dist = 10)
 
-# download station locations for 240, 241 (use as catchment outlets)
-ff <- "gs_weirs.GeoJSON"
-gs_fn <- file.path(saga_wd, ff)
-gs_url <- sprintf("https://zenodo.org/record/4781469/files/\%s",ff)
-stns <- ch_get_url_data(gs_url, gs_fn)[1:2,]
+# get flow directions
+flow_dir_file <- tempfile("flow_dir", fileext = ".tif")
+flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
+fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
+fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
+catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
+fn_catchment_ras, fn_catchment_vec)
 
-# determine contributing area raster using filled_dem
-carea <- ch_saga_carea(filled_dem, saga_wd)
-
-# run catchment delineation
-catchments <- ch_saga_catchment(dem=filled_dem, saga_wd=saga_wd, 
-outlet=stns, carea=carea)
-
-# check catchments
-ch_checkcatchment(filled_dem, catchments, stns)
-}
+# check results
+ch_checkcatchment(test_raster, catchments, snapped_pourpoints)
 
 }
 \seealso{
-\code{\link{ch_saga_fillsinks}} to fill sinks instead of removing
+\code{\link{ch_checkchannels}}
 }
 \author{
-Dan Moore
+Dan Moore and Kevin Shook
 }

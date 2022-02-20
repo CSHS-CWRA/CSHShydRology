@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_clear_wd.R
 \name{ch_clear_wd}
 \alias{ch_clear_wd}
-\title{Clear SAGA Working Directory}
+\title{Clear Working Directory}
 \usage{
 ch_clear_wd(wd, do_check = TRUE)
 }
@@ -17,28 +17,27 @@ without confirmation.}
 \item{result}{returns TRUE upon successful execution}
 }
 \description{
-Empties and removes a SAGA working directory.
+Empties and removes a working directory.
 }
 \details{
-The data for raster layers read in as SAGA sdat 
-files (e.g. the contributing area, carea) are held on disk rather than in memory; if you clear the working directory you
-will get an error if you try to use the raster layer.
+The data for raster layers read in as Whitebox
+files are held on disk rather than in memory
 }
 \examples{
 \donttest{
 # not tested as clearing all files in a given directory cannot be tested in CRAN
 
-# create a saga working directory
-saga_wd <- tempdir()
-ch_create_wd(saga_wd) # confirm creation
+# create an empty working directory
+my_wd <- tempdir()
+ch_create_wd(my_wd) # confirm creation
 
-# clear the saga working directory
-ch_clear_wd(saga_wd)
+# clear the working directory
+ch_clear_wd(my_wd)
 }
 
 }
 \seealso{
-\code{\link{ch_create_wd}} to create working SAGA directory
+\code{\link{ch_create_wd}} to create working directory
 }
 \author{
 Dan Moore
