@@ -32,7 +32,7 @@ Returns a raster object containing the processed dem.
 }
 \description{
 Sinks are removed from a DEM using one of several methods. The raster file
-types supported are listed in \code{\link{SpatialHydrology-functions}}.
+types supported are listed in \code{\link{Spatial_hydrology_functions}}.
 }
 \examples{
 library(raster)

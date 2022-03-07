@@ -1,7 +1,7 @@
 #' Removes sinks from a DEM
 #' 
 #' @description Sinks are removed from a DEM using one of several methods. The raster file
-#' types supported are listed in \code{\link{SpatialHydrology-functions}}.
+#' types supported are listed in \code{\link{Spatial_hydrology_functions}}.
 #'
 #' @param in_dem File path for original dem. Required.
 #' @param out_dem File path for dem after removing sinks.

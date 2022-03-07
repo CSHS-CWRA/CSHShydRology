@@ -4,19 +4,19 @@
 #######################################################
 
 ## Verify that the function return the right output
-x <- ch_rfa_extractamax(flow~date, flowStJohn)
+x <- ch_rfa_extractamax(flow~date, CAN01AD002)
 expect_equal(dim(x), c(89,4))
 expect_equal(names(x), c("flow","date","n","yy" ))
 
 ## Verify the filtering work. there is one year of 92 observations
-x <- ch_rfa_extractamax(flow~date, flowStJohn, tol = 92)
+x <- ch_rfa_extractamax(flow~date, CAN01AD002, tol = 92)
 expect_equal(dim(x), c(89,4))
 
-x <- ch_rfa_extractamax(flow~date, flowStJohn, tol = 93)
+x <- ch_rfa_extractamax(flow~date, CAN01AD002, tol = 93)
 expect_equal(dim(x), c(88,4))
 
 ## Verify that work with data.frame
-y <- ch_rfa_extractamax(flowStJohn[,c('flow','date')], tol = 365)
+y <- ch_rfa_extractamax(CAN01AD002[,c('flow','date')], tol = 365)
 expect_identical(y,x)
 
 ## multiple site
