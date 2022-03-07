@@ -1,5 +1,5 @@
 #' Spatial Hydrology functions
-#' @name SpatialHydrology-functions
+#' @name Spatial_hydrology_functions
 #' @description These functions perform spatial analyses important in hydrology. All
 #' of the functions with the prefix \code{ch_wbt} require the installation of the
 #' package \pkg{Whitebox}. The functions include

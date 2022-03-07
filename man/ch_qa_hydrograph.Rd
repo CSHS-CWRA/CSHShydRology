@@ -2,7 +2,7 @@
 % Please edit documentation in R/ch_qa_hydrograph.R
 \name{ch_qa_hydrograph}
 \alias{ch_qa_hydrograph}
-\title{Plots a hydrograph with the data quality symbols and returns a report on qa symbols and missing data}
+\title{Plots a hydrograph with the data quality symbols and returns a report on qa symbols and missing data.}
 \usage{
 ch_qa_hydrograph(
   DF,
@@ -10,6 +10,7 @@ ch_qa_hydrograph(
   end_date = NULL,
   cts = TRUE,
   rescale = FALSE,
+  sym_col = c("black", "green", "cyan", "yellow", "red", "white"),
   metadata = NULL
 )
 }
@@ -26,6 +27,10 @@ the counts are omitted as in ECDE.}
 
 \item{rescale}{If \code{FALSE} (the default), the y-axis scaling is determined by the time 
 period. If \code{TRUE} then determined by the whole dataset.}
+
+\item{sym_col}{Colours used for SYM; default is those used in ECDE ("black",
+"green", "cyan","yellow", "red", "white").  The final "white" can be changed to highlight
+missing data points.}
 
 \item{metadata}{a dataframe of station metadata, default is \code{HYDAT_list}.}
 }
@@ -51,7 +56,6 @@ Counts of missing observations is also provided in the legend.
 \examples{
 m_test <- ch_qa_hydrograph(CAN05AA008)
 m_test <- ch_qa_hydrograph(CAN05AA008, st_date="1980-01-01", end_date="1999-12-31")
-
 }
 \author{
 Paul Whitfield

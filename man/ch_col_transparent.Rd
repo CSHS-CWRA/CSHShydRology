@@ -11,7 +11,7 @@ ch_col_transparent(colour, trans)
 \arguments{
 \item{colour}{Vector of colours you wish to add transparency to.}
 
-\item{trans}{Integer describing the degree of transparency, from ~200
+\item{trans}{Integer(s) describing the degree of transparency, from ~200
 (slightly transparent) to <10 (very transparent).}
 }
 \value{

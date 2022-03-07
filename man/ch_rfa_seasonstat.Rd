@@ -32,7 +32,7 @@ Can perform the analyses on multiple sites.
 }
 \examples{
 
-dt <- ch_rfa_extractamax(flow~date, flowStJohn)$date
+dt <- ch_rfa_extractamax(flow~date, CAN01AD002)$date
 
 ch_rfa_seasonstat(dt)
 
