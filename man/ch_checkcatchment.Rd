@@ -68,6 +68,8 @@ Also generates a table summarizing the catchments,
 including the coordinates of the outlet point and the catchment area.
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = ".tif")
@@ -101,7 +103,7 @@ fn_catchment_ras, fn_catchment_vec)
 
 # check results
 ch_checkcatchment(test_raster, catchments, snapped_pourpoints)
-
+}
 }
 \seealso{
 \code{\link{ch_checkchannels}}

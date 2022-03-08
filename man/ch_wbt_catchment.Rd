@@ -31,6 +31,8 @@ nothing is returned.
 Delineate catchment boundaries
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = ".tif")
@@ -60,7 +62,7 @@ fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
 fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
 catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
 fn_catchment_ras, fn_catchment_vec)
-
+}
 }
 \seealso{
 \code{\link{ch_wbt_catchment_onestep}}

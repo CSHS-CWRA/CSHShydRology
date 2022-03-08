@@ -15,6 +15,8 @@
 #' @export
 #' @seealso  \code{\link{ch_wbt_catchment_onestep}}
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = ".tif")
@@ -44,7 +46,7 @@
 #' fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
 #' catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
 #' fn_catchment_ras, fn_catchment_vec)
-#' 
+#' }
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 
                              fn_catchment_vec, return_vector = TRUE) {
   if (!file.exists(fn_pp_snap)) {

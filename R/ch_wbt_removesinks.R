@@ -13,12 +13,15 @@
 #'
 #' @author Dan Moore
 #' @importFrom raster raster
-#' @importFrom whitebox wbt_fill_single_cell_pits wbt_breach_depressions_least_cost wbt_fill_depressions_wang_and_liu
+#' @importFrom whitebox wbt_init wbt_fill_single_cell_pits wbt_breach_depressions_least_cost 
+#' @importFrom whitebox wbt_fill_depressions_wang_and_liu
 #' @importFrom whitebox wbt_breach_depressions wbt_fill_depressions wbt_fill_depressions_planchon_and_darboux
 #' @return Returns a raster object containing the processed dem. 
 #' @export
 #'
 #' @examples 
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -29,9 +32,11 @@
 #' 
 #' # remove sinks
 #' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
-#' 
+#' }
 ch_wbt_removesinks <- function(in_dem, out_dem, method = "breach_leastcost", 
                                dist = NULL, fn_dem_fsc = NULL, ...) {
+  
+  exe_location <- wbt_init()
   if (!file.exists(in_dem)) {
     stop("Error: input dem file does not exist")
   }
