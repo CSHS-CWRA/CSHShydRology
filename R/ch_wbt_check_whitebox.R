@@ -7,7 +7,10 @@
 #' @importFrom whitebox check_whitebox_binary
 #'
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' ch_wbt_check_whitebox()
+#' }
 ch_wbt_check_whitebox <- function() {
   wb_found <- check_whitebox_binary(silent = TRUE)
   msg <- paste("The WhiteboxTools executable could not be found.\n", 
