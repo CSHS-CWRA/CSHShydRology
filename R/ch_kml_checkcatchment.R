@@ -65,6 +65,7 @@
 ch_kml_checkcatchment <- function(fn_kml, folder_name = "",
                                   contours, catchments, channels, 
                                   pp, pp_labels = NULL) {
+
   catchments <- st_cast(catchments, 'MULTILINESTRING') %>%
     st_cast('LINESTRING')
   # convert to contours to linestring so all contour segments get plotted

@@ -49,6 +49,7 @@
 #' }
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 
                              fn_catchment_vec, return_vector = TRUE) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_pp_snap)) {
     stop("Error: file containing snapped pour points does not exist")
   }

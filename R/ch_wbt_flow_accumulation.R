@@ -34,6 +34,7 @@
 #' plot(flow_acc)
 #' }
 ch_wbt_flow_accumulation <- function(fn_dem_ns, fn_flowacc, return_raster = TRUE) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_dem_ns)) {
     stop("Error: input sink-free dem file does not exist")
   }

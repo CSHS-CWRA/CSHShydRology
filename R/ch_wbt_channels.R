@@ -45,6 +45,7 @@
 ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
                             fn_channel_ras, fn_channel_vec, 
                             threshold = NULL, ...) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_flowacc)) {
     stop("Error: input flow accumulation file does not exist")
   }

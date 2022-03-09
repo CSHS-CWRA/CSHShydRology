@@ -37,6 +37,7 @@ types supported are listed in \code{\link{Spatial_hydrology_functions}}.
 \examples{
 \donttest{
 # Not tested automatically as requires installation of Whitebox
+ch_wbt_check_whitebox()
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))

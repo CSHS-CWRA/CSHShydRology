@@ -33,6 +33,7 @@
 #' plot(flow_dir)
 #' }
 ch_wbt_flow_direction <- function(fn_dem_ns, fn_flowdir, return_raster = TRUE) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_dem_ns)) {
     stop("Error: input sink-free dem file does not exist")
   }

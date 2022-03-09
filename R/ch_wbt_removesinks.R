@@ -22,6 +22,7 @@
 #' @examples 
 #' \donttest{
 #' # Not tested automatically as requires installation of Whitebox
+#' ch_wbt_check_whitebox()
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -36,6 +37,7 @@
 ch_wbt_removesinks <- function(in_dem, out_dem, method = "breach_leastcost", 
                                dist = NULL, fn_dem_fsc = NULL, ...) {
   
+  ch_wbt_check_whitebox()
   exe_location <- wbt_init()
   if (!file.exists(in_dem)) {
     stop("Error: input dem file does not exist")

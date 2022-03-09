@@ -51,6 +51,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                                      channel_colour = "blue", contour_colour = "grey",       
                                      plot_na = TRUE, plot_scale = TRUE,
                                      na_location = "tr", scale_location = "bl", ...) {
+  ch_wbt_check_whitebox()
   
   if (missing(wd)) {
     step("Error: name of working directory not specified")

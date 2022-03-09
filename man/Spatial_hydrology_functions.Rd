@@ -6,14 +6,14 @@
 \description{
 These functions perform spatial analyses important in hydrology. All
 of the functions with the prefix \code{ch_wbt} require the installation of the
-package \pkg{Whitebox}. The functions include
+package \pkg{Whitebox}. The functions include:
 \describe{
  \item{ch_wbt_removesinks}{Removes sinks from a DEM by deepening drainage network}
  \item{ch_wbt_fillsinks}{Removes sinks from a DEM by filling them}
  \item{ch_wbt_catchment}{Generates catchment boundaries for a conditioned DEM based on specified points of interest}
  \item{ch_wbt_channels}{Generates a drainage network from DEM}
  \item{ch_wbt_flow_accumulation}{Accumulates flows downstream in a cathcment}
- \item{ch_wbt_flow_direction}{Calcualted flow directions for each cell in DEM}
+ \item{ch_wbt_flow_direction}{Calculated flow directions for each cell in DEM}
  \item{ch_wbt_pourpoints}{Snaps pour points to channel}
  \item{ch_wbt_catchment_onestep}{Performs all catchment delineations in a single function}
  \item{ch_contours}{Creates contour lines from DEM}

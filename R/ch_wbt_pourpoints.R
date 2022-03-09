@@ -49,6 +49,7 @@
 #' }
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_flowacc)) {
     stop("Error: flow accumulation file does not exist")
   }
