@@ -7,7 +7,7 @@
 ch_wbt_check_whitebox()
 }
 \value{
-If \code{WhiteboxTools} cannot be found, a message explaining what to do is displayed
+If \code{WhiteboxTools} cannot be found, a message explaining what to do is displayed.
 }
 \description{
 Checks for WhiteboxTools executable
