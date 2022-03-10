@@ -76,7 +76,8 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
   dem_ns <- ch_wbt_removesinks(in_dem = in_dem, out_dem = file_names$dem_ns, 
                                method = sink_method, dist = dist, 
                                fn_dem_fsc = file_names$dem_fsc, ...)
-  if (class(dem_ns) == "character")  return(NULL)
+
+  if (inherits(dem_ns, "character")) return(NULL)
   ch_wbt_flow_accumulation(fn_dem_ns = file_names$dem_ns, fn_flowacc = file_names$flowacc,
                            return_raster = FALSE)
   ch_wbt_flow_direction(fn_dem_ns = file_names$dem_ns, fn_flowdir = file_names$flowdir,

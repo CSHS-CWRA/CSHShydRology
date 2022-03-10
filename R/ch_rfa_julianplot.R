@@ -45,13 +45,13 @@ ch_rfa_julianplot <- function(rose.col = "gray40", rose.lwd = 1.5,
 
 DrawCircle <- function(x = 0, y = NULL, radius = 1, res = 500, ...){
 
-  if (class(x) %in% c('data.frame','matrix')) {
+  if (inherits(x, "data.frame") | inherits(x, "maxtrix")) { 
     y <- x[,2]
     x <- x[,1]
-  } else if (class(x) == 'list') {
+  } else if (inherits(x, "list")) {
     y <- x$y
     x <- x$x
-  } else if (class(x) == 'formula') {
+  } else if (inherits(x, "formula")) {
     xd <- model.frame(x,y)
     y <- x[,2]
     x <- x[,1]
