@@ -119,7 +119,7 @@ ch_hydrograph_plot <- function(flows = NULL,
 
   # check precip data frame
   if (!(is.null(precip))) {
-    if (class(precip) != "data.frame") {
+    if (!inherits(precip, "data.frame")) {  
       stop("precip must be a data frame.")
     }
     if (nrow(precip) == 0) {
