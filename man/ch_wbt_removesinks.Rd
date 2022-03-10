@@ -32,9 +32,12 @@ Returns a raster object containing the processed dem.
 }
 \description{
 Sinks are removed from a DEM using one of several methods. The raster file
-types supported are listed in \code{\link{SpatialHydrology-functions}}.
+types supported are listed in \code{\link{Spatial_hydrology_functions}}.
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
+ch_wbt_check_whitebox()
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -45,7 +48,7 @@ writeRaster(test_raster, dem_raster_file, format = "GTiff")
 
 # remove sinks
 removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
-
+}
 }
 \author{
 Dan Moore

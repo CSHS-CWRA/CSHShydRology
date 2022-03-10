@@ -24,6 +24,8 @@
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
 #' @export
 #' @examples 
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -54,7 +56,7 @@
 #' snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
 #' snapped_pourpoint_file, snap_dist = 10)
 #' ch_checkchannels(test_raster, channels, snapped_pourpoints)
-#' 
+#' }
 ch_checkchannels <- function(dem, channels, outlet = NULL, main_label = "",
                              channel_colour = "blue", pp_colour = "red",
                              contour_colour = "grey") {

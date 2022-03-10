@@ -24,6 +24,8 @@ grid will be returned as a raster object, otherwise \code{NULL} is returned.
 Creates flow accumulation grid file
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -39,7 +41,7 @@ removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method
 flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
 flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
 plot(flow_acc)
-
+}
 }
 \author{
 Dan Moore

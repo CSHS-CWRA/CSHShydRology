@@ -31,6 +31,8 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -41,6 +43,7 @@
 #' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #' catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
 #' pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
+#' }
 ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf, 
                                      sink_method = "breach_leastcost", dist = NULL, 
                                      check_catchment = TRUE, threshold = NULL, snap_dist = NULL, 
@@ -48,6 +51,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                                      channel_colour = "blue", contour_colour = "grey",       
                                      plot_na = TRUE, plot_scale = TRUE,
                                      na_location = "tr", scale_location = "bl", ...) {
+  ch_wbt_check_whitebox()
   
   if (missing(wd)) {
     step("Error: name of working directory not specified")
@@ -84,7 +88,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
   wbt_watershed(file_names$flowdir, file_names$pp_snap, file_names$catchment_ras)
   wbt_raster_to_vector_polygons(file_names$catchment_ras, file_names$catchment_vec)
   catchment_vec <- st_read(file_names$catchment_vec) %>% st_as_sf()
-  if(is.na(sf::st_crs(catchment_vec))){
+  if (is.na(sf::st_crs(catchment_vec))) {
     sf::st_crs(catchment_vec) <- sf::st_crs(raster(file_names$catchment_ras))
     sf::write_sf(catchment_vec, file_names$catchment_vec)
   }

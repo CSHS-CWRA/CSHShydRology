@@ -15,6 +15,8 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -38,10 +40,12 @@
 #' channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
 #' channel_vector_file, 1)
 #' plot(channels)
+#' }
 #' 
 ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
                             fn_channel_ras, fn_channel_vec, 
                             threshold = NULL, ...) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_flowacc)) {
     stop("Error: input flow accumulation file does not exist")
   }

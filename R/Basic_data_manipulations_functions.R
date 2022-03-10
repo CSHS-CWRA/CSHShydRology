@@ -1,5 +1,5 @@
 #' Basic data manipulation functions
-#' @name Basic_data_manipulation-functions
+#' @name Basic_data_manipulation_functions
 #' @description These functions read in or convert values among formats
 #' \describe{
 #'  \item{ch_read_ECDE_flows}{Reads a file of WSC daily flows from ECDataExplorer}

@@ -36,7 +36,7 @@ Extracts the annual maxima of a daily time series
 }
 \examples{
 
-out <- ch_rfa_extractamax(flow ~ date, flowStJohn, tol = 350)
+out <- ch_rfa_extractamax(flow ~ date, CAN01AD002, tol = 350)
 head(out)
 
 }

@@ -33,6 +33,8 @@ Returns a \pkg{sf} vector object of the stream channels.
 Generate stream network
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -56,6 +58,7 @@ channel_vector_file <- tempfile("channels", fileext = c(".shp"))
 channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
 channel_vector_file, 1)
 plot(channels)
+}
 
 }
 \author{

@@ -23,6 +23,8 @@ but a \code{NULL} value is returned.
 Creates flow direction grid file
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -38,7 +40,7 @@ removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method
 flow_dir_file <- tempfile("flow_dir", fileext = c(".tif"))
 flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
 plot(flow_dir)
-
+}
 }
 \author{
 Dan Moore

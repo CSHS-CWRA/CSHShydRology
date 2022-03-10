@@ -14,6 +14,8 @@
 #' @export
 #'
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -29,8 +31,9 @@
 #' flow_dir_file <- tempfile("flow_dir", fileext = c(".tif"))
 #' flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
 #' plot(flow_dir)
-#' 
+#' }
 ch_wbt_flow_direction <- function(fn_dem_ns, fn_flowdir, return_raster = TRUE) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_dem_ns)) {
     stop("Error: input sink-free dem file does not exist")
   }

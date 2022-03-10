@@ -23,6 +23,8 @@
 #' channel network.
 #' @export 
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -44,9 +46,10 @@
 #' snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = c(".shp"))
 #' snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
 #' snapped_pourpoint_file, snap_dist = 10)
-#' 
+#' }
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {
+  ch_wbt_check_whitebox()
   if (!file.exists(fn_flowacc)) {
     stop("Error: flow accumulation file does not exist")
   }

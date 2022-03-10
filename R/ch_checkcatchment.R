@@ -38,6 +38,8 @@
 #' @importFrom grid unit
 #' @export
 #' @examples
+#' \donttest{
+#' # Not tested automatically as requires installation of Whitebox
 #' library(raster)
 #' test_raster <- ch_volcano_raster()
 #' dem_raster_file <- tempfile(fileext = ".tif")
@@ -71,7 +73,7 @@
 #' 
 #' # check results
 #' ch_checkcatchment(test_raster, catchments, snapped_pourpoints)
-#' 
+#' }
 ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
                                 main_label = "", bbox_type = "catchment",
                                 channel_vec = NULL, 

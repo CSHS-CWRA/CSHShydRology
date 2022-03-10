@@ -8,7 +8,7 @@
 #' @author Martin Durocher
 #' @source \url{https://wateroffice.ec.gc.ca/}
 #####################################################################
-"flowStJohn"
+"CAN01AD002"
 
 #####################################################################
 #' Annual maxima from sites in the Atlantic region of Canada

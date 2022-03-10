@@ -37,6 +37,8 @@ pour points will be numbered.}
 Generate KML file to check delineation in Google Earth
 }
 \examples{
+\donttest{
+# Not tested automatically as requires installation of Whitebox
 library(raster)
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -80,6 +82,7 @@ fn_kml <- tempfile("volcano", fileext = ".KML")
 # create KML files, suppressing warnings caused by other functions
 suppressWarnings(ch_kml_checkcatchment(fn_kml, "test", contours, catchments, 
 channels, pourpoints))
+}
 
 }
 \author{
