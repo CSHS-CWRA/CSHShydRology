@@ -45,7 +45,7 @@ ch_rfa_julianplot <- function(rose.col = "gray40", rose.lwd = 1.5,
 
 DrawCircle <- function(x = 0, y = NULL, radius = 1, res = 500, ...){
 
-  if (inherits(x, "data.frame") | inherits(x, "maxtrix")) { 
+  if (inherits(x, "data.frame") | inherits(x, "matrix")) { 
     y <- x[,2]
     x <- x[,1]
   } else if (inherits(x, "list")) {
