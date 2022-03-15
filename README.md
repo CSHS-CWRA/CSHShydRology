@@ -1,23 +1,31 @@
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/CSHShydRology)](https://cran.r-project.org/package=CSHShydRology)
 [![Travis build status](https://travis-ci.org/CSHS-CWRA/CSHShydRology.svg?branch=master)](https://travis-ci.org/CSHS-CWRA/CSHShydRology)
 [![license](https://img.shields.io/badge/license-GPL3-lightgrey.svg)](https://choosealicense.com/)
 # CSHShydRology
 
 ## Installing this package
-You can download the complete package, as well as the manual .pdf by clicking on **releases**. However, you can download and install the most up-to-date version directly from this repository. The procedure is
+The package may be downloaded directly from [CRAN](https://cran.r-project.org/package=CSHShydRology) with:
+``` r
+install.packages("CSHShydRology")
+```
+
+Previous versions of the package and manuals can be found by clicking on **releases**. The latest version of the package may also be installed directly from this repository. The procedure is
 1. Install the package "devtools" - you only have to do this once. Note that this will also install several dependancies
 2. Load the devtools library
 3. Install the package.
 
 The commands are:
 ``` R
-install.packages("devtools")
+if (!require(devtools)) install.packages("devtools")
 library(devtools)
 install_github("CSHS-CWRA/CSHShydRology")
 ```
 
 ## What is CSHS Hydrology?
 This is an R package of functions used by Canadian hydrologists. The name is in recognition of the support provided by the Canadian Association Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). The CSHS website is https://cwra.org/en/affiliates-programs/cshs/.
+
 ## Themes
 This package contains functions which are grouped into themes. Currently the themes include:
 - Statistical hydrology (trend detection, data screening, frequency analysis, regionalization),
@@ -65,6 +73,11 @@ Each dataset needs to be documented in the same way as a function. The creation 
 There is a lot of information available on using git and GitHub in R. The best starting point is https://support.rstudio.com/hc/en-us/articles/200532077-Version-Control-with-Git-and-SVN which shows how to integrate git and GitHub with RStudio.
 
 
+## Citation
 
+The package citation may be generated with the following command in R.
+```{r}
+citation("CSHShydRology")
+```
 
 
