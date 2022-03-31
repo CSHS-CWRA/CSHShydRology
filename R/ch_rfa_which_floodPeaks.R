@@ -54,17 +54,17 @@
 #' @examples
 #'
 #' # Declustering using the flood recommendation.
-#' cid <- which.floodPeaks(flow~date, flowStJohn, u = 1000, r = 14, rlow = .75,
+#' cid <- which.floodPeaks(flow~date, CAN01AD002, u = 1000, r = 14, rlow = .75,
 #'                          ini = 'wrc')
 #'
-#' plot(flowStJohn, type = 'l')
-#' points(flowStJohn[cid,], col = 'red', pch = 16)
+#' plot(CAN01AD002, type = 'l')
+#' points(CAN01AD002[cid,], col = 'red', pch = 16)
 #'
 #' ## Simpler run declustering
-#' cid <- which.clusters(flowStJohn$flow, u = 1000, r = 14)
+#' cid <- which.clusters(CAN01AD002$flow, u = 1000, r = 14)
 #'
-#' plot(flowStJohn, type = 'l')
-#' points(flowStJohn[cid,], col = 'red', pch = 16)
+#' plot(CAN01AD002, type = 'l')
+#' points(CAN01AD002[cid,], col = 'red', pch = 16)
 which.floodPeaks <- function(x,...) UseMethod('which.floodPeaks', x)
 
 #' @export

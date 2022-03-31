@@ -109,11 +109,11 @@ vcov(fit)
 predict(fit)
 coef(fit, ci = TRUE)
 
-fit <- FitPot(flow~date, flowStJohn, u = 1000,
+fit <- FitPot(flow~date, CAN01AD002, u = 1000,
                declust = 'wrc', r = 14)
 
 print(fit)
-plot(flow~date,flowStJohn, type = 'l')
+plot(flow~date, CAN01AD002, type = 'l')
 points(fit$time,fit$excess+fit$u, col = 2, pch = 16)
 abline(h=1000, col = 3, lwd = 2)
 

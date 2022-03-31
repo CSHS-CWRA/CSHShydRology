@@ -79,11 +79,11 @@
 #' predict(fit)
 #' coef(fit, ci = TRUE)
 #'
-#' fit <- FitPot(flow~date, flowStJohn, u = 1000,
+#' fit <- FitPot(flow~date, CAN01AD002, u = 1000,
 #'                declust = 'wrc', r = 14)
 #'
 #' print(fit)
-#' plot(flow~date,flowStJohn, type = 'l')
+#' plot(flow~date, CAN01AD002, type = 'l')
 #' points(fit$time,fit$excess+fit$u, col = 2, pch = 16)
 #' abline(h=1000, col = 3, lwd = 2)
 #'
@@ -127,15 +127,15 @@ FitPot.numeric <-
            ...){
 
   ## Supply a date variable if not presented
-  if(is.null(dt))
+  if (is.null(dt))
     dt <- seq_along(x)
 
   nyear <- sum(is.finite(dt)) / unit
 
   ## If necessary, extract peaks using a declustering method
-  if(declust == 'run')
+  if (declust == 'run')
     cid <- which.clusters(x, dt, u, r)
-  else if(declust == 'wrc')
+  else if (declust == 'wrc')
     cid <- which.floodPeaks(x, dt, u, r = r, rlow = rlow, ini = 'wrc')
   else
     cid <- x > u
@@ -143,23 +143,23 @@ FitPot.numeric <-
   ans <- list(excess = x[cid] - u, time = dt[cid])
 
   ## select the fitting function
-  if(method == 'lmom')
+  if (method == 'lmom')
     f <- fgpaLmom
-  else if(method == 'mom')
+  else if (method == 'mom')
     f <- fgpaMom
-  else if(method == 'mle')
+  else if (method == 'mle')
     f <- fgpa1d
-  else if(method == 'mle2')
+  else if (method == 'mle2')
     f <- fgpa2d
   
   ## Estimate the parameters
-  if(method %in% c('lmom', 'mom')){
+  if (method %in% c('lmom', 'mom')) {
 
     ## Estimatate the parameters
     ans$estimate <- f(ans$excess)
 
     ## Covariance matrix estimated by boostraps
-    if(varcov){
+    if (varcov) {
       ans$varcov <- matrix(NA,2,2)
 
       xboot <- replicate(nsim,
@@ -171,9 +171,9 @@ FitPot.numeric <-
       ans$varcov <- as.matrix(vc)
     }
 
-  } else if(method %in% c('mle','mle2')){
+  } else if (method %in% c('mle','mle2')) {
 
-    if(varcov){
+    if (varcov) {
       sol <- f(ans$excess, sol = TRUE)
       ans$estimate <- sol$par
       ans$varcov <- sol$varcov
@@ -183,7 +183,7 @@ FitPot.numeric <-
       ans$estimate <- f(ans$excess, sol = FALSE)
     }
     
-    if( (ans$estimate[2] < -.5 + 1e-4) | (ans$estimate[2] > 1-1e-4) )
+    if ((ans$estimate[2] < -.5 + 1e-4) | (ans$estimate[2] > 1 - 1e-4) )
       warning(paste('Shape parameter have reach boundary. Normal',
                     ' approximation of the likelihood may be unreliable'))
   }
@@ -191,7 +191,7 @@ FitPot.numeric <-
   ## Complete object
   ans$u <- u
   ans$method <- method
-  ans$mrl <-  as.numeric(ans$estimate[1]/ (1+ans$estimate[2]))
+  ans$mrl <-  as.numeric(ans$estimate[1] / (1 + ans$estimate[2]))
   ans$nyear <- nyear
   ans$unit <- unit
   ans$ntot <- length(x)

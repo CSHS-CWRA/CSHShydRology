@@ -39,9 +39,9 @@ confidence intervals.
 }
 \examples{
 
-data(flowStJohn)
+data(CAN01AD002)
 
-fit <- FitPot(flow~date, flowStJohn, u = 1000,
+fit <- FitPot(flow~date, CAN01AD002, u = 1000,
                declust = 'wrc', r = 14)
      
 predict(fit, se = TRUE, ci = 'delta')
