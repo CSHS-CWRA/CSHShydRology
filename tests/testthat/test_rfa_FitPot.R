@@ -74,17 +74,17 @@ expect_equal(fit$nyear, 100)
 fit <- FitPot(flow~date, flowStJohn, u = 1000,
               declust = 'wrc', r = 10, rlow = .6)
 xid <- which.floodPeaks(flow~date, flowStJohn, u = 1000, r = 10, rlow = .6)
-expect_equal(flowStJohn$flow[xid], fit$excess + fit$u)
+expect_equal(CAN01AD002$flow[xid], fit$excess + fit$u)
 
 fit <- FitPot(flow~date, flowStJohn, u = 900, declust = 'run', r = 10)
 xid <- which.clusters(flow~date, flowStJohn, u = 900, r = 10)
-expect_equal(flowStJohn$flow[xid], fit$excess + fit$u)
+expect_equal(CAN01AD002$flow[xid], fit$excess + fit$u)
 
 ## verify formula
-fit1 <- FitPot(flow~date, flowStJohn, u = 1000,
+fit1 <- FitPot(flow~date, CAN01AD002, u = 1000,
               declust = 'wrc', r = 10, rlow = .6)
 
-fit2 <- FitPot(flowStJohn$flow, flowStJohn$date, u = 1000,
+fit2 <- FitPot(CAN01AD002$flow, flowStJohn$date, u = 1000,
               declust = 'wrc', r = 10, rlow = .6)
 
 expect_equal(fit1,fit2)

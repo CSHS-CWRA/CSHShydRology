@@ -24,6 +24,7 @@
 #' @param ... Other parameters.
 #' 
 #' @seealso \link{FitPot}
+#' @importFrom stats vcov qchisq rexp runif
 #' 
 #' @references 
 #' 
@@ -54,8 +55,8 @@ predict.fpot <-
   ## funtion that compute the return period
   Fpred <- function(para, lambda){
 
-    if(abs(para[2]) > sqrt(.Machine$double.eps))
-      ans <- object$u + para[1]/para[2] * (1-lambda^(-para[2]) )
+    if (abs(para[2]) > sqrt(.Machine$double.eps))
+      ans <- object$u + para[1] / para[2] * (1 - lambda ^ (-para[2]))
     else
       ans <- object$u + para[1] * log(lambda)
 

@@ -111,6 +111,8 @@ FitPot.formula <- function(form, x, ...){
 
 #' @export
 #' @rdname FitPot
+#' @importFrom stats cov
+#' @importFrom Matrix nearPD
 FitPot.numeric <- 
   function(x, 
            dt = NULL, 

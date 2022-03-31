@@ -36,6 +36,7 @@
 #'   Linear Combinations of Order Statistics. Journal of the Royal Statistical
 #'   Society Series B (Methodological). 52(1):105-24.
 #'
+#' @importFrom stats optimize optim optimHess var
 #' @export
 #'
 #' @examples

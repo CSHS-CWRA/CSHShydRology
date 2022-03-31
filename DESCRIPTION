@@ -62,7 +62,9 @@ Imports:
     tidyhydat,
     whitebox,
     plotKML,
-    datasets
+    Matrix,
+    datasets,
+    lmomco
 Suggests: 
     knitr,
     testthat, 
