@@ -15,7 +15,6 @@
 #'  \item{ch_contours}{Creates contour lines from DEM}
 #'  \item{ch_checkcatchment}{Provides a simple map to check the outputs from ch_saga_catchment}
 #'  \item{ch_checkchannels}{Provides a simple map to check the outputs from ch_saga_channels}
-#'  \item{ch_kml_checkcatchment}{Generates KML file to check delineation in Google Earth}
 #'  \item{ch_volcano_raster}{Returns a raster object of land surface elevations}
 #' }
 #' 

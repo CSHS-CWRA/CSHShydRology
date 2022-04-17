@@ -55,13 +55,11 @@ Imports:
     raster,
     here,
     sf,
-    sp,
     dplyr,
     magrittr,
     httr,
     tidyhydat,
     whitebox,
-    plotKML,
     datasets
 Suggests: 
     knitr,
