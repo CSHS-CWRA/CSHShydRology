@@ -1,8 +1,8 @@
 Type: Package
 Package: CSHShydRology
 Title: Canadian Hydrological Analyses
-Version: 1.2.0
-Date: 2022-03-10
+Version: 1.2.1
+Date: 2022-04-17
 Authors@R: c(person("Kevin", "Shook", 
               email = "kevin.shook@usask.ca", 
               role = c("cre", "aut")),
@@ -55,13 +55,11 @@ Imports:
     raster,
     here,
     sf,
-    sp,
     dplyr,
     magrittr,
     httr,
     tidyhydat,
     whitebox,
-    plotKML,
     datasets
 Suggests: 
     knitr,
