@@ -27,7 +27,6 @@
 #' @export
 #' 
 #' @importFrom stats model.frame
-#' 
 #' @examples
 #'
 #' dt <- ch_rfa_extractamax(flow~date, CAN01AD002)$date
