@@ -10,6 +10,8 @@ ch_get_url_data(gd_url, gd_filename, quiet = FALSE)
 \item{gd_url}{url for accessing data set}
 
 \item{gd_filename}{name of file on local drive, including full path}
+
+\item{quiet}{Optional. If \code{FALSE} (the default) error/warning messages are printed if the data cannot be found.}
 }
 \value{
 Returns a data frame (from a .csv file), a \code{raster} object (from a .tif file), 

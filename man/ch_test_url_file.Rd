@@ -12,10 +12,23 @@ ch_test_url_file(url, quiet = FALSE)
 \item{quiet}{Optional. If \code{FALSE} (the default) messages are printed.}
 }
 \value{
-
+Returns \option{error} if there was an error, \option{warning} if there was a
+warning. Otherwise, returns \option{OK}. Strings are returned instead of logical values
+to simplify checking result in calling function.
 }
 \description{
 Tests url to see if it will work
+}
+\examples{
+test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
+ch_test_url_file(test_url, quiet = TRUE)
+
+
+}
+\seealso{
+See original code on post in Stack Overflow
+\href{https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r}{
+How to write trycatch in R}
 }
 \author{
 Kevin Shook
