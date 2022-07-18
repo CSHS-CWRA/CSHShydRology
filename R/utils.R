@@ -115,9 +115,9 @@ ch_col_transparent <- function(colour, trans)
 #'
 #' @return Returns \option{error} if there was an error, \option{warning} if there was a
 #' warning. Otherwise, returns \option{OK}. Strings are returned instead of logical values
-#' to simpify checking result in calling function.
-#' #' @seealso See original code on post in Stack Overflow
-#' \hrefhttps://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r}{
+#' to simplify checking result in calling function.
+#' @seealso See original code on post in Stack Overflow
+#' \href{https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r}{
 #' How to write trycatch in R}
 #' @export
 #' @keywords internal

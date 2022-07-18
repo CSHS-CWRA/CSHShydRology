@@ -48,7 +48,6 @@ Imports:
     plotrix,
     timeDate,
     stringr,
-    jsonlite,
     ggplot2,
     ggspatial,
     stats,
