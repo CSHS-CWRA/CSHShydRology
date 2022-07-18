@@ -59,14 +59,21 @@
 #' }
 #' @export
 #' 
-ch_get_url_data <- function(gd_url, gd_filename) {
+ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
   file_ext <- strsplit(x = gd_filename, split = "[.]")[[1]][2]
   
   # csv file - returns data frame
   if (file_ext == "csv") {
     if (!file.exists(gd_filename)) {
+      # check to see if url file exists
+      result <- ch_test_url_file(gd_url, quiet)
+      if (result == "error" | result == "warning") {
+        stop("URL does not exist")
+      } 
+      
       da <- read.csv(gd_url)
       write.csv(da, gd_filename)
+
     } else {
       da <- read.csv(gd_filename)
     }     
@@ -76,6 +83,12 @@ ch_get_url_data <- function(gd_url, gd_filename) {
   # tiff file - returns raster object
   if (file_ext %in% c("tif", "tiff")) {
     if (!file.exists(gd_filename)) {
+      # check to see if url file exists
+      result <- ch_test_url_file(gd_url, quiet)
+      if (result == "error" | result == "warning") {
+        stop("URL does not exist")
+      } 
+
       GET(gd_url, write_disk(gd_filename))
     }
     da <- raster::raster(gd_filename)
@@ -85,6 +98,12 @@ ch_get_url_data <- function(gd_url, gd_filename) {
   # GeoJSON - returns sf object
   if (file_ext == "GeoJSON") {
     if (!file.exists(gd_filename)) {
+      # check to see if url file exists
+      result <- ch_test_url_file(gd_url, quiet)
+      if (result == "error" | result == "warning") {
+        stop("URL does not exist")
+      } 
+      
       GET(gd_url, write_disk(gd_filename))
       da <- st_read(gd_filename)
     } else {

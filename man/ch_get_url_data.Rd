@@ -4,7 +4,7 @@
 \alias{ch_get_url_data}
 \title{Gets remote data sets}
 \usage{
-ch_get_url_data(gd_url, gd_filename)
+ch_get_url_data(gd_url, gd_filename, quiet = FALSE)
 }
 \arguments{
 \item{gd_url}{url for accessing data set}

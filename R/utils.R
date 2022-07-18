@@ -107,3 +107,60 @@ ch_col_transparent <- function(colour, trans)
   res <- paste("#",apply(apply(rgb,2,num2hex),2,paste,collapse = ""),sep = "")
   return(res)
 }
+
+#' Tests url to see if it will work
+#'
+#' @param url Required. URL to be checked
+#' @param quiet Optional. If \code{FALSE} (the default) messages are printed.
+#'
+#' @return Returns \option{error} if there was an error, \option{warning} if there was a
+#' warning. Otherwise, returns \option{OK}. Strings are returned instead of logical values
+#' to simpify checking result in calling function.
+#' #' @seealso See original code on post in Stack Overflow
+#' \hrefhttps://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r}{
+#' How to write trycatch in R}
+#' @export
+#' @keywords internal
+#' @author Kevin Shook
+#'
+#' @examples
+ch_test_url_file <- function(url, quiet = FALSE){
+    out <- tryCatch(
+      {
+        readLines(con = url, n = 1, warn = FALSE) 
+      },
+      error = function(cond) {
+        if (!quiet) {
+          message(paste("URL does not seem to exist:", url))
+          message("Here's the original error message:")
+          message(cond)
+        } else{
+        }
+
+        # Choose a return value in case of error
+        return("error")
+      },
+      warning = function(cond) {
+        if (!quiet) {
+          message(paste("URL caused a warning:", url))
+          message("Here's the original warning message:")
+          message(cond)
+          # Choose a return value in case of warning
+        } else{
+        }
+
+        return("warning")
+      },
+      finally = {
+        if (!quiet) {
+          message(paste("Processed URL:", url))
+        } else {
+        }
+
+      }
+    ) 
+    if (out != "error" & out != "warning")
+      out <- "OK"
+    
+    return(out)
+  }
