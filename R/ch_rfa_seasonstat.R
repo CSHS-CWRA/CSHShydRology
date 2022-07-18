@@ -69,6 +69,7 @@ ch_rfa_seasonstat.default <- function(x, ...){
 
 #' @export
 #' @rdname ch_rfa_seasonstat
+
 ch_rfa_seasonstat.data.frame <- function(x, ...){
    ans <- lapply(split(x[,1], as.character(x[,2])), ch_rfa_seasonstat)
    return(do.call('rbind', ans))
