@@ -2,9 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{ch_col_transparent}
 \alias{ch_col_transparent}
-\title{Adjusts colour codes to introduce transparency
-
-\code{ch_col_transparent} is used to adjust colour codes to introduce transparency.}
+\title{Adjusts colour codes to introduce transparency}
 \usage{
 ch_col_transparent(colour, trans)
 }
@@ -18,8 +16,6 @@ ch_col_transparent(colour, trans)
 \item{res}{returned updated colour code with transparency}
 }
 \description{
-Adjusts colour codes to introduce transparency
-
 \code{ch_col_transparent} is used to adjust colour codes to introduce transparency.
 }
 \examples{

@@ -61,7 +61,7 @@ ch_date_subset <- function(df, prd) {
   return(df)
 }
 
-#' @title Adjusts colour codes to introduce transparency
+#' Adjusts colour codes to introduce transparency
 #'
 #' \code{ch_col_transparent} is used to adjust colour codes to introduce transparency.
 #'
