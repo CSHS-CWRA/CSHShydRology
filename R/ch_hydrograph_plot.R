@@ -86,23 +86,27 @@ ch_hydrograph_plot <- function(flows = NULL,
                             zero_axis = TRUE) {
 
   # check flows data frame
-  if (is.null(flows) | class(flows) != "data.frame") {
-    stop("flows data frame is required.")
-  } else if (nrow(flows) == 0) {
-    stop("flows data frame cannot be empty (zero rows).")
-  } else if (ncol(flows) == 1) {
-    stop("flows data frame cannot be empty (no data columns).")
+  if (!(is.null(flows))) {
+    if (!inherits(flows, "data.frame")) {  
+      stop("flows must be a data frame.")
+    }
+    if (nrow(flows) == 0) {
+      stop("flows data frame cannot be empty (zero rows).")
+    }
+    if (ncol(flows) == 1) {
+      stop("flows data frame cannot be empty (no data columns).")
+    }
+    if (which(colnames(flows) == "Date") != 1) {
+      stop("'Date' must be the first attribute of flows data frame.")
+    }
+    if (is.null(flows$Date)) {
+      stop("Date attribute is required in flows data frame.")
+    }
+    if (ncol(flows) > 11) {
+      stop("flows cannot have more than 11 data columns (other than 'Date').")
+    }
   }
-  if (is.null(flows$Date)) {
-    stop("Date attribute is required in flows data frame.")
-  }
-  if (ncol(flows) >= 11) {
-    stop("flows cannot have more than 10 data columns (excluding date).")
-  }
-  if (which(colnames(flows) == "Date") != 1) {
-    stop("'Date' must be the first attribute of flows data frame.")
-  }
-
+  
   # check flow labels
   if (!(is.null(flow_labels))) {
     if (length(flow_labels) != ncol(flows) - 1) {
@@ -135,7 +139,7 @@ ch_hydrograph_plot <- function(flows = NULL,
       stop("Date attribute is required in precip data frame.")
     }
     if (ncol(precip) > 2) {
-      stop("flows cannot have more than 1 data column (other than 'Date').")
+      stop("precip cannot have more than 1 data column (other than 'Date').")
     }
   }
 

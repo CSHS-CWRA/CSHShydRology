@@ -7,7 +7,7 @@
 #' @return If successful, returns the values in a data frame, consisting of the date, 
 #' the value and the data code.
 #' @author Kevin Shook
-#' @seealso  \code{\link{ch_read_AHCCD_monthly}} \code{\link{ch_get_AHCCD_monthly}}
+#' @seealso  \code{\link{ch_read_AHCCD_monthly}} 
 #' @references Daily AHCCD data are available from \url{http://crd-data-donnees-rdc.ec.gc.ca/CDAS/products/EC_data/AHCCD_daily/}. 
 #' Any use of the data must cite 
 #'\cite{Mekis, E and L.A. Vincent, 2011: An overview of the second generation 

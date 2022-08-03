@@ -30,7 +30,7 @@ the second generation adjusted daily temperature and precipitation dataset for t
 Atmosphere-Ocean, 49 (2), 163-177.}
 }
 \seealso{
-\code{\link{ch_read_AHCCD_daily}} \code{\link{ch_get_AHCCD_monthly}}
+\code{\link{ch_read_AHCCD_daily}}
 }
 \author{
 Kevin Shook

@@ -7,7 +7,7 @@
 #' @return If successful, returns the values in a dataframe, consisting of the \code{year},
 #' the \code{month}, the value and the data \code{code}. 
 #' @author Kevin Shook
-#' @seealso  \code{\link{ch_read_AHCCD_daily}} \code{\link{ch_get_AHCCD_monthly}}
+#' @seealso  \code{\link{ch_read_AHCCD_daily}} 
 #' @references
 #' Any use of the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
 #' the second generation adjusted daily temperature and precipitation dataset for trend analysis in Canada. 
