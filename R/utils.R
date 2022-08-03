@@ -123,10 +123,11 @@ ch_col_transparent <- function(colour, trans)
 #' @keywords internal
 #' @author Kevin Shook
 #'
-#' @examples 
+#' @examples \donttest{
+#' # Not tested automatically as can be very slow
 #' test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
 #' ch_test_url_file(test_url, quiet = TRUE)
-#' 
+#' }
 #' 
 ch_test_url_file <- function(url, quiet = FALSE){
     out <- tryCatch(

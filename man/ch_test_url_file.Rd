@@ -20,9 +20,11 @@ to simplify checking result in calling function.
 Tests url to see if it will work
 }
 \examples{
+\donttest{
+# Not tested automatically as can be very slow
 test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
 ch_test_url_file(test_url, quiet = TRUE)
-
+}
 
 }
 \seealso{
