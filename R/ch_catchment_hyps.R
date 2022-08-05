@@ -39,7 +39,7 @@
 #' @export
 #'
 #' @examples \donttest{
-#' ## note: example tagged as 'donttest'
+#' ## note: example tagged as 'donttest' as it is very slow to execute
 #' library(here)
 #' library(raster)
 #' # change the following line to specify a directory to hold the data

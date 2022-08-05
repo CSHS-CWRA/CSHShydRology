@@ -141,7 +141,7 @@ ch_flow_raster_qa <- function(DF, metadata = NULL) {
   frame()
   frame()
   frame()
-  par(oma = c(0, 2, 0, 0))
+  par(oma = c(0, 0, 2, 0))
   par(mar = c(1, 0, 0, 1))
   leg.txt <- c(" (A) Partial", " (B) Backwater", " (D) Dry", " (E) Estimate")
   lcol <- c("green", "cyan", "yellow", "red")
