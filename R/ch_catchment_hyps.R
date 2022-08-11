@@ -33,33 +33,32 @@
 #'
 #' @importFrom sf as_Spatial
 #' @importFrom raster mask minValue maxValue 
-#' @importFrom here here
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore
 #' @export
 #'
 #' @examples \donttest{
-#' ## note: example tagged as 'donttest' as it is very slow to execute
-#' library(here)
+#' ## note: example tagged as 'donttest' as it is very slow to execute due to the downloading
 #' library(raster)
 #' # change the following line to specify a directory to hold the data
-#' dir_name <- here::here("helper_functions", "test_data")
+#' dir_name <- tempdir(check = FALSE)
 #' # create directory to store data sets
 #' if (!dir.exists(dir_name)) {
 #'   dir.create(dir_name, recursive = TRUE)
 #' }
 #' # get 25-m dem
-#' dem_fn <- here::here("helper_functions", "test_data", "gs_dem25.tif")
+#' dem_fn <- file.path(dir_name, "gs_dem25.tif")
 #' dem_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 #' dem_upc <- ch_get_url_data(dem_url, dem_fn)
+#' dem_upc
 #' 
 #' # get catchment boundaries
-#' cb_fn <- here::here("helper_functions", "test_data", "gs_catchments.GeoJSON")
+#' cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
 #' cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
 #' cb <- ch_get_url_data(cb_url, cb_fn)
 #' 
 #' # quick check plot - all catchments
-#' plot(dem_upc)
+#' raster::plot(dem_upc)
 #' plot(cb, add = TRUE, col = NA)
 #' 
 #' # subset 240 catchment
@@ -88,6 +87,8 @@
 #' # extract specific quantiles (e.g., median and 90%)
 #' ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
 #' }
+
+
 ch_catchment_hyps <- function(catchment, dem,
                           z_levels = NULL, n_levels = 10,
                           zmin = NULL, zmax = NULL, 
