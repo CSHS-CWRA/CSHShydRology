@@ -33,6 +33,7 @@
 #'
 #' @importFrom sf as_Spatial
 #' @importFrom raster mask minValue maxValue 
+#' @importFrom magrittr %>%
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore
 #' @export

@@ -27,6 +27,7 @@
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons
 #' @importFrom sf st_crs write_sf st_write
+#' @importFrom magrittr %>%
 #' @return Returns an \pkg{sp} object of the delineated catchment.
 #' @export
 #'

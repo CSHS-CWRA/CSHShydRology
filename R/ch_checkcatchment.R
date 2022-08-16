@@ -36,6 +36,7 @@
 #' @importFrom ggspatial annotation_north_arrow north_arrow_fancy_orienteering annotation_scale 
 #' @importFrom dplyr mutate 
 #' @importFrom grid unit
+#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' \donttest{

@@ -31,7 +31,7 @@
 #' 
 #' @importFrom raster raster getValues rasterToContour crs
 #' @importFrom sf st_as_sf st_crs
-#' 
+#' @importFrom magrittr %>%
 #' @export
 ch_contours <- function(dem,
                         zmin = NULL, zmax = NULL,
