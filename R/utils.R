@@ -10,7 +10,10 @@
 #' @keywords internal
 #' @author Kevin Shook
 #'
-#' @examples \donttest{df <- ch_stack_EC(data_values, data_codes)}
+#' @examples \donttest{
+#' # not tested as requires an EC data file
+#' df <- ch_stack_EC(data_values, data_codes)
+#' }
 #' 
 ch_stack_EC <- function(data_values = NULL, data_codes = NULL) {
   #check parameters
