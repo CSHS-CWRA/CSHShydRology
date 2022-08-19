@@ -33,7 +33,6 @@
 #'
 #' @importFrom sf as_Spatial
 #' @importFrom raster mask minValue maxValue 
-#' @importFrom magrittr %>%
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore
 #' @export
@@ -41,6 +40,7 @@
 #' @examples \donttest{
 #' ## note: example tagged as 'donttest' as it is very slow to execute due to the downloading
 #' library(raster)
+#' library(magrittr)
 #' # change the following line to specify a directory to hold the data
 #' dir_name <- tempdir(check = FALSE)
 #' # create directory to store data sets
