@@ -10,6 +10,7 @@
 #' @importFrom raster raster
 #' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
 #' @importFrom sf st_crs write_sf st_read
+#' @importFrom magrittr %>%
 #' @return If \code{return_vector == TRUE} a vector of the catchment is returned. Otherwise
 #' nothing is returned.
 #' @export

@@ -10,6 +10,7 @@
 #' @export
 #' @importFrom dplyr mutate
 #' @importFrom sf st_as_sf st_set_crs st_write
+#' @importFrom magrittr %>%
 #' @author Dan Moore and Kevin Shook
 #' @seealso \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}} 
 #'
