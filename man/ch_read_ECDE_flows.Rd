@@ -23,6 +23,7 @@ and omits the last 3 lines as these contain the data disclaimer and not data.
 }
 \examples{
 \donttest{
+# Not tested as requires a file returned by the Windows program ECDataExplorer
 # Using a dummy file name as an example
 mfile <- "04JD005_Daily_Flow_ts.csv"
 mdata <- ch_read_ECDE_flows(mfile)}

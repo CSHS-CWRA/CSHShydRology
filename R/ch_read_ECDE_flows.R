@@ -24,6 +24,15 @@
 #' mdata <- ch_read_ECDE_flows(mfile)}
 #' 
 ch_read_ECDE_flows <- function(filename) {
+  
+  # check ECDE filename
+  if (filename == "" | is.null(filename)) {
+    stop("ECDE file not specified")
+  }
+  
+  if (!file.exists(filename)) {
+    stop("ECDE file not found")
+  }
   mdata <- read.csv(filename)
   mdata$Date <- as.Date(mdata$Date, format = "%Y/%m/%d")
   cut <- length(mdata[, 1]) - 3

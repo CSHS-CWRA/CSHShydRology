@@ -60,7 +60,7 @@ particularly when all WSC stations are selected.
 }
 \examples{
 \donttest{
-# This example requires \pkg{tidyhydat} to be installed
+# This example requires \pkg{tidyhydat} and the HYDAT data set to be installed
 # the \code{HYDAT} database, which makes automatic checking slow
 stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 result <- ch_tidyhydat_ECDE_meta(stations)

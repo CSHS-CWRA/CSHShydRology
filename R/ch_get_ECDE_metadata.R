@@ -38,11 +38,21 @@
 
 #' @examples \donttest{
 #' # Not tested by check() as requires downloaded file
-#' filename <- "FavHydatStations.tb0"
+#' filename <- "FavHydatStations.tb0"        # dummy file name (not supplied)
 #' meta0 <- ch_get_ECDE_metadata(filename)
 #' meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
 #' }
 ch_get_ECDE_metadata  <- function(filename, writefile=NULL){
+  
+  # check ECDE filename
+  if (filename == "" | is.null(filename)) {
+    stop("ECDE file not specified")
+  }
+  
+  if (!file.exists(filename)) {
+    stop("ECDE file not found")
+  }
+  
   
   meta <- read.table(filename, skip = 96, sep = " ", na.strings = -999)
   
