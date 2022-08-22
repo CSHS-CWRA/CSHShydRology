@@ -1,6 +1,7 @@
 # CSHShydRology 1.2.6
 * fixed many issues causing problems with check --as-cran
 * functions now fail gracefully attempting to download data if url is incorrect or file is missing
+* improved package Description
 
 # CSHShydRology 1.2.2
 * Removed ch_get_AHCCD_monthly() as ECCC no longer allows direct website access
