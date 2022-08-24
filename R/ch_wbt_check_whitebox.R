@@ -9,7 +9,7 @@
 #' @examples 
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
-#' if (ch_wbt_check_whitebox()){
+#' if (check_whitebox_binary()){
 #'   ch_wbt_check_whitebox()
 #' } else {
 #'   message("Example not run as Whitebox executable not found")
