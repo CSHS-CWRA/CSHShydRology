@@ -12,12 +12,6 @@ If \code{WhiteboxTools} cannot be found, a message explaining what to do is disp
 \description{
 Checks for WhiteboxTools executable
 }
-\examples{
-\donttest{
-# Not tested automatically as requires installation of Whitebox
-ch_wbt_check_whitebox()
-}
-}
 \author{
 Kevin Shook
 }

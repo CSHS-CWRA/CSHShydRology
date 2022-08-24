@@ -23,29 +23,31 @@
 #' channel network.
 #' @export 
 #' @examples
-#' \donttest{
-#' # Not tested automatically as requires installation of Whitebox
-#' library(raster)
-#' test_raster <- ch_volcano_raster()
-#' dem_raster_file <- tempfile(fileext = c(".tif"))
-#' no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+#' # Only proceed if Whitebox executable is installed
+#' library(whitebox)
+#' if (check_whitebox_binary()){
+#'   test_raster <- ch_volcano_raster()
+#'   dem_raster_file <- tempfile(fileext = c(".tif"))
+#'   no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
 #' 
-#' # write test raster to file
-#' writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   # write test raster to file
+#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
 #' 
-#' # remove sinks
-#' removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+#'   # remove sinks
+#'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
 #' 
-#' # get flow accumulations
-#' flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
-#' flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+#'   # get flow accumulations
+#'   flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
+#'   flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
 #' 
-#' # get pour points
-#' pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
-#' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-#' snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = c(".shp"))
-#' snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
-#' snapped_pourpoint_file, snap_dist = 10)
+#'   # get pour points
+#'   pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
+#'   pourpoints <- ch_volcano_pourpoints(pourpoint_file)
+#'   snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = c(".shp"))
+#'   snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
+#'   snapped_pourpoint_file, snap_dist = 10)
+#' } else {
+#'   message("Examples not run as Whitebox executable not found")}
 #' }
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {

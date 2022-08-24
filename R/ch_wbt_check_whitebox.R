@@ -6,10 +6,13 @@
 #' @author Kevin Shook
 #' @importFrom whitebox check_whitebox_binary
 #'
-#' @examples
-#' \donttest{
-#' # Not tested automatically as requires installation of Whitebox
-#' ch_wbt_check_whitebox()
+#' @examples 
+#' # Only proceed if Whitebox executable is installed
+#' library(whitebox)
+#' if (ch_wbt_check_whitebox()){
+#'   ch_wbt_check_whitebox()
+#' } else {
+#'   message("Example not run as Whitebox executable not found")}
 #' }
 ch_wbt_check_whitebox <- function() {
   wb_found <- check_whitebox_binary(silent = TRUE)

@@ -68,21 +68,6 @@ Calls all of the \code{ch_wbt} and other functions required to do the sub-tasks
 required to delineate a catchment. The names of files to be created
 are taken from the list created by the function \code{ch_wbt_filenames}.
 }
-\examples{
-\donttest{
-# Not tested automatically as requires installation of Whitebox
-library(raster)
-test_raster <- ch_volcano_raster()
-dem_raster_file <- tempfile(fileext = c(".tif"))
-# write test raster to file
-writeRaster(test_raster, dem_raster_file, format = "GTiff")
-wd <- tempdir()
-pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
-pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
-pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
-}
-}
 \seealso{
 \code{\link{ch_wbt_filenames}}
 }

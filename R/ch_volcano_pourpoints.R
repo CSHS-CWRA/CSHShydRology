@@ -20,7 +20,7 @@
 #' plot(pourpoints)
 ch_volcano_pourpoints <- function(pp_shp) {
   
-  if(missing(pp_shp)) {
+  if (missing(pp_shp)) {
     stop("File for pour points must be specified")
   }
 
