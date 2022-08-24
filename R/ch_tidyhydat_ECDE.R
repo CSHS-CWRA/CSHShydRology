@@ -23,7 +23,7 @@
 #' @examples \donttest{
 #' # not tested automatically as requires \pkg{tidyhydat} and the HYDAT data set to be installed
 #'library(tidyhydat)
-#'mdata <- hy_daily_flow(station_number=c("05CK004"))
+#'mdata <- hy_daily_flows(station_number=c("05CK004"))
 #'m_data <- ch_tidyhydat_ECDE(mdata)
 #'
 #'mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))

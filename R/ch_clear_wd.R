@@ -19,7 +19,7 @@
 #' @seealso \code{\link{ch_create_wd}} to create working directory
 #' @export
 #' @examples \donttest{
-#' # not tested as clearing all files in a given directory cannot be tested in CRAN
+#' # not tested as deleting all files in the directory cannot be tested in CRAN
 #' 
 #' # create an empty working directory
 #' my_wd <- tempdir()
