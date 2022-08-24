@@ -12,6 +12,15 @@ If \code{WhiteboxTools} cannot be found, a message explaining what to do is disp
 \description{
 Checks for WhiteboxTools executable
 }
+\examples{
+# Only proceed if Whitebox executable is installed
+library(whitebox)
+if (ch_wbt_check_whitebox()){
+  ch_wbt_check_whitebox()
+} else {
+  message("Example not run as Whitebox executable not found")
+}
+}
 \author{
 Kevin Shook
 }

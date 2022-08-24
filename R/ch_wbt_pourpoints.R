@@ -47,7 +47,7 @@
 #'   snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
 #'   snapped_pourpoint_file, snap_dist = 10)
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {

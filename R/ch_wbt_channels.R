@@ -42,7 +42,7 @@
 #'   channel_vector_file, 1)
 #'   plot(channels)
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 
 ch_wbt_channels <- function(fn_flowacc, fn_flowdir,

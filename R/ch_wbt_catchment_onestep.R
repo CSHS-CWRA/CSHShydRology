@@ -46,7 +46,7 @@
 #'   catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
 #'   pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf, 
                                      sink_method = "breach_leastcost", dist = NULL, 

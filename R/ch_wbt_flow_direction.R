@@ -33,7 +33,7 @@
 #'   flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
 #'   plot(flow_dir)
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 
 ch_wbt_flow_direction <- function(fn_dem_ns, fn_flowdir, return_raster = TRUE) {

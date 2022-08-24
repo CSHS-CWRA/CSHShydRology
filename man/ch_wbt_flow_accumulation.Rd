@@ -23,6 +23,29 @@ grid will be returned as a raster object, otherwise \code{NULL} is returned.
 \description{
 Creates flow accumulation grid file
 }
+\examples{
+# Only proceed if Whitebox executable is installed
+library(whitebox)
+if (check_whitebox_binary()){
+  library(raster)
+  test_raster <- ch_volcano_raster()
+  dem_raster_file <- tempfile(fileext = c(".tif"))
+  no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
+
+  # write test raster to file
+  writeRaster(test_raster, dem_raster_file, format = "GTiff")
+
+  # remove sinks
+  removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
+
+  # get flow accumulations
+  flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
+  flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
+  plot(flow_acc)
+} else {
+  message("Examples not run as Whitebox executable not found")
+}
+}
 \author{
 Dan Moore
 }

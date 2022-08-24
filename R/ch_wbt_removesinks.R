@@ -34,7 +34,7 @@
 #'   # remove sinks
 #'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 ch_wbt_removesinks <- function(in_dem, out_dem, method = "breach_leastcost", 
                                dist = NULL, fn_dem_fsc = NULL, ...) {

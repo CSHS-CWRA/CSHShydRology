@@ -34,7 +34,7 @@
 #'   flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
 #'   plot(flow_acc)
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 
 ch_wbt_flow_accumulation <- function(fn_dem_ns, fn_flowacc, return_raster = TRUE) {

@@ -49,7 +49,7 @@
 #'   catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
 #'   fn_catchment_ras, fn_catchment_vec)
 #' } else {
-#'   message("Examples not run as Whitebox executable not found")}
+#'   message("Examples not run as Whitebox executable not found")
 #' }
 
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 

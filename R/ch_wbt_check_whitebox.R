@@ -12,7 +12,7 @@
 #' if (ch_wbt_check_whitebox()){
 #'   ch_wbt_check_whitebox()
 #' } else {
-#'   message("Example not run as Whitebox executable not found")}
+#'   message("Example not run as Whitebox executable not found")
 #' }
 ch_wbt_check_whitebox <- function() {
   wb_found <- check_whitebox_binary(silent = TRUE)
