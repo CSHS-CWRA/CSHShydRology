@@ -20,7 +20,9 @@ which makes them difficult to read using standard \R functions.
 }
 \examples{
 \donttest{
-# Not tested automatically as requires a file
+# Not tested automatically as requires a file, and use of the dummy
+files will cause error messages
+
 Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")
 NB_monthly_tmean <- ch_read_AHCCD_monthly("mm4045695.txt") }
 }

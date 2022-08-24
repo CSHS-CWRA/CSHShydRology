@@ -74,7 +74,7 @@ curve may also be created.
 }
 \examples{
 \donttest{
-## note: example tagged as 'donttest' as it is very slow to execute due to the downloading
+# note: example tagged as 'donttest' as it is very slow to execute due to the downloading
 library(raster)
 library(magrittr)
 # change the following line to specify a directory to hold the data

@@ -27,7 +27,7 @@
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster
+#'   library(raster)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = c(".tif"))
 #'   no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))

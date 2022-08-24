@@ -20,7 +20,7 @@ month x day data to vectors.
 }
 \examples{
 \donttest{
-# not tested as requires an EC data file
+# not tested as requires a data frame of EC data
 df <- ch_stack_EC(data_values, data_codes)
 }
 

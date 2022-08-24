@@ -13,7 +13,7 @@ ch_tidyhydat_ECDE(data)
 A dataframe or a list of flows with formats consistent with datafiles read using \code{ch_read_ECDE_flows}:
 \item{ID}{stationID}
 \item{PARAM}{Parameter 1 for Flow 2 for Level}
-\item{Date}{original charater string converted to date format}
+\item{Date}{Original charater string converted to date format}
 \item{Flow}{Daily mean flow m\eqn{^3}{^3}/sec}
 \item{SYM}{Quality flag}
 }
