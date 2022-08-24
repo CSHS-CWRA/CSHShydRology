@@ -14,7 +14,7 @@
 #' @return A dataframe or a list of flows with formats consistent with datafiles read using \code{ch_read_ECDE_flows}:
 #' \item{ID}{stationID}
 #' \item{PARAM}{Parameter 1 for Flow 2 for Level}
-#' \item{Date}{original charater string converted to date format}
+#' \item{Date}{Original charater string converted to date format}
 #' \item{Flow}{Daily mean flow m\eqn{^3}{^3}/sec}
 #' \item{SYM}{Quality flag}
 #'  
@@ -22,16 +22,16 @@
 #' @seealso \code{\link{ch_tidyhydat_ECDE_meta}}
 #' @examples \donttest{
 #' # not tested automatically as requires \pkg{tidyhydat} and the HYDAT data set to be installed
-#'library(tidyhydat)
-#'mdata <- hy_daily_flows(station_number=c("05CK004"))
-#'m_data <- ch_tidyhydat_ECDE(mdata)
+#' library(tidyhydat)
+#' mdata <- hy_daily_flows(station_number=c("05CK004"))
+#' m_data <- ch_tidyhydat_ECDE(mdata)
 #'
-#'mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))
-#'mnew <- ch_tidyhydat_ECDE(mdata)
-#'str(mnew[[1]])
-#'str(mnew[[2]])
-#'str(mnew[[3]]) 
-#'#note the order is in increasing alphabetical order}
+#' mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))
+#' mnew <- ch_tidyhydat_ECDE(mdata)
+#' str(mnew[[1]])
+#' str(mnew[[2]])
+#' str(mnew[[3]]) 
+#' #note the order is in increasing alphabetical order}
 
 ch_tidyhydat_ECDE <- function(data) {
   

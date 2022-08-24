@@ -16,8 +16,10 @@
 #' 
 #' @examples
 #' \donttest{
-#' # Not tested automatically as requires a file
-#'stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}
+#' # Not tested automatically as requires a file, and use of the dummy
+#' file will cause an error message
+#' 
+#' stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}
 #' @importFrom stringr str_split_fixed str_detect fixed
 #' @importFrom utils read.fwf
 #' @export

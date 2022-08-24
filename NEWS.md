@@ -1,5 +1,5 @@
 # CSHShydRology 1.2.7
-- all function examples using Whitebox now test for the presence of the Whitebox executable before running
+* all function examples using Whitebox now test for the presence of the Whitebox executable before running
   - this avoids the Whitebox functions returning an error when tested if there is no executable installed
   - allows us to remove the \donttest flag from several functions
 
@@ -23,7 +23,6 @@
 * Also contains vignettes
 
 # CSHShydRology 0.0.1
-
 * Added a `NEWS.md` file to track changes to the package.
 * Added some contributing documentation
 * added wtr_yr function

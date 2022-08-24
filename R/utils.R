@@ -11,7 +11,7 @@
 #' @author Kevin Shook
 #'
 #' @examples \donttest{
-#' # not tested as requires an EC data file
+#' # not tested as requires a data frame of EC data
 #' df <- ch_stack_EC(data_values, data_codes)
 #' }
 #' 
