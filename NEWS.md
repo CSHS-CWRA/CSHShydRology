@@ -1,10 +1,13 @@
+# CSHShydRology 1.2.8
+* changed several \donttest flags to \dontrun to prevent errors when running `check --as-cran --run-donttest`
+
 # CSHShydRology 1.2.7
 * all function examples using Whitebox now test for the presence of the Whitebox executable before running
   - this avoids the Whitebox functions returning an error when tested if there is no executable installed
   - allows us to remove the \donttest flag from several functions
 
 # CSHShydRology 1.2.6
-* fixed many issues causing problems with check --as-cran
+* fixed many issues causing problems with `check --as-cran`
 * functions now fail gracefully attempting to download data if url is incorrect or file is missing
 * improved package Description
 
