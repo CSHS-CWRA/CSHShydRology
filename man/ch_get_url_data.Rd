@@ -23,7 +23,7 @@ saves them locally, then accesses them locally after the first time the script i
 }
 \examples{
 \donttest{
-# example not tested automatically as multiple large data files are downloaded
+# example not tested automatically as multiple large data files are downloaded which is slow
 
 # Tested using files in the Upper Penticton Creek
 # zenodo repository https://zenodo.org/record/4781469

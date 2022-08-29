@@ -61,14 +61,13 @@
 #' @seealso \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 #' @examples 
 #' \donttest{
-#' # This example requires \pkg{tidyhydat} and the HYDAT data set to be installed
-#' # the \code{HYDAT} database, which makes automatic checking slow
+#' # This example is not tested automatically as it requires \pkg{tidyhydat} and the \code{HYDAT} data set to be installed
 #' stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 #' result <- ch_tidyhydat_ECDE_meta(stations)
 #' metadata <- result[[1]]
 #' version <- result[[2]]
 #' }
-#' \donttest{
+#' \dontrun{
 #' # This example is not run, as it can take over an hour to execute
 #' # It is intended to be used by the package maintainers to update \code{HYDAT_list}
 #' result <- ch_tidyhydat_ECDE_meta("all", TRUE)

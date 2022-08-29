@@ -19,8 +19,8 @@ precipitation or temperatures. The values are arranged as year x month,
 which makes them difficult to read using standard \R functions.
 }
 \examples{
-\donttest{
-# Not tested automatically as requires a file, and use of the dummy
+\dontrun{
+# Don't run these examples as use of the dummy
 # files will cause error messages
 
 Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")

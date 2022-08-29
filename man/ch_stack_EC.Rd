@@ -19,8 +19,9 @@ Converts data frames of Environment Canada year x month or
 month x day data to vectors.
 }
 \examples{
-\donttest{
-# not tested as requires a data frame of EC data
+\dontrun{
+# Do not run as the function requires a data frame of EC data and
+# the dummy variable will cause an error message
 df <- ch_stack_EC(data_values, data_codes)
 }
 

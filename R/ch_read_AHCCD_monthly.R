@@ -12,9 +12,8 @@
 #' Any use of the data must cite \cite{Mekis, E and L.A. Vincent, 2011: An overview of 
 #' the second generation adjusted daily temperature and precipitation dataset for trend analysis in Canada. 
 #' Atmosphere-Ocean, 49 (2), 163-177.}
-#' @examples
-#' \donttest{
-#' # Not tested automatically as requires a file, and use of the dummy
+#' @examples \dontrun{
+#' # Don't run these examples as use of the dummy
 #' # files will cause error messages
 #' 
 #' Stoon_monthly_precip <- ch_read_AHCCD_monthly("mt4057120.txt")

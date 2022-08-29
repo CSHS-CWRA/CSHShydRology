@@ -15,8 +15,8 @@
 #'Atmosphere-Ocean, 49 (2), 163-177.}
 #' 
 #' @examples
-#' \donttest{
-#' # Not tested automatically as requires a file, and use of the dummy
+#' \dontrun{
+#' # Don't run this example as it requires a file, and use of the dummy
 #' # file will cause an error message
 #' 
 #' stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}

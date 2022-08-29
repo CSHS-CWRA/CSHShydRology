@@ -19,8 +19,8 @@ precipitation or temperatures. The values are arranged as
 month x day, which makes them difficult to read using standard \R functions.
 }
 \examples{
-\donttest{
-# Not tested automatically as requires a file, and use of the dummy
+\dontrun{
+# Don't run this example as it requires a file, and use of the dummy
 # file will cause an error message
 
 stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}

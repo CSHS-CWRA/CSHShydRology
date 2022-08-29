@@ -10,8 +10,9 @@
 #' @keywords internal
 #' @author Kevin Shook
 #'
-#' @examples \donttest{
-#' # not tested as requires a data frame of EC data
+#' @examples \dontrun{
+#' # Do not run as the function requires a data frame of EC data and
+#' # the dummy variable will cause an error message
 #' df <- ch_stack_EC(data_values, data_codes)
 #' }
 #' 

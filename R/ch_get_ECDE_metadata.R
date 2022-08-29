@@ -36,8 +36,8 @@
 #' \item{Datum}{Elevation datum}
 #' \item{Operator}{Operator or provider of the data}
 
-#' @examples \donttest{
-#' # Not tested by check() as requires downloaded file
+#' @examples \dontrun{
+#' # Don't run this example as it requires an ECDE file
 #' filename <- "FavHydatStations.tb0"        # dummy file name (not supplied)
 #' meta0 <- ch_get_ECDE_metadata(filename)
 #' meta1 <- ch_get_ECDE_metadata(filename, writefile="study52_metadata.csv")
