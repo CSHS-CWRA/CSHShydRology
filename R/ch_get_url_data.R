@@ -17,7 +17,7 @@
 #'or an \code{sf} object (from a GeoJSON file).
 #'
 #' @examples \donttest{
-#' # example not tested automatically as multiple large data files are downloaded which is slow
+#' # Example not tested automatically as multiple large data files are downloaded which is slow
 #' 
 #' # Tested using files in the Upper Penticton Creek
 #' # zenodo repository https://zenodo.org/record/4781469

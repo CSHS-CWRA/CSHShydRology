@@ -60,7 +60,8 @@ particularly when all WSC stations are selected.
 }
 \examples{
 \donttest{
-# This example is not tested automatically as it requires \pkg{tidyhydat} and the \code{HYDAT} data set to be installed
+# This example is not tested automatically as it requires \pkg{tidyhydat} 
+# and the \code{HYDAT} data set to be installed
 stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
 result <- ch_tidyhydat_ECDE_meta(stations)
 metadata <- result[[1]]

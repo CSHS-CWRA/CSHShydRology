@@ -25,7 +25,8 @@ with standard Environment and Climate Change Canada Data Explorer (ECDE) names.
 }
 \examples{
 \donttest{
-# not tested automatically as requires \pkg{tidyhydat} and the HYDAT data set to be installed
+# This example is not tested automatically as it requires \pkg{tidyhydat} 
+# and the \code{HYDAT} data set to be installed
 library(tidyhydat)
 mdata <- hy_daily_flows(station_number=c("05CK004"))
 m_data <- ch_tidyhydat_ECDE(mdata)

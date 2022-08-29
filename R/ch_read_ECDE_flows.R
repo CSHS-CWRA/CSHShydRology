@@ -17,8 +17,8 @@
 #' @importFrom utils read.csv
 #' @export
 #'
-#' @examples \donttest{
-#' # Not tested as requires a file returned by the Windows program ECDataExplorer
+#' @examples \dontrun{
+#' # Not run as requires a file returned by the Windows program ECDataExplorer
 #' # Using a dummy file name as an example
 #' mfile <- "04JD005_Daily_Flow_ts.csv"
 #' mdata <- ch_read_ECDE_flows(mfile)}
