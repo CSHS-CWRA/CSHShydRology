@@ -19,7 +19,8 @@ Returns a dataframe with the last three rows removed:
 }
 \description{
 Reads in a file WSC daily flows as returned from the Windows program ECDataExplorer, converts the Date,
-and omits the last 3 lines as these contain the data disclaimer and not data.
+and omits the last 3 lines as these contain the data disclaimer and not data. The function
+can read values from a url.
 }
 \examples{
 \dontrun{
@@ -27,6 +28,13 @@ and omits the last 3 lines as these contain the data disclaimer and not data.
 # Using a dummy file name as an example
 mfile <- "04JD005_Daily_Flow_ts.csv"
 mdata <- ch_read_ECDE_flows(mfile)}
+
+\donttest{
+# Not tested automatically as it is slow to read from a url
+url1 <- "https://zenodo.org/record/7007830/files/08NL007_Daily_Flow_ts.csv?"
+values <- ch_read_ECDE_flows(url1)
+
+}
 
 }
 \author{

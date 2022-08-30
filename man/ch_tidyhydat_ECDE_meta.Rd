@@ -68,8 +68,9 @@ metadata <- result[[1]]
 version <- result[[2]]
 }
 \dontrun{
-# This example is not run, as it can take over an hour to execute
-# It is intended to be used by the package maintainers to update \code{HYDAT_list}
+# This example is not run, as it will take several hours to execute and will
+# return many warnings for stations having no data.
+# This function is intended to be used by the package maintainers to update \code{HYDAT_list}
 result <- ch_tidyhydat_ECDE_meta("all", TRUE)
 HYDAT_list <- result$meta
 }
