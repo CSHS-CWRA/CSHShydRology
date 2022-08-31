@@ -24,19 +24,24 @@ entries. This function converts a tibble obtained from a \pkg{tidyhydat} tibble 
 with standard Environment and Climate Change Canada Data Explorer (ECDE) names.
 }
 \examples{
-\donttest{
-# This example is not tested automatically as it requires \pkg{tidyhydat} 
-# and the \code{HYDAT} data set to be installed
+# This example uses the built-in test database, by setting the hydat_path parameter
+# You will want to use it with your actual HYDAT database
 library(tidyhydat)
-mdata <- hy_daily_flows(station_number=c("05CK004"))
-m_data <- ch_tidyhydat_ECDE(mdata)
+# check for existence of test database
+test_db <- hy_test_db()
+if (file.exists(test_db)) {
+  hydat_path = hy_set_default_db(test_db)
+  mdata <- hy_daily_flows(station_number=c("05AA008"))
+  m_data <- ch_tidyhydat_ECDE(mdata)
 
-mdata <- hy_daily_flows(station_number=c("05CK004","08MF005","05BB001"))
-mnew <- ch_tidyhydat_ECDE(mdata)
-str(mnew[[1]])
-str(mnew[[2]])
-str(mnew[[3]]) 
-#note the order is in increasing alphabetical order}
+  mdata <- hy_daily_flows(station_number=c("05AA008", "08MF005", "05HD008")) 
+  mnew <- ch_tidyhydat_ECDE(mdata)
+  str(mnew[[1]])
+  str(mnew[[2]])
+  str(mnew[[3]]) 
+# note the order is in increasing alphabetical order
+hy_set_default_db(NULL)    # Reset HYDAT database
+}
 }
 \seealso{
 \code{\link{ch_tidyhydat_ECDE_meta}}

@@ -1,4 +1,4 @@
-context("Testing ch_wtr-yr")
+context("Testing ch_wtr_yr")
 
 test_that("ch_wtr_yr correctly categorizes water year", {
   month <- 10

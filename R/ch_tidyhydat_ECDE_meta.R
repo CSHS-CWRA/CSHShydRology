@@ -60,18 +60,25 @@
 #' @importFrom utils txtProgressBar setTxtProgressBar
 #' @seealso \code{\link{ch_get_ECDE_metadata}} \code{\link{ch_tidyhydat_ECDE}}
 #' @examples 
-#' \donttest{
-#' # This example is not tested automatically as it requires \pkg{tidyhydat} 
-#' # and the \code{HYDAT} data set to be installed
-#' stations <- c("05BB001", "05BB003", "05BB004", "05BB005")
-#' result <- ch_tidyhydat_ECDE_meta(stations)
-#' metadata <- result[[1]]
-#' version <- result[[2]]
+#' # This example uses the built-in test database, by setting the hydat_path parameter
+#' # You will want to use it with your actual HYDAT database
+#' library(tidyhydat)
+#' # check for existence of test database
+#' test_db <- hy_test_db()
+#' if (file.exists(test_db)) {
+#'   stations <- c("05AA008", "08MF005", "05HD008")
+#'   hy_set_default_db(test_db)
+#'   result <- ch_tidyhydat_ECDE_meta(stations)
+#'   metadata <- result[[1]]
+#'   version <- result[[2]]
+#'   hy_set_default_db(NULL)    # Reset HYDAT database
 #' }
 #' \dontrun{
 #' # This example is not run, as it will take several hours to execute and will
-#' # return many warnings for stations having no data.
-#' # This function is intended to be used by the package maintainers to update \code{HYDAT_list}
+#' # return many warnings for stations having no data. Note that it is using the actual
+#' # HYDAT database, which must have been installed previously
+#' # This use of the function is intended for the package maintainers to 
+#' # update the HYDAT_list data frame
 #' result <- ch_tidyhydat_ECDE_meta("all", TRUE)
 #' HYDAT_list <- result$meta
 #' }
@@ -79,9 +86,11 @@
 
 ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
 
-  H_version <- hy_version()  
+  H_version <- hy_version() 
   H_version <- data.frame(H_version)
-  message(H_version)
+  hy_date <- format(H_version[2], format = "%Y-%m-%d")
+  message("HYDAT version: ", H_version[1], " Date: ", hy_date)
+  H_version <- data.frame(H_version)
   
   if (length(stations) == 1) {
     if (stations == "all") {
