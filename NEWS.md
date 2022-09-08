@@ -1,3 +1,6 @@
+# CSHShydRology 1.2.9
+* revised examples of functions using `tidyhydat` to use small test database to avoid issues with CRAN testing
+
 # CSHShydRology 1.2.8
 * changed several \donttest flags to \dontrun to prevent errors when running `check --as-cran --run-donttest`
 
