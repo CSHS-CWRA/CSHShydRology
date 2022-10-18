@@ -30,5 +30,4 @@ expect_equivalent(rbind(fit,fit), fit2)
 expect_equal(fit,ch_rfa_seasonstat(as.character(dd)))
 
 ## return an error if it is not a date
-expect_error(ch_rfa_seasonstat(1:5))
 expect_error(ch_rfa_seasonstat(month.name))
