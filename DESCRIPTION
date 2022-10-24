@@ -58,7 +58,8 @@ Imports:
     httr,
     tidyhydat,
     whitebox,
-    datasets
+    datasets,
+    circular
 Suggests: 
     knitr,
     testthat, 
