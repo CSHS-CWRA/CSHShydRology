@@ -23,10 +23,10 @@
 #' str(amax)
 
 
-ch_sh_get_amax <- function(dataframe) {
+ch_sh_get_amax <- function(df) {
   
-  data <- dataframe$Flow
-  Date <- dataframe$Date
+  data <- df$Flow
+  Date <- df$Date
   year <- format(Date, "%Y")
   Year <- as.numeric(unique(year))
   maxdate <- array(NA, dim = length(Year))
@@ -37,7 +37,7 @@ ch_sh_get_amax <- function(dataframe) {
   
   amax <- as.numeric(tapply(data,year,max))
   
-  dataframe <- data.frame(dataframe,year)
+  dataframe <- data.frame(df,year)
   
   for (k in 1:length(Year)) {
     ndata <- dataframe[dataframe$year == Year[k],]

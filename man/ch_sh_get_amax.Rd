@@ -4,7 +4,7 @@
 \alias{ch_sh_get_amax}
 \title{Extracts annual maximum values from ECDE dataframe.}
 \usage{
-ch_sh_get_amax(dataframe)
+ch_sh_get_amax(df)
 }
 \arguments{
 \item{df}{A dataframe of daily streamflow data from ECDE}

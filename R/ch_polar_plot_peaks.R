@@ -10,9 +10,11 @@
 #' @note points inside the plot
 #' @param in_pch a value or an array of symbols to be used for centroids.  To be in color, 
 #' must be one of 21 to 25 to get a symbol with border, elsewise a red symbol is plotted.
-#' @param in_col an array of colors, either numbers or names to apply to centroid points (optional, default is "red")
+#' @param in_col an array of colors, either numbers or names to apply to centroid points (optional, 
+#' default is "red")
 #' @param in_cex an array of symbol sizes
-#' @param in_detail an array of indices indicating symbol [1] shape, [2] colour, [3] background, and [4]size
+#' @param in_detail an array of indices indicating symbol [1] shape, [2] colour, [3] background, 
+#' and [4]size
 #' @note in_pch, in_col, and in_cex will normally be of the same length and that would 
 #' be the maximum index of in_detail
 #' @param days an array of days of year to be plotted on perimeter (optional).
@@ -20,11 +22,13 @@
 #' @param label_pos an array of positions indicating when label be placed (1, 2, 3, or 4 - below, left, 
 #' above, right)(optional - default is below)
 #' @param shading  if  \code{TRUE} adds shading and labels for nival and pluvial regimes default = \code{FALSE}
+#' @param shade percentage of shading, default is 35.
 #' @note points on the outside 
 #' @param out_pch symbols for points on outside of circle
 #' @param pt_col colour used for points for events. default = "darkblue". If pt_col is an array it is used to colour 
 #' the individual points of days
 #' @param out_cex point size for symbol
+#' @param ... other plot options
 #' 
 #' @return Creates a circular plot of peak flows.
 #'  
@@ -60,17 +64,23 @@
 #' ch_polar_plot_peaks(direction = m_r$mean, regularity = m_r$regularity, title = "05AA008")
 #' 
 #' # plot peaks and centroid
-#' ch_polar_plot_peaks(days = am$doy, direction = m_r$mean, regularity = m_r$regularity, title = "05AA008")
+#' ch_polar_plot_peaks(days = am$doy, direction = m_r$mean, regularity = m_r$regularity, 
+#' title = "05AA008")
 
 ch_polar_plot_peaks <- function(title = NA, direction = NULL, regularity = NULL, 
-                                 days = NULL, 
-                                 shading = FALSE, shade = 35, pt_col = "darkblue",
-                                 in_pch = NULL, in_cex = NULL, in_col = NULL, 
-                                 in_detail = NULL,
-                                 labels=NULL, 
-                                 label_pos = NULL,
-                                 out_pch= 16,  
-                                 out_cex = 0.8,  ...){
+                                days = NULL, 
+                                shading = FALSE, 
+                                shade = 35, 
+                                pt_col = "darkblue",
+                                in_pch = NULL, 
+                                in_cex = NULL, 
+                                in_col = NULL, 
+                                in_detail = NULL,
+                                labels=NULL, 
+                                label_pos = NULL,
+                                out_pch= 16,  
+                                out_cex = 0.8,  ...){
+  
   oldw <- getOption("warn")
   options(warn = -1)
   
