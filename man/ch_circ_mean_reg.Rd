@@ -4,10 +4,10 @@
 \alias{ch_circ_mean_reg}
 \title{Calculates the circular mean, median, and regularity}
 \usage{
-ch_circ_mean_reg(df)
+ch_circ_mean_reg(dataframe)
 }
 \arguments{
-\item{doy}{and array of day year of event; can be amax or pot.}
+\item{dataframe}{a dataframe of day year of event; can be amax or pot.}
 }
 \value{
 Returns a list of the following statistics
@@ -24,7 +24,7 @@ Calculate the circular mean, median, and regularity using a year of 365 days.
 \examples{
 data(CAN05AA008)
 am <- ch_sh_get_amax(CAN05AA008)
-m_r <- ch_circ_mean_reg(am$doy, am$days)
+m_r <- ch_circ_mean_reg(am)
 }
 \references{
 Pewsey, A., M. Neuhauser, and G. D. Ruxton. 2014. Circular Statistics in R, 

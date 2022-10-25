@@ -18,15 +18,15 @@
 #' @author Paul Whitfield
 #' @seealso  \code{\link{ch_read_ECDE_flows}}  \code{\link{ch_circ_mean_reg}}   
 #' @examples
-#' data(W05AA008)
-#' amax <- ch_sh_get_amax(W05AA008)
+#' data(CAN05AA008)
+#' amax <- ch_sh_get_amax(CAN05AA008)
 #' str(amax)
 
 
-ch_sh_get_amax <- function(dataframe) {
+ch_sh_get_amax <- function(df) {
   
-  data <- dataframe$Flow
-  Date <- dataframe$Date
+  data <- df$Flow
+  Date <- df$Date
   year <- format(Date, "%Y")
   Year <- as.numeric(unique(year))
   maxdate <- array(NA, dim = length(Year))
@@ -37,7 +37,7 @@ ch_sh_get_amax <- function(dataframe) {
   
   amax <- as.numeric(tapply(data,year,max))
   
-  dataframe <- data.frame(dataframe,year)
+  dataframe <- data.frame(df,year)
   
   for (k in 1:length(Year)) {
     ndata <- dataframe[dataframe$year == Year[k],]

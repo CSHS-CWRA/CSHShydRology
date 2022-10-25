@@ -4,7 +4,7 @@
 \alias{ch_sh_get_amax}
 \title{Extracts annual maximum values from ECDE dataframe.}
 \usage{
-ch_sh_get_amax(dataframe)
+ch_sh_get_amax(df)
 }
 \arguments{
 \item{df}{A dataframe of daily streamflow data from ECDE}
@@ -22,8 +22,8 @@ Extracts annual maximum values, the date of occurrence, the day of year, and the
 from ECDE dataframe. Uses functions from timeDate ( \code{as.timeDate}, \code{dayOfYear}).
 }
 \examples{
-data(W05AA008)
-amax <- ch_sh_get_amax(W05AA008)
+data(CAN05AA008)
+amax <- ch_sh_get_amax(CAN05AA008)
 str(amax)
 }
 \seealso{

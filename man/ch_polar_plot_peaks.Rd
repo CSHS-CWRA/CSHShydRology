@@ -35,6 +35,8 @@ median of points from ch_circ_mean_reg (optional)}
 
 \item{shading}{if  \code{TRUE} adds shading and labels for nival and pluvial regimes default = \code{FALSE}}
 
+\item{shade}{percentage of shading, default is 35.}
+
 \item{pt_col}{colour used for points for events. default = "darkblue". If pt_col is an array it is used to colour 
 the individual points of days}
 
@@ -43,9 +45,11 @@ must be one of 21 to 25 to get a symbol with border, elsewise a red symbol is pl
 
 \item{in_cex}{an array of symbol sizes}
 
-\item{in_col}{an array of colors, either numbers or names to apply to centroid points (optional, default is "red")}
+\item{in_col}{an array of colors, either numbers or names to apply to centroid points (optional, 
+default is "red")}
 
-\item{in_detail}{an array of indices indicating symbol [1] shape, [2] colour, [3] background, and [4]size}
+\item{in_detail}{an array of indices indicating symbol [1] shape, [2] colour, [3] background, 
+and [4]size}
 
 \item{labels}{an array of labels to be placed beside points with direction and regularity (optional)}
 
@@ -55,6 +59,8 @@ above, right)(optional - default is below)}
 \item{out_pch}{symbols for points on outside of circle}
 
 \item{out_cex}{point size for symbol}
+
+\item{...}{other plot options}
 }
 \value{
 Creates a circular plot of peak flows.
@@ -89,11 +95,12 @@ am <-am[am$days >= 365,]
 ch_polar_plot_peaks(days = am$doy, title = "05AA008")
 
 #plot the centroid
-m_r <- ch_circ_mean_reg(am$doy)
+m_r <- ch_circ_mean_reg(am)
 ch_polar_plot_peaks(direction = m_r$mean, regularity = m_r$regularity, title = "05AA008")
 
 # plot peaks and centroid
-ch_polar_plot_peaks(days = am$doy, direction = m_r$mean, regularity = m_r$regularity, title = "05AA008")
+ch_polar_plot_peaks(days = am$doy, direction = m_r$mean, regularity = m_r$regularity, 
+title = "05AA008")
 }
 \references{
 Pewsey, A., M. Neuhauser, and G. D. Ruxton. 2014. Circular Statistics in R, 

@@ -4,7 +4,7 @@
 #'  Days of year are converted to degrees
 #'  internally, results are returned as positive days of year
 #'  
-#' @param doy and array of day year of event; can be amax or pot. 
+#' @param dataframe a dataframe of day year of event; can be amax or pot. 
 #'  
 #' @return Returns a list of the following statistics
 #'   \item{n}{number of samples}
@@ -26,13 +26,13 @@
 #' @examples 
 #' data(CAN05AA008)
 #' am <- ch_sh_get_amax(CAN05AA008)
-#' m_r <- ch_circ_mean_reg(am$doy, am$days)
+#' m_r <- ch_circ_mean_reg(am)
 
-ch_circ_mean_reg <- function(df){
-  doys <- df$doy
-  days <- df$days
+ch_circ_mean_reg <- function(dataframe){
+  doys <- dataframe$doy
+  days <- dataframe$days
   n <- length(doys)
-  doys <- doys / days * 360  # dof as degrees
+  doys <- doys / days * 360  # doy as degrees
   
   
  x <- circular::circular(doys, units = "degrees", zero = pi/2, rotation = "clock")
