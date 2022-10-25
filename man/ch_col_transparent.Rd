@@ -3,7 +3,7 @@
 %   R/utils.R
 \name{ch_col_transparent}
 \alias{ch_col_transparent}
-\title{Add Transparency to Colours}
+\title{ch_col_transparent}
 \usage{
 ch_col_transparent(colour, trans)
 
@@ -25,7 +25,12 @@ ch_col_transparent(colour, trans)
 \item{res}{returned updated colour code with transparency}
 }
 \description{
-rvn_col_transparent is used to adjust colour codes to introduce transparency
+ch_col_transparent is used to adjust colour codes to introduce transparency. 
+Based on rvn_col_transparent. This function adds transparency to a colour.
+Define transparency with an integer between 0 (fully transparent) and 255
+(full colour).
+ Works with either colour and trans a vector of equal length,
+ or one of the two of length 1.
 
 ch_col_transparent is used to adjust colour codes to introduce transparency. 
 Based on rvn_col_transparent. This function adds transparency to a colour.
@@ -39,14 +44,15 @@ Define transparency with an integer between 0 (fully transparent) and 255
 \details{
 from http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-r
 #'
+
+from http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-r
+#'
 }
 \examples{
-
-# plot randomly distributed data
 plot(rnorm(20),col='black')
 
 # create a transparent blue colour for plotting
-mycol <- rvn_col_transparent('blue',100)
+mycol <- ch_col_transparent('blue',100)
 
 # plot more random points in transparent blue colour
 points(rnorm(20),col=mycol)
@@ -77,10 +83,9 @@ ch_col_transparent( c('red','blue','green'), c(50,100,200))
 See original code on post in Stack Overflow
 \href{http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-rmaking}{
 plot points transparent in R}
-
-See original code on post in Stack Overflow
-\href{http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-rmaking}{
-plot points transparent in R}
+}
+\author{
+Robert Chlumsky; Paul Whitfield
 }
 \keyword{colour}
 \keyword{transparency}

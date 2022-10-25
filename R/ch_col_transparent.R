@@ -1,23 +1,29 @@
-#' Add Transparency to Colours
+#' ch_col_transparent
+#' 
+#' ch_col_transparent is used to adjust colour codes to introduce transparency. 
+#' Based on rvn_col_transparent. This function adds transparency to a colour.
+#' Define transparency with an integer between 0 (fully transparent) and 255
+#' (full colour).
+#'  Works with either colour and trans a vector of equal length,
+#'  or one of the two of length 1.
 #'
-#' rvn_col_transparent is used to adjust colour codes to introduce transparency
-#'
-#' @param colour time series containing columns you wish to reseasonalize. xts
-#' object
-#' @param trans integer describing the degree of transparency, from ~200
-#' (slightly transparent) to <10 (very transparent)
+#' from http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-r
+#' #'
+#' @param colour colour to make transparent
+#' @param trans integer describing the degree of transparency, from ~255
+#' (slightly transparent) to 0 (very transparent)
+#' 
 #' @return \item{res}{returned updated colour code with transparency}
-#' @seealso See original code on post in Stack Overflow
-#' \href{http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-rmaking}{
-#' plot points transparent in R}
+#' 
 #' @keywords colour transparency
+#' @author Robert Chlumsky; Paul Whitfield
+#' 
 #' @examples
-#'
-#' # plot randomly distributed data
+#  # plot randomly distributed data
 #' plot(rnorm(20),col='black')
 #'
 #' # create a transparent blue colour for plotting
-#' mycol <- rvn_col_transparent('blue',100)
+#' mycol <- ch_col_transparent('blue',100)
 #'
 #' # plot more random points in transparent blue colour
 #' points(rnorm(20),col=mycol)
@@ -25,12 +31,6 @@
 
 ch_col_transparent <- function(colour,trans)
 {
-  # This function adds transparency to a colour.
-  # Define transparency with an integer between 0 and 255
-  # 0 being fully transparent and 255 being fully visable
-  # Works with either colour and trans a vector of equal length,
-  # or one of the two of length 1.
-  # from http://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-r
 
   if (length(colour) != length(trans) & !any(c(length(colour),length(trans)) == 1)) stop("Vector lengths not correct")
   if (length(colour) == 1 & length(trans) > 1) colour <- rep(colour,length(trans))

@@ -60,7 +60,7 @@
 #' ch_polar_plot_peaks(days = am$doy, title = "05AA008")
 #' 
 #' #plot the centroid
-#' m_r <- ch_circ_mean_reg(am$doy)
+#' m_r <- ch_circ_mean_reg(am)
 #' ch_polar_plot_peaks(direction = m_r$mean, regularity = m_r$regularity, title = "05AA008")
 #' 
 #' # plot peaks and centroid

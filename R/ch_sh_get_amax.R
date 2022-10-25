@@ -18,8 +18,8 @@
 #' @author Paul Whitfield
 #' @seealso  \code{\link{ch_read_ECDE_flows}}  \code{\link{ch_circ_mean_reg}}   
 #' @examples
-#' data(W05AA008)
-#' amax <- ch_sh_get_amax(W05AA008)
+#' data(CAN05AA008)
+#' amax <- ch_sh_get_amax(CAN05AA008)
 #' str(amax)
 
 
