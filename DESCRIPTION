@@ -67,4 +67,5 @@ Suggests:
     readr
 VignetteBuilder: knitr
 LazyData: true
+Encoding: UTF-8
 RoxygenNote: 7.2.1
