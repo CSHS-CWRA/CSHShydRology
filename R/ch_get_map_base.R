@@ -1,6 +1,6 @@
-#' @title ch_get_map_base
+#'@title ch_get_map_base
 #'
-#' @description  Prepares for mapping by acquiring the base map and ancillary data: 
+#'@description  Prepares for mapping by acquiring the base map and ancillary data: 
 #' boundaries and rivers.  The maps are obtained using OpenStreetMap::openmap which 
 #' originally accessed the following map types:
 #' "osm", "osm-bw", "maptoolkit-topo", "waze", "bing", "stamen-toner", 
@@ -9,10 +9,12 @@
 #' "hillshade", "opencyclemap", "osm-transport", "osm-public-transport", 
 #' "osm-bbike", "osm-bbike-german".
 #' 
-#' In April 2022 access all of these dailed, limiting the available 
+#' In April 2022 access all of these failed, limiting the available 
 #' maps to: one of "osm", "bing", "stamen-toner",
 #' "stamen-terrain", "stamen-watercolor", "apple-iphoto", "opencyclemap",
 #' "osm-transport", "osm-public-transport".
+#' 
+#' In January 2023, ne_download failed as it produced an incorrect url.
 #' 
 #' Access to "nps" [default] was added as a work around until OpenstreetMap is updated.
 #' 
@@ -20,43 +22,42 @@
 #' physical map at 1.24km per pixel for the world and 500m for the coterminous 
 #' United States.
 #' 
-#' @param maplat vector of latitudes (2)
-#' @param maplong vector of longitudes (2)
-#' @param map_proj map projection
-#' @param map_directory directory where map data will be stored; will be 
+#'@param maplat vector of latitudes (2)
+#'@param maplong vector of longitudes (2)
+#'@param map_proj map projection currently NA/"latlong" or "albers"/"equalarea"
+#'@param map_directory directory where map data will be stored; will be 
 #' created if it does not exist.
-#' @param map_type map type: select one of  \option{osm},  \option{bing},  
-#' \option{stamen-toner}, \option{stamen-terrain}, \option{stamen-watercolor},
-#' \option{apple-iphoto}, \option{opencyclemap}, \option{osm-transport},
-#' \option{osm-public-transport}, \option{nps [default]},
+#'@param map_type map type: select one of  \option{osm},  \option{bing},  
+#'\option{stamen-toner}, \option{stamen-terrain}, \option{stamen-watercolor},
+#'\option{apple-iphoto}, \option{opencyclemap}, \option{osm-transport},
+#'\option{osm-public-transport}, \option{nps [default]},
 #'
-#' @return Returns a list containing:
-#' \describe{
-#' \item{map_d}{map data directory}
-#' \item{plines10}{provincial and state boundaries}
-#' \item{rlines10}{rivers and lakes}
-#' \item{map_proj}{projection used}
-#' \item{latitude}{bottom and top latitudes}
-#' \item{longitude}{east and west longitudes}
-#' }
+#'@return Returns a list containing:
+#'\describe{
+#'\item{map_d}{map data directory}
+#'\item{plines10}{provincial and state boundaries}
+#'\item{rlines10}{rivers and lakes}
+#'\item{map_proj}{projection used}
+#'\item{latitude}{bottom and top latitudes}
+#'\item{longitude}{east and west longitudes}
+#'}
 #' 
-#' @importFrom  rnaturalearth ne_load ne_download
-#' @author Paul Whitfield
-#' @export
-#' @examples
-#' \donttest{
-#' latitude <- c(48.0,  61.0)
-#' longitude <- c(-110.0, -128.5)
-#' # get map data
-#' m_map <- ch_get_map_base(latitude,longitude, 
-#'                        map_proj = "Albers", 
-#'                        map_directory = "C:/map_data", 
-#'                        map_type = "nps")
-#' }                        
+#'@importFrom  rnaturalearth ne_load ne_download
+#'@author Paul Whitfield
+#'@export
+#'@examples
+#'latitude <- c(48.0,  61.0)
+#'longitude <- c(-110.0, -128.5)
+#'mapdir <- tempdir()
+#'# get map data
+#'m_map <- ch_get_map_base(latitude,longitude, 
+#'                      map_proj = "Albers", 
+#'                      map_directory = mapdir, 
+#'                      map_type = "nps")
 
 ch_get_map_base <- function(maplat, maplong, 
                             map_proj = NA, 
-                            map_directory = "C:/map_data", 
+                            map_directory = ".", 
                             map_type = "nps")
   {
   
@@ -64,10 +65,19 @@ ch_get_map_base <- function(maplat, maplong,
   lright <- c(maplat[1],maplong[1])
   
   cdn_latlong = "+proj=longlat"
-  cdn_aea = "+proj=aea +lat_1=50 +lat_2=70 +lat_0=40 +lon_0=-110 +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83 +units=m +no_defs"
+  
+# form a projection string based on latitude and longitude  
+  cdn_aea <- paste("+proj=aea +lat_1=",maplat[1],
+                          " +lat_2=", maplat[2],
+                          " +lat_0=", (maplat[1]+maplat[2])/2,
+                          " +lon_0=", (maplong[1]+maplong[2])/2,
+                          " +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83",
+                          " +units=m +no_defs", sep="")
+  
 
  
   if (is.na(map_proj)) map_proj <- cdn_latlong 
+  if (tolower(map_proj) == "latlong") map_proj <- cdn_latlong
   if (tolower(map_proj) == "albers") map_proj <- cdn_aea
   if (tolower(map_proj) == "equalarea") map_proj <- cdn_aea
   
@@ -91,27 +101,51 @@ ch_get_map_base <- function(maplat, maplong,
    # change projection
    map_d <- OpenStreetMap::openproj(map_a, projection = map_proj)
    
-
+#####################################################################
+   # if map_directory does not exist create it
+   
+   if (!dir.exists(map_directory)) {
+     
+     print(paste("Creating a new directory for map data",map_directory))
+     
+     dir.create(map_directory)
+     setwd(map_directory)
+   }
 ##################################################################  
-# if map directory exists load rivers and boundaries
+# if files don't exist get zip files and unzip
 
-     if (dir.exists(map_directory)) {
+
+    if (!file.exists("ne_10m_admin_1_states_provinces_lakes.prj"))
+        {
+      
+      cadd <- "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_1_states_provinces_lakes.zip"
+      utils::download.file(cadd, zip_file<- tempfile())
+      utils::unzip(zip_file, unzip = "unzip", exdir = getwd())
+    }  
+       
+    if (!file.exists("ne_10m_rivers_lake_centerlines.prj"))
+    {
+      radd <- "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/physical/ne_10m_rivers_lake_centerlines.zip"
+      utils::download.file(radd, zip_file <- tempfile())
+      utils::unzip(zip_file, unzip = "unzip", exdir = getwd())
+      }
     
-    setwd(map_directory)
-
-    plines10 <- rnaturalearth::ne_load(scale = 10, 
-                                       type = "states", 
-                                       category = 'cultural', 
-                                       destdir = getwd(), 
-                                       returnclass = "sf")
+   
+     plines10 <- rnaturalearth::ne_load(scale = 10, 
+                                      type = "states", 
+                                      category = 'cultural', 
+                                      destdir = getwd(), 
+                                      returnclass = "sf")
+   
+      
     rivers10 <- rnaturalearth::ne_load(scale = 10, 
                                        type = "rivers_lake_centerlines", 
                                        category = 'physical', 
                                        destdir = getwd(), 
                                        returnclass = "sf")
     
-    
-  }
+   
+
     
 #####################################################################
 # if map_directory does not exist create it and download data

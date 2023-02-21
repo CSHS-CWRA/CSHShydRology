@@ -17,7 +17,7 @@
 #'  # 1 3 2 3 1
 
 
-ch_tr_sign <- function (x, offset = 2){
+ch_tr_sign <- function(x, offset = 2){
   x <- unlist(x)
   x <- x/abs(x)
   x <- replace(x, is.nan(x), 0)
