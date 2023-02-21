@@ -8,7 +8,7 @@ ch_get_map_base(
   maplat,
   maplong,
   map_proj = NA,
-  map_directory = "C:/map_data",
+  map_directory = ".",
   map_type = "nps"
 )
 }
@@ -17,7 +17,7 @@ ch_get_map_base(
 
 \item{maplong}{vector of longitudes (2)}
 
-\item{map_proj}{map projection}
+\item{map_proj}{map projection currently NA/"latlong" or "albers"/"equalarea"}
 
 \item{map_directory}{directory where map data will be stored; will be 
 created if it does not exist.}
@@ -48,10 +48,12 @@ originally accessed the following map types:
 "hillshade", "opencyclemap", "osm-transport", "osm-public-transport", 
 "osm-bbike", "osm-bbike-german".
 
-In April 2022 access all of these dailed, limiting the available 
+In April 2022 access all of these failed, limiting the available 
 maps to: one of "osm", "bing", "stamen-toner",
 "stamen-terrain", "stamen-watercolor", "apple-iphoto", "opencyclemap",
 "osm-transport", "osm-public-transport".
+
+In January 2023, ne_download failed as it produced an incorrect url.
 
 Access to "nps" [default] was added as a work around until OpenstreetMap is updated.
 
@@ -60,15 +62,14 @@ physical map at 1.24km per pixel for the world and 500m for the coterminous
 United States.
 }
 \examples{
-\donttest{
 latitude <- c(48.0,  61.0)
 longitude <- c(-110.0, -128.5)
+mapdir <- tempdir()
 # get map data
 m_map <- ch_get_map_base(latitude,longitude, 
-                       map_proj = "Albers", 
-                       map_directory = "C:/map_data", 
-                       map_type = "nps")
-}                        
+                     map_proj = "Albers", 
+                     map_directory = mapdir, 
+                     map_type = "nps")
 }
 \author{
 Paul Whitfield
