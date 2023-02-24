@@ -45,7 +45,8 @@
 #'@importFrom  rnaturalearth ne_load ne_download
 #'@author Paul Whitfield
 #'@export
-#'@examples
+#'@examples \donttest{
+#'# Note: example not tested automatically as it is very slow to execute due to the downloading
 #'latitude <- c(48.0,  61.0)
 #'longitude <- c(-110.0, -128.5)
 #'mapdir <- tempdir()
@@ -54,6 +55,7 @@
 #'                      map_proj = "Albers", 
 #'                      map_directory = mapdir, 
 #'                      map_type = "nps")
+#'}                      
 
 ch_get_map_base <- function(maplat, maplong, 
                             map_proj = NA, 
@@ -69,10 +71,10 @@ ch_get_map_base <- function(maplat, maplong,
 # form a projection string based on latitude and longitude  
   cdn_aea <- paste("+proj=aea +lat_1=",maplat[1],
                           " +lat_2=", maplat[2],
-                          " +lat_0=", (maplat[1]+maplat[2])/2,
-                          " +lon_0=", (maplong[1]+maplong[2])/2,
+                          " +lat_0=", (maplat[1] + maplat[2])/2,
+                          " +lon_0=", (maplong[1] + maplong[2])/2,
                           " +x_0=0 +y_0=0 +ellps=GRS80 +datum=NAD83",
-                          " +units=m +no_defs", sep="")
+                          " +units=m +no_defs", sep = "")
   
 
  
@@ -106,7 +108,7 @@ ch_get_map_base <- function(maplat, maplong,
    
    if (!dir.exists(map_directory)) {
      
-     print(paste("Creating a new directory for map data",map_directory))
+     print(paste("Creating a new directory for map data", map_directory))
      
      dir.create(map_directory)
      setwd(map_directory)
@@ -119,29 +121,29 @@ ch_get_map_base <- function(maplat, maplong,
         {
       
       cadd <- "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_1_states_provinces_lakes.zip"
-      utils::download.file(cadd, zip_file<- tempfile())
-      utils::unzip(zip_file, unzip = "unzip", exdir = getwd())
+      utils::download.file(cadd, zip_file <- tempfile())
+      utils::unzip(zip_file, unzip = "unzip", exdir = map_directory)
     }  
        
     if (!file.exists("ne_10m_rivers_lake_centerlines.prj"))
     {
       radd <- "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/physical/ne_10m_rivers_lake_centerlines.zip"
       utils::download.file(radd, zip_file <- tempfile())
-      utils::unzip(zip_file, unzip = "unzip", exdir = getwd())
+      utils::unzip(zip_file, unzip = "unzip", exdir = map_directory)
       }
     
    
      plines10 <- rnaturalearth::ne_load(scale = 10, 
                                       type = "states", 
                                       category = 'cultural', 
-                                      destdir = getwd(), 
+                                      destdir = map_directory, 
                                       returnclass = "sf")
    
       
     rivers10 <- rnaturalearth::ne_load(scale = 10, 
                                        type = "rivers_lake_centerlines", 
                                        category = 'physical', 
-                                       destdir = getwd(), 
+                                       destdir = map_directory, 
                                        returnclass = "sf")
     
    
@@ -152,7 +154,7 @@ ch_get_map_base <- function(maplat, maplong,
   
   if (!dir.exists(map_directory)) {
     
-    print(paste("Creating a new directory for map data",map_directory))
+    print(paste("Creating a new directory for map data", map_directory))
     
     dir.create(map_directory)
     setwd(map_directory)
@@ -160,12 +162,12 @@ ch_get_map_base <- function(maplat, maplong,
     plines10 <- rnaturalearth::ne_download(scale = 10, 
                                            type = "states", 
                                            category = 'cultural', 
-                                           destdir = getwd(), 
+                                           destdir = map_directory, 
                                            returnclass = "sf")
     rivers10 <- rnaturalearth::ne_download(scale = 10, 
                                            type = "rivers_lake_centerlines", 
                                            category = 'physical',
-                                           destdir = getwd(), 
+                                           destdir = map_directory, 
                                            returnclass = "sf")
     
     }

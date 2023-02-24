@@ -62,6 +62,8 @@ physical map at 1.24km per pixel for the world and 500m for the coterminous
 United States.
 }
 \examples{
+\donttest{
+# Note: example not tested automatically as it is very slow to execute due to the downloading
 latitude <- c(48.0,  61.0)
 longitude <- c(-110.0, -128.5)
 mapdir <- tempdir()
@@ -70,6 +72,7 @@ m_map <- ch_get_map_base(latitude,longitude,
                      map_proj = "Albers", 
                      map_directory = mapdir, 
                      map_type = "nps")
+}                      
 }
 \author{
 Paul Whitfield

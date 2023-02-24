@@ -163,6 +163,8 @@ Generates a map for a defined area. Options to plot station
  added last.
 }
 \examples{
+\donttest{
+# Note: example not tested automatically as it is very slow to execute due to the downloading
 # get base map
 latitude <- c(48.0,  61.0)
 longitude <- c(-110.0, -128.5)
@@ -176,7 +178,8 @@ m_map <- ch_get_map_base(latitude,longitude,
 stations <- HYDAT_list
 stations <- stations[,c("Longitude", "Latitude")]
 stations <- na.omit(stations)
-ch_map_plot_data(m_map, sc_var = stations, sc_text = "Years")                     
+ch_map_plot_data(m_map, sc_var = stations, sc_text = "Years")
+}                    
 }
 \author{
 Paul Whitfield
