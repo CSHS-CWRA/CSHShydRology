@@ -16,7 +16,8 @@ x <- ch_rfa_extractamax(flow~date, CAN01AD002, tol = 93)
 expect_equal(dim(x), c(88,4))
 
 ## Verify that work with data.frame
-y <- ch_rfa_extractamax(CAN01AD002[,c('flow','date')], tol = 365)
+selected <- CAN01AD002[,c('flow','date')]
+y <- ch_rfa_extractamax(selected, tol = 365)
 expect_identical(y,x)
 
 ## multiple site
