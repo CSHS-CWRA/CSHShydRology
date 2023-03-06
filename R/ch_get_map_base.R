@@ -87,13 +87,19 @@ ch_get_map_base <- function(maplat, maplong,
   
   ##################  work around 2022-05-25  OpenStreetMap fails to access "nps"
 
-  if(map_type == "nps"){
+  if (map_type == "nps") {
+    nps_file <- "https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}.jpg"
+    result <- ch_test_url_file(nps_file)
+    if (result == "error" | result == "warning") {
+      stop("nps file does not exist")
+    } 
+    
     map_a <- OpenStreetMap::openmap(uleft, lright, minNumTiles = 3,
-              type="https://server.arcgisonline.com/ArcGIS/rest/services/World_Physical_Map/MapServer/tile/{z}/{y}/{x}.jpg")
+              type = nps_file)
     
   }
   
-  if(map_type != "nps"){
+  if (map_type != "nps"){
   
    map_a <- OpenStreetMap::openmap(uleft, lright,
              type = map_type,
@@ -117,18 +123,30 @@ ch_get_map_base <- function(maplat, maplong,
 # if files don't exist get zip files and unzip
 
 
-    if (!file.exists("ne_10m_admin_1_states_provinces_lakes.prj"))
-        {
+    if (!file.exists("ne_10m_admin_1_states_provinces_lakes.prj"))  {
       
       cadd <- "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/cultural/ne_10m_admin_1_states_provinces_lakes.zip"
-      utils::download.file(cadd, zip_file <- tempfile())
+      
+      result <- ch_test_url_file(cadd)
+      if (result == "error" | result == "warning") {
+        stop("natural earth provinces and lakes file does not exist")
+      } 
+      
+      zip_file = tempfile()
+      utils::download.file(cadd, zip_file)
       utils::unzip(zip_file, unzip = "unzip", exdir = map_directory)
     }  
        
     if (!file.exists("ne_10m_rivers_lake_centerlines.prj"))
     {
       radd <- "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/10m/physical/ne_10m_rivers_lake_centerlines.zip"
-      utils::download.file(radd, zip_file <- tempfile())
+      result <- ch_test_url_file(radd)
+      if (result == "error" | result == "warning") {
+        stop("natural earth rivers file does not exist")
+      } 
+      
+      zip_file = tempfile()
+      utils::download.file(radd, zip_file)
       utils::unzip(zip_file, unzip = "unzip", exdir = map_directory)
       }
     
