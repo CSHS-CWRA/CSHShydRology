@@ -99,7 +99,7 @@ ch_get_map_base <- function(maplat, maplong,
     
   }
   
-  if (map_type != "nps"){
+  if (map_type != "nps") {
   
    map_a <- OpenStreetMap::openmap(uleft, lright,
              type = map_type,

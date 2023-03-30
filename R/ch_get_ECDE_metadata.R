@@ -50,9 +50,11 @@ ch_get_ECDE_metadata  <- function(filename, writefile=NULL){
   }
   
   if (!file.exists(filename)) {
-    stop("ECDE file not found")
+    # check if actually a url
+    result <- ch_test_url_file(filename, quiet = TRUE)
+    if (result != "OK")
+      stop("ECDE file not found")
   }
-  
   
   meta <- read.table(filename, skip = 96, sep = " ", na.strings = -999)
   
