@@ -8,7 +8,7 @@
 #' Also generates a table summarizing the catchments, 
 #' including the coordinates of the outlet point and the catchment area.
 #'
-#' @param dem raster DEM that catchments were generated from.
+#' @param dem terra SpatRaster DEM that catchments were generated from.
 #' @param catchment Catchment polygon (sf object).
 #' @param outlet Location of catchment outlet (sf object).
 #' @param outlet_label Character label for outlet.
@@ -36,23 +36,22 @@
 #' @importFrom ggspatial annotation_north_arrow north_arrow_fancy_orienteering annotation_scale 
 #' @importFrom dplyr mutate 
 #' @importFrom grid unit
-#' @importFrom magrittr %>%
 #' @export
 #' @examples
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster)
+#'   library(terra)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = ".tif")
 #'   no_sink_raster_file <- tempfile("no_sinks", fileext = ".tif")
 #' 
 #'   # write test raster to file
-#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #' 
 #'   # remove sinks
 #'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, 
-#'   method = "fill")
+#'                                       method = "fill")
 #' 
 #'   # get flow accumulations
 #'   flow_acc_file <- tempfile("flow_acc", fileext = ".tif")
@@ -63,7 +62,7 @@
 #'   pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #'   snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
 #'   snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
-#'   snapped_pourpoint_file, snap_dist = 10)
+#'                                           snapped_pourpoint_file, snap_dist = 10)
 #' 
 #' # get flow directions
 #'   flow_dir_file <- tempfile("flow_dir", fileext = ".tif")
@@ -71,7 +70,7 @@
 #'   fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
 #'   fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
 #'   catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
-#'   fn_catchment_ras, fn_catchment_vec)
+#'                                  fn_catchment_ras, fn_catchment_vec)
 #' 
 #' # check results
 #'   ch_checkcatchment(test_raster, catchments, snapped_pourpoints)
@@ -142,7 +141,7 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
     area <- st_area(catchment)
     units <- rep(paste0(attr(area, "units")$numerator[1], "^2"), length(area))
     value <- round(as.numeric(area))
-    area_df <- outlet %>%
+    area_df <- outlet |>
       mutate(label = labels, area = value, units = units)
 
     return(TRUE)

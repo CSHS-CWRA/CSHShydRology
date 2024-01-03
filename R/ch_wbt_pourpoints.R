@@ -16,7 +16,7 @@
 #'
 #' @author Dan Moore
 #' @seealso \code{\link{ch_volcano_pourpoints}}
-#' @importFrom raster raster
+#' @importFrom terra rast
 #' @importFrom whitebox wbt_snap_pour_points
 #' @importFrom sf st_crs st_write
 #' @return Returns a \pkg{sf} object of the specified pour points snapped to the
@@ -26,13 +26,13 @@
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster)
+#'   library(terra)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = c(".tif"))
 #'   no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
 #' 
 #'   # write test raster to file
-#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #' 
 #'   # remove sinks
 #'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
@@ -52,25 +52,34 @@
 #' }
 ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {
+  
   ch_wbt_check_whitebox()
+  
   if (!file.exists(fn_flowacc)) {
     stop("Error: flow accumulation file does not exist")
   }
+  
   if (missing(pp_sf)) {
     stop("Error: value for pp_sf missing")
   }
+  
   if (is.null(snap_dist)) {
     stop("Error: value for snap_dist missing")
   }
+  
   if (check_crs) {
     pp_crs <- st_crs(pp_sf)$epsg
-    fa_crs <- st_crs(raster(fn_flowacc))$epsg
+    fa_crs <- st_crs(rast(fn_flowacc))$epsg
     if (pp_crs != fa_crs) {
       stop("Error: pour points and flow accumulation grid have different crs")
     }
   }
+  
   message("ch_wbt: Snapping pour points to stream network")
+  
   st_write(pp_sf, fn_pp, quiet = TRUE, delete_layer = TRUE)
+  
   wbt_snap_pour_points(fn_pp, fn_flowacc, fn_pp_snap, snap_dist, ...)
+  
   return(st_read(fn_pp_snap))
 }

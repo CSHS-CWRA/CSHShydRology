@@ -248,10 +248,10 @@ ch_map_plot_data <- function(map_data,
     map_label4 <- map_label3[map_label3$llat <= maplat[2],]
     
     
-    map_labels <- map_label4 %>%
-      dplyr::mutate(Label = as.factor(Labels)) %>%
-      dplyr::mutate(lpos = as.factor(lpos)) %>%
-      sf::st_as_sf(coords = c("llong","llat")) %>%
+    map_labels <- map_label4 |>
+      dplyr::mutate(Label = as.factor(Labels)) |>
+      dplyr::mutate(lpos = as.factor(lpos)) |>
+      sf::st_as_sf(coords = c("llong","llat")) |>
       sf::st_set_crs(4326)
     
     
@@ -293,9 +293,9 @@ ch_map_plot_data <- function(map_data,
       
     }
     # create a simple features object with crs = epsg 4326 (longlat with WGS84 geoid)
-    pt_sf <- data.frame(mlong, mlat, mcode) %>%
-      dplyr::mutate(mcode = as.factor(mcode)) %>%
-      sf::st_as_sf(coords = c("mlong", "mlat")) %>%
+    pt_sf <- data.frame(mlong, mlat, mcode) |>
+      dplyr::mutate(mcode = as.factor(mcode)) |>
+      sf::st_as_sf(coords = c("mlong", "mlat")) |>
       sf::st_set_crs(4326)
     
     
@@ -340,10 +340,10 @@ ch_map_plot_data <- function(map_data,
     
     
     # create a simple features object with crs = epsg 4326 (longlat with WGS84 geoid)
-    pt_sf <- data.frame(mlong, mlat, trend, signif) %>%
-      dplyr::mutate(trend = as.factor(trend)) %>%
-      dplyr::mutate(signif = as.factor(signif)) %>%
-      sf::st_as_sf(coords = c("mlong", "mlat")) %>%
+    pt_sf <- data.frame(mlong, mlat, trend, signif) |>
+      dplyr::mutate(trend = as.factor(trend)) |>
+      dplyr::mutate(signif = as.factor(signif)) |>
+      sf::st_as_sf(coords = c("mlong", "mlat")) |>
       sf::st_set_crs(4326)
     
     # reproject 
@@ -385,9 +385,9 @@ ch_map_plot_data <- function(map_data,
     
     
     # create a simple features object with crs = epsg 4326 (longlat with WGS84 geoid)
-    pt_sf <- data.frame(mlong, mlat, var_a ) %>%
-      dplyr::mutate(var_a = as.factor(var_a)) %>%
-      sf::st_as_sf(coords = c("mlong", "mlat")) %>%
+    pt_sf <- data.frame(mlong, mlat, var_a ) |>
+      dplyr::mutate(var_a = as.factor(var_a)) |>
+      sf::st_as_sf(coords = c("mlong", "mlat")) |>
       sf::st_set_crs(4326)
     
     # reproject 
@@ -435,9 +435,9 @@ ch_map_plot_data <- function(map_data,
     
     
     # create a simple features object with crs = epsg 4326 (longlat with WGS84 geoid)
-    pt_sf <- data.frame(mlong, mlat, var_a ) %>%
-      dplyr::mutate(var_a = as.factor(var_a)) %>%
-      sf::st_as_sf(coords = c("mlong", "mlat")) %>%
+    pt_sf <- data.frame(mlong, mlat, var_a ) |>
+      dplyr::mutate(var_a = as.factor(var_a)) |>
+      sf::st_as_sf(coords = c("mlong", "mlat")) |>
       sf::st_set_crs(4326)
     
     # reproject 
@@ -483,13 +483,13 @@ ch_map_plot_data <- function(map_data,
     lcol <- unlist(x_labels[6])
     llabels <- unlist(x_labels[7])
     
-    xmap_labels <- data.frame(llong, llat, lpos, lcol, lfont, lcex, llabels) %>%               
-      dplyr::mutate(llabels = as.factor(llabels)) %>%
-      dplyr::mutate(lpos = as.factor(lpos)) %>%
-      dplyr::mutate(lcol = as.factor(lcol)) %>%
-      dplyr::mutate(lcex = as.factor(lcex)) %>%
-      dplyr::mutate(lfont = as.factor(lfont)) %>%
-      sf::st_as_sf(coords = c("llong","llat")) %>%
+    xmap_labels <- data.frame(llong, llat, lpos, lcol, lfont, lcex, llabels) |>               
+      dplyr::mutate(llabels = as.factor(llabels)) |>
+      dplyr::mutate(lpos = as.factor(lpos)) |>
+      dplyr::mutate(lcol = as.factor(lcol)) |>
+      dplyr::mutate(lcex = as.factor(lcex)) |>
+      dplyr::mutate(lfont = as.factor(lfont)) |>
+      sf::st_as_sf(coords = c("llong","llat")) |>
       sf::st_set_crs(4326)
     
     x_labelsa <- sf::st_transform(xmap_labels, map_proj)
