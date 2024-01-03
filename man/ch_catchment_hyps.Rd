@@ -25,7 +25,7 @@ ch_catchment_hyps(
 \arguments{
 \item{catchment}{A \pkg{sf} object containing the catchment divide.}
 
-\item{dem}{A \pkg{raster} object of the Digital Elevation Model.}
+\item{dem}{A \pkg{terra} SpatRaster object of the Digital Elevation Model.}
 
 \item{z_levels}{Vector of elevation levels for the hypsometry. If specified, 
 then no other elevation parameters are required. Default is \code{NULL}.}
@@ -75,8 +75,6 @@ curve may also be created.
 \examples{
 \donttest{
 # Note: example not tested automatically as it is very slow to execute due to the downloading
-library(raster)
-library(magrittr)
 # change the following line to specify a directory to hold the data
 dir_name <- tempdir(check = FALSE)
 # create directory to store data sets
@@ -95,11 +93,11 @@ cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
 cb <- ch_get_url_data(cb_url, cb_fn)
 
 # quick check plot - all catchments
-raster::plot(dem_upc)
+terra::plot(dem_upc)
 plot(cb, add = TRUE, col = NA)
 
 # subset 240 catchment
-cb_240 <- cb \%>\% dplyr::filter(wsc_name == "240")
+cb_240 <- cb |> dplyr::filter(wsc_name == "240")
 plot(cb_240, col = NA)
 
 ## test function 

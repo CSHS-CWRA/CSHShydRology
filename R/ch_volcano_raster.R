@@ -1,7 +1,7 @@
-#' Create Test Raster
+#' Create Test SpatRaster
 #'
 #' @description 
-#' Creates a \pkg{raster} object of land surface elevations, as
+#' Creates a \pkg{terra} object of land surface elevations, as
 #' used to test/demonstrate many functions requiring a digital elevation model 
 #' (DEM). 
 #' 
@@ -10,10 +10,9 @@
 #' \code{volcano} matrix of elevations.
 #' 
 #' @export 
-#' @return Returns a raster object of land surface elevations. 
+#' @return Returns a SpatRaster object of land surface elevations. 
 #' @author Dan Moore and Kevin Shook
-#' @importFrom raster rasterFromXYZ crs
-#' @importFrom magrittr %>%
+#' @importFrom terra rast crs
 #' @examples
 #' test_raster <- ch_volcano_raster()
 #' 
@@ -28,8 +27,8 @@ ch_volcano_raster <- function() {
   ymax <- ymin + (nr - 1)*dx
   x <- rep(seq(xmax, xmin, -dx), each = nr)
   y <- rep(seq(ymin, ymax, dx), times = nc)
-  vol_ras <- data.frame(x, y, z = as.numeric(vol_mat)) %>%
-    raster::rasterFromXYZ()
-  raster::crs(vol_ras) <- "+proj=utm +zone=60 +south +datum=WGS84 +units=m +no_defs" 
+  vol_ras <- data.frame(x, y, z = as.numeric(vol_mat)) |>
+    terra::rast(type = 'xyz')
+  terra::crs(vol_ras) <- "+proj=utm +zone=60 +south +datum=WGS84 +units=m +no_defs" 
   return(vol_ras)
 }

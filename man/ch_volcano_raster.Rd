@@ -2,15 +2,15 @@
 % Please edit documentation in R/ch_volcano_raster.R
 \name{ch_volcano_raster}
 \alias{ch_volcano_raster}
-\title{Create Test Raster}
+\title{Create Test SpatRaster}
 \usage{
 ch_volcano_raster()
 }
 \value{
-Returns a raster object of land surface elevations.
+Returns a SpatRaster object of land surface elevations.
 }
 \description{
-Creates a \pkg{raster} object of land surface elevations, as
+Creates a \pkg{terra} object of land surface elevations, as
 used to test/demonstrate many functions requiring a digital elevation model 
 (DEM).
 }
