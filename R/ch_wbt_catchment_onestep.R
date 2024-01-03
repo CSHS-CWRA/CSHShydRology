@@ -24,10 +24,9 @@
 #' @param ... Extra parameters for \code{ch_wbt_removesinks}.
 #' @author Dan Moore and Kevin Shook
 #' @seealso \code{\link{ch_wbt_filenames}}
-#' @importFrom raster raster
+#' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons
 #' @importFrom sf st_crs write_sf st_write
-#' @importFrom magrittr %>%
 #' @return Returns an \pkg{sp} object of the delineated catchment.
 #' @export
 #'
@@ -35,16 +34,17 @@
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster)
+#'   library(terra)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = c(".tif"))
 #'   # write test raster to file
-#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #'   wd <- tempdir()
 #'   pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
 #'   pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #'   catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
-#'   pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
+#'                                         pp_sf = pourpoints, sink_method = "fill", 
+#'                                         threshold = 1, snap_dist = 10)
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
@@ -82,23 +82,35 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                                fn_dem_fsc = file_names$dem_fsc, ...)
 
   if (inherits(dem_ns, "character")) return(NULL)
+  
   ch_wbt_flow_accumulation(fn_dem_ns = file_names$dem_ns, fn_flowacc = file_names$flowacc,
                            return_raster = FALSE)
+  
   ch_wbt_flow_direction(fn_dem_ns = file_names$dem_ns, fn_flowdir = file_names$flowdir,
                         return_raster = FALSE)
+  
   wbt_extract_streams(file_names$flowacc, file_names$channel_ras, threshold = threshold)
+  
   wbt_raster_streams_to_vector(file_names$channel_ras, file_names$flowdir, file_names$channel_vec)
+  
   sf::st_write(pp_sf, file_names$pp, quiet = TRUE, delete_layer = TRUE)
+  
   wbt_snap_pour_points(file_names$pp, file_names$flowacc, file_names$pp_snap, snap_dist)
+  
   wbt_watershed(file_names$flowdir, file_names$pp_snap, file_names$catchment_ras)
+  
   wbt_raster_to_vector_polygons(file_names$catchment_ras, file_names$catchment_vec)
-  catchment_vec <- st_read(file_names$catchment_vec) %>% st_as_sf()
+  
+  catchment_vec <- st_read(file_names$catchment_vec) |>
+    st_as_sf()
+  
   if (is.na(sf::st_crs(catchment_vec))) {
     sf::st_crs(catchment_vec) <- sf::st_crs(raster(file_names$catchment_ras))
     sf::write_sf(catchment_vec, file_names$catchment_vec)
   }
   
-  channel_vec <- st_read(file_names$channel_vec) %>% st_as_sf()
+  channel_vec <- st_read(file_names$channel_vec) |> st_as_sf()
+  
   if (is.na(sf::st_crs(channel_vec))) {
     sf::st_crs(channel_vec) <- sf::st_crs(catchment_vec)
     sf::write_sf(channel_vec, file_names$catchment_vec)
@@ -111,5 +123,6 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
                       plot_na = plot_na, plot_scale = plot_scale,
                       na_location = na_location, scale_location = scale_location)
   }
+  
   return(catchment_vec)
 }

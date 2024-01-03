@@ -11,7 +11,7 @@
 #'
 #' @importFrom httr GET write_disk
 #' @importFrom sf st_read
-#' @importFrom raster raster
+#' @importFrom terra rast
 #'
 #' @return Returns a data frame (from a .csv file), a \code{raster} object (from a .tif file), 
 #'or an \code{sf} object (from a GeoJSON file).
@@ -22,7 +22,7 @@
 #' # Tested using files in the Upper Penticton Creek
 #' # zenodo repository https://zenodo.org/record/4781469
 #' library(ggplot2)
-#' library(raster)
+#' library(terra)
 #' 
 #' # create directory to store data sets
 #' dir_name <- tempdir(check = FALSE)
@@ -40,7 +40,7 @@
 #' ra_fn <- file.path(dir_name, "gs_dem25.tif")
 #' ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 #' ra_data <- ch_get_url_data(ra_url, ra_fn)
-#' plot(ra_data)
+#' terra::plot(ra_data)
 #' 
 #' # test with GeoJSON
 #' gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
@@ -58,7 +58,8 @@
 #' @export
 #' 
 ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
-  file_ext <- strsplit(x = gd_filename, split = "[.]")[[1]][2]
+  filesplit <- strsplit(x = gd_filename, split = "[.]")[[1]]
+  file_ext <- filesplit[length(filesplit)]
   
   # csv file - returns data frame
   if (file_ext == "csv") {
@@ -89,7 +90,7 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
 
       GET(gd_url, write_disk(gd_filename))
     }
-    da <- raster::raster(gd_filename)
+    da <- terra::rast(gd_filename)
     return(da)
   }
   

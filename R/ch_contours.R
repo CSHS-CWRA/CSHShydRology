@@ -29,9 +29,8 @@
 #' # plot contours map
 #' plot(contours)
 #' 
-#' @importFrom raster raster getValues rasterToContour crs
+#' @importFrom terra rast values as.contour crs
 #' @importFrom sf st_as_sf st_crs
-#' @importFrom magrittr %>%
 #' @export
 ch_contours <- function(dem,
                         zmin = NULL, zmax = NULL,
@@ -45,7 +44,7 @@ ch_contours <- function(dem,
   
   # determine contour levels
   if (is.null(z_levels)) {
-    z <- getValues(dem)
+    z <- values(dem)
     if (is.null(zmin)) zmin <- min(z, na.rm = TRUE)
     if (is.null(zmax)) zmax <- max(z, na.rm = TRUE)
     z_levels <- seq(zmin, zmax, length.out = n_levels)
@@ -53,7 +52,7 @@ ch_contours <- function(dem,
   # if dem includes sea level, start contours at 0.1 m to mimic coastline
   if (z_levels[1] <= 0) {z_levels[1] <- 0.1}
   # generate contours as a sf object
-  contours_sf <- rasterToContour(dem, levels = z_levels) %>%
+  contours_sf <- as.contour(dem, levels = z_levels) |> 
     st_as_sf()
   sf::st_crs(contours_sf) <- crs(dem)
   return(contours_sf)
