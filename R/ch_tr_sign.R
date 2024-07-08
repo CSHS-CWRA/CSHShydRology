@@ -7,7 +7,7 @@
 #'@param x an array of slopes
 #'@param offset the amount of shift to make values positive integers, default is 2.
 
-#'@return {x} {an array of indices 1, 2, 3}
+#'@return Returns an array of indices (1, 2, 3)
 #'  
 #'@author Paul Whitfield
 #'@export
