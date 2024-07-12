@@ -12,7 +12,7 @@ ch_tr_signif(x, pvalue = 0.05)
 \item{pvalue}{critical value, default is 0.05}
 }
 \value{
-{x} {an array of indices 1 and 2, where 1 is NS and 2 is significant}
+Returns an array of indices 1 and 2, where 1 is NS and 2 is significant
 }
 \description{
 Convert pvalues to integers 1 for NS and 2 for significant 

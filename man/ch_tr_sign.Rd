@@ -12,7 +12,7 @@ ch_tr_sign(x, offset = 2)
 \item{offset}{the amount of shift to make values positive integers, default is 2.}
 }
 \value{
-{x} {an array of indices 1, 2, 3}
+Returns an array of indices (1, 2, 3)
 }
 \description{
 Converts MK (or other) slopes to integers 1-2-3 (negative, 
