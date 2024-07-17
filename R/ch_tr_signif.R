@@ -6,7 +6,7 @@
 #'@param x an array of pvalues from statistical test 
 #'@param pvalue critical value, default is 0.05
 #'  
-#'@return {x} {an array of indices 1 and 2, where 1 is NS and 2 is significant}
+#'@return Returns an array of indices 1 and 2, where 1 is NS and 2 is significant
 #'  
 #'@author Paul Whitfield
 #'@export

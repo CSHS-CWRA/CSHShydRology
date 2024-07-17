@@ -63,8 +63,8 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   }
   
   message("ch_wbt: Delineating catchment boundaries")
-  crs_pp <- sf::st_crs(st_read(fn_pp_snap))$epsg
-  crs_fd <- sf::st_crs(raster(fn_flowdir))$epsg
+  crs_pp <- sf::st_crs(st_read(fn_pp_snap))
+  crs_fd <- sf::st_crs(raster(fn_flowdir))
   if (crs_pp != crs_fd) {
     stop("Error: pour points and flow direction grid have different crs")
   }

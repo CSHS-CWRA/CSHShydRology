@@ -2,6 +2,7 @@
 % Please edit documentation in R/CSHShydRology-package.R
 \docType{package}
 \name{CSHShydRology-package}
+\alias{CSHShydRology}
 \alias{CSHShydRology-package}
 \title{Functions for Canadian hydrological analyses}
 \description{
@@ -10,7 +11,7 @@ which focus on the use of Canadian data sets, such as those from Environment Can
 are suited to Canadian hydrology, such as the important cold-region hydrological processes. \pkg{CSHShydRology} will also contain
 functions which work with Canadian hydrological models, such as Raven, CRHM, Watflood, and MESH.
 
-This packages has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) \url{https://cshs.cwra.org/en}
+This package has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) \url{https://cshs.cwra.org/en/}
 which is an affiliated society of the Canadian Water Resources Association (CWRA) \url{https://cwra.org/}.
 
 The \pkg{CSHShydRology} will contain functions grouped into several themes, including:
@@ -29,3 +30,31 @@ The \pkg{CSHShydRology} will contain functions grouped into several themes, incl
 To cite \pkg{CSHShydRology} in publications, use the command \code{citation("CSHShydRology")} 
 to get the current version of this citation.\cr
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/CSHS-hydRology/CSHShydRology}
+}
+
+}
+\author{
+\strong{Maintainer}: Kevin Shook \email{kevin.shook@usask.ca}
+
+Authors:
+\itemize{
+  \item Paul Whitfield \email{paul.h.whitfield@gmail.com}
+  \item Robert Chlumsky \email{rchlumsk@uwaterloo.ca}
+  \item Daniel Moore \email{dan.moore@ubc.ca}
+  \item Martin Durocher
+}
+
+Other contributors:
+\itemize{
+  \item Matthew Lemieux [contributor]
+  \item Jason Chiang [contributor]
+  \item Joel Trubilowicz [contributor]
+  \item SJ Kim [contributor]
+}
+
+}
+\keyword{package}

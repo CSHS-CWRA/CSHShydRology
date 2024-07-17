@@ -63,8 +63,8 @@ ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap,
     stop("Error: value for snap_dist missing")
   }
   if (check_crs) {
-    pp_crs <- st_crs(pp_sf)$epsg
-    fa_crs <- st_crs(raster(fn_flowacc))$epsg
+    pp_crs <- st_crs(pp_sf)
+    fa_crs <- st_crs(raster(fn_flowacc))
     if (pp_crs != fa_crs) {
       stop("Error: pour points and flow accumulation grid have different crs")
     }
