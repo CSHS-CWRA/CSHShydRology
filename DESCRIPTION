@@ -59,7 +59,9 @@ Imports:
     tidyhydat,
     whitebox,
     datasets,
-    circular
+    circular,
+    vctrs,
+    rlang
 Suggests: 
     knitr,
     testthat, 
