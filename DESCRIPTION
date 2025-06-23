@@ -59,7 +59,10 @@ Imports:
     tidyhydat,
     whitebox,
     datasets,
-    circular
+    circular,
+    MGBT, 
+    outliers,
+    TeachingDemos
 Suggests: 
     knitr,
     testthat, 
