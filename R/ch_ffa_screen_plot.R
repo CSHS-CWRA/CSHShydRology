@@ -17,8 +17,10 @@
 #'
 #' @return a vector of colours that is circular
 #'
-#' @importFrom TeachingDemos subplot
+#' @import TeachingDemos
 #' @importFrom MGBT MGBT
+#' @importFrom graphics grconvertX grconvertY hist rect title
+#' @importFrom stats lm qt
 #'
 #' @references Cohn, T. A., J. F. England, C. E. Berenbrock, R. R. Mason, J. R.
 #' Stedinger and J. R. Lamontagne (2013). "A generalized Grubbs‐Beck test statistic
@@ -26,8 +28,10 @@
 #' Water Resources Research 49(8): 5047-5058 10.1002/wrcr.20392: 10.1002/wrcr.20392.
 #'
 #'
-#'
-
+#'@example
+#' data(CAN05AA008)
+#' amax <- ch_sh_get_amax(CAN05AA008)
+#' Ch_ffa_screen_plot(amax, stn = "05AA008")
 
 ch_ffa_screen_plot <- function(df, mtitle = NULL, stn,
                                 n = 12, m = 0, M = 2, offset = 0,

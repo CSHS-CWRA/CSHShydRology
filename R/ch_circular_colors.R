@@ -1,6 +1,6 @@
 #' Color Palettes for Circular
-#' 
-#' @description 
+#'
+#' @description
 #' Produces a vector of n contiguous colours. The original version from the package
 #' circular produced n colours with 1 and n being the same colour. This version
 #' internally produces n + 1 colours and removes the repeated end colour so there
@@ -12,11 +12,15 @@
 #' @param m the smallest angle in radians
 #' @param M the largest angle in radians
 #' @param offset the zero in radians
-#' @param ... further arguments passed to the function hsv
-#' (hue, saturation [0.85], value [0.85], alpha [1.0])
+#' @param s saturation further arguments passed to the function hsv
+#' @param v value [0.85]
+#' @param alpha alpha [1.0] no transparency
+#'
 #' @return a vector of length n
 #' @author Claudio Agostinelli (original) Paul Whitfield (update)
-#' 
+#'
+#' @importFrom grDevices hsv
+#'
 #' @examples
 #' ch_circular_colors(n=10)
 
