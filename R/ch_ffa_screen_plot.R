@@ -15,25 +15,29 @@
 #' @param M largest angle in radians parameter for generating circular colours default = 2 (*pi)
 #' @param offset the zero in radians, default is 0.
 #'
-#' @return a vector of colours that is circular
+#' @return a list containing
+#' \item Station is specified
+#' \item number of events
+#' \item array of amax
+#' \item array of outlier codes (1 = low, 2= not, 3 = high outlier)
 #'
 #' @import TeachingDemos
 #' @importFrom MGBT MGBT
 #' @importFrom graphics grconvertX grconvertY hist rect title
 #' @importFrom stats lm qt
-#'
+#' @export
 #' @references Cohn, T. A., J. F. England, C. E. Berenbrock, R. R. Mason, J. R.
 #' Stedinger and J. R. Lamontagne (2013). "A generalized Grubbs‐Beck test statistic
 #' for detecting multiple potentially influential low outliers in flood series."
 #' Water Resources Research 49(8): 5047-5058 10.1002/wrcr.20392: 10.1002/wrcr.20392.
 #'
 #'
-#'@example
+#'@examples
 #' data(CAN05AA008)
 #' amax <- ch_sh_get_amax(CAN05AA008)
-#' Ch_ffa_screen_plot(amax, stn = "05AA008")
+#' ch_ffa_screen_plot(amax)
 
-ch_ffa_screen_plot <- function(df, mtitle = NULL, stn,
+ch_ffa_screen_plot <- function(df,  stn= "unspecified" ,mtitle = "",
                                 n = 12, m = 0, M = 2, offset = 0,
                       mcol = c("orange", "gray70", "red")){
 
@@ -45,17 +49,17 @@ ch_ffa_screen_plot <- function(df, mtitle = NULL, stn,
   result <- array(NA,31)
 
   mcode <- array(2, dim = length(df$amax))
-  result[1] <- stn
-  result[2] <- length(df$amax)
+
+  nevents <- length(df$amax)
   maxQ <- max(df$amax, na.rm = TRUE)
 
-  result[3] <- maxQ
+
   mindex <- which.max(df$amax)
 
 
-  result[4] <- mindex
-  result[5] <- format(df$maxdate[mindex],"%Y-%m-%d")
-  result[6] <- df$doy[mindex]
+
+  maxDate <- format(df$maxdate[mindex],"%Y-%m-%d")
+  mDoy <- df$doy[mindex]
 
   mmax <- sort(df$amax, decreasing = TRUE)
 
@@ -74,7 +78,7 @@ ch_ffa_screen_plot <- function(df, mtitle = NULL, stn,
 
   ############################## low Grubbs
   mg <- MGBT::MGBT(df$amax)
-  result[10] <- mg$klow
+
   gindex <- which(df$amax < mg$LOThresh)
 
   for (ll in 1: length(gindex)) {
@@ -147,9 +151,7 @@ ch_ffa_screen_plot <- function(df, mtitle = NULL, stn,
 
       mline <- lm(QTtick ~ ytick)
       abline(lm(QTtick ~ ytick), col = "gray50", lwd = 1.5)
-#      text(0,min(Q)/2,paste(round(as.numeric(mline$coefficients[1]),1),
-#                            " + ", round(as.numeric(mline$coefficients[2]),1),
-#                            "* X"),cex = 0.75, pos = 3)
+
 
     abline(h = mat0, col="gray50", lty = 2)
 
@@ -218,6 +220,9 @@ par(bg = "white")
 
 }
 
+result <- list(stn, nevents, df$amax, mcode)
+names(result) <-  c("Station", "n_events", "amax", "outlier_index")
+invisible(result)
 
   }
 

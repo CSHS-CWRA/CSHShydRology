@@ -24,8 +24,11 @@ ch_circular_colors(
 
 \item{offset}{the zero in radians}
 
-\item{...}{further arguments passed to the function hsv
-(hue, saturation [0.85], value [0.85], alpha [1.0])}
+\item{s}{saturation further arguments passed to the function hsv}
+
+\item{v}{value [0.85]}
+
+\item{alpha}{alpha [1.0] no transparency}
 }
 \value{
 a vector of length n

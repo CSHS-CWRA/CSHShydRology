@@ -14,6 +14,7 @@
 #' @author Paul Whitfield
 #'
 #' @importFrom outliers grubbs.test
+#' @export
 #'
 #' @examples
 #' set.seed(1234)

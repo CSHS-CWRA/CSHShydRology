@@ -6,8 +6,8 @@
 \usage{
 ch_ffa_screen_plot(
   df,
-  mtitle = NULL,
-  stn,
+  stn = "unspecified",
+  mtitle = "",
   n = 12,
   m = 0,
   M = 2,
@@ -18,9 +18,9 @@ ch_ffa_screen_plot(
 \arguments{
 \item{df}{dataframe with date of event [maxdate] and annual maximum [amax]}
 
-\item{mtitle}{title for plot}
-
 \item{stn}{stationID}
+
+\item{mtitle}{title for plot}
 
 \item{n}{default is 12, number of colours for number of months}
 
@@ -34,12 +34,21 @@ ch_ffa_screen_plot(
 emphasize low outliers, normal, and high outliers.}
 }
 \value{
-a vector of colours that is circular
+a list containing
+\item Station is specified
+\item number of events
+\item array of amax
+\item array of outlier codes (1 = low, 2= not, 3 = high outlier)
 }
 \description{
 Generates a flood frequency plot with symbols indicating whether an observation is a
 high or low outlier, and colour symbols indicating month of the year in which the flood
 occurred.
+}
+\examples{
+data(CAN05AA008)
+amax <- ch_sh_get_amax(CAN05AA008)
+ch_ffa_screen_plot(amax)
 }
 \references{
 Cohn, T. A., J. F. England, C. E. Berenbrock, R. R. Mason, J. R.

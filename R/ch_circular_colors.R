@@ -20,6 +20,7 @@
 #' @author Claudio Agostinelli (original) Paul Whitfield (update)
 #'
 #' @importFrom grDevices hsv
+#' @export
 #'
 #' @examples
 #' ch_circular_colors(n=10)
