@@ -27,7 +27,7 @@
 
 ch_circular_colors <- function (n, m = 0, M = 2 * pi,
                                 offset = 0,
-                                s = 0.85, v = 0.85, alpha = 1.0, ...) {
+                                s = 0.85, v = 0.85, alpha = 1.0) {
   n = n + 1
   hh <- seq(from = (m - offset) %% (2 * pi), to = if ((M - offset) ==
                                                     2 * pi)
@@ -35,6 +35,6 @@ ch_circular_colors <- function (n, m = 0, M = 2 * pi,
     (M - offset)
     else (M - offset)%%(2 * pi), length.out = n)/(M - m)
 
-  mcol <- hsv(h = hh, s= s, v = v, alpha = alpha, ...)
+  mcol <- hsv(h = hh, s= s, v = v, alpha = alpha)
   return(mcol[1:(n-1)])
 }

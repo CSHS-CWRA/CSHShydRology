@@ -11,8 +11,7 @@ ch_circular_colors(
   offset = 0,
   s = 0.85,
   v = 0.85,
-  alpha = 1,
-  ...
+  alpha = 1
 )
 }
 \arguments{

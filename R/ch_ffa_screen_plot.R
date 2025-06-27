@@ -16,10 +16,12 @@
 #' @param offset the zero in radians, default is 0.
 #'
 #' @return a list containing
-#' \item Station is specified
-#' \item number of events
-#' \item array of amax
+#' \itemize{
+#' \item Station if specified esle "unspecified"
+#' \item number of amax events
+#' \item array of amax magnitudes
 #' \item array of outlier codes (1 = low, 2= not, 3 = high outlier)
+#' }
 #'
 #' @import TeachingDemos
 #' @importFrom MGBT MGBT

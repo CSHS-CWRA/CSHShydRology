@@ -35,10 +35,12 @@ emphasize low outliers, normal, and high outliers.}
 }
 \value{
 a list containing
-\item Station is specified
-\item number of events
-\item array of amax
+\itemize{
+\item Station if specified esle "unspecified"
+\item number of amax events
+\item array of amax magnitudes
 \item array of outlier codes (1 = low, 2= not, 3 = high outlier)
+}
 }
 \description{
 Generates a flood frequency plot with symbols indicating whether an observation is a
