@@ -102,7 +102,7 @@ ch_ffa_screen_plot <- function(df, stn= "unspecified", mtitle = "",
 
   mpch <- c(22, 21, 24)
   mcex <- c(1.20, 0.9, 1.20)
-  ccol <- ch_circular_colors(n=12, m = m, M = M*pi)
+  ccol <- ch_circular_colors(n = 12, m = m, M = M*pi)
 
 
   # Set up x axis tick positions and labels
@@ -115,10 +115,10 @@ ch_ffa_screen_plot <- function(df, stn= "unspecified", mtitle = "",
 
 
   # Fit a line by method of moments, along with 95% confidence intervals
-  KTtick = -(sqrt(6)/pi)*(0.5772 + log(log(Ttick/(Ttick-1))))
+  KTtick = -(sqrt(6)/pi)*(0.5772 + log(log(Ttick/(Ttick - 1))))
   QTtick = mean(Q) + KTtick*sd(Q)
   nQ = length(Q)
-  se = (sd(Q)*sqrt((1+1.14*KTtick + 1.1*KTtick^2)))/sqrt(nQ)
+  se = (sd(Q)*sqrt((1 + 1.14*KTtick + 1.1*KTtick^2)))/sqrt(nQ)
   LB = QTtick - qt(0.975, nQ - 1)*se
   UB = QTtick + qt(0.975, nQ - 1)*se
   max = max(UB)
@@ -156,16 +156,16 @@ ch_ffa_screen_plot <- function(df, stn= "unspecified", mtitle = "",
       abline(lm(QTtick ~ ytick), col = "gray50", lwd = 1.5)
 
 
-    abline(h = mat0, col="gray50", lty = 2)
+    abline(h = mat0, col = "gray50", lty = 2)
 
     vlines <- c(ytick[5], ytick[8], ytick[13], ytick[23], ytick[29], ytick[34])
-    abline(v = vlines , col="gray50", lty = 3)
+    abline(v = vlines , col = "gray50", lty = 3)
 
-    text(0.1, 0, paste( length(Q), "events"), pos=2, cex =0.75)
+    text(0.1, 0, paste( length(Q), "events"), pos = 2, cex = 0.75)
 
 ########### add legend with counts
     ltext <- c(paste("low Grubbs n=", mg$klow),
-               paste("normal n=",length(Q)-mg$klow-sum(gtest$tout)),
+               paste("normal n=",length(Q) - mg$klow - sum(gtest$tout)),
                paste("high Grubbs n=",sum(gtest$tout)))
     mnths <- c("J", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D")
 
@@ -179,26 +179,26 @@ if (legend == 'norm') {
 ################## add subplot as legend
 
   ####### create a blank rectangle
-  rect(grconvertX(0.52, from='npc'), grconvertY(0.07, from='npc'),
-       grconvertX(1.00, from='npc'), grconvertY(0.32, from='npc'),
-       col="white", border=NA)
+  rect(grconvertX(0.52, from = 'npc'), grconvertY(0.07, from = 'npc'),
+       grconvertX(1.00, from = 'npc'), grconvertY(0.32, from = 'npc'),
+       col = "white", border = NA)
 
     msub <- TeachingDemos::subplot(hist(mon, breaks = c(0:12), col = ccol, xaxt = "n",bg = "white",
                          xlab = "", main = "", cex.axis = 0.45, ylab = "",
                          freq = FALSE, las = 1),
-                    x=grconvertX(c(0.52,1.00), from='npc'),
-                    y=grconvertY(c(0.07,0.32), from='npc')
+                    x = grconvertX(c(0.52,1.00), from = 'npc'),
+                    y = grconvertY(c(0.07,0.32), from = 'npc')
     )
-    op <- par(no.readonly=TRUE)
+    op <- par(no.readonly = TRUE)
     par(msub)
     axis(1, at = 0.5:11.5, labels = mnths, tick = TRUE, lwd = -1,
          line = -1, cex.axis = 0.6)
-    mtext("Proportion", side =2, line = 2, cex = 0.7)
+    mtext("Proportion", side = 2, line = 2, cex = 0.7)
     box()
     par(op)
 }
 
-if(legend == "flip"){
+if (legend == "flip") {
 
   ####### create a blank rectangle
   rect(grconvertX(0.11, from = 'npc'), grconvertY(0.75, from = 'npc'),
