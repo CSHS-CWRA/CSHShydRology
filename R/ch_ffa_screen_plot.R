@@ -17,10 +17,10 @@
 #'
 #' @return a list containing
 #' \itemize{
-#' \item Station if specified esle "unspecified"
+#' \item Station if specified else "unspecified"
 #' \item number of amax events
 #' \item array of amax magnitudes
-#' \item array of outlier codes (1 = low, 2= not, 3 = high outlier)
+#' \item array of outlier codes (1 = low, 2 = not, 3 = high outlier)
 #' }
 #'
 #' @import TeachingDemos
@@ -39,7 +39,7 @@
 #' amax <- ch_sh_get_amax(CAN05AA008)
 #' ch_ffa_screen_plot(amax)
 
-ch_ffa_screen_plot <- function(df,  stn= "unspecified" ,mtitle = "",
+ch_ffa_screen_plot <- function(df, stn= "unspecified", mtitle = "",
                                 n = 12, m = 0, M = 2, offset = 0,
                       mcol = c("orange", "gray70", "red")){
 
