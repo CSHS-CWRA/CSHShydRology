@@ -34,10 +34,11 @@
 #' Water Resources Research 49(8): 5047-5058 10.1002/wrcr.20392: 10.1002/wrcr.20392.
 #'
 #'
-#'@examples
+#'@examples \donttest{
+#'# Not tested automatically as can be very slow to execute
 #' data(CAN05AA008)
 #' amax <- ch_sh_get_amax(CAN05AA008)
-#' ch_ffa_screen_plot(amax)
+#' ch_ffa_screen_plot(amax)}
 
 ch_ffa_screen_plot <- function(df, stn= "unspecified", mtitle = "",
                                 n = 12, m = 0, M = 2, offset = 0,
