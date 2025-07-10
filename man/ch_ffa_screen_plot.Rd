@@ -36,10 +36,10 @@ emphasize low outliers, normal, and high outliers.}
 \value{
 a list containing
 \itemize{
-\item Station if specified esle "unspecified"
+\item Station if specified else "unspecified"
 \item number of amax events
 \item array of amax magnitudes
-\item array of outlier codes (1 = low, 2= not, 3 = high outlier)
+\item array of outlier codes (1 = low, 2 = not, 3 = high outlier)
 }
 }
 \description{
@@ -48,9 +48,11 @@ high or low outlier, and colour symbols indicating month of the year in which th
 occurred.
 }
 \examples{
+\donttest{
+# Not tested automatically as can be very slow to execute
 data(CAN05AA008)
 amax <- ch_sh_get_amax(CAN05AA008)
-ch_ffa_screen_plot(amax)
+ch_ffa_screen_plot(amax)}
 }
 \references{
 Cohn, T. A., J. F. England, C. E. Berenbrock, R. R. Mason, J. R.
