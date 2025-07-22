@@ -1,8 +1,8 @@
 Type: Package
 Package: CSHShydRology
 Title: Canadian Hydrological Analyses
-Version: 1.4.2
-Date: 2024-07-12
+Version: 1.4.3
+Date: 2025-06-27
 Authors@R: c(person("Kevin", "Shook", 
               email = "kevin.shook@usask.ca", 
               role = c("cre", "aut")),
@@ -59,7 +59,10 @@ Imports:
     tidyhydat,
     whitebox,
     datasets,
-    circular
+    circular,
+    MGBT, 
+    outliers,
+    TeachingDemos
 Suggests: 
     knitr,
     testthat, 
