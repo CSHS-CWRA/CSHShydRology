@@ -26,7 +26,7 @@ month x day, which makes them difficult to read using standard \R functions.
 stoon_daily_tmax <- ch_read_AHCCD_daily("dx40657120.txt")}
 }
 \references{
-Daily AHCCD data are available from \url{http://crd-data-donnees-rdc.ec.gc.ca/CDAS/products/EC_data/AHCCD_daily/}. 
+Daily AHCCD data are available from \url{https://crd-data-donnees-rdc.ec.gc.ca/CDAS/products/EC_data/AHCCD_daily/}. 
 Any use of the data must cite 
 \cite{Mekis, E and L.A. Vincent, 2011: An overview of the second generation 
 adjusted daily precipitation dataset for trend analysis in Canada. 
