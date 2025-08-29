@@ -17,7 +17,8 @@
 #' @param end_date Optional. If specified (format = yyyy-mm-dd), only values on or before the date are plotted.
 #' @param hydat_path Optional. Path to the HYDAT database. Usually omitted unless you want to use a specific database file.
 #' @param ... Other parameters for the \pkg{ggplot} facets, if specified.
-#'
+#' @author Kevin Shook
+#' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_model_hydrograph}} 
 #' @returns Returns a \code{ggplot2} object of the hydrographs.
 #' @export
 #' @import ggplot2 dplyr tidyhydat

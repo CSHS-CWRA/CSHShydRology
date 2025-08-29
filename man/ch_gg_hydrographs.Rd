@@ -62,3 +62,9 @@ common_dates = FALSE, start_date = "2011-06-01", end_date = "2011-06-30",
 facets = TRUE, scales = "free_y", ncol= 3)
 }
 }
+\seealso{
+\code{\link{ch_qa_hydrograph}}  \code{\link{ch_model_hydrograph}}
+}
+\author{
+Kevin Shook
+}
