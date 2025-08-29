@@ -1,9 +1,9 @@
 #' @title Hydrograph plot
 #'
 #' @description 
-#' Creates a hydrograph plot for simulated, observed, and inflow
-#' hydrograph series, including precipitation if provided. The secondary y axis 
-#' will be used to plot the precip time series.
+#' Creates a hydrograph plot for simulated, and observed flows, including 
+#' precipitation if provided. The secondary y axis 
+#' is used to plot the precip time series.
 #' 
 #' @details
 #' Assumes that the supplied time series have the same length and
