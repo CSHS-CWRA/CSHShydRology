@@ -52,7 +52,7 @@
 #' 
 #' # plot of annual maximum series
 #' data(CAN05AA008)
-#' am <- ch_sh_get_amax(CAN05AA008)
+#' am <- ch_get_amax(CAN05AA008)
 #' ch_polar_plot_peaks(days = am$doy, title = "05AA008")
 #' 
 #' #remove partial years

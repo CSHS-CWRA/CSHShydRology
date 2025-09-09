@@ -22,6 +22,7 @@
 #' \item{Latitude}{}
 #' \item{Longitude}{}
 #' \item{DrainageArea}{km\eqn{^2}{^2}}
+#' \item{Eff_DrainageArea}{ km effective drainage area}
 #' \item{Years}{Number of years with data}
 #' \item{From}{Start Year}
 #' \item{To}{End Year}
@@ -56,13 +57,14 @@ ch_get_ECDE_metadata  <- function(filename, writefile=NULL){
       stop("ECDE file not found")
   }
   
-  meta <- read.table(filename, skip = 96, sep = " ", na.strings = -999)
+  meta <- read.table(filename, skip = 103, sep = " ", na.strings = -999)
   
   names(meta) <- c("Station", "Fav", "StationName", "HydStatus", "Prov", "Latitude", 
-                    "Longitude", "DrainageArea", "Years", "From", "To", "Reg.", 
+                    "Longitude", "DrainageArea", "EFF_DrainageArea",
+                    "Years", "From", "To", "Reg.", 
                     "Flow", "Level", "Sed", "OperSched", "RealTime", "RHBN", 
                     "Region", "Datum", "Operator") 
-  meta <- meta[,c(1, 3:21)]
+  meta <- meta[,c(1, 3:22)]
 
     if (!is.null(writefile))  
     write.csv(meta, writefile, row.names = FALSE)

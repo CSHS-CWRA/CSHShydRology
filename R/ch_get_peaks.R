@@ -27,6 +27,7 @@
 #' 	\item{max}{maximum discharge during event}
 #' 	\item{volume}{flow volume during the event}
 #' 	\item{duration}{length of the event in days}
+#' 	\item{SYM}{WSC SYM code - data flag}
 
 #' 	The \code{case} list contains the flows during an event and also for four preceding and subsequent days. Each event will have
 #' 	 a length between nine to n days in length. Note: in rare cases where the event is in progress when data becomes available the 
@@ -72,6 +73,7 @@ ch_get_peaks <- function(dataframe, threshold) {
   class(max_date) <-"Date"
   
   case <-list(dim=3)
+  SYM <- array(NA, dim = 3)  ### added
   
   for (i in 1:length(data)) {
     
@@ -103,7 +105,7 @@ ch_get_peaks <- function(dataframe, threshold) {
     
     max[index]=data[k] 
     max_date[index] <-Date[k]
-    
+    SYM[index] <- inSYM[k] ## added
     volume[index] <-  0.0  
     duration[index] <-0  
     flag <- 1
@@ -114,6 +116,7 @@ ch_get_peaks <- function(dataframe, threshold) {
     {	if (data[k] > max[index]) 
     {max[index] <- data[k]
     max_date[index] <-Date[k]
+    SYM[index] <- inSYM[k] ## added
     
     }
       volume[index] <- volume[index] + data[k]
@@ -134,7 +137,8 @@ ch_get_peaks <- function(dataframe, threshold) {
   max_date <- as.Date(max_date, format="%Y-%m-%d")
   
 
-  POT_events <- data.frame(st_date, max_date, max, volume, duration)
+  POT_events <- data.frame(st_date, max_date, max, volume,
+                           duration, SYM)  ## note change to add SYM
   
 
   
