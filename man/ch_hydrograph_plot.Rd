@@ -100,6 +100,9 @@ ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7,
 range_mult_precip = 2, leg_box = TRUE)
 
 }
+\seealso{
+\code{\link{ch_qa_hydrograph}}  \code{\link{ch_qq_hydrographs}}
+}
 \author{
 Robert Chlumsky
 }
