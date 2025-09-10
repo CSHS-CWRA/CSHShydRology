@@ -1,9 +1,9 @@
-#' @title Hydrograph plot
+#' @title Hydrograph plot for model outputs and gauged flows
 #'
 #' @description 
-#' Creates a hydrograph plot for simulated, and observed flows, including 
+#' Creates a hydrograph plot for simulated and observed flows, including 
 #' precipitation if provided. The secondary y axis 
-#' is used to plot the precip time series.
+#' is used to plot the precipitation time series.
 #' 
 #' @details
 #' Assumes that the supplied time series have the same length and
@@ -40,7 +40,8 @@
 #' small buffer for presentation. Be warned that if this option is set to
 #' TRUE, the minimum value is set to zero without checking if any flow values
 #' are less than zero. This option should not be used for reservoir stage plotting, since
-#' most reservoir stage is typically reported as an elevation.
+#' most reservoir stages are typically reported as geodetic elevations, where the
+#' minimum values are much greater than zero.
 #' 
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' 

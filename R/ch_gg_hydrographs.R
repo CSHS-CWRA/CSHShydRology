@@ -91,6 +91,9 @@ ch_gg_hydrographs <- function(WSC_stations,
     
     wsc_inst <- wsc_inst[wsc_inst$Parameter == "Flow" & wsc_inst$PEAK_CODE == "MAX",]
     
+    # remove wsc_inst values with missing datetimes
+    wsc_inst <- wsc_inst[!is.na(wsc_inst$Datetime),]
+    
     inst_min_max_dates <- wsc_inst %>% group_by(STATION_NUMBER) %>% 
       summarise(min_Datetime = min(Datetime), max_Datetime = max(Datetime))
     common_inst_min_Datetime <- max(inst_min_max_dates$min_Datetime)
