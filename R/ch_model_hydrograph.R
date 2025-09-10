@@ -45,7 +45,7 @@
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' 
 #' @author Robert Chlumsky
-#' 
+#' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_qq_hydrographs}} 
 #' @examples
 #' # example with synthetic random data
 #' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"),by = 1)
