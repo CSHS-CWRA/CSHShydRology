@@ -1,12 +1,12 @@
 #' SR_hstat
 #'
 #'  @description These are updated versions of the functions described in
-#'  Sau & Rodrigues (2018).  Daniela Rodriguez kindly shared their original code.
+#'  Sau & Rodriguez (2018).  Daniela Rodriguez kindly shared their original code.
 #'  The main modifications here were that the data tables are not read in, but included
 #'  as variables and some language was changed to English from Spanish.
 #'
 #'  This function is basically a wrapper for the series of functions written
-#'  by Sau & Rogrigues, and these revisions were made by Paul Whitfield.
+#'  by Sau & Rodriguez, and these revisions were made by Paul Whitfield.
 #'  Originally separate functions, they were nested with their parent.
 #'
 #'  Therefore there are three main functions and the execution code within.
@@ -52,9 +52,7 @@
 #' result <- SR_hstat(data1, alpha)
 #' result$isout # lists the outliers with 0 being an outlier and 1 not.
 
-require(CircStats)
-require(circular)
-require(movMF)
+
 ######################### Text from original set of functions
 #FUNCTIONS
 ##M?nima distancia para un h m?nimo
@@ -62,7 +60,7 @@ require(movMF)
 # S&R was originally a series of separate functions, these are now
 # nested into three main functions
 ################################################
-# the following is the original example code. This is now the example,
+# the following is the original example code. This is now the functions example,
 # and the main actions of the function.
 #
 ## Example
@@ -75,14 +73,14 @@ require(movMF)
 ##     estmu <- MDEVM$mu
 ##     estconc <- MDEVM$conc
 ## detection <- vmd2deteccion(data1,estmu)
-##distance <- detection$norma
+## distance <- detection$norma
 ## corte <- cortando(estconc,malpha)
 ##     isout<- 1*(distance <= corte)
 ## isout # 0 is an outlier
 ## porcout<-1-mean(isout)
 ## porcout  # outliers proportions in de sample
 
-# so there are only three funtions that are called
+# so there are only three functions that are called
 # mindisthminconc(data1)
 # vmd2deteccion(data1,estmu)
 # cortando(estconc,malpha)
@@ -216,7 +214,7 @@ SR_hstat <- function(x, alpha = 0.05){
     return(resultado)
   }
   
-  # original code read files for V1 and V2
+  # original code read files for V1 and V2 here defined internally
   ##trabajokofunc2menos <- read.table("~/My Dropbox/daniela/trabajosfuturos/mindistesf/simulacion/circulo/trabajokofunc2menos.txt", quote="\"")
   ##trabajokofunc2menos <- read.table("trabajokofunc2menos.txt", quote="\"")
   
