@@ -44,7 +44,8 @@
 #' @import circular
 #' @import movMF
 #'
-#' @author Mercedes Fernandez Sau, Daniela Rodrigues, Paul Whitfield
+#' @author original code Mercedes Fernandez Sau, Daniela Rodriguez,  modified Paul Whitfield
+#' @export
 #'
 #' @examples
 #' data1 <- circular::rwrappedcauchy(100, mu=circular(0), rho=0.7, control.circular=list(units="degrees"))
