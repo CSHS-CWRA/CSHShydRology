@@ -63,6 +63,7 @@ ch_get_peaks <- function(dataframe, threshold) {
   }  
   data <- dataframe$Flow
   Date <- dataframe$Date
+  inSYM <- dataframe$SYM
   
   event <-array(0, dim=length(data))
   event_num <-array(0, dim=length(data))

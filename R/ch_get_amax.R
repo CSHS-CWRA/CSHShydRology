@@ -29,8 +29,7 @@ ch_get_amax <- function(df) {
   data <- df$Flow
   Date <- df$Date
   
-  df$SYM[df$SYM == " "] <- "" #added
-  df$SYM[df$SYM == "  "] <- "" #added
+
   
   year <- format(Date, "%Y")
   Year <- as.numeric(unique(year))
@@ -43,6 +42,7 @@ ch_get_amax <- function(df) {
   amax <- as.numeric(tapply(data,year,max))
   
   dataframe <- data.frame(df,year)
+  SYM <- array(length(Year))
   
   for (k in 1:length(Year)) {
     ndata <- dataframe[dataframe$year == Year[k],]
@@ -55,7 +55,7 @@ ch_get_amax <- function(df) {
     doy[k] <- timeDate::dayOfYear(maxdate_a)
   }
   
-  result <- data.frame(Year,amax, maxdate, doy, days)
+  result <- data.frame(Year,amax, maxdate, doy, days, SYM)
   
   return(result)
   
