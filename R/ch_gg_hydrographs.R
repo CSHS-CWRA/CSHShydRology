@@ -12,10 +12,18 @@
 #' @param daily Optional. If TRUE, mean daily streamflows are plotted as stair-steps.
 #' @param instantaneous Optional. If TRUE, annual instantaneous peak flows are plotted as points.
 #' @param facets Optional. If TRUE, the plot is faceted by station number.
-#' @param common_dates Optional. If TRUE, a common date range is used for all time series.
-#' @param start_date Optional. If specified (format = yyyy-mm-dd), only values on or following the date are plotted.
-#' @param end_date Optional. If specified (format = yyyy-mm-dd), only values on or before the date are plotted.
-#' @param hydat_path Optional. Path to the HYDAT database. Usually omitted unless you want to use a specific database file.
+#' @param common_dates Optional. If TRUE, a common date range is used for all 
+#' time series.
+#' @param start_date Optional. If specified (format = yyyy-mm-dd), only values on 
+#' or following the date are plotted.
+#' @param end_date Optional. If specified (format = yyyy-mm-dd), only values on or 
+#' before the date are plotted.
+#' @param hydat_path Optional. Path to the HYDAT database. Usually omitted unless 
+#' you want to use a specific database file.
+#' @param inst_colour Optional. Colour to be used for annual instantaneous peaks, 
+#' if either facetted or only a single station is plotted. Default is "black".
+#' @param daily_colour Optional. Colour to be used for daily flows, 
+#' if either facetted or only a single station is plotted. Default is "black".
 #' @param ... Other parameters for the \pkg{ggplot} facets, if specified.
 #' @author Kevin Shook
 #' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_model_hydrograph}} 
@@ -45,6 +53,8 @@ ch_gg_hydrographs <- function(WSC_stations,
                                start_date = NULL, 
                                end_date = NULL,
                                hydat_path = NULL, 
+                               inst_colour = "black",
+                               daily_colour = "black",
                               ...) {
   # set up plot values
   Datetime <- NULL 
@@ -52,6 +62,13 @@ ch_gg_hydrographs <- function(WSC_stations,
   start_year <- NULL
   end_year <- NULL
   STATION_NUMBER <- NULL
+  
+  if (is.null(daily_colour))
+    daily_colour <- "black"
+  
+  if (is.null(inst_colour))
+    inst_colour <- "black"
+  
   
   # check parameter values
   if (!daily & !instantaneous)
@@ -69,6 +86,9 @@ ch_gg_hydrographs <- function(WSC_stations,
     end_date_val <- as.Date(end_date, format = "%Y-%m-%d")
     end_year <- as.numeric(format(end_date_val, format = "%Y"))
   }
+  
+  # get number of stations
+  num_stations <- length(WSC_stations)
     
   # get WSC data for plotting and find min and max dates
   if (daily) {
@@ -107,8 +127,11 @@ ch_gg_hydrographs <- function(WSC_stations,
       wsc_daily <- wsc_daily[wsc_daily$Datetime >= common_min_Datetime,]
       wsc_daily <- wsc_daily[wsc_daily$Datetime <= common_max_Datetime,]
     } else if (!daily & instantaneous) {
-      common_min_Datetime <- common_inst_min_Datetime
-      common_max_Datetime <- common_inst_max_Datetime
+
+      common_min_Datetime <- as.POSIXct(paste0(format.Date(common_inst_min_Datetime, "%Y"), "-01-01 00:00:00"),
+                                        format = "%Y-%m-%d %H:%M:%S")
+      common_max_Datetime <- as.POSIXct(paste0(format.Date(common_inst_max_Datetime, "%Y"), "-12-31 23:45:00"),
+                                        format = "%Y-%m-%d %H:%M:%S")
       
       wsc_inst <- wsc_inst[wsc_inst$Datetime >= common_min_Datetime,]
       wsc_inst <- wsc_inst[wsc_inst$Datetime <= common_max_Datetime,]
@@ -127,32 +150,51 @@ ch_gg_hydrographs <- function(WSC_stations,
    # plot
   if (daily & !instantaneous) {
     if (!facets)
-      p <- ggplot(wsc_daily, aes(Datetime, Value, colour = STATION_NUMBER)) +
+      if(num_stations > 1)
+        p <- ggplot(wsc_daily, aes(Datetime, Value, colour = STATION_NUMBER)) +
         geom_step(direction = "hv")
+       else
+        p <- ggplot(wsc_daily, aes(Datetime, Value)) +
+        geom_step(direction = "hv", colour = daily_colour)
     else
       p <- ggplot(wsc_daily, aes(Datetime, Value)) +
-        geom_step(direction = "hv") +
+        geom_step(direction = "hv", colour = daily_colour) +
         facet_wrap(~STATION_NUMBER, ...)
       
   } else if (!daily & instantaneous) {
-    if (!facets)
-      p <- ggplot(wsc_inst, aes(Datetime, Value, colour = STATION_NUMBER)) +
-        geom_point()
-    else
+    if (!facets) {
+      if (num_stations == 1 ){
+         p <- ggplot(wsc_inst, aes(Datetime, Value)) +
+           geom_point(colour = inst_colour)
+      } else {
+          p <- ggplot(wsc_inst, aes(Datetime, Value, colour = STATION_NUMBER)) +
+            geom_point()
+      }
+    }  else {
+      # facets
       p <- ggplot(wsc_inst, aes(Datetime, Value)) +
-        geom_point() +
+        geom_point(colour = inst_colour) +
         facet_wrap(~STATION_NUMBER, ...)
+
+    }  
     
   } else {
+    # daily and instantaneous
     if (!facets){
-      p <- ggplot(wsc_daily, aes(Datetime, Value, colour = STATION_NUMBER)) +
-        geom_step(direction = "hv") +
-        geom_point(data = wsc_inst, aes(Datetime, Value), ...)
+      if (num_stations == 1){
+        p <- ggplot(wsc_daily, aes(Datetime, Value)) +
+          geom_step(direction = "hv", colour = daily_colour) +
+          geom_point(data = wsc_inst, aes(Datetime, Value),colour = inst_colour, ...)
+      } else {
+        p <- ggplot(wsc_daily, aes(Datetime, Value, colour = STATION_NUMBER)) +
+          geom_step(direction = "hv") +
+          geom_point(data = wsc_inst, aes(Datetime, Value), ...)
+      }
     }
     else
       p <- ggplot(wsc_daily, aes(Datetime, Value)) +
-        geom_step(direction = "hv") +
-        geom_point(data = wsc_inst, aes(Datetime, Value)) +
+        geom_step(direction = "hv", colour = daily_colour) +
+        geom_point(data = wsc_inst, aes(Datetime, Value), colour = inst_colour) +
         facet_wrap(~STATION_NUMBER, ...)
   }
   

@@ -46,7 +46,7 @@
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' 
 #' @author Robert Chlumsky
-#' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_qq_hydrographs}} 
+#' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_gg_hydrographs}} 
 #' @examples
 #' # example with synthetic random data
 #' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"),by = 1)
@@ -58,21 +58,21 @@
 #' precip <- data.frame("Date" = dd," precip" = abs(rnorm(length(dd))) * 10)
 #'
 #' # basic hydrograph plot
-#' ch_hydrograph_plot(flows = df, winter_shading = FALSE)
+#' ch_model_hydrograph(flows = df, winter_shading = FALSE)
 #'
 #' # with different labels and winter shading
-#' ch_hydrograph_plot(flows = df, winter_shading = TRUE,
+#' ch_model_hydrograph(flows = df, winter_shading = TRUE,
 #'  flow_labels = c("simulated", "observed"))
 #'
 #' # add precipitation, increase the plot ranges to separate flows and precip, and add a legend box
-#' ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
+#' ch_model_hydrograph(flows = df, precip = precip, range_mult_flow = 1.7, 
 #' range_mult_precip = 2, leg_box = TRUE)
 #' 
 #' @importFrom lubridate year month day date
 #' @importFrom graphics grid lines
 #' @export
 #' 
-ch_hydrograph_plot <- function(flows = NULL, 
+ch_model_hydrograph <- function(flows = NULL, 
                             precip = NULL, 
                             prd = NULL, 
                             winter_shading = FALSE, 
