@@ -24,7 +24,7 @@
 #' 
 #' 
 #' @author Paul Whitfield 
-#'
+#' @seealso  \code{\link{ch_gg_hydrographs}} \code{\link{ch_model_hydrograph}} 
 #' @return Produces a plot and returns a list that contains:
 #' \item{station name or title used}{}
 #' \item{st_date}{starting date}

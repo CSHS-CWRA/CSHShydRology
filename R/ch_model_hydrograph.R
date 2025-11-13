@@ -1,9 +1,9 @@
-#' @title Hydrograph plot
+#' @title Hydrograph plot for model outputs and gauged flows
 #'
 #' @description 
-#' Creates a hydrograph plot for simulated, observed, and inflow
-#' hydrograph series, including precipitation if provided. The secondary y axis 
-#' will be used to plot the precip time series.
+#' Creates a hydrograph plot for simulated and observed flows, including 
+#' precipitation if provided. The secondary y axis 
+#' is used to plot the precipitation time series.
 #' 
 #' @details
 #' Assumes that the supplied time series have the same length and
@@ -40,12 +40,13 @@
 #' small buffer for presentation. Be warned that if this option is set to
 #' TRUE, the minimum value is set to zero without checking if any flow values
 #' are less than zero. This option should not be used for reservoir stage plotting, since
-#' most reservoir stage is typically reported as an elevation.
+#' most reservoir stages are typically reported as geodetic elevations, where the
+#' minimum values are much greater than zero.
 #' 
 #' @return Returns \code{TRUE} if the function is executed properly.
 #' 
 #' @author Robert Chlumsky
-#' 
+#' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_gg_hydrographs}} 
 #' @examples
 #' # example with synthetic random data
 #' dd <- seq.Date(as.Date("2010-10-01"), as.Date("2013-09-30"),by = 1)
@@ -57,21 +58,21 @@
 #' precip <- data.frame("Date" = dd," precip" = abs(rnorm(length(dd))) * 10)
 #'
 #' # basic hydrograph plot
-#' ch_hydrograph_plot(flows = df, winter_shading = FALSE)
+#' ch_model_hydrograph(flows = df, winter_shading = FALSE)
 #'
 #' # with different labels and winter shading
-#' ch_hydrograph_plot(flows = df, winter_shading = TRUE,
+#' ch_model_hydrograph(flows = df, winter_shading = TRUE,
 #'  flow_labels = c("simulated", "observed"))
 #'
 #' # add precipitation, increase the plot ranges to separate flows and precip, and add a legend box
-#' ch_hydrograph_plot(flows = df, precip = precip, range_mult_flow = 1.7, 
+#' ch_model_hydrograph(flows = df, precip = precip, range_mult_flow = 1.7, 
 #' range_mult_precip = 2, leg_box = TRUE)
 #' 
 #' @importFrom lubridate year month day date
 #' @importFrom graphics grid lines
 #' @export
 #' 
-ch_hydrograph_plot <- function(flows = NULL, 
+ch_model_hydrograph <- function(flows = NULL, 
                             precip = NULL, 
                             prd = NULL, 
                             winter_shading = FALSE, 

@@ -1,12 +1,12 @@
 ---
-title: "ch_hydrograph_plot"
+title: "ch_model_hydrograph"
 author: "R. Chlumsky"
 contributor: "K. Shook"
 date: "June 13, 2018"
 output: rmarkdown::html_vignette
 
 vignette: >
-  %\VignetteIndexEntry{ch_hydrograph_plot}
+  %\VignetteIndexEntry{ch_model_hydrograph}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -21,13 +21,13 @@ library(CSHShydRology)
 CAN05AA008 <- CAN05AA008
 ```
 
-## hydrograph_plot
+## ch_model_hydrograph
 
-This is a general-purpose hydrograph plotting function, which is useful for a wide variety of tasks.
-Currently the function only uses base R plotting, but the addition of ggplot2 graphs is planned for the
-future.
-The function can plot any of: observed flows, simulated flows, inflows to a sub-basin, and precipitation on the same graph.
-The plots can indicate the winter period (which is fixed), and options exist to change the scales and y-axis
+This is a general-purpose hydrograph plotting function. Although it can be used for a wide variety of tasks,
+it is most useful for plotting the outputs of models and gauged discharges.
+Note that this function uses base **R** plotting; **ggplot2** plots can be done using the function `ch_gghydrographs`.
+
+The function `ch_model_hydrograph` can plot any of: observed flows, simulated flows, inflows to a sub-basin, and precipitation on the same graph. The plots can indicate the winter period (which is fixed), and options exist to change the scales and y-axis
 label.
 
 ## Plotting daily streamflows, without and with winter shading
@@ -36,8 +36,8 @@ Note that the value returned by the function, if successful, is TRUE
 
 ```{r}
 daily_flows <- CAN05AA008[, c(3, 4)]
-result1 <- ch_hydrograph_plot(flows = daily_flows, winter_shading = FALSE)
-result2 <- ch_hydrograph_plot(flows = daily_flows, winter_shading = TRUE)
+result1 <- ch_model_hydrograph(flows = daily_flows, winter_shading = FALSE)
+result2 <- ch_model_hydrograph(flows = daily_flows, winter_shading = TRUE)
 ```
 
 The period of the plot can be restricted by setting the option prd, nwhich is a string like “2011-10-
@@ -45,7 +45,7 @@ The period of the plot can be restricted by setting the option prd, nwhich is a 
 
 ```{r}
 myprd <- "2000-01-01/2000-12-31"
-result3 <- ch_hydrograph_plot(
+result3 <- ch_model_hydrograph(
   flows = daily_flows, winter_shading = TRUE,
   prd = myprd
 )
@@ -57,7 +57,7 @@ You can also plot precipitation data. In this example fake precipitation data ar
 
 ```{r}
 precip <- data.frame("Date" = daily_flows$Date, "precip" = abs(rnorm(nrow(daily_flows))) * 10)
-result4 <- ch_hydrograph_plot(
+result4 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip, winter_shading = TRUE,
   prd = myprd
 )
@@ -68,7 +68,7 @@ if desired. The default is to multiply the precipitation range by 1.5 of the max
 the range can be multiplied by any positive value to prevent this.
 
 ```{r}
-result5 <- ch_hydrograph_plot(
+result5 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip, winter_shading = TRUE,
   prd = myprd, range_mult_precip = 2, range_mult_flow = 1.8
 )
@@ -82,7 +82,7 @@ expression to get a superscripted 3.
 
 ```{r}
 ylab <- expression(paste("Discharge [m"^"3", "/s]"))
-result6 <- ch_hydrograph_plot(
+result6 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip,
   prd = myprd, ylabel = ylab
 )
@@ -91,7 +91,7 @@ result6 <- ch_hydrograph_plot(
 The precipitation label can also be adjusted.
 ```{r}
 ylab_precip <- "Rainfall [mm]"
-result7 <- ch_hydrograph_plot(
+result7 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip,
   prd = myprd, precip_label = ylab_precip
 )
@@ -108,15 +108,15 @@ Many other formatting options exist, such as:
 For example:
 
 ```{r}
-result8 <- ch_hydrograph_plot(
+result8 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip,
   prd = myprd, leg_pos = "right"
 ) # change legend to the right side
-result9 <- ch_hydrograph_plot(
+result9 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip,
   prd = myprd, leg_box = TRUE
 ) # add legend fill and outline
-result10 <- ch_hydrograph_plot(
+result10 <- ch_model_hydrograph(
   flows = daily_flows, precip = precip,
   prd = myprd, zero_axis = F
 ) # default plot outside of function with buffer around axis
