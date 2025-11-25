@@ -16,7 +16,7 @@
 #' @importFrom graphics layout box
 #' @importFrom timeDate dayOfYear as.timeDate
 #' @importFrom fields image.plot
-#' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
+#' @seealso \code{\link{ch_flow_raster_qa}}
 #'
 #' @examples
 #' ch_flow_raster(CAN05AA008)

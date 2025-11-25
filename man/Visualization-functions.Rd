@@ -12,7 +12,6 @@ some analyses may also be done.
  \item{ch_flow_raster}{Raster plot of streamflows}
  \item{ch_flow_raster_qa}{Raster plot of streamflows with WSC quality flags}
  \item{ch_gg_hydrographs}{ggplot2 hydrographs of WSC flows}
- \item{ch_flow_raster_trend}{Raster plot and simple trends of observed streamflows}
  \item{ch_model_hydrograph}{Plots hydrographs and/or precipitation}
  \item{ch_polar_plot}{Polar plot of daily streamflows}
  \item{ch_qa_hydrograph}{Plots a hydrograph with the data quality symbols}

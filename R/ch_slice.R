@@ -28,7 +28,7 @@
 #' @export
 #' 
 #'
-#' @seealso \code{\link{ch_binned_MannWhitney}} \code{\link{ch_flow_raster_trend}}
+#' @seealso \code{\link{ch_binned_MannWhitney}} 
 #'
 #' @examples
 #' doy <- c(1:365)

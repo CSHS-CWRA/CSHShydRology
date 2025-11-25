@@ -36,7 +36,7 @@ qaplot <- ch_flow_raster_qa(CAN05AA008)
 \seealso{
 \code{\link{ch_read_ECDE_flows}}
 
-\code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster}}
+\code{\link{ch_flow_raster}}
 }
 \author{
 Paul Whitfield

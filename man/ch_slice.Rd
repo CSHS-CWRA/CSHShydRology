@@ -41,7 +41,7 @@ dice <- ch_slice(doy, 30)
 plot(doy, dice)
 }
 \seealso{
-\code{\link{ch_binned_MannWhitney}} \code{\link{ch_flow_raster_trend}}
+\code{\link{ch_binned_MannWhitney}}
 }
 \author{
 Paul Whitfield, Kevin Shook
