@@ -31,7 +31,9 @@
 #' @export
 #' @import ggplot2 dplyr tidyhydat
 #'
-#' @examples {
+#' @examples  \dontrun{
+#' # Not run as this requires the installation of the HYDAT database
+#' 
 #' # plot a single station
 #' stations <- c("05HH003")
 #' p <- ch_gg_hydrographs(stations, daily = TRUE, instantaneous = TRUE)

@@ -13,6 +13,8 @@ ch_gg_hydrographs(
   start_date = NULL,
   end_date = NULL,
   hydat_path = NULL,
+  inst_colour = "black",
+  daily_colour = "black",
   ...
 )
 }
@@ -25,13 +27,23 @@ ch_gg_hydrographs(
 
 \item{facets}{Optional. If TRUE, the plot is faceted by station number.}
 
-\item{common_dates}{Optional. If TRUE, a common date range is used for all time series.}
+\item{common_dates}{Optional. If TRUE, a common date range is used for all 
+time series.}
 
-\item{start_date}{Optional. If specified (format = yyyy-mm-dd), only values on or following the date are plotted.}
+\item{start_date}{Optional. If specified (format = yyyy-mm-dd), only values on 
+or following the date are plotted.}
 
-\item{end_date}{Optional. If specified (format = yyyy-mm-dd), only values on or before the date are plotted.}
+\item{end_date}{Optional. If specified (format = yyyy-mm-dd), only values on or 
+before the date are plotted.}
 
-\item{hydat_path}{Optional. Path to the HYDAT database. Usually omitted unless you want to use a specific database file.}
+\item{hydat_path}{Optional. Path to the HYDAT database. Usually omitted unless 
+you want to use a specific database file.}
+
+\item{inst_colour}{Optional. Colour to be used for annual instantaneous peaks, 
+if either facetted or only a single station is plotted. Default is "black".}
+
+\item{daily_colour}{Optional. Colour to be used for daily flows, 
+if either facetted or only a single station is plotted. Default is "black".}
 
 \item{...}{Other parameters for the \pkg{ggplot} facets, if specified.}
 }
@@ -48,7 +60,9 @@ able to plot hydrographs for more than one station, which may be useful, particu
 when comparing responses for several streams in the same region.
 }
 \examples{
-{
+ \dontrun{
+# Not run as this requires the installation of the HYDAT database
+
 # plot a single station
 stations <- c("05HH003")
 p <- ch_gg_hydrographs(stations, daily = TRUE, instantaneous = TRUE)

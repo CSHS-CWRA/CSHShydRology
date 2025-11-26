@@ -26,7 +26,7 @@
 #' @importFrom timeDate dayOfYear as.timeDate 
 #' @importFrom fields image.plot 
 #' @export 
-#' @seealso \code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster}}
+#' @seealso \code{\link{ch_flow_raster}}
 #'
 #' @examples
 #' data(HYDAT_list)

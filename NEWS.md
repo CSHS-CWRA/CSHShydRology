@@ -1,3 +1,7 @@
+# CSHShydRology 1.4.4
+* changes to hydrograph plotting functions, including adding `ch_gg_hydrographs` which creates **ggplot2** objects
+* removal of function `ch_flow_raster_trend` as it used the package **Kendal**, which will be archived by CRAN
+
 # CSHShydRology 1.4.3
 * added functions ch_high_Grubbs_test and ch_ffa_screen_plot to identify outliers when fitting distributions to mean daily streamflows
 * updated urls to specify https instead of http

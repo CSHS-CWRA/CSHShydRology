@@ -32,7 +32,7 @@ ch_flow_raster(CAN05AA008)
 \seealso{
 \code{\link{ch_read_ECDE_flows}}
 
-\code{\link{ch_flow_raster_trend}} \code{\link{ch_flow_raster_qa}}
+\code{\link{ch_flow_raster_qa}}
 }
 \author{
 Paul Whitfield
