@@ -22,10 +22,10 @@
 #'
 #' @import circular
 #' @export
-#' @seealso  \code{\link{ch_sh_get_amax}}   
+#' @seealso  \code{\link{ch_get_amax}}   
 #' @examples 
 #' data(CAN05AA008)
-#' am <- ch_sh_get_amax(CAN05AA008)
+#' am <- ch_get_amax(CAN05AA008)
 #' m_r <- ch_circ_mean_reg(am)
 
 ch_circ_mean_reg <- function(dataframe){

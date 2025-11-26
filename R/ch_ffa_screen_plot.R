@@ -37,7 +37,7 @@
 #'@examples \donttest{
 #'# Not tested automatically as can be very slow to execute
 #' data(CAN05AA008)
-#' amax <- ch_sh_get_amax(CAN05AA008)
+#' amax <- ch_get_amax(CAN05AA008)
 #' ch_ffa_screen_plot(amax)}
 
 ch_ffa_screen_plot <- function(df, stn= "unspecified", mtitle = "",

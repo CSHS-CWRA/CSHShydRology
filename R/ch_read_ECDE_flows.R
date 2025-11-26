@@ -46,7 +46,7 @@ ch_read_ECDE_flows <- function(filename) {
   mdata <- read.csv(filename, header = FALSE, skip = 1)
   names(mdata) <- c("ID", "PARAM", "Date", "Flow", "SYM")
   mdata$Date <- as.Date(mdata$Date, format = "%Y/%m/%d")
-  cut <- length(mdata[, 1]) - 3
+  cut <- length(mdata[, 1]) - 2
   mdata <- mdata[1:cut, ]
 
   if (names(mdata)[4] != "Flow") 

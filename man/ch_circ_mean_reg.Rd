@@ -23,7 +23,7 @@ Calculate the circular mean, median, and regularity using a year of 365 days.
 }
 \examples{
 data(CAN05AA008)
-am <- ch_sh_get_amax(CAN05AA008)
+am <- ch_get_amax(CAN05AA008)
 m_r <- ch_circ_mean_reg(am)
 }
 \references{
@@ -35,5 +35,5 @@ Pewsey, A., M. Neuhauser, and G. D. Ruxton. 2014. Circular Statistics in R,
  from climate change.
 }
 \seealso{
-\code{\link{ch_sh_get_amax}}
+\code{\link{ch_get_amax}}
 }
