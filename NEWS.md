@@ -1,10 +1,10 @@
-# CSHShydRology 1.4.3
-* added functions ch_high_Grubbs_test and ch_ffa_screen_plot to identify outliers when fitting distributions to mean daily streamflows
-* updated urls to specify https instead of http
-
 # CSHShydRology 1.4.4
 * changes to hydrograph plotting functions, including adding `ch_gg_hydrographs` which creates **ggplot2** objects
 * replacement of package **Kendall** with **trend** 
+
+# CSHShydRology 1.4.3
+* added functions ch_high_Grubbs_test and ch_ffa_screen_plot to identify outliers when fitting distributions to mean daily streamflows
+* updated urls to specify https instead of http
 
 # CSHShydRology 1.4.2
 * minor fixes to return statements in `ch_tr_sign` and `ch_tr_signif`
