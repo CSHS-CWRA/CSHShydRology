@@ -39,3 +39,11 @@ test_that("Check API Limit", {
   expect_error(get_eccc_single_station(station_ClimateID =station_id, API_limit = 11456), class = "invalid_range")
   expect_error(get_eccc_single_station(station_ClimateID =station_id, API_limit = TRUE), class = "invalid_range")
 })
+
+# Check that the API limit loop works as expected
+test_that("Check all data is downloaded", {
+  station_id = 1026271
+  df = get_eccc_single_station(station_ClimateID =station_id, API_limit = 10000,res = 'hourly', dt_start="2023-01-01T00:00:00", dt_end ="2025-01-01T00:00:00")
+  expected_length = 17521 #number of hours within the range
+  expect_true(nrow(df) == expected_length)
+})
