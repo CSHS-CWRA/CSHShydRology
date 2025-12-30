@@ -16,7 +16,7 @@
 #' @importFrom whitebox wbt_init wbt_fill_single_cell_pits wbt_breach_depressions_least_cost 
 #' @importFrom whitebox wbt_fill_depressions_wang_and_liu
 #' @importFrom whitebox wbt_breach_depressions wbt_fill_depressions wbt_fill_depressions_planchon_and_darboux
-#' @return Returns a raster object containing the processed dem. 
+#' @return Returns a \pkg{terra} \code{SpatRaster} object containing the processed dem. 
 #' @export
 #'
 #' @examples 
@@ -29,7 +29,7 @@
 #'   no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
 #' 
 #'   # write test raster to file
-#'   terra::writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #' 
 #'   # remove sinks
 #'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")

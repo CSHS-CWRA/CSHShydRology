@@ -25,6 +25,9 @@ library(whitebox)
 
 # installing local based CSHShydRology package of the tidyterra branch
 
+
+remove.packages('CSHShydRology')
+
 install.packages(
   "C:/Users/bbrowning/OneDrive - NHC/Documents/GitHub/CSHShydRology",
   repos = NULL,  type = "source")
@@ -63,6 +66,9 @@ terra::writeRaster(test_raster, dem_raster_file)
 removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, 
                                     method = "fill")
 
+message(paste('Spat Raster output?... =', class(removed_sinks) == 'SpatRaster'))
+
+
 # get flow accumulations
 flow_acc_file <- tempfile("flow_acc", fileext = ".tif")
 flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
@@ -89,7 +95,7 @@ message(paste('Spat Vector output?... =', class(catchments) == 'SpatVector'))
 
 
 #______________________________________________________________________________
-# ch_catchment_hyps ----
+# ch_catchment_hyps() ----
 #______________________________________________________________________________
 
 # Note: example not tested automatically as it is very slow to execute due to the downloading
@@ -174,8 +180,8 @@ channel_vector_file <- tempfile("channels", fileext = c(".shp"))
 channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
                             channel_vector_file, 1)
 
+message(paste('Spat Vector output?... =', class(channels) == 'SpatVector'))
 
-is.null(terra::crs(channels))
 
 # get pour points
 pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
@@ -186,7 +192,9 @@ snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_fil
 ch_checkchannels(test_raster, channels, snapped_pourpoints)
 
 
+#______________________________________________________________________________
 # ch_checkcatchment() ----
+#______________________________________________________________________________
 
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = ".tif")
@@ -222,11 +230,10 @@ catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file,
 ch_checkcatchment(test_raster, catchments, snapped_pourpoints)
 
 
-
-
-
-
+#______________________________________________________________________________
 # ch_contours() ----
+#______________________________________________________________________________
+
 # use volcano DEM
 dem <- ch_volcano_raster()
 # generate contours
@@ -235,8 +242,12 @@ contours <- ch_contours(dem)
 # plot contours map
 plot(contours)
 
+message(paste('Spat Vector output?... =', class(contours) == 'SpatVector'))
 
+#______________________________________________________________________________
 # ch_get_url_data() ----
+#______________________________________________________________________________
+
 # Tested using files in the Upper Penticton Creek
 # zenodo repository https://zenodo.org/record/4781469
 library(ggplot2)
@@ -259,38 +270,28 @@ ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 ra_data <- ch_get_url_data(ra_url, ra_fn)
 terra::plot(ra_data)
 
+message(paste('Spat Raster output?... =', class(ra_data) == 'SpatRaster'))
+
 # test with GeoJSON
 gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 gs_data <- ch_get_url_data(gs_url, gs_fn)
 
-ggplot(gs_data) +
-  geom_sf(aes(fill = new_key)) +
+message(paste('Spat Vector output?... =', class(gs_data) == 'SpatVector'))
+
+ggplot() +
+  tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
   labs(fill = "Soil class",
        x = "UTM Easting (m)",
        y = "UTM Northing (m)") +
-  coord_sf(datum = 32611) +
+  coord_sf(datum = terra::crs(gs_data)) +
   theme_bw()
 
-#  ch_map_plot_data()  NOT WORKING DUE TO BASEMAP URL ----
-# Note: example not tested automatically as it is very slow to execute due to the downloading
-# get base map
-latitude <- c(48.0,  61.0)
-longitude <- c(-110.0, -128.5)
-mapdir <- tempdir()
-# get map data
-m_map <- ch_get_map_base(latitude,longitude, 
-                         map_proj = "Albers", 
-                         map_directory = mapdir, 
-                         map_type = "nps")
-# add symbols
-stations <- HYDAT_list
-stations <- stations[,c("Longitude", "Latitude")]
-stations <- na.omit(stations)
-ch_map_plot_data(m_map, sc_var = stations, sc_text = "Years")
- 
 
+#______________________________________________________________________________
 # ch_wbt_channels() ----
+#______________________________________________________________________________
+
 # Only proceed if Whitebox executable is installed
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
@@ -316,7 +317,10 @@ channels <- ch_wbt_channels(flow_acc_file, flow_dir_file, channel_raster_file,
 plot(channels)
 
 
+#______________________________________________________________________________
 # ch_wbt_flow_accumulation() ----
+#______________________________________________________________________________
+
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
 no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
@@ -332,7 +336,11 @@ flow_acc_file <- tempfile("flow_acc", fileext = c(".tif"))
 flow_acc <- ch_wbt_flow_accumulation(no_sink_raster_file, flow_acc_file)
 plot(flow_acc)
 
-# ch_wbt_flow_direction()----
+
+#______________________________________________________________________________
+# ch_wbt_flow_direction() ----
+#______________________________________________________________________________
+
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
 no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
@@ -348,7 +356,11 @@ flow_dir_file <- tempfile("flow_dir", fileext = c(".tif"))
 flow_dir <- ch_wbt_flow_direction(no_sink_raster_file, flow_dir_file)
 plot(flow_dir)
 
-# ch_wbt_catchment_onestep
+
+#______________________________________________________________________________
+# ch_wbt_catchment_onestep() ----
+#______________________________________________________________________________
+
 test_raster <- ch_volcano_raster()
 dem_raster_file <- tempfile(fileext = c(".tif"))
 # write test raster to file
@@ -357,7 +369,22 @@ wd <- tempdir()
 pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
 pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
-                                      pp_sf = pourpoints, sink_method = "fill", 
+                                      pp_sv = pourpoints, sink_method = "fill", 
                                       threshold = 1, snap_dist = 10)
+
+message(paste('Spat Vector output?... =', class(catchment) == 'SpatVector'))
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       

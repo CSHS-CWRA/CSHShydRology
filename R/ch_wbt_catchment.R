@@ -83,7 +83,7 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   
   if (is.na(terra::crs(catchment_vec)) | terra::crs(catchment_vec) == '') {
     terra::crs(catchment_vec) <- terra::crs(terra::rast(fn_catchment_ras))
-    terra::writeVector(catchment_vec, fn_catchment_vec)
+    terra::writeVector(catchment_vec, fn_catchment_vec, overwrite = TRUE)
   }
   
   if (return_vector) {

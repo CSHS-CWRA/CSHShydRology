@@ -72,7 +72,7 @@ ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
   
   if(is.na(terra::crs(channel_vec)) | terra::crs(channel_vec) == '' ) {
     terra::crs(channel_vec) <- terra::crs(rast(fn_channel_ras))
-    terra::writeVector(channel_vec, fn_channel_vec)
+    terra::writeVector(channel_vec, fn_channel_vec, overwrite = TRUE)
   } 
   
   return(channel_vec)
