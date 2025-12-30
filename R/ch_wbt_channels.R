@@ -9,9 +9,8 @@
 #' @author Dan Moore
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector
-#' @importFrom sf st_crs write_sf
 #' @importFrom stats step
-#' @return Returns a \pkg{sf} vector object of the stream channels.
+#' @return Returns a \pkg{terra} \code{SpatVector} object of the stream channels.
 #' @export
 #'
 #' @examples 
@@ -69,11 +68,11 @@ ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
   
   wbt_raster_streams_to_vector(fn_channel_ras, fn_flowdir, fn_channel_vec)
   
-  channel_vec <- st_read(fn_channel_vec)
+  channel_vec <- terra::vect(fn_channel_vec)
   
-  if(is.na(st_crs(channel_vec))) {
-    sf::st_crs(channel_vec) <- st_crs(rast(fn_channel_ras))
-    write_sf(channel_vec, fn_channel_vec)
+  if(is.na(terra::crs(channel_vec))) {
+    terra::crs(channel_vec) <- terra::crs(rast(fn_channel_ras))
+    terra::writeVector(channel_vec, fn_channel_vec)
   } 
   
   return(channel_vec)

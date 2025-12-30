@@ -10,11 +10,10 @@
 #' @author Dan Moore
 #'
 #' @importFrom httr GET write_disk
-#' @importFrom sf st_read
 #' @importFrom terra rast
 #'
-#' @return Returns a data frame (from a .csv file), a \code{raster} object (from a .tif file), 
-#'or an \code{sf} object (from a GeoJSON file).
+#' @return Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
+#'or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
 #'
 #' @examples \donttest{
 #' # Example not tested automatically as multiple large data files are downloaded which is slow
@@ -47,15 +46,16 @@
 #' gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 #' gs_data <- ch_get_url_data(gs_url, gs_fn)
 #' 
-#' ggplot(gs_data) +
-#'   geom_sf(aes(fill = new_key)) +
+#' ggplot() +
+#'   tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
 #'   labs(fill = "Soil class",
 #'        x = "UTM Easting (m)",
 #'        y = "UTM Northing (m)") +
-#'   coord_sf(datum = 32611) +
+#'   coord_sf(crs = 32611) +
 #'   theme_bw()
 #' }
 #' @export
+#' 
 #' 
 ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
   filesplit <- strsplit(x = gd_filename, split = "[.]")[[1]]
@@ -79,7 +79,7 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
     return(da) 
   }
   
-  # tiff file - returns raster object
+  # tiff file - returns SpatRaster object
   if (file_ext %in% c("tif", "tiff")) {
     if (!file.exists(gd_filename)) {
       # check to see if url file exists
@@ -94,7 +94,7 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
     return(da)
   }
   
-  # GeoJSON - returns sf object
+  # GeoJSON - returns SpatVector object
   if (file_ext == "GeoJSON") {
     if (!file.exists(gd_filename)) {
       # check to see if url file exists
@@ -104,11 +104,12 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
       } 
       
       GET(gd_url, write_disk(gd_filename))
-      da <- st_read(gd_filename)
+      da <- terra::vect(gd_filename)
     } else {
-      da <- st_read(gd_filename)
+      da <- terra::vect(gd_filename)
     }     
     return(da) 
   }
 }
 
+ 

@@ -9,7 +9,6 @@
 #' @author Dan Moore and Kevin Shook
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
-#' @importFrom sf st_crs write_sf st_read
 #' @return If \code{return_vector == TRUE} a vector of the catchment is returned. Otherwise
 #' nothing is returned.
 #' @export
@@ -65,10 +64,12 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   
   message("ch_wbt: Delineating catchment boundaries")
   
-  crs_pp <- sf::st_crs(st_read(fn_pp_snap))$epsg
+  crs_pp <- as.integer(terra::crs(terra::vect(fn_pp_snap), 
+                       describe = TRUE)$code)
   
-  crs_fd <- sf::st_crs(rast(fn_flowdir))$epsg
-  
+  crs_fd <- as.integer(terra::crs(terra::rast(fn_flowdir), 
+                       describe = TRUE)$code)
+    
   if (crs_pp != crs_fd) {
     stop("Error: pour points and flow direction grid have different crs")
   }
@@ -78,16 +79,15 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   
   wbt_raster_to_vector_polygons(fn_catchment_ras, fn_catchment_vec)
   
-  catchment_vec <- st_read(fn_catchment_vec) |> 
-    st_as_sf()
+  catchment_vec <- terra::vect(fn_catchment_vec)
   
-  if (is.na(st_crs(catchment_vec))) {
-    sf::st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
-    write_sf(catchment_vec, fn_catchment_vec)
+  if (is.na(terra::crs(catchment_vec))) {
+    terra::crs(catchment_vec) <- terra::crs(terra::rast(fn_catchment_ras))
+    terra::writeVector(catchment_vec, fn_catchment_vec)
   }
   
   if (return_vector) {
-    return(st_read(fn_catchment_vec))
+    return(terra::vect(fn_catchment_vec))
   } else {
     return()
   }

@@ -8,9 +8,9 @@
 #' Also generates a table summarizing the catchments, 
 #' including the coordinates of the outlet point and the catchment area.
 #'
-#' @param dem terra SpatRaster DEM that catchments were generated from.
-#' @param catchment Catchment polygon (sf object).
-#' @param outlet Location of catchment outlet (sf object).
+#' @param dem A \pkg{terra} \code{SpatRaster} DEM that catchments were generated from.
+#' @param catchment Catchment polygon (\pkg{terra} \code{SpatVector} object).
+#' @param outlet Location of catchment outlet (\pkg{terra} \code{SpatVector} object).
 #' @param outlet_label Character label for outlet.
 #' @param main_label Main label for catchment plot.
 #' @param bbox_type type of bounding box. If \option{catchment}, then
@@ -31,8 +31,7 @@
 #' 
 #' @author Dan Moore and Kevin Shook
 #' @seealso \code{\link{ch_checkchannels}} 
-#' @importFrom sf st_bbox st_area st_crs st_geometry
-#' @importFrom ggplot2 ggplot geom_sf coord_sf theme_bw labs
+#' @importFrom ggplot2 ggplot coord_sf theme_bw labs
 #' @importFrom ggspatial annotation_north_arrow north_arrow_fancy_orienteering annotation_scale 
 #' @importFrom dplyr mutate 
 #' @importFrom grid unit
@@ -77,6 +76,7 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' 
 ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
                                 main_label = "", bbox_type = "catchment",
                                 channel_vec = NULL, 
@@ -87,36 +87,37 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
     
     # check inputs
     if (missing(catchment)) {
-      stop("ch_checkcatchment requires sf catchment polygons to plot")
+      stop("ch_checkcatchment requires SpatVector catchment polygons to plot")
     }
     if (missing(dem)) {
       stop("ch_checkcatchment requires a raster dem to plot")
     }
     if (missing(outlet)) {
-      stop("ch_checkcatchment requires an sf outlet to plot")
+      stop("ch_checkcatchment requires SpatVector outlet to plot")
     }
     # create contours 
-    contours = ch_contours(dem)
+    contours <- ch_contours(dem)
     # generate bounding box
     if (bbox_type == "catchment") {
-      bb = st_bbox(catchment)
+      bb <- terra::ext(catchment)
     } else {
-      bb <- st_bbox(contours)
+      bb <- terra::ext(contours)
     }
     # generate map
     check_map <- ggplot2::ggplot() +
-      geom_sf(data = contours, color = contour_colour)
+      tidyterra::geom_spatvector(data = contours, color = contour_colour)
     if (!is.null(channel_vec)) {
       check_map <- check_map + 
-        geom_sf(data = channel_vec, col = channel_colour) +
-        coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4]), 
-                 datum = st_crs(catchment))
+        tidyterra::geom_spatvector(data = channel_vec, col = channel_colour) +
+        coord_sf(xlim = c(bb[1], bb[2]), ylim = c(bb[3], bb[4]), 
+                 datum = terra::crs(catchment))
     }
     check_map <- check_map +
-      geom_sf(data = outlet, pch = 21, bg = pp_colour) +
-      geom_sf(data = st_geometry(catchment), fill = NA, color = cb_colour) +
-      coord_sf(xlim = c(bb[1], bb[3]), ylim = c(bb[2], bb[4]),
-               datum = st_crs(catchment)) +
+      tidyterra::geom_spatvector(data = outlet, pch = 21, bg = pp_colour) +
+      tidyterra::geom_spatvector(data = catchment, fill = NA, 
+                                 color = cb_colour) +
+      coord_sf(xlim = c(bb[1], bb[2]), ylim = c(bb[3], bb[4]),
+               datum = terra::crs(catchment)) +
       labs(title = main_label) +
       theme_bw()
     if (plot_na) {
@@ -138,11 +139,11 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
     } else {
       labels <- outlet_label
     }
-    area <- st_area(catchment)
-    units <- rep(paste0(attr(area, "units")$numerator[1], "^2"), length(area))
+    area <- terra::expanse(catchment, unit = 'm')
+    units <- rep("m^2", length(area))
     value <- round(as.numeric(area))
     area_df <- outlet |>
-      mutate(label = labels, area = value, units = units)
+      tidyterra::mutate(label = labels, area = value, units = units)
 
     return(TRUE)
   } 

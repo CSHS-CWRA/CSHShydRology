@@ -8,8 +8,8 @@
 #' and maximum elevations and the number of elevation intervals. A plot of the 
 #' curve may also be created.
 #' 
-#' @param catchment A \pkg{sf} object containing the catchment divide.
-#' @param dem A \pkg{terra} SpatRaster object of the Digital Elevation Model.
+#' @param catchment A \pkg{terra} \code{SpatVector} object containing the catchment divide.
+#' @param dem A \pkg{terra} \code{SpatRaster} object of the Digital Elevation Model.
 #' @param z_levels Vector of elevation levels for the hypsometry. If specified, 
 #' then no other elevation parameters are required. Default is \code{NULL}.
 #' @param n_levels If specified, sets number of elevation intervals. 
@@ -31,7 +31,6 @@
 #' \code{FALSE}
 #' @param ... Other parameters for the graph
 #'
-#' @importFrom sf as_Spatial
 #' @importFrom terra mask minmax hist quantile plot
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore
@@ -86,7 +85,6 @@
 #' # extract specific quantiles (e.g., median and 90%)
 #' ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
 #' }
-
 
 ch_catchment_hyps <- function(catchment, dem,
                           z_levels = NULL, n_levels = 10,
