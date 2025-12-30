@@ -20,18 +20,11 @@ library(whitebox)
 #      tidyterra package is used with ggplot2 when using SpatVector.
 
 # INSERT REF ID OF BRANCH HERE
-# githubinstall::gh_install_packages('CSHShydRology', ref = "")
 
-
-# installing local based CSHShydRology package of the tidyterra branch
-
-
-remove.packages('CSHShydRology')
-
-install.packages(
-  "C:/Users/bbrowning/OneDrive - NHC/Documents/GitHub/CSHShydRology",
-  repos = NULL,  type = "source")
-
+remotes::install_github(
+  "CSHS-CWRA/CSHShydRology",
+  ref = "tidyterra"
+)
 
 #______________________________________________________________________________
 # ch_volcano_raster() ----
