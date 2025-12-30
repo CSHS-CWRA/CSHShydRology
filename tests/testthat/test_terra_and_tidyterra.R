@@ -23,6 +23,13 @@ library(whitebox)
 # githubinstall::gh_install_packages('CSHShydRology', ref = "")
 
 
+# installing local based CSHShydRology package of the tidyterra branch
+
+install.packages(
+  "C:/Users/bbrowning/OneDrive - NHC/Documents/GitHub/CSHShydRology",
+  repos = NULL,  type = "source")
+
+
 #______________________________________________________________________________
 # ch_volcano_raster() ----
 #______________________________________________________________________________
