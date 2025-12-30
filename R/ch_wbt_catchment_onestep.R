@@ -108,7 +108,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
   # read in cathment polygons
   catchment_vec <- terra::vect(file_names$catchment_vec)
   
-  if (is.na(terra::crs(catchment_vec))) {
+  if (is.na(terra::crs(catchment_vec)) | terra::crs(channel_vec) == '') {
     terra::crs(catchment_vec) <- terra::crs(terra::rast(file_names$catchment_ras))
     terra::writeVector(catchment_vec, file_names$catchment_vec)
 
@@ -116,7 +116,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
   
   channel_vec <- terra::vect(file_names$channel_vec) 
   
-  if (is.na(terra::crs(channel_vec))) {
+  if (is.na(terra::crs(channel_vec)) | terra::crs(channel_vec) == '') {
     terra::crs(channel_vec) <- terra::crs(catchment_vec)
     terra::writeVector(channel_vec, file_names$catchment_vec)
   }
