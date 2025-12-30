@@ -7,7 +7,7 @@
 ch_wbt_catchment_onestep(
   wd,
   in_dem,
-  pp_sf,
+  pp_sv,
   sink_method = "breach_leastcost",
   dist = NULL,
   check_catchment = TRUE,
@@ -29,7 +29,7 @@ ch_wbt_catchment_onestep(
 
 \item{in_dem}{File name for original DEM.}
 
-\item{pp_sf}{Vector containing pour points.}
+\item{pp_sv}{Vector containing pour points.}
 
 \item{sink_method}{Method for sink removal as used by \code{ch_wbt_removesinks}.}
 
@@ -81,7 +81,7 @@ if (check_whitebox_binary()){
   pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
   pourpoints <- ch_volcano_pourpoints(pourpoint_file)
   catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
-                                        pp_sf = pourpoints, sink_method = "fill", 
+                                        pp_sv = pourpoints, sink_method = "fill", 
                                         threshold = 1, snap_dist = 10)
 } else {
   message("Examples not run as Whitebox executable not found")

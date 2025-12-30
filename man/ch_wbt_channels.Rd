@@ -27,7 +27,7 @@ ch_wbt_channels(
 \item{...}{Other parameters for \pkg{whitebox} function \code{wbt_extract_streams}}
 }
 \value{
-Returns a \pkg{sf} vector object of the stream channels.
+Returns a \pkg{terra} \code{SpatVector} object of the stream channels.
 }
 \description{
 Generate stream network

@@ -23,11 +23,11 @@ ch_checkcatchment(
 )
 }
 \arguments{
-\item{dem}{terra SpatRaster DEM that catchments were generated from.}
+\item{dem}{A \pkg{terra} \code{SpatRaster} DEM that catchments were generated from.}
 
-\item{catchment}{Catchment polygon (sf object).}
+\item{catchment}{Catchment polygon (\pkg{terra} \code{SpatVector} object).}
 
-\item{outlet}{Location of catchment outlet (sf object).}
+\item{outlet}{Location of catchment outlet (\pkg{terra} \code{SpatVector} object).}
 
 \item{outlet_label}{Character label for outlet.}
 
@@ -107,6 +107,7 @@ if (check_whitebox_binary()){
 } else {
   message("Examples not run as Whitebox executable not found")
 }
+
 }
 \seealso{
 \code{\link{ch_checkchannels}}

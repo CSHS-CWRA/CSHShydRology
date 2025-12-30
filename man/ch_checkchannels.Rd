@@ -17,9 +17,9 @@ ch_checkchannels(
 \arguments{
 \item{dem}{terra SpatRaster DEM that catchments were generated from}
 
-\item{channels}{channel polyline (or channels list from \code{ch_wbt_channels}) (sf object)}
+\item{channels}{channel polyline (or channels list from \code{ch_wbt_channels}) (\pkg{terra} \code{SpatVector} object)}
 
-\item{outlet}{location of catchment outlet (sf object)}
+\item{outlet}{location of catchment outlet (\pkg{terra} \code{SpatVector}  object)}
 
 \item{main_label}{Main label for channel plot.}
 

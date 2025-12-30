@@ -23,9 +23,9 @@ ch_catchment_hyps(
 )
 }
 \arguments{
-\item{catchment}{A \pkg{sf} object containing the catchment divide.}
+\item{catchment}{A \pkg{terra} \code{SpatVector} object containing the catchment divide.}
 
-\item{dem}{A \pkg{terra} SpatRaster object of the Digital Elevation Model.}
+\item{dem}{A \pkg{terra} \code{SpatRaster} object of the Digital Elevation Model.}
 
 \item{z_levels}{Vector of elevation levels for the hypsometry. If specified, 
 then no other elevation parameters are required. Default is \code{NULL}.}

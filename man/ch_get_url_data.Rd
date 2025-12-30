@@ -14,8 +14,8 @@ ch_get_url_data(gd_url, gd_filename, quiet = FALSE)
 \item{quiet}{Optional. If \code{FALSE} (the default) error/warning messages are printed if the data cannot be found.}
 }
 \value{
-Returns a data frame (from a .csv file), a \code{raster} object (from a .tif file), 
-or an \code{sf} object (from a GeoJSON file).
+Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
+or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
 }
 \description{
 Accesses data sets, via a url the first time,
@@ -53,12 +53,12 @@ gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 gs_data <- ch_get_url_data(gs_url, gs_fn)
 
-ggplot(gs_data) +
-  geom_sf(aes(fill = new_key)) +
+ggplot() +
+  tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
   labs(fill = "Soil class",
        x = "UTM Easting (m)",
        y = "UTM Northing (m)") +
-  coord_sf(datum = 32611) +
+  coord_sf(crs = 32611) +
   theme_bw()
 }
 }
