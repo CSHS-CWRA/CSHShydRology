@@ -61,7 +61,8 @@ Imports:
     circular,
     MGBT,
     outliers,
-    TeachingDemos
+    TeachingDemos,
+    Kendall
 Suggests: 
     knitr,
     testthat, 
