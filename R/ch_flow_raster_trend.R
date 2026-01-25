@@ -142,8 +142,8 @@ ch_flow_raster_trend <- function(DF, step = 5, missing = FALSE, metadata = NULL,
     
     t1 <- NA
     t1 <- MannKendall(qsliced[i, ])
-    tau[i] <- t1$estimates[3]
-    prob[i] <- t1$p.value
+    tau[i] <- t1$tau[1]
+    prob[i] <- t1$sl[1]
     
     # set flags for plotting
     if (abs(prob[i]) == 1.00) code[i] <- 1

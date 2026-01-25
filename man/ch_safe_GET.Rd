@@ -24,9 +24,11 @@ Executes GET function with error trapping
 \donttest{
 # Not tested automatically as can be very slow
 test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
-test_file <- "sm_data.csv"
+dir_name <- tempdir(check = FALSE)
+test_file <- file.path(dir_name, "gs_dem25.tif")
 result <- ch_safe_GET(test_url, test_file, quiet = TRUE)
 }
+
 }
 \author{
 Kevin Shook
