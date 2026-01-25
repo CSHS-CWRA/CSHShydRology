@@ -150,8 +150,6 @@ ch_test_url_file <- function(url, quiet = FALSE){
 ch_safe_GET <- function(url = NULL, filename = NULL, quiet = FALSE) {
   if (is.null(url) | url == "")
      stop("URL is missing")
-     
-   
   if (is.null(filename) | filename == "")
     stop("filename is missing")
   

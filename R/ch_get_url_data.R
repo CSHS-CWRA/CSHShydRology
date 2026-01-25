@@ -9,7 +9,6 @@
 #' @param quiet Optional. If \code{FALSE} (the default) error/warning messages are printed if the data cannot be found.
 #' @author Dan Moore
 #'
-#' @importFrom httr GET write_disk
 #' @importFrom sf st_read
 #' @importFrom raster raster
 #'
@@ -109,7 +108,7 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
       
        result <- ch_safe_GET(gd_url, gd_filename, quiet)
        if (result == "OK") {
-         da <- raster::raster(gd_filename)
+         da <- st_read(gd_filename)
          return(da)
        } else {
          stop("Error in accessing ", gd_url)
