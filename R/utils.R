@@ -127,3 +127,81 @@ ch_test_url_file <- function(url, quiet = FALSE){
     
     return(out)
 }
+
+
+#' Executes GET function with error trapping
+#'
+#' @param url Required. URL to be accessed.
+#' @param filename Required. File to be used to save data
+#' @param quiet Optional. if TRUE, GET error/warning messages will be returned
+#'
+#' @returns Returns a character string: "OK", "warning" or "error" depending on the success
+#' of GET
+#' @export
+#' @keywords internal
+#' @author Kevin Shook
+#' @importFrom httr GET
+#'
+#' @examples \donttest{
+#' # Not tested automatically as can be very slow
+#' test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
+#' test_file <- "sm_data.csv"
+#' result <- ch_safe_GET(test_url, test_file, quiet = TRUE)
+#' }
+ch_safe_GET <- function(url = NULL, filename = NULL, quiet = FALSE) {
+  if (is.null(url) | url == "")
+     stop("URL is missing")
+     
+   
+  if (is.null(filename) | filename == "")
+    stop("filename is missing")
+  
+  if (file.exists(filename))
+    stop(filename, " already exists - will not over-write")
+  
+  out <- tryCatch(
+    {
+      result <- GET(url, filename)
+    },
+    error = function(cond) {
+      if (!quiet) {
+        message(paste("URL caused a warning:", url))
+        message("Here's the original error message:")
+        message(cond)
+      } else{
+      }
+      
+      # Choose a return value in case of error
+      return("error")
+    },
+    warning = function(cond) {
+      if (!quiet) {
+        message(paste("URL caused a warning:", url))
+        message("Here's the original warning message:")
+        message(cond)
+        # Choose a return value in case of warning
+      } else{
+      }
+      
+      return("warning")
+    },
+    finally = {
+      if (!quiet) {
+        message(paste("Processed URL:", url))
+      } else {
+      }
+      
+    }
+  ) 
+  
+  out_type <- typeof(out)
+  if (out_type == "character") {
+    if (out != "error" & out != "warning")
+      out <- "OK"
+  } else {
+    out <- "OK"
+  }
+
+  
+  return(out)
+}

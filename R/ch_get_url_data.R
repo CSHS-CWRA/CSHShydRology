@@ -87,10 +87,15 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
         stop("URL does not exist")
       } 
 
-      GET(gd_url, write_disk(gd_filename))
+      result <- ch_safe_GET(gd_url, gd_filename, quiet)
     }
-    da <- raster::raster(gd_filename)
-    return(da)
+    if (result == "OK") {
+      da <- raster::raster(gd_filename)
+      return(da)
+    } else {
+      stop("Error in accessing ", gd_url)
+    }
+
   }
   
   # GeoJSON - returns sf object
@@ -102,8 +107,14 @@ ch_get_url_data <- function(gd_url, gd_filename, quiet = FALSE) {
         stop("URL does not exist")
       } 
       
-      GET(gd_url, write_disk(gd_filename))
-      da <- st_read(gd_filename)
+       result <- ch_safe_GET(gd_url, gd_filename, quiet)
+       if (result == "OK") {
+         da <- raster::raster(gd_filename)
+         return(da)
+       } else {
+         stop("Error in accessing ", gd_url)
+       }
+       
     } else {
       da <- st_read(gd_filename)
     }     
