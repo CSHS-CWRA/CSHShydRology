@@ -137,6 +137,7 @@ ch_test_url_file <- function(url, quiet = FALSE){
 #'
 #' @returns Returns a character string: "OK", "warning" or "error" depending on the success
 #' of GET
+#' @export
 #' @keywords internal
 #' @author Kevin Shook
 #' @importFrom httr GET write_disk
@@ -145,19 +146,15 @@ ch_test_url_file <- function(url, quiet = FALSE){
 #' # Not tested automatically as can be very slow
 #' test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
 #' dir_name <- tempdir(check = FALSE)
+#' if (!dir.exists(dir_name)) {
+#'   dir.create(dir_name, recursive = TRUE)
+#' }
 #' test_file <- file.path(dir_name, "gs_dem25.tif")
 #' result <- ch_safe_GET(test_url, test_file, quiet = TRUE)
 #' }
 #' 
 ch_safe_GET <- function(url = NULL, filename = NULL, quiet = FALSE) {
-  if (is.null(url) | url == "")
-     stop("URL is missing")
-  if (is.null(filename) | filename == "")
-    stop("filename is missing")
-  
-  if (file.exists(filename))
-    stop(filename, " already exists - will not over-write")
-  
+
   out <- tryCatch(
     {
       result <- GET(url, write_disk(filename))
