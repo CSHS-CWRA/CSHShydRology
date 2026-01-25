@@ -137,10 +137,9 @@ ch_test_url_file <- function(url, quiet = FALSE){
 #'
 #' @returns Returns a character string: "OK", "warning" or "error" depending on the success
 #' of GET
-#' @export
 #' @keywords internal
 #' @author Kevin Shook
-#' @importFrom httr GET
+#' @importFrom httr GET write_disk
 #'
 #' @examples \donttest{
 #' # Not tested automatically as can be very slow
@@ -161,7 +160,7 @@ ch_safe_GET <- function(url = NULL, filename = NULL, quiet = FALSE) {
   
   out <- tryCatch(
     {
-      result <- GET(url, filename)
+      result <- GET(url, write_disk(filename))
     },
     error = function(cond) {
       if (!quiet) {
