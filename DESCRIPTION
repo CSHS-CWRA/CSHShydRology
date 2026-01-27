@@ -1,10 +1,10 @@
 Type: Package
 Package: CSHShydRology
 Title: Canadian Hydrological Analyses
-Version: 1.4.4
-Date: 2025-11-26
+Version: 1.4.5
+Date: 2026-01-27
 Authors@R: c(person("Kevin", "Shook", 
-              email = "kevin.shook@usask.ca", 
+              email = "kshook@kshook.ca", 
               role = c("cre", "aut")),
              person("Paul", "Whitfield", 
                 email = "paul.h.whitfield@gmail.com", 
@@ -35,7 +35,7 @@ Author: Kevin Shook [cre, aut],
   Jason Chiang [ctb],
   Joel Trubilowicz [ctb],
   SJ Kim [ctb]
-Maintainer: Kevin Shook <kevin.shook@usask.ca>
+Maintainer: Kevin Shook <khook@kshook.ca>
 Description: A collection of user-submitted functions to aid in the analysis of hydrological data, particularly for users in Canada. The functions focus on the use of Canadian data sets, and are suited to Canadian hydrology, such as the important cold region hydrological processes and will work with Canadian hydrological models. The functions are grouped into several themes, currently including Statistical hydrology, Basic data manipulations, Visualization, and Spatial hydrology. Functions developed by the Floodnet project are also included. CSHShydRology has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). As of version 1.2.6, functions now fail gracefully when attempting to download data from a url which is unavailable.
 License: AGPL-3 
 URL: https://github.com/CSHS-hydRology/CSHShydRology
@@ -61,7 +61,8 @@ Imports:
     circular,
     MGBT,
     outliers,
-    TeachingDemos
+    TeachingDemos,
+    Kendall
 Suggests: 
     knitr,
     testthat, 
@@ -70,4 +71,4 @@ Suggests:
 VignetteBuilder: knitr
 LazyData: true
 Encoding: UTF-8
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3

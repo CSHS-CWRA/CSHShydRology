@@ -38,7 +38,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Kevin Shook \email{kevin.shook@usask.ca}
+\strong{Maintainer}: Kevin Shook \email{kshook@kshook.ca}
 
 Authors:
 \itemize{
