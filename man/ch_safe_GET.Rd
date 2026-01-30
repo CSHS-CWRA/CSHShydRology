@@ -4,18 +4,16 @@
 \alias{ch_safe_GET}
 \title{Executes GET function with error trapping}
 \usage{
-ch_safe_GET(url = NULL, filename = NULL, quiet = FALSE)
+ch_safe_GET(url = NULL, filename = NULL)
 }
 \arguments{
 \item{url}{Required. URL to be accessed.}
 
 \item{filename}{Required. File to be used to save data}
-
-\item{quiet}{Optional. if TRUE, GET error/warning messages will be returned}
 }
 \value{
-Returns a character string: "OK", "warning" or "error" depending on the success
-of GET
+Returns a character string: "OK" if all went well, the error message
+if it did not.
 }
 \description{
 Executes GET function with error trapping
@@ -29,7 +27,7 @@ if (!dir.exists(dir_name)) {
   dir.create(dir_name, recursive = TRUE)
 }
 test_file <- file.path(dir_name, "gs_dem25.tif")
-result <- ch_safe_GET(test_url, test_file, quiet = TRUE)
+result <- ch_safe_GET(test_url, test_file)
 }
 
 }

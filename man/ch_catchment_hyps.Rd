@@ -86,45 +86,51 @@ if (!dir.exists(dir_name)) {
 # get 25-m dem
 dem_fn <- file.path(dir_name, "gs_dem25.tif")
 dem_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
-dem_upc <- ch_get_url_data(dem_url, dem_fn)
-dem_upc
-
+dem_upc <- ch_get_url_data(dem_url, dem_fn, stop_on_error = FALSE)
+dem_upc_type <- typeof(dem_upc)
+if (dem_upc_type != "character") {
 # get catchment boundaries
-cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
-cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
-cb <- ch_get_url_data(cb_url, cb_fn)
+  cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
+  cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
+  cb <- ch_get_url_data(cb_url, cb_fn, stop_on_error = FALSE)
+  cb_type <- typeof(cb)
+  if (cb_type != "character") {
+  #  quick check plot - all catchments
+    raster::plot(dem_upc)
+    plot(cb, add = TRUE, col = NA)
 
-# quick check plot - all catchments
-raster::plot(dem_upc)
-plot(cb, add = TRUE, col = NA)
+    # subset 240 catchment
+    cb_240 <- cb \%>\% dplyr::filter(wsc_name == "240")
+    plot(cb_240, col = NA)
 
-# subset 240 catchment
-cb_240 <- cb \%>\% dplyr::filter(wsc_name == "240")
-plot(cb_240, col = NA)
+    ## test function 
 
-## test function 
+    # test different combinations of arguments
+    ch_catchment_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
+    ch_catchment_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
+    ch_catchment_hyps(cb_240, dem_upc, n_levels = 6)
+    ch_catchment_hyps(cb_240, dem_upc)
+    ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
+    ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
 
-# test different combinations of arguments
-ch_catchment_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
-ch_catchment_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
-ch_catchment_hyps(cb_240, dem_upc, n_levels = 6)
-ch_catchment_hyps(cb_240, dem_upc)
-ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
-ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
-
-# generate a graph
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE)
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+    # generate a graph
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE)
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               col = "blue", type = "l", ylim = c(1500, 2200))
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               add_grid = TRUE, quantiles = seq(0, 1, 0.1))
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE,
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE,
               ylab = expression("z ("*10^{-3} ~ "km)"))
 
-# extract specific quantiles (e.g., median and 90\%)
-ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
+    # extract specific quantiles (e.g., median and 90\%)
+    ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
+  }
+ }
 }
+}
+\seealso{
+\code{\link{ch_get_url_data}}
 }
 \author{
-Dan Moore
+Dan Moore Kevin Shook
 }

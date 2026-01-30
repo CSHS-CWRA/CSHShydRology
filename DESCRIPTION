@@ -54,7 +54,7 @@ Imports:
     sf,
     dplyr,
     magrittr,
-    httr,
+    httr2,
     tidyhydat,
     whitebox,
     datasets,
