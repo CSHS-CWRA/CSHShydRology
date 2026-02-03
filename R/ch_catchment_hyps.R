@@ -60,7 +60,7 @@
 #' terra::plot(cb, add = TRUE, col = NA)
 #' 
 #' # subset 240 catchment
-#' cb_240 <- cb |> dplyr::filter(wsc_name == "240")
+#' cb_240 <- cb |> tidyterra::filter(wsc_name == "240")
 #' terra::plot(cb_240, col = NA)
 #' 
 #' ## test function 

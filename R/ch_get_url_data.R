@@ -83,13 +83,13 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
     return(da) 
   }
   
-  # tiff file - returns raster object
+  # tiff file - returns SpatRaster object
   if (file_ext %in% c("tif", "tiff")) {
     if (!file.exists(gd_filename)) {
       result <- ch_safe_GET(gd_url, gd_filename)
     }
     if (result == "OK") {
-      da <- raster::raster(gd_filename)
+      da <- terra::rast(gd_filename)
       return(da)
     } else {
       if (stop_on_error)
@@ -100,13 +100,13 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
 
   }
   
-  # GeoJSON - returns sf object
+  # GeoJSON - returns SpatVector object
   if (file_ext == "GeoJSON") {
     if (!file.exists(gd_filename)) {
       # check to see if url file exists
        result <- ch_safe_GET(gd_url, gd_filename)
        if (result == "OK") {
-         da <- st_read(gd_filename)
+         da <- terra::vect(gd_filename)
          return(da)
        } else {
          if (stop_on_error)
@@ -116,7 +116,7 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
        }
        
     } else {
-      da <- st_read(gd_filename)
+      da <- terra::vect(gd_filename)
     }     
     return(da) 
   }

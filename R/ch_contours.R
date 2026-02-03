@@ -27,7 +27,7 @@
 #' contours <- ch_contours(dem)
 #' 
 #' # plot contours map
-#' plot(contours)
+#' terra::plot(contours)
 #' 
 #' @importFrom terra rast values as.contour crs
 #' @export

@@ -15,7 +15,7 @@
 #' @examples
 #' pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
 #' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-#' plot(pourpoints)
+#' terra::plot(pourpoints)
 ch_volcano_pourpoints <- function(pp_shp) {
   
   if (missing(pp_shp)) {

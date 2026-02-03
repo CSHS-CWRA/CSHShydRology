@@ -21,7 +21,7 @@ by examples within other functions.
 \examples{
 pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
 pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-plot(pourpoints)
+terra::plot(pourpoints)
 }
 \seealso{
 \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}}

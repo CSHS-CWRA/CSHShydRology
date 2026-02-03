@@ -37,7 +37,7 @@ dem <- ch_volcano_raster()
 contours <- ch_contours(dem)
 
 # plot contours map
-plot(contours)
+terra::plot(contours)
 
 }
 \author{
