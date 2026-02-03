@@ -1,7 +1,7 @@
 Type: Package
 Package: CSHShydRology
 Title: Canadian Hydrological Analyses
-Version: 1.4.5
+Version: 1.4.6
 Date: 2026-02-03
 Authors@R: c(person("Kevin", "Shook", 
               email = "kshook@kshook.ca", 
