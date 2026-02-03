@@ -40,7 +40,7 @@ Description: A collection of user-submitted functions to aid in the analysis of 
 License: AGPL-3 
 URL: https://github.com/CSHS-hydRology/CSHShydRology
 Depends: 
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports: 
     fields,
     lubridate,
