@@ -26,9 +26,8 @@
 #' 
 #' # create directory to store data sets
 #' dir_name <- tempdir(check = FALSE)
-#' if (!dir.exists(dir_name)) {
+#' if (!dir.exists(dir_name))
 #'   dir.create(dir_name)
-#' }
 #'  
 #' # test with soil moisture data in csv format
 #' sm_fn <- file.path(dir_name, "sm_data.csv")
@@ -36,12 +35,22 @@
 #' sm_data <- ch_get_url_data(sm_url, sm_fn, stop_on_error = FALSE)
 #' head(sm_data)
 #' 
+#' if (typeof(sm_data) != "character") {
+#'   head(sm_data)
+#' } else {
+#'   message(sm_data)
+#' }
 #' # test with tif/tiff file containing a dem
 #' ra_fn <- file.path(dir_name, "gs_dem25.tif")
 #' ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 #' ra_data <- ch_get_url_data(ra_url, ra_fn, stop_on_error = FALSE)
 #' terra::plot(ra_data)
 #' 
+#' if (typeof(ra_data) != "character") {
+#'   plot(ra_data)
+#'} else {
+#'   message(sm_data)}
+#'  
 #' # test with GeoJSON
 #' gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 #' gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
@@ -54,9 +63,11 @@
 #'        y = "UTM Northing (m)") +
 #'   coord_sf(crs = 32611) +
 #'   theme_bw()
+#'  } else {
+#'  print(gs_data)}
 #' }
-#' @export
 #' 
+#' @export
 #' 
 ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
   file_ext <- strsplit(x = gd_filename, split = "[.]")[[1]][2]

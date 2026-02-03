@@ -84,9 +84,9 @@ if (!dir.exists(dir_name)) {
 # get 25-m dem
 dem_fn <- file.path(dir_name, "gs_dem25.tif")
 dem_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
-dem_upc <- ch_get_url_data(dem_url, dem_fn)
-dem_upc
-
+dem_upc <- ch_get_url_data(dem_url, dem_fn, stop_on_error = FALSE)
+dem_upc_type <- typeof(dem_upc)
+if (dem_upc_type != "character") {
 # get catchment boundaries
 cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
 cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
@@ -114,15 +114,20 @@ ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
 ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE)
 ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               col = "blue", type = "l", ylim = c(1500, 2200))
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               add_grid = TRUE, quantiles = seq(0, 1, 0.1))
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE,
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE,
               ylab = expression("z ("*10^{-3} ~ "km)"))
 
-# extract specific quantiles (e.g., median and 90\%)
-ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
+    # extract specific quantiles (e.g., median and 90\%)
+    ch_catchment_hyps(cb_240, dem_upc, quantiles = c(0.5,0.9))
+  }
+ }
 }
+}
+\seealso{
+\code{\link{ch_get_url_data}}
 }
 \author{
-Dan Moore
+Dan Moore Kevin Shook
 }
