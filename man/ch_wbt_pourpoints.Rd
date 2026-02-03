@@ -5,7 +5,7 @@
 \title{Snap pour points to channels}
 \usage{
 ch_wbt_pourpoints(
-  pp_sf = NULL,
+  pp_sv = NULL,
   fn_flowacc,
   fn_pp,
   fn_pp_snap,
@@ -15,7 +15,7 @@ ch_wbt_pourpoints(
 )
 }
 \arguments{
-\item{pp_sf}{\pkg{sf} object containing pour points. These must be supplied by the user. See
+\item{pp_sv}{\pkg{terra} \code{SpatVector} object containing pour points. These must be supplied by the user. See
 the code in \code{\link{ch_volcano_pourpoints}} for an example of creating the object.}
 
 \item{fn_flowacc}{Name of file containing flow accumulations.}
@@ -32,7 +32,7 @@ accumulation files will be checked to ensure they are identical.}
 \item{...}{Additional parameters for \pkg{whitebox} function \code{wbt_snap_pour_points}.}
 }
 \value{
-Returns a \pkg{sf} object of the specified pour points snapped to the
+Returns a \pkg{terra} \code{SpatVector} object of the specified pour points snapped to the
 channel network.
 }
 \description{
@@ -45,13 +45,13 @@ channels.
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
-  library(raster)
+  library(terra)
   test_raster <- ch_volcano_raster()
   dem_raster_file <- tempfile(fileext = c(".tif"))
   no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
 
   # write test raster to file
-  writeRaster(test_raster, dem_raster_file, format = "GTiff")
+  terra::writeRaster(test_raster, dem_raster_file)
 
   # remove sinks
   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")

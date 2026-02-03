@@ -7,10 +7,8 @@
 #' @param return_vector If \code{TRUE} (the default) a vector of the catchment will be returned.
 #' 
 #' @author Dan Moore and Kevin Shook
-#' @importFrom raster raster
+#' @importFrom terra rast
 #' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
-#' @importFrom sf st_crs write_sf st_read
-#' @importFrom magrittr %>%
 #' @return If \code{return_vector == TRUE} a vector of the catchment is returned. Otherwise
 #' nothing is returned.
 #' @export
@@ -19,13 +17,13 @@
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster)
+#'   library(terra)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = ".tif")
 #'   no_sink_raster_file <- tempfile("no_sinks", fileext = ".tif")
 #' 
 #'   # write test raster to file
-#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #' 
 #'   # remove sinks
 #'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
@@ -39,7 +37,7 @@
 #'   pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #'   snapped_pourpoint_file <- tempfile("snapped_pourpoints", fileext = ".shp")
 #'   snapped_pourpoints <- ch_wbt_pourpoints(pourpoints, flow_acc_file, pourpoint_file,
-#'   snapped_pourpoint_file, snap_dist = 10)
+#'                                           snapped_pourpoint_file, snap_dist = 10)
 #' 
 #'   # get flow directions
 #'   flow_dir_file <- tempfile("flow_dir", fileext = ".tif")
@@ -47,14 +45,16 @@
 #'   fn_catchment_ras <- tempfile("catchment", fileext = ".tif")
 #'   fn_catchment_vec <- tempfile("catchment", fileext = ".shp")
 #'   catchments <- ch_wbt_catchment(snapped_pourpoint_file, flow_dir_file, 
-#'   fn_catchment_ras, fn_catchment_vec)
+#'                                  fn_catchment_ras, fn_catchment_vec)
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
 
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 
                              fn_catchment_vec, return_vector = TRUE) {
+  
   ch_wbt_check_whitebox()
+  
   if (!file.exists(fn_pp_snap)) {
     stop("Error: file containing snapped pour points does not exist")
   }
@@ -63,21 +63,31 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
   }
   
   message("ch_wbt: Delineating catchment boundaries")
-  crs_pp <- sf::st_crs(st_read(fn_pp_snap))
-  crs_fd <- sf::st_crs(raster(fn_flowdir))
+  
+  crs_pp <- as.integer(terra::crs(terra::vect(fn_pp_snap), 
+                       describe = TRUE)$code)
+  
+  crs_fd <- as.integer(terra::crs(terra::rast(fn_flowdir), 
+                       describe = TRUE)$code)
+    
   if (crs_pp != crs_fd) {
     stop("Error: pour points and flow direction grid have different crs")
   }
+  
   wbt_watershed(d8_pntr = fn_flowdir, pour_pts = fn_pp_snap, 
                           output = fn_catchment_ras)
+  
   wbt_raster_to_vector_polygons(fn_catchment_ras, fn_catchment_vec)
-  catchment_vec <- st_read(fn_catchment_vec) %>% st_as_sf()
-  if (is.na(st_crs(catchment_vec))) {
-    sf::st_crs(catchment_vec) <- st_crs(raster(fn_catchment_ras))
-    write_sf(catchment_vec, fn_catchment_vec)
+  
+  catchment_vec <- terra::vect(fn_catchment_vec)
+  
+  if (is.na(terra::crs(catchment_vec)) | terra::crs(catchment_vec) == '') {
+    terra::crs(catchment_vec) <- terra::crs(terra::rast(fn_catchment_ras))
+    terra::writeVector(catchment_vec, fn_catchment_vec, overwrite = TRUE)
   }
+  
   if (return_vector) {
-    return(st_read(fn_catchment_vec))
+    return(terra::vect(fn_catchment_vec))
   } else {
     return()
   }

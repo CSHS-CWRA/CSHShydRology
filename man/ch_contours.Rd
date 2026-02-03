@@ -19,13 +19,13 @@ ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 \option{n_levels}.}
 }
 \value{
-\item{contours_sf}{sf object containing contours}
+\item{contours_sv}{SpatVector object containing contours}
 }
 \description{
 Creates contour lines from a DEM.
 }
 \details{
-Generates contour lines from a DEM, which are returned as an \pkg{sf} object. 
+Generates contour lines from a DEM, which are returned as a \pkg{terra} \code{SpatVector} object. 
 The user can either provide a vector of elevation values by specifying the \code{z_levels} argument, 
 or by supplying the minimum and maximum elevations (\code{zmin} and \code{zmax}) 
 and the number of contour lines (\code{n_levels}).
@@ -37,7 +37,7 @@ dem <- ch_volcano_raster()
 contours <- ch_contours(dem)
 
 # plot contours map
-plot(contours)
+terra::plot(contours)
 
 }
 \author{

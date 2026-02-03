@@ -10,7 +10,7 @@ ch_volcano_pourpoints(pp_shp)
 \item{pp_shp}{Name for shapefile to hold pour points}
 }
 \value{
-Returns an \pkg{sf} object containing 2 pour points for the 
+Returns a \pkg{terra} SpatVector object containing 2 pour points for the 
 \code{volcano} DEM. The pour points are also written to the specified file.
 }
 \description{
@@ -21,7 +21,7 @@ by examples within other functions.
 \examples{
 pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
 pourpoints <- ch_volcano_pourpoints(pourpoint_file)
-plot(pourpoints)
+terra::plot(pourpoints)
 }
 \seealso{
 \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}}

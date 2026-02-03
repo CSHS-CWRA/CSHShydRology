@@ -4,7 +4,7 @@
 #' the pour points to delineate catchments, they must align with the drainage
 #' network. This function snaps (forces the locations) of pour points to the
 #' channels.
-#' @param pp_sf \pkg{sf} object containing pour points. These must be supplied by the user. See
+#' @param pp_sv \pkg{terra} \code{SpatVector} object containing pour points. These must be supplied by the user. See
 #' the code in \code{\link{ch_volcano_pourpoints}} for an example of creating the object.
 #' @param fn_flowacc Name of file containing flow accumulations.
 #' @param fn_pp File name to create un-snapped pour points.
@@ -16,23 +16,22 @@
 #'
 #' @author Dan Moore
 #' @seealso \code{\link{ch_volcano_pourpoints}}
-#' @importFrom raster raster
+#' @importFrom terra rast
 #' @importFrom whitebox wbt_snap_pour_points
-#' @importFrom sf st_crs st_write
-#' @return Returns a \pkg{sf} object of the specified pour points snapped to the
+#' @return Returns a \pkg{terra} \code{SpatVector} object of the specified pour points snapped to the
 #' channel network.
 #' @export 
 #' @examples
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster)
+#'   library(terra)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = c(".tif"))
 #'   no_sink_raster_file <- tempfile("no_sinks", fileext = c(".tif"))
 #' 
 #'   # write test raster to file
-#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #' 
 #'   # remove sinks
 #'   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
@@ -50,27 +49,37 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
-ch_wbt_pourpoints <- function(pp_sf = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
+
+ch_wbt_pourpoints <- function(pp_sv = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {
+  
   ch_wbt_check_whitebox()
+  
   if (!file.exists(fn_flowacc)) {
     stop("Error: flow accumulation file does not exist")
   }
-  if (missing(pp_sf)) {
-    stop("Error: value for pp_sf missing")
+  
+  if (missing(pp_sv)) {
+    stop("Error: value for pp_sv missing")
   }
+  
   if (is.null(snap_dist)) {
     stop("Error: value for snap_dist missing")
   }
+  
   if (check_crs) {
-    pp_crs <- st_crs(pp_sf)
-    fa_crs <- st_crs(raster(fn_flowacc))
+    pp_crs <- as.integer(terra::crs(pp_sv, describe = TRUE)$code)
+    fa_crs <- as.integer(terra::crs(rast(fn_flowacc), describe = TRUE)$code)
     if (pp_crs != fa_crs) {
       stop("Error: pour points and flow accumulation grid have different crs")
     }
   }
+  
   message("ch_wbt: Snapping pour points to stream network")
-  st_write(pp_sf, fn_pp, quiet = TRUE, delete_layer = TRUE)
+  
+  terra::writeVector(pp_sv, fn_pp, overwrite = TRUE)
+  
   wbt_snap_pour_points(fn_pp, fn_flowacc, fn_pp_snap, snap_dist, ...)
-  return(st_read(fn_pp_snap))
+  
+  return(terra::vect(fn_pp_snap))
 }

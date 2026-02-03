@@ -17,8 +17,8 @@ messages cause a \code{stop}. If \code{stop_on_error = FALSE}, then the error me
 string is returned.}
 }
 \value{
-Returns a data frame (from a .csv file), a \code{raster} object (from a .tif file), 
-or an \code{sf} object (from a GeoJSON file).
+Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
+or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
 }
 \description{
 Accesses data sets, via a url the first time,
@@ -31,7 +31,7 @@ saves them locally, then accesses them locally after the first time the script i
 # Tested using files in the Upper Penticton Creek
 # zenodo repository https://zenodo.org/record/4781469
 library(ggplot2)
-library(raster)
+library(terra)
 
 # create directory to store data sets
 dir_name <- tempdir(check = FALSE)
@@ -52,6 +52,7 @@ if (typeof(sm_data) != "character") {
 ra_fn <- file.path(dir_name, "gs_dem25.tif")
 ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 ra_data <- ch_get_url_data(ra_url, ra_fn, stop_on_error = FALSE)
+terra::plot(ra_data)
 
 if (typeof(ra_data) != "character") {
   plot(ra_data)
@@ -62,13 +63,13 @@ if (typeof(ra_data) != "character") {
 gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 gs_data <- ch_get_url_data(gs_url, gs_fn, stop_on_error = FALSE)
-if (typeof(gs_data) != "character") {
-  ggplot(gs_data) +
-  geom_sf(aes(fill = new_key)) +
+
+ggplot() +
+  tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
   labs(fill = "Soil class",
        x = "UTM Easting (m)",
        y = "UTM Northing (m)") +
-  coord_sf(datum = 32611) +
+  coord_sf(crs = 32611) +
   theme_bw()
  } else {
  print(gs_data)}

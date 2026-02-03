@@ -9,13 +9,12 @@
 #' @param stop_on_error Optional. If there is an error in accessing the file and 
 #' \code{stop_on_error = TRUE} (the default) error/warning 
 #' messages cause a \code{stop}. If \code{stop_on_error = FALSE}, then the error message
-#' string is returned. 
-#'
-#' @importFrom sf st_read
-#' @importFrom raster raster
+#' string is returned.
+#' 
+#' @importFrom terra rast
 #' @author Dan Moore Kevin Shook
-#' @return Returns a data frame (from a .csv file), a \code{raster} object (from a .tif file), 
-#'or an \code{sf} object (from a GeoJSON file).
+#' @return Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
+#'or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
 #'
 #' @examples \donttest{
 #' # Example not tested automatically as multiple large data files are downloaded which is slow
@@ -23,7 +22,7 @@
 #' # Tested using files in the Upper Penticton Creek
 #' # zenodo repository https://zenodo.org/record/4781469
 #' library(ggplot2)
-#' library(raster)
+#' library(terra)
 #' 
 #' # create directory to store data sets
 #' dir_name <- tempdir(check = FALSE)
@@ -34,6 +33,7 @@
 #' sm_fn <- file.path(dir_name, "sm_data.csv")
 #' sm_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
 #' sm_data <- ch_get_url_data(sm_url, sm_fn, stop_on_error = FALSE)
+#' head(sm_data)
 #' 
 #' if (typeof(sm_data) != "character") {
 #'   head(sm_data)
@@ -44,6 +44,7 @@
 #' ra_fn <- file.path(dir_name, "gs_dem25.tif")
 #' ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 #' ra_data <- ch_get_url_data(ra_url, ra_fn, stop_on_error = FALSE)
+#' terra::plot(ra_data)
 #' 
 #' if (typeof(ra_data) != "character") {
 #'   plot(ra_data)
@@ -54,13 +55,13 @@
 #' gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 #' gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 #' gs_data <- ch_get_url_data(gs_url, gs_fn, stop_on_error = FALSE)
-#' if (typeof(gs_data) != "character") {
-#'   ggplot(gs_data) +
-#'   geom_sf(aes(fill = new_key)) +
+#' 
+#' ggplot() +
+#'   tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
 #'   labs(fill = "Soil class",
 #'        x = "UTM Easting (m)",
 #'        y = "UTM Northing (m)") +
-#'   coord_sf(datum = 32611) +
+#'   coord_sf(crs = 32611) +
 #'   theme_bw()
 #'  } else {
 #'  print(gs_data)}
@@ -93,13 +94,13 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
     return(da) 
   }
   
-  # tiff file - returns raster object
+  # tiff file - returns SpatRaster object
   if (file_ext %in% c("tif", "tiff")) {
     if (!file.exists(gd_filename)) {
       result <- ch_safe_GET(gd_url, gd_filename)
     }
     if (result == "OK") {
-      da <- raster::raster(gd_filename)
+      da <- terra::rast(gd_filename)
       return(da)
     } else {
       if (stop_on_error)
@@ -110,13 +111,13 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
 
   }
   
-  # GeoJSON - returns sf object
+  # GeoJSON - returns SpatVector object
   if (file_ext == "GeoJSON") {
     if (!file.exists(gd_filename)) {
       # check to see if url file exists
        result <- ch_safe_GET(gd_url, gd_filename)
        if (result == "OK") {
-         da <- st_read(gd_filename)
+         da <- terra::vect(gd_filename)
          return(da)
        } else {
          if (stop_on_error)
@@ -126,9 +127,10 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
        }
        
     } else {
-      da <- st_read(gd_filename)
+      da <- terra::vect(gd_filename)
     }     
     return(da) 
   }
 }
 
+ 

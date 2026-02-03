@@ -4,7 +4,7 @@
 #' Creates contour lines from a DEM.
 #' 
 #' @details
-#' Generates contour lines from a DEM, which are returned as an \pkg{sf} object. 
+#' Generates contour lines from a DEM, which are returned as a \pkg{terra} \code{SpatVector} object. 
 #' The user can either provide a vector of elevation values by specifying the \code{z_levels} argument, 
 #' or by supplying the minimum and maximum elevations (\code{zmin} and \code{zmax}) 
 #' and the number of contour lines (\code{n_levels}).
@@ -16,7 +16,7 @@
 #' @param z_levels Levels at which to plot contours. If specified, overrides \option{zmin}, \option{zmax} and
 #' \option{n_levels}.
 #' @return  
-#' \item{contours_sf}{sf object containing contours}
+#' \item{contours_sv}{SpatVector object containing contours}
 #' 
 #' @author Dan Moore
 #' 
@@ -27,11 +27,9 @@
 #' contours <- ch_contours(dem)
 #' 
 #' # plot contours map
-#' plot(contours)
+#' terra::plot(contours)
 #' 
-#' @importFrom raster raster getValues rasterToContour crs
-#' @importFrom sf st_as_sf st_crs
-#' @importFrom magrittr %>%
+#' @importFrom terra rast values as.contour crs
 #' @export
 ch_contours <- function(dem,
                         zmin = NULL, zmax = NULL,
@@ -45,16 +43,15 @@ ch_contours <- function(dem,
   
   # determine contour levels
   if (is.null(z_levels)) {
-    z <- getValues(dem)
+    z <- values(dem)
     if (is.null(zmin)) zmin <- min(z, na.rm = TRUE)
     if (is.null(zmax)) zmax <- max(z, na.rm = TRUE)
     z_levels <- seq(zmin, zmax, length.out = n_levels)
   }
   # if dem includes sea level, start contours at 0.1 m to mimic coastline
   if (z_levels[1] <= 0) {z_levels[1] <- 0.1}
-  # generate contours as a sf object
-  contours_sf <- rasterToContour(dem, levels = z_levels) %>%
-    st_as_sf()
-  sf::st_crs(contours_sf) <- crs(dem)
-  return(contours_sf)
+  # generate contours as a terra SpatVector object
+  contours_sv <- terra::as.contour(dem, levels = z_levels)
+  terra::crs(contours_sv) <- terra::crs(dem)
+  return(contours_sv)
 }

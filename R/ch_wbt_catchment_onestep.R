@@ -6,7 +6,7 @@
 #'
 #' @param wd Name of working directory.
 #' @param in_dem  File name for original DEM. 
-#' @param pp_sf Vector containing pour points.
+#' @param pp_sv Vector containing pour points.
 #' @param sink_method Method for sink removal as used by \code{ch_wbt_removesinks}.
 #' @param dist Maximum search distance for breach paths in cells. Required if \code{sink_method = "breach_leastcost"}.
 #' @param check_catchment If \code{TRUE} (the default) \code{ch_checkcatchment} will be called
@@ -24,10 +24,8 @@
 #' @param ... Extra parameters for \code{ch_wbt_removesinks}.
 #' @author Dan Moore and Kevin Shook
 #' @seealso \code{\link{ch_wbt_filenames}}
-#' @importFrom raster raster
+#' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons
-#' @importFrom sf st_crs write_sf st_write
-#' @importFrom magrittr %>%
 #' @return Returns an \pkg{sp} object of the delineated catchment.
 #' @export
 #'
@@ -35,20 +33,21 @@
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
-#'   library(raster)
+#'   library(terra)
 #'   test_raster <- ch_volcano_raster()
 #'   dem_raster_file <- tempfile(fileext = c(".tif"))
 #'   # write test raster to file
-#'   writeRaster(test_raster, dem_raster_file, format = "GTiff")
+#'   terra::writeRaster(test_raster, dem_raster_file)
 #'   wd <- tempdir()
 #'   pourpoint_file <- tempfile("volcano_pourpoints", fileext = ".shp")
 #'   pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #'   catchment <- ch_wbt_catchment_onestep(wd = wd, in_dem = dem_raster_file, 
-#'   pp_sf = pourpoints, sink_method = "fill", threshold = 1, snap_dist = 10)
+#'                                         pp_sv = pourpoints, sink_method = "fill", 
+#'                                         threshold = 1, snap_dist = 10)
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
-ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf, 
+ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv, 
                                      sink_method = "breach_leastcost", dist = NULL, 
                                      check_catchment = TRUE, threshold = NULL, snap_dist = NULL, 
                                      cb_colour = "red", pp_colour = "red",
@@ -77,39 +76,57 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sf,
   file_names <- ch_wbt_filenames(wd)
   # define 
   
+  # remove sinks
   dem_ns <- ch_wbt_removesinks(in_dem = in_dem, out_dem = file_names$dem_ns, 
                                method = sink_method, dist = dist, 
                                fn_dem_fsc = file_names$dem_fsc, ...)
 
   if (inherits(dem_ns, "character")) return(NULL)
+  
+  # flow accumulation
   ch_wbt_flow_accumulation(fn_dem_ns = file_names$dem_ns, fn_flowacc = file_names$flowacc,
                            return_raster = FALSE)
+  
+  # flow direction
   ch_wbt_flow_direction(fn_dem_ns = file_names$dem_ns, fn_flowdir = file_names$flowdir,
                         return_raster = FALSE)
+  
+  # extract streams to raster
   wbt_extract_streams(file_names$flowacc, file_names$channel_ras, threshold = threshold)
+  # strems to vector
   wbt_raster_streams_to_vector(file_names$channel_ras, file_names$flowdir, file_names$channel_vec)
-  sf::st_write(pp_sf, file_names$pp, quiet = TRUE, delete_layer = TRUE)
+  # save to file
+  terra::writeVector(pp_sv, file_names$pp, overwrite = TRUE)
+
+  # snap pourpoints  
   wbt_snap_pour_points(file_names$pp, file_names$flowacc, file_names$pp_snap, snap_dist)
+  
+  # delineate catchment - raster
   wbt_watershed(file_names$flowdir, file_names$pp_snap, file_names$catchment_ras)
+  # catchment to vector
   wbt_raster_to_vector_polygons(file_names$catchment_ras, file_names$catchment_vec)
-  catchment_vec <- st_read(file_names$catchment_vec) %>% st_as_sf()
-  if (is.na(sf::st_crs(catchment_vec))) {
-    sf::st_crs(catchment_vec) <- sf::st_crs(raster(file_names$catchment_ras))
-    sf::write_sf(catchment_vec, file_names$catchment_vec)
+  # read in cathment polygons
+  catchment_vec <- terra::vect(file_names$catchment_vec)
+  
+  if (is.na(terra::crs(catchment_vec)) | terra::crs(catchment_vec) == '') {
+    terra::crs(catchment_vec) <- terra::crs(terra::rast(file_names$catchment_ras))
+    terra::writeVector(catchment_vec, file_names$catchment_vec, overwrite = TRUE)
   }
   
-  channel_vec <- st_read(file_names$channel_vec) %>% st_as_sf()
-  if (is.na(sf::st_crs(channel_vec))) {
-    sf::st_crs(channel_vec) <- sf::st_crs(catchment_vec)
-    sf::write_sf(channel_vec, file_names$catchment_vec)
+  channel_vec <- terra::vect(file_names$channel_vec) 
+  
+  if (is.na(terra::crs(channel_vec)) | terra::crs(channel_vec) == '') {
+    terra::crs(channel_vec) <- terra::crs(catchment_vec)
+    terra::writeVector(channel_vec, file_names$catchment_vec, overwrite = TRUE)
   }
   
   if (check_catchment) {
-    result <- ch_checkcatchment(dem = dem_ns, catchment = catchment_vec, outlet = pp_sf, 
+    result <- ch_checkcatchment(dem = dem_ns, catchment = catchment_vec, outlet = pp_sv, 
                       channel_vec = channel_vec, cb_colour = cb_colour, pp_colour = pp_colour, 
                       channel_colour = channel_colour, contour_colour = contour_colour, 
                       plot_na = plot_na, plot_scale = plot_scale,
                       na_location = na_location, scale_location = scale_location)
   }
+  
   return(catchment_vec)
 }
