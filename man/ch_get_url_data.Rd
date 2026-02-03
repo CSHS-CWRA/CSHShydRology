@@ -4,14 +4,17 @@
 \alias{ch_get_url_data}
 \title{Gets remote data sets}
 \usage{
-ch_get_url_data(gd_url, gd_filename, quiet = FALSE)
+ch_get_url_data(gd_url, gd_filename, stop_on_error = TRUE)
 }
 \arguments{
 \item{gd_url}{url for accessing data set}
 
 \item{gd_filename}{name of file on local drive, including full path}
 
-\item{quiet}{Optional. If \code{FALSE} (the default) error/warning messages are printed if the data cannot be found.}
+\item{stop_on_error}{Optional. If there is an error in accessing the file and 
+\code{stop_on_error = TRUE} (the default) error/warning 
+messages cause a \code{stop}. If \code{stop_on_error = FALSE}, then the error message
+string is returned.}
 }
 \value{
 Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
@@ -39,19 +42,19 @@ if (!dir.exists(dir_name)) {
 # test with soil moisture data in csv format
 sm_fn <- file.path(dir_name, "sm_data.csv")
 sm_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
-sm_data <- ch_get_url_data(sm_url, sm_fn)
+sm_data <- ch_get_url_data(sm_url, sm_fn, stop_on_error = FALSE)
 head(sm_data)
 
 # test with tif/tiff file containing a dem
 ra_fn <- file.path(dir_name, "gs_dem25.tif")
 ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
-ra_data <- ch_get_url_data(ra_url, ra_fn)
+ra_data <- ch_get_url_data(ra_url, ra_fn, stop_on_error = FALSE)
 terra::plot(ra_data)
 
 # test with GeoJSON
 gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
-gs_data <- ch_get_url_data(gs_url, gs_fn)
+gs_data <- ch_get_url_data(gs_url, gs_fn, stop_on_error = FALSE)
 
 ggplot() +
   tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
@@ -63,5 +66,5 @@ ggplot() +
 }
 }
 \author{
-Dan Moore
+Dan Moore Kevin Shook
 }

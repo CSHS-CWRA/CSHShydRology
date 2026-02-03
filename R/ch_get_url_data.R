@@ -11,7 +11,6 @@
 #' messages cause a \code{stop}. If \code{stop_on_error = FALSE}, then the error message
 #' string is returned.
 #' 
-#' @importFrom httr GET write_disk
 #' @importFrom terra rast
 #' @author Dan Moore Kevin Shook
 #' @return Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
