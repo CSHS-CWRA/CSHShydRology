@@ -127,3 +127,45 @@ ch_test_url_file <- function(url, quiet = FALSE){
     
     return(out)
 }
+
+
+#' Executes GET function with error trapping
+#'
+#' @param url Required. URL to be accessed.
+#' @param filename Required. File to be used to save data
+#'
+#' @returns Returns a character string: "OK" if all went well, the error message
+#' if it did not.
+#' @export
+#' @keywords internal
+#' @author Kevin Shook
+#' @importFrom httr2 request req_perform
+#'
+#' @examples \donttest{
+#' # Not tested automatically as can be very slow
+#' test_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
+#' dir_name <- tempdir(check = FALSE)
+#' if (!dir.exists(dir_name)) {
+#'   dir.create(dir_name, recursive = TRUE)
+#' }
+#' test_file <- file.path(dir_name, "gs_dem25.tif")
+#' result <- ch_safe_GET(test_url, test_file)
+#' }
+#' 
+ch_safe_GET <- function(url = NULL, filename = NULL) {
+  
+  
+  tryCatch({
+    # Create and perform the request, saving the body to the specified path
+    request(url) |>
+      req_perform(path = filename)
+    
+    return("OK")
+    
+  }, error = function(e) {
+    return(e$message)
+  })
+  
+
+
+}

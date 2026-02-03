@@ -57,11 +57,11 @@
 #' 
 #' # quick check plot - all catchments
 #' terra::plot(dem_upc)
-#' plot(cb, add = TRUE, col = NA)
+#' terra::plot(cb, add = TRUE, col = NA)
 #' 
 #' # subset 240 catchment
 #' cb_240 <- cb |> dplyr::filter(wsc_name == "240")
-#' plot(cb_240, col = NA)
+#' terra::plot(cb_240, col = NA)
 #' 
 #' ## test function 
 #' 
