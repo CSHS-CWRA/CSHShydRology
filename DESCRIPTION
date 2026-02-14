@@ -43,6 +43,7 @@ Depends:
     R (>= 4.1.0)
 Imports: 
     fields,
+    data.table,
     lubridate,
     plotrix,
     timeDate,
