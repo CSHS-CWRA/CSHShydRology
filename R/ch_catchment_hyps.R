@@ -40,6 +40,7 @@
 #' @examples \donttest{
 #' # Note: example not tested automatically as it is very slow to execute due to the downloading
 #' # change the following line to specify a directory to hold the data
+#' library(terra)
 #' dir_name <- tempdir(check = FALSE)
 #' # create directory to store data sets
 #' if (!dir.exists(dir_name)) {
@@ -59,11 +60,11 @@
 #'   cb_type <- typeof(cb)
 #'   if (cb_type != "character") {
 #'   #  quick check plot - all catchments
-#'     raster::plot(dem_upc)
+#'     terra::plot(dem_upc)
 #'     plot(cb, add = TRUE, col = NA)
 #' 
 #'     # subset 240 catchment
-#'     cb_240 <- cb %>% tidyterra::filter(wsc_name == "240")
+#'     cb_240 <- cb |> tidyterra::filter(wsc_name == "240")
 #'     plot(cb_240, col = NA)
 #' 
 #'     ## test function 

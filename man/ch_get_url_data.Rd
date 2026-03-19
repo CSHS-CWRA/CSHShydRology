@@ -42,6 +42,7 @@ if (!dir.exists(dir_name))
 sm_fn <- file.path(dir_name, "sm_data.csv")
 sm_url <- "https://zenodo.org/record/4781469/files/sm_data.csv"
 sm_data <- ch_get_url_data(sm_url, sm_fn, stop_on_error = FALSE)
+head(sm_data)
 
 if (typeof(sm_data) != "character") {
   head(sm_data)
@@ -57,22 +58,24 @@ terra::plot(ra_data)
 if (typeof(ra_data) != "character") {
   plot(ra_data)
 } else {
-  message(sm_data)}
+  message(ra_data)}
  
 # test with GeoJSON
 gs_fn <- file.path(dir_name, "gs_soilmaps.GeoJSON")
 gs_url <- "https://zenodo.org/record/4781469/files/gs_soilmaps.GeoJSON"
 gs_data <- ch_get_url_data(gs_url, gs_fn, stop_on_error = FALSE)
 
-ggplot() +
-  tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
-  labs(fill = "Soil class",
-       x = "UTM Easting (m)",
-       y = "UTM Northing (m)") +
-  coord_sf(crs = 32611) +
-  theme_bw()
+if (typeof(gs_data) != "character") {
+  ggplot() +
+    tidyterra::geom_spatvector(data = gs_data, aes(fill = new_key)) +
+    labs(fill = "Soil class",
+         x = "UTM Easting (m)",
+         y = "UTM Northing (m)") +
+    coord_sf(crs = 32611) +
+    theme_bw()
  } else {
- print(gs_data)}
+ message(gs_data)
+ }
 }
 
 }

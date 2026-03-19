@@ -76,6 +76,7 @@ curve may also be created.
 \donttest{
 # Note: example not tested automatically as it is very slow to execute due to the downloading
 # change the following line to specify a directory to hold the data
+library(terra)
 dir_name <- tempdir(check = FALSE)
 # create directory to store data sets
 if (!dir.exists(dir_name)) {
@@ -90,29 +91,31 @@ if (dem_upc_type != "character") {
 # get catchment boundaries
 cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
 cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
-cb <- ch_get_url_data(cb_url, cb_fn)
+cb <- ch_get_url_data(cb_url, cb_fn, stop_on_error = FALSE)
 
-# quick check plot - all catchments
-terra::plot(dem_upc)
-terra::plot(cb, add = TRUE, col = NA)
+  cb_type <- typeof(cb)
+  if (cb_type != "character") {
+  #  quick check plot - all catchments
+    terra::plot(dem_upc)
+    plot(cb, add = TRUE, col = NA)
 
-# subset 240 catchment
-cb_240 <- cb |> tidyterra::filter(wsc_name == "240")
-terra::plot(cb_240, col = NA)
+    # subset 240 catchment
+    cb_240 <- cb |> tidyterra::filter(wsc_name == "240")
+    plot(cb_240, col = NA)
 
-## test function 
+    ## test function 
 
-# test different combinations of arguments
-ch_catchment_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
-ch_catchment_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
-ch_catchment_hyps(cb_240, dem_upc, n_levels = 6)
-ch_catchment_hyps(cb_240, dem_upc)
-ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
-ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
+    # test different combinations of arguments
+    ch_catchment_hyps(cb_240, dem_upc, quantiles = seq(0, 1, 0.1))
+    ch_catchment_hyps(cb_240, dem_upc, z_levels = seq(1600, 2050, 50))
+    ch_catchment_hyps(cb_240, dem_upc, n_levels = 6)
+    ch_catchment_hyps(cb_240, dem_upc)
+    ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050)
+    ch_catchment_hyps(cb_240, dem_upc, zmin = 1600, zmax = 2050, n_levels = 6)
 
-# generate a graph
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE)
-ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
+    # generate a graph
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE)
+    ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               col = "blue", type = "l", ylim = c(1500, 2200))
     ch_catchment_hyps(cb_240, dem_upc, hypso_plot = TRUE, 
               add_grid = TRUE, quantiles = seq(0, 1, 0.1))
