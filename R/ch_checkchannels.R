@@ -17,7 +17,7 @@
 #' @return 
 #' \item{check_map}{a \pkg{ggplot} object of a map with channel layer}
 #' 
-#' @author Dan Moore
+#' @author Dan Moore Billy Browning and Joel Trubilowicz
 #' @seealso \code{\link{ch_checkcatchment}}  
 #' @importFrom ggplot2 ggplot coord_sf theme_bw 
 #' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering

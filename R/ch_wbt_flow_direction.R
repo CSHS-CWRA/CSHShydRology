@@ -4,7 +4,7 @@
 #' @param fn_flowdir File name for flow direction grid to be created.
 #' @param return_raster Should a raster object be returned?
 #'
-#' @author Dan Moore
+#' @author Dan Moore Joel Trubilowicz
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_d8_pointer
 #' @return If \code{return_raster = TRUE} (the default), the flow direction

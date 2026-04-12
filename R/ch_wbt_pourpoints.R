@@ -14,7 +14,7 @@
 #' @param snap_dist Maximum snap distance in map units. 
 #' @param ... Additional parameters for \pkg{whitebox} function \code{wbt_snap_pour_points}.
 #'
-#' @author Dan Moore
+#' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_volcano_pourpoints}}
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_snap_pour_points

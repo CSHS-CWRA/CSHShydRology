@@ -11,7 +11,7 @@
 #' @param fn_dem_fsc File path for dem after removing single-cell pits.
 #' @param ... Additional arguments to be passed to functions to remove sinks.
 #'
-#' @author Dan Moore
+#' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_init wbt_fill_single_cell_pits wbt_breach_depressions_least_cost 
 #' @importFrom whitebox wbt_fill_depressions_wang_and_liu

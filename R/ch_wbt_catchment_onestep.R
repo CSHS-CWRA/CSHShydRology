@@ -22,7 +22,7 @@
 #' @param na_location Location for the north arrow. Default is \option{tr}, i.e. top-right.
 #' @param scale_location Location for the scale bar. Default is \option{bl}, i.e. bottom-left.
 #' @param ... Extra parameters for \code{ch_wbt_removesinks}.
-#' @author Dan Moore and Kevin Shook
+#' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_wbt_filenames}}
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons

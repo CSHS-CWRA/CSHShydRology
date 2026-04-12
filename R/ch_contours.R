@@ -9,7 +9,7 @@
 #' or by supplying the minimum and maximum elevations (\code{zmin} and \code{zmax}) 
 #' and the number of contour lines (\code{n_levels}).
 #'
-#' @param dem Raster object of your dem in the desired projection (note: should have had sinks removed).
+#' @param dem \pkg{terra} \code{SpatRaster} object of your dem in the desired projection (note: should have had sinks removed).
 #' @param zmin Minimum elevation value for contours. If not specified, minimum value \option{dem} is used.
 #' @param zmax Maximum elevation value for contours. If not specified, maximum value \option{dem} is used.
 #' @param n_levels Number of contour lines. Default is 10.
@@ -18,7 +18,7 @@
 #' @return  
 #' \item{contours_sv}{SpatVector object containing contours}
 #' 
-#' @author Dan Moore
+#' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' 
 #' @examples
 #' # use volcano DEM

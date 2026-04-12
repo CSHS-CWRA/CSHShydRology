@@ -6,7 +6,7 @@
 #' @param fn_channel_vec File name for vector version of channel networks.
 #' @param threshold Threshold for channel initiation.
 #' @param ... Other parameters for \pkg{whitebox} function \code{wbt_extract_streams}
-#' @author Dan Moore
+#' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector
 #' @importFrom stats step

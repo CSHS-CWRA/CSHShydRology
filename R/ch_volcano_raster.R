@@ -11,7 +11,7 @@
 #' 
 #' @export 
 #' @return Returns a SpatRaster object of land surface elevations. 
-#' @author Dan Moore and Kevin Shook
+#' @author Dan Moore Kevin Shook and Joel Trubilowicz
 #' @importFrom terra rast crs
 #' @examples
 #' test_raster <- ch_volcano_raster()

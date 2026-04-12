@@ -9,7 +9,7 @@
 #' \code{volcano} DEM. The pour points are also written to the specified file.
 #' @export
 #' @importFrom dplyr mutate
-#' @author Dan Moore and Kevin Shook
+#' @author Dan Moore Kevin Shook and Billy Browning
 #' @seealso \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}} 
 #'
 #' @examples

@@ -33,7 +33,7 @@
 #'
 #' @importFrom terra mask minmax hist quantile plot
 #' @return Returns a data frame of elevations and catchment fractions below.
-#' @author Dan Moore Kevin Shook
+#' @author Dan Moore Kevin Shook Joel Trubilowicz Billy Browning
 #' @seealso \code{\link{ch_get_url_data}}  
 #' @export
 #'
@@ -116,7 +116,8 @@ ch_catchment_hyps <- function(catchment, dem,
     qz <- c(0, cumsum(z_hist$counts)/nz)
     out_df <- data.frame(z = z_levels, qz)
   } else {
-    zq <- terra::global(dem_masked, fun = quantile, probs = quantiles, na.rm = T)
+    zq <- terra::global(dem_masked, fun = quantile, probs = quantiles,
+                        na.rm = T)
     out_df <- data.frame(z = as.numeric(t(zq)), qz = quantiles)
   }
   if (hypso_plot) {

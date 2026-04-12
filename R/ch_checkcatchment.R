@@ -29,7 +29,7 @@
 #' @return \code{TRUE}. A map of the catchments is also plotted and 
 #' the catchment parameters are printed.
 #' 
-#' @author Dan Moore and Kevin Shook
+#' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_checkchannels}} 
 #' @importFrom ggplot2 ggplot coord_sf theme_bw labs
 #' @importFrom ggspatial annotation_north_arrow north_arrow_fancy_orienteering annotation_scale 

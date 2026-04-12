@@ -6,7 +6,7 @@
 #' @param fn_catchment_vec Vector file to contain delineated catchment.
 #' @param return_vector If \code{TRUE} (the default) a vector of the catchment will be returned.
 #' 
-#' @author Dan Moore and Kevin Shook
+#' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
 #' @return If \code{return_vector == TRUE} a vector of the catchment is returned. Otherwise

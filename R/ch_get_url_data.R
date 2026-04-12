@@ -12,7 +12,7 @@
 #' string is returned.
 #' 
 #' @importFrom terra rast
-#' @author Dan Moore Kevin Shook
+#' @author Dan Moore Kevin Shook Billy Browning and Joel Trubilowicz
 #' @return Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
 #'or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
 #'

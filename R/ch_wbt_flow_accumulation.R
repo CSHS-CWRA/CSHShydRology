@@ -7,7 +7,7 @@
 #' \option{fn_flowacc}. If \code{FALSE}, the output file will still be created
 #' but a \code{NULL} value is returned.
 #'
-#' @author Dan Moore
+#' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_d8_flow_accumulation
 #' @return If \code{return_raster = TRUE}, the flow accumulation
