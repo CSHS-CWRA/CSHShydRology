@@ -35,6 +35,8 @@ Sinks are removed from a DEM using one of several methods. The raster file
 types supported are listed in \code{\link{Spatial_hydrology_functions}}.
 }
 \examples{
+
+#' \dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -50,6 +52,7 @@ if (check_whitebox_binary()){
   removed_sinks <- ch_wbt_removesinks(dem_raster_file, no_sink_raster_file, method = "fill")
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 }
 \author{
