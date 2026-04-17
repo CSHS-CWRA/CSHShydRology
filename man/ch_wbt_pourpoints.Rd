@@ -74,5 +74,5 @@ if (check_whitebox_binary()){
 \code{\link{ch_volcano_pourpoints}}
 }
 \author{
-Dan Moore
+Dan Moore Joel Trubilowicz and Billy Browning
 }

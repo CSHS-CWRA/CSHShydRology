@@ -47,5 +47,5 @@ if (check_whitebox_binary()){
 }
 }
 \author{
-Dan Moore
+Dan Moore Joel Trubilowicz and Billy Browning
 }

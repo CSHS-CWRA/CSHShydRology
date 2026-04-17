@@ -7,7 +7,7 @@
 ch_contours(dem, zmin = NULL, zmax = NULL, n_levels = 10, z_levels = NULL)
 }
 \arguments{
-\item{dem}{Raster object of your dem in the desired projection (note: should have had sinks removed).}
+\item{dem}{\pkg{terra} \code{SpatRaster} object of your dem in the desired projection (note: should have had sinks removed).}
 
 \item{zmin}{Minimum elevation value for contours. If not specified, minimum value \option{dem} is used.}
 
@@ -41,5 +41,5 @@ terra::plot(contours)
 
 }
 \author{
-Dan Moore
+Dan Moore Joel Trubilowicz and Billy Browning
 }

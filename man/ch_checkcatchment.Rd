@@ -113,5 +113,5 @@ if (check_whitebox_binary()){
 \code{\link{ch_checkchannels}}
 }
 \author{
-Dan Moore and Kevin Shook
+Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 }

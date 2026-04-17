@@ -80,5 +80,5 @@ if (check_whitebox_binary()){
 \code{\link{ch_checkcatchment}}
 }
 \author{
-Dan Moore
+Dan Moore Billy Browning and Joel Trubilowicz
 }

@@ -27,5 +27,5 @@ terra::plot(pourpoints)
 \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}}
 }
 \author{
-Dan Moore and Kevin Shook
+Dan Moore Kevin Shook and Billy Browning
 }

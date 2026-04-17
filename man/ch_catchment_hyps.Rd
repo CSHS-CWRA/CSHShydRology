@@ -132,5 +132,5 @@ cb <- ch_get_url_data(cb_url, cb_fn, stop_on_error = FALSE)
 \code{\link{ch_get_url_data}}
 }
 \author{
-Dan Moore Kevin Shook
+Dan Moore Kevin Shook Joel Trubilowicz Billy Browning
 }

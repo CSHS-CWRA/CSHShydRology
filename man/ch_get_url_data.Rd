@@ -80,5 +80,5 @@ if (typeof(gs_data) != "character") {
 
 }
 \author{
-Dan Moore Kevin Shook
+Dan Moore Kevin Shook Billy Browning and Joel Trubilowicz
 }

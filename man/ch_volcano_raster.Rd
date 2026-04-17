@@ -23,5 +23,5 @@ test_raster <- ch_volcano_raster()
 
 }
 \author{
-Dan Moore and Kevin Shook
+Dan Moore Kevin Shook and Joel Trubilowicz
 }
