@@ -1,3 +1,8 @@
+# CSHShydRology 1.5.0
+
+-  functions from the packages `terra` and `tidyterra` have replaced `raster`, which is deprecated,
+in the catchment delineation functions
+
 # CSHShydRology 1.4.6
 
 -   now using **httr2** instead of **httr** to download data in `ch_get_url_data`

@@ -46,6 +46,7 @@ Authors:
   \item Robert Chlumsky \email{rchlumsk@uwaterloo.ca}
   \item Daniel Moore \email{dan.moore@ubc.ca}
   \item Martin Durocher
+  \item Billy Browning
 }
 
 Other contributors:
