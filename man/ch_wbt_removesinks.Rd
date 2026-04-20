@@ -35,8 +35,7 @@ Sinks are removed from a DEM using one of several methods. The raster file
 types supported are listed in \code{\link{Spatial_hydrology_functions}}.
 }
 \examples{
-
-#' \dontrun{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){

@@ -19,9 +19,7 @@
 #' @return Returns a \pkg{terra} \code{SpatRaster} object containing the processed dem. 
 #' @export
 #'
-#' @examples 
-#' 
-#' #' \dontrun{
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
