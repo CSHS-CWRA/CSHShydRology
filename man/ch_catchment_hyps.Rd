@@ -23,9 +23,9 @@ ch_catchment_hyps(
 )
 }
 \arguments{
-\item{catchment}{A \pkg{sf} object containing the catchment divide.}
+\item{catchment}{A \pkg{terra} \code{SpatVector} object containing the catchment divide.}
 
-\item{dem}{A \pkg{raster} object of the Digital Elevation Model.}
+\item{dem}{A \pkg{terra} \code{SpatRaster} object of the Digital Elevation Model.}
 
 \item{z_levels}{Vector of elevation levels for the hypsometry. If specified, 
 then no other elevation parameters are required. Default is \code{NULL}.}
@@ -75,9 +75,8 @@ curve may also be created.
 \examples{
 \donttest{
 # Note: example not tested automatically as it is very slow to execute due to the downloading
-library(raster)
-library(magrittr)
 # change the following line to specify a directory to hold the data
+library(terra)
 dir_name <- tempdir(check = FALSE)
 # create directory to store data sets
 if (!dir.exists(dir_name)) {
@@ -90,17 +89,18 @@ dem_upc <- ch_get_url_data(dem_url, dem_fn, stop_on_error = FALSE)
 dem_upc_type <- typeof(dem_upc)
 if (dem_upc_type != "character") {
 # get catchment boundaries
-  cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
-  cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
-  cb <- ch_get_url_data(cb_url, cb_fn, stop_on_error = FALSE)
+cb_fn <- file.path(dir_name, "gs_catchments.GeoJSON")
+cb_url <- "https://zenodo.org/record/4781469/files/gs_catchments.GeoJSON"
+cb <- ch_get_url_data(cb_url, cb_fn, stop_on_error = FALSE)
+
   cb_type <- typeof(cb)
   if (cb_type != "character") {
   #  quick check plot - all catchments
-    raster::plot(dem_upc)
+    terra::plot(dem_upc)
     plot(cb, add = TRUE, col = NA)
 
     # subset 240 catchment
-    cb_240 <- cb \%>\% dplyr::filter(wsc_name == "240")
+    cb_240 <- cb |> tidyterra::filter(wsc_name == "240")
     plot(cb_240, col = NA)
 
     ## test function 
@@ -132,5 +132,5 @@ if (dem_upc_type != "character") {
 \code{\link{ch_get_url_data}}
 }
 \author{
-Dan Moore Kevin Shook
+Dan Moore Kevin Shook Joel Trubilowicz Billy Browning
 }
