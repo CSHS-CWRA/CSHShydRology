@@ -20,30 +20,31 @@
 #' 
 #' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' 
-#' @examples
+#' @examples \dontrun{
 #' # use volcano DEM
 #' dem <- ch_volcano_raster()
 #' # generate contours
 #' contours <- ch_contours(dem)
-#' 
+#'
 #' # plot contours map
 #' terra::plot(contours)
-#' 
-#' @importFrom terra rast values as.contour crs
+#' }
+#'
 #' @export
 ch_contours <- function(dem,
                         zmin = NULL, zmax = NULL,
                         n_levels = 10,
                         z_levels = NULL) {
-  
+  assert_pkg("terra")
+
   # check inputs
   if (missing(dem)) {
     stop("ch_contours requires a raster dem")
   }
-  
+
   # determine contour levels
   if (is.null(z_levels)) {
-    z <- values(dem)
+    z <- terra::values(dem)
     if (is.null(zmin)) zmin <- min(z, na.rm = TRUE)
     if (is.null(zmax)) zmax <- max(z, na.rm = TRUE)
     z_levels <- seq(zmin, zmax, length.out = n_levels)

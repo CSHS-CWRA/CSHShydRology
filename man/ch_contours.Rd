@@ -31,6 +31,7 @@ or by supplying the minimum and maximum elevations (\code{zmin} and \code{zmax})
 and the number of contour lines (\code{n_levels}).
 }
 \examples{
+\dontrun{
 # use volcano DEM
 dem <- ch_volcano_raster()
 # generate contours
@@ -38,6 +39,7 @@ contours <- ch_contours(dem)
 
 # plot contours map
 terra::plot(contours)
+}
 
 }
 \author{

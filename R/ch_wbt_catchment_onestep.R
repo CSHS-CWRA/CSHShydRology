@@ -24,12 +24,10 @@
 #' @param ... Extra parameters for \code{ch_wbt_removesinks}.
 #' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_wbt_filenames}}
-#' @importFrom terra rast
-#' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons
 #' @return Returns an \pkg{sp} object of the delineated catchment.
 #' @export
 #'
-#' @examples
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -47,6 +45,7 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv, 
                                      sink_method = "breach_leastcost", dist = NULL, 
                                      check_catchment = TRUE, threshold = NULL, snap_dist = NULL, 
@@ -54,6 +53,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
                                      channel_colour = "blue", contour_colour = "grey",       
                                      plot_na = TRUE, plot_scale = TRUE,
                                      na_location = "tr", scale_location = "bl", ...) {
+  assert_pkg("terra")
   ch_wbt_check_whitebox()
   
   if (missing(wd)) {
@@ -92,19 +92,19 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
                         return_raster = FALSE)
   
   # extract streams to raster
-  wbt_extract_streams(file_names$flowacc, file_names$channel_ras, threshold = threshold)
+  whitebox::wbt_extract_streams(file_names$flowacc, file_names$channel_ras, threshold = threshold)
   # strems to vector
-  wbt_raster_streams_to_vector(file_names$channel_ras, file_names$flowdir, file_names$channel_vec)
+  whitebox::wbt_raster_streams_to_vector(file_names$channel_ras, file_names$flowdir, file_names$channel_vec)
   # save to file
   terra::writeVector(pp_sv, file_names$pp, overwrite = TRUE)
 
-  # snap pourpoints  
-  wbt_snap_pour_points(file_names$pp, file_names$flowacc, file_names$pp_snap, snap_dist)
-  
+  # snap pourpoints
+  whitebox::wbt_snap_pour_points(file_names$pp, file_names$flowacc, file_names$pp_snap, snap_dist)
+
   # delineate catchment - raster
-  wbt_watershed(file_names$flowdir, file_names$pp_snap, file_names$catchment_ras)
+  whitebox::wbt_watershed(file_names$flowdir, file_names$pp_snap, file_names$catchment_ras)
   # catchment to vector
-  wbt_raster_to_vector_polygons(file_names$catchment_ras, file_names$catchment_vec)
+  whitebox::wbt_raster_to_vector_polygons(file_names$catchment_ras, file_names$catchment_vec)
   # read in cathment polygons
   catchment_vec <- terra::vect(file_names$catchment_vec)
   

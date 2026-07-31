@@ -12,12 +12,14 @@
 #' @author Dan Moore Kevin Shook and Billy Browning
 #' @seealso \code{\link{ch_volcano_raster}} \code{\link{ch_wbt_pourpoints}} 
 #'
-#' @examples
+#' @examples \dontrun{
 #' pourpoint_file <- tempfile("volcano_pourpoints", fileext = c(".shp"))
 #' pourpoints <- ch_volcano_pourpoints(pourpoint_file)
 #' terra::plot(pourpoints)
+#' }
 ch_volcano_pourpoints <- function(pp_shp) {
-  
+  assert_pkg("terra")
+
   if (missing(pp_shp)) {
     stop("File for pour points must be specified")
   }

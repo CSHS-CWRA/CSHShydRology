@@ -7,13 +7,11 @@
 #' @param threshold Threshold for channel initiation.
 #' @param ... Other parameters for \pkg{whitebox} function \code{wbt_extract_streams}
 #' @author Dan Moore Joel Trubilowicz and Billy Browning
-#' @importFrom terra rast
-#' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector
 #' @importFrom stats step
 #' @return Returns a \pkg{terra} \code{SpatVector} object of the stream channels.
 #' @export
 #'
-#' @examples 
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -43,11 +41,12 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 
 ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
                             fn_channel_ras, fn_channel_vec, 
                             threshold = NULL, ...) {
-  
+  assert_pkg("terra")
   ch_wbt_check_whitebox()
   
   if (!file.exists(fn_flowacc)) {
@@ -64,14 +63,14 @@ ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
   
   message("ch_wbt: Generating stream network")
   
-  wbt_extract_streams(fn_flowacc, fn_channel_ras, threshold = threshold, ...)
-  
-  wbt_raster_streams_to_vector(fn_channel_ras, fn_flowdir, fn_channel_vec)
-  
+  whitebox::wbt_extract_streams(fn_flowacc, fn_channel_ras, threshold = threshold, ...)
+
+  whitebox::wbt_raster_streams_to_vector(fn_channel_ras, fn_flowdir, fn_channel_vec)
+
   channel_vec <- terra::vect(fn_channel_vec)
-  
+
   if(is.na(terra::crs(channel_vec)) | terra::crs(channel_vec) == '' ) {
-    terra::crs(channel_vec) <- terra::crs(rast(fn_channel_ras))
+    terra::crs(channel_vec) <- terra::crs(terra::rast(fn_channel_ras))
     terra::writeVector(channel_vec, fn_channel_vec, overwrite = TRUE)
   } 
   
