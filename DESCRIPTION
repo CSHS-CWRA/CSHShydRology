@@ -1,8 +1,8 @@
 Type: Package
 Package: CSHShydRology
 Title: Canadian Hydrological Analyses
-Version: 1.5.0
-Date: 2026-04-20
+Version: 1.5.1
+Date: 2026-07-30
 Authors@R: c(person("Kevin", "Shook", 
               email = "kshook@kshook.ca", 
               role = c("cre", "aut")),
@@ -45,31 +45,31 @@ URL: https://github.com/CSHS-hydRology/CSHShydRology
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    circular,
+    datasets,
+    dplyr,
     fields,
+    ggplot2,
+    Kendall,
     lubridate,
     plotrix,
-    timeDate,
-    stringr,
-    ggplot2,
-    ggspatial,
-    stats,
-    dplyr,
-    httr2,
-    terra,
-    tidyterra,
-    tidyhydat,
-    whitebox,
-    datasets,
-    circular,
     MGBT,
     outliers,
     TeachingDemos,
-    Kendall
+    timeDate,
+    stats,
+    stringr
 Suggests: 
+    ggspatial,
+    httr2,
     knitr,
-    testthat, 
+    readr,
     rmarkdown,
-    readr
+    terra,
+    tidyhydat,
+    tidyterra,
+    testthat, 
+    whitebox
 VignetteBuilder: knitr
 LazyData: true
 Encoding: UTF-8

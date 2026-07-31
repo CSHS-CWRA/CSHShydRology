@@ -31,13 +31,12 @@
 #' \code{FALSE}
 #' @param ... Other parameters for the graph
 #'
-#' @importFrom terra mask minmax hist quantile plot
 #' @return Returns a data frame of elevations and catchment fractions below.
 #' @author Dan Moore Kevin Shook Joel Trubilowicz Billy Browning
 #' @seealso \code{\link{ch_get_url_data}}  
 #' @export
 #'
-#' @examples \donttest{
+#' @examples \dontrun{
 #' # Note: example not tested automatically as it is very slow to execute due to the downloading
 #' # change the following line to specify a directory to hold the data
 #' library(terra)
@@ -103,6 +102,7 @@ ch_catchment_hyps <- function(catchment, dem,
                           add_grid = FALSE, ...) {
   # need to add error traps for incorrect values for
   # catchment and dem
+  assert_pkg("terra")
   dem_masked <- terra::mask(dem, catchment)
   if (is.null(quantiles)) {
     if (is.null(z_levels)) {

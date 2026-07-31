@@ -19,7 +19,9 @@ No arguments are required as the DEM is created from the \pkg{base}
 \code{volcano} matrix of elevations.
 }
 \examples{
+\dontrun{
 test_raster <- ch_volcano_raster()
+}
 
 }
 \author{

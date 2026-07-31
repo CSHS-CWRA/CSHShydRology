@@ -19,10 +19,9 @@
 #' 
 #' @author Dan Moore Billy Browning and Joel Trubilowicz
 #' @seealso \code{\link{ch_checkcatchment}}  
-#' @importFrom ggplot2 ggplot coord_sf theme_bw 
-#' @importFrom ggspatial annotation_north_arrow annotation_scale north_arrow_fancy_orienteering
+#' @importFrom ggplot2 ggplot coord_sf theme_bw
 #' @export
-#' @examples 
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -59,10 +58,14 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 ch_checkchannels <- function(dem, channels, outlet = NULL, main_label = "",
                              channel_colour = "blue", pp_colour = "red",
                              contour_colour = "grey") {
-  
+  assert_pkg("terra")
+  assert_pkg("ggspatial")
+  assert_pkg("tidyterra")
+
   # check inputs
   if (missing(dem)) {
     stop("ch_checkchannels requires a raster dem to plot")

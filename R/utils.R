@@ -139,7 +139,6 @@ ch_test_url_file <- function(url, quiet = FALSE){
 #' @export
 #' @keywords internal
 #' @author Kevin Shook
-#' @importFrom httr2 request req_perform
 #'
 #' @examples \donttest{
 #' # Not tested automatically as can be very slow
@@ -153,12 +152,12 @@ ch_test_url_file <- function(url, quiet = FALSE){
 #' }
 #' 
 ch_safe_GET <- function(url = NULL, filename = NULL) {
-  
-  
+  assert_pkg("httr2")
+
   tryCatch({
     # Create and perform the request, saving the body to the specified path
-    request(url) |>
-      req_perform(path = filename)
+    httr2::request(url) |>
+      httr2::req_perform(path = filename)
     
     return("OK")
     
@@ -169,3 +168,13 @@ ch_safe_GET <- function(url = NULL, filename = NULL) {
 
 
 }
+
+
+# Checks whether a suggested package is installed; errors clearly if not
+assert_pkg <- function(pkg) {
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop("Package '", pkg, "' is required for this function but is not installed.",
+         call. = FALSE)
+  }
+}
+

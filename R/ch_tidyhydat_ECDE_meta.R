@@ -53,8 +53,6 @@
 #'   }
 #' }
 #' 
-#' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range 
-#' hy_daily hy_reg_office_list hy_datum_list hy_agency_list hy_stn_data_coll hy_sed_daily_loads
 #' @importFrom stringr str_detect
 #' @importFrom dplyr left_join
 #' @importFrom utils txtProgressBar setTxtProgressBar
@@ -85,8 +83,9 @@
 #' 
 
 ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
+  assert_pkg("tidyhydat")
 
-  H_version <- hy_version() 
+  H_version <- tidyhydat::hy_version()
   H_version <- data.frame(H_version)
   hy_date <- format(H_version[2], format = "%Y-%m-%d")
   message("HYDAT version: ", H_version[1], " Date: ", hy_date)
@@ -101,13 +100,13 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
     } 
   }
   # extract difference parts of metadata using tidyhydat
-  tc <- hy_stations(station_number = stations)
+  tc <- tidyhydat::hy_stations(station_number = stations)
   tc <- data.frame(tc)
 
-  td <- hy_stn_regulation(station_number = stations)
+  td <- tidyhydat::hy_stn_regulation(station_number = stations)
   td <- data.frame(td)
-  
-  te <- hy_stn_data_range(station_number = stations)
+
+  te <- tidyhydat::hy_stn_data_range(station_number = stations)
   te <- data.frame(te)
   te <- te[te[,2] == "Q",]
   
@@ -141,9 +140,9 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
     if (nrow(meta) > 1)
     # convert code numbers to strings
     # get dataframes of codes and strings
-    regions <- hy_reg_office_list()
-    datums <- hy_datum_list()
-    agencies <- hy_agency_list()
+    regions <- tidyhydat::hy_reg_office_list()
+    datums <- tidyhydat::hy_datum_list()
+    agencies <- tidyhydat::hy_agency_list()
     
     # lookup values
     region_names <- left_join(meta, regions, by = c("Region" = "REGIONAL_OFFICE_ID"))
@@ -178,7 +177,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       end_year <- as.numeric(meta$To[i])
       
       # flow and stage
-      daily <- try(hy_daily(meta$Station[i], 
+      daily <- try(tidyhydat::hy_daily(meta$Station[i],
                         start_date = start_date,
                         end_date = end_date), silent = TRUE)
       
@@ -203,7 +202,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       }  
 
       # sediment
-      sed <- try(hy_sed_daily_loads(meta$Station[i], 
+      sed <- try(tidyhydat::hy_sed_daily_loads(meta$Station[i],
                                 start_date = start_date,
                                 end_date = end_date), silent = TRUE)
       
@@ -221,7 +220,7 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
       }
 
       # operator schedule
-      oper <- try(hy_stn_data_coll(meta$Station[i]))
+      oper <- try(tidyhydat::hy_stn_data_coll(meta$Station[i]))
  
       if (nrow(oper) == 0) {
         meta$OperSched[i] <- "" 
