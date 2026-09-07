@@ -173,8 +173,10 @@ ch_safe_GET <- function(url = NULL, filename = NULL) {
 # Checks whether a suggested package is installed; errors clearly if not
 assert_pkg <- function(pkg) {
   if (!requireNamespace(pkg, quietly = TRUE)) {
-    stop("Package '", pkg, "' is required for this function but is not installed.",
+    stop("Package '", pkg, "' is required for this function but is not installed.\n",
+         "  Install it with install.packages('", pkg, "').",
          call. = FALSE)
   }
+  invisible()
 }
 

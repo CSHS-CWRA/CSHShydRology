@@ -15,6 +15,9 @@
 #' }
 #' }
 ch_wbt_check_whitebox <- function() {
+  # This also serves as the `whitebox` package guard for every ch_wbt_* function:
+  # they all call ch_wbt_check_whitebox() before touching whitebox::, so they do
+  # not need their own assert_pkg("whitebox") call.
   assert_pkg("whitebox")
   wb_found <- whitebox::check_whitebox_binary(silent = TRUE)
   msg <- paste("The WhiteboxTools executable could not be found.\n", 

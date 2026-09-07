@@ -54,6 +54,12 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
                                      plot_na = TRUE, plot_scale = TRUE,
                                      na_location = "tr", scale_location = "bl", ...) {
   assert_pkg("terra")
+  if (check_catchment) {
+    # ch_checkcatchment() is only called at the very end, so check its
+    # dependencies now rather than after the delineation has run
+    assert_pkg("ggspatial")
+    assert_pkg("tidyterra")
+  }
   ch_wbt_check_whitebox()
   
   if (missing(wd)) {
