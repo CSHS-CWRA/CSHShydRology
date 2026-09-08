@@ -2,8 +2,6 @@
 ^\.Rproj\.user$
 ^CONTRIBUTING.md$
 ^CODE_OF_CONDUCT.md$
-.github
-^\.travis\.yml$
 CSHShydRology.pdf
 ^doc$
 ^Meta$
