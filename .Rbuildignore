@@ -10,3 +10,4 @@ CSHShydRology.pdf
 LICENSE
 ^codecov\.yml$
 ^\.claude$
+^\.github$
