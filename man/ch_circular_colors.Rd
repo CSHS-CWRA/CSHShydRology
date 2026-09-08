@@ -15,7 +15,7 @@ ch_circular_colors(
 )
 }
 \arguments{
-\item{n}{the number of colours (<= 1) to be in the palette}
+\item{n}{the number of colours (>= 1) to be in the palette}
 
 \item{m}{the smallest angle in radians}
 

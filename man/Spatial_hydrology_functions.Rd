@@ -6,23 +6,34 @@
 \description{
 These functions perform spatial analyses important in hydrology. All
 of the functions with the prefix \code{ch_wbt} require the installation of the
-package \pkg{Whitebox}. The functions include:
+package \pkg{whitebox}, and of the WhiteboxTools executable that it wraps, which
+is installed separately with \code{whitebox::install_whitebox()}. The functions
+include:
 \describe{
- \item{ch_wbt_removesinks}{Removes sinks from a DEM by deepening drainage network}
- \item{ch_wbt_fillsinks}{Removes sinks from a DEM by filling them}
- \item{ch_wbt_catchment}{Generates catchment boundaries for a conditioned DEM based on specified points of interest}
- \item{ch_wbt_channels}{Generates a drainage network from DEM}
- \item{ch_wbt_flow_accumulation}{Accumulates flows downstream in a cathcment}
- \item{ch_wbt_flow_direction}{Calculated flow directions for each cell in DEM}
- \item{ch_wbt_pourpoints}{Snaps pour points to channel}
- \item{ch_wbt_catchment_onestep}{Performs all catchment delineations in a single function}
- \item{ch_contours}{Creates contour lines from DEM}
- \item{ch_checkcatchment}{Provides a simple map to check the outputs from ch_saga_catchment}
- \item{ch_checkchannels}{Provides a simple map to check the outputs from ch_saga_channels}
- \item{ch_volcano_raster}{Returns a raster object of land surface elevations}
+ \item{ch_wbt_removesinks}{Removes sinks from a DEM, either by breaching the drainage network or by filling}
+ \item{ch_wbt_flow_direction}{Calculates flow directions for each cell in a DEM}
+ \item{ch_wbt_flow_accumulation}{Accumulates flows downstream in a catchment}
+ \item{ch_wbt_channels}{Generates a drainage network from a DEM}
+ \item{ch_wbt_pourpoints}{Snaps pour points to the channel network}
+ \item{ch_wbt_catchment}{Generates catchment boundaries for a conditioned DEM based on specified pour points}
+ \item{ch_wbt_catchment_onestep}{Performs all of the catchment delineation steps in a single function}
+ \item{ch_wbt_filenames}{Builds the list of input and output file names used by the \code{ch_wbt} functions}
+ \item{ch_wbt_check_whitebox}{Checks that the WhiteboxTools executable can be found}
 }
 
-The \pkg{Whitebox} functions support the following file types for raster data:
+The remaining spatial functions do not require \pkg{whitebox}:
+\describe{
+ \item{ch_contours}{Creates contour lines from a DEM}
+ \item{ch_catchment_hyps}{Finds the hypsometric curve of a catchment}
+ \item{ch_checkcatchment}{Provides a simple map to check the catchment boundaries produced by \code{ch_wbt_catchment}}
+ \item{ch_checkchannels}{Provides a simple map to check the channel network produced by \code{ch_wbt_channels}}
+ \item{ch_create_wd}{Creates a working directory for the intermediate files}
+ \item{ch_clear_wd}{Empties and removes a working directory}
+ \item{ch_volcano_raster}{Returns a test SpatRaster object of land surface elevations}
+ \item{ch_volcano_pourpoints}{Returns a test SpatVector object of pour points for that DEM}
+}
+
+The WhiteboxTools functions support the following file types for raster data:
 \describe{
 \item{type}{extension}
 \item{GeoTIFF}{*.tif, *.tiff}

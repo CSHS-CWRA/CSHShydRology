@@ -26,7 +26,7 @@
 #' @seealso \code{\link{ch_wbt_filenames}}
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector wbt_snap_pour_points wbt_watershed wbt_raster_to_vector_polygons
-#' @return Returns an \pkg{sp} object of the delineated catchment.
+#' @return Returns a \pkg{terra} \code{SpatVector} object of the delineated catchment.
 #' @export
 #'
 #' @examples
@@ -57,20 +57,20 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
   ch_wbt_check_whitebox()
   
   if (missing(wd)) {
-    step("Error: name of working directory not specified")
+    stop("Error: name of working directory not specified")
   }
   
   if (missing(in_dem)) {
-    step("Error: file name for original DEM not specified")
+    stop("Error: file name for original DEM not specified")
   }
   
   
   if (is.null(threshold)) {
-    step("Error: threshold for channel initiation not specified")
+    stop("Error: threshold for channel initiation not specified")
   }
   
   if (is.null(snap_dist)) {
-    step("Error: maximum pour point snap distance not specified")
+    stop("Error: maximum pour point snap distance not specified")
   }
   
   file_names <- ch_wbt_filenames(wd)
@@ -117,7 +117,7 @@ ch_wbt_catchment_onestep <- function(wd, in_dem, pp_sv,
   
   if (is.na(terra::crs(channel_vec)) | terra::crs(channel_vec) == '') {
     terra::crs(channel_vec) <- terra::crs(catchment_vec)
-    terra::writeVector(channel_vec, file_names$catchment_vec, overwrite = TRUE)
+    terra::writeVector(channel_vec, file_names$channel_vec, overwrite = TRUE)
   }
   
   if (check_catchment) {

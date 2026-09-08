@@ -10,7 +10,7 @@ ch_clear_wd(wd, do_check = TRUE)
 \item{wd}{working directory file path}
 
 \item{do_check}{If \code{TRUE}, the default, the user is asked to confirm the
-deletion of the working directory. If \code{TRUE}, the directory is deleted
+deletion of the working directory. If \code{FALSE}, the directory is deleted
 without confirmation.}
 }
 \value{

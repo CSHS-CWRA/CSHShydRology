@@ -8,8 +8,11 @@
 #'
 #' @param amax A vector of the annual maxima
 #'
-#' @return result A vector of the same length as amax with a 1 for those values
-#' that are high outliers else zero.
+#' @return Returns a data frame with one row per value of \code{amax}, in the
+#' original order, containing:
+#' \item{tindex}{the position of the value in \code{amax}}
+#' \item{tmax}{the value itself}
+#' \item{tout}{\code{1} if the value was flagged as a high outlier, otherwise \code{0}}
 #'
 #' @author Paul Whitfield
 #'

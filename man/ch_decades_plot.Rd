@@ -23,7 +23,7 @@ b_MW <- ch_binned_MannWhitney(CAN05AA008, step = 5, range1, range2, ptest = 0.05
 ch_decades_plot(b_MW)
 }
 \seealso{
-\code{\link{ch_decades_plot}}
+\code{\link{ch_binned_MannWhitney}}
 }
 \author{
 Paul Whitfield

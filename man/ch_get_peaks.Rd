@@ -13,10 +13,8 @@ ch_get_peaks(dataframe, threshold)
 }
 \value{
 Returns a list containing:
-	\item{POTevents}{a dataframe contining details of the events}
-	\item{events}{a vector with the value 0 when the flow is below the threshold and 1 when above.}
-	\item{event_num}{a vector with the value 0 when the flow is below a threshold or the index of the events when the threshold was exceeded. i.e. 1,2,3, etc}
-	\item{st_date}{start date of events}
+	\item{POTevents}{a dataframe containing details of the events}
+	\item{ncases}{the number of events found}
 	\item{case}{a list of the daily flows in each individual event (see details for more information)}
 	
 	The \code{POTevents} data frame contains five columns: 

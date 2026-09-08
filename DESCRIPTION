@@ -69,7 +69,8 @@ Suggests:
     knitr,
     testthat, 
     rmarkdown,
-    readr
+    readr,
+    withr
 VignetteBuilder: knitr
 LazyData: true
 Encoding: UTF-8

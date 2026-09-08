@@ -29,13 +29,15 @@
 #'  \item{fail}{TRUE if test failed due to missing values}
 #'  \item{bin_method}{method used for binning}
 #'  \item{test_method}{Mann-Whitney U-statistic}
-#'  \item{series}{a data frame containing:}
+#'  \item{variable}{Name of the variable}
+#'  \item{series}{a data frame with one row per bin, containing:}
 #' 	\item{period}{period numbers i.e. 1:365/step}
-#' 	\item{period1}{median values for each bin in period 1}
-#' 	\item{period2}{median values for each bin in period 2}
-#' 	\item{mwu}{Mann-Whitney U-statistic for each bin between the two periods}
-#' 	\item{prob}{probability of U-statistic for each period}
-#' 	\item{code}{significance codes for each bin}
+#' 	\item{median_1}{median values for each bin in period 1}
+#' 	\item{median_2}{median values for each bin in period 2}
+#' 	\item{MW_U}{Mann-Whitney U-statistic for each bin between the two periods}
+#' 	\item{p_value}{probability of the U-statistic for each bin}
+#' 	\item{s_code}{significance code for each bin: \code{0} not significant,
+#' 	\code{1} period 1 greater, \code{-1} period 2 greater}
 #' 
 #' @importFrom stats wilcox.test median
 #' @export

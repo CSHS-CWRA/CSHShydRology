@@ -42,13 +42,13 @@ catchment elevation is used. Default is \code{NULL}.}
 \item{quantiles}{Vector of elevation quantiles. Default is \code{NULL}.}
 
 \item{hypso_plot}{if \code{TRUE} the hypsometric curve is plotted. Default is
-\code{NULL}.}
+\code{FALSE}.}
 
 \item{z_units}{Elevation units for plot. Default is \option{m}.}
 
 \item{col}{Colour for plot. Default is \option{red}.}
 
-\item{type}{Type of plot. Defailt is \option{o} (lines with overplotted
+\item{type}{Type of plot. Default is \option{o} (lines with overplotted
 points).}
 
 \item{xlab}{Plot x-axis label.}

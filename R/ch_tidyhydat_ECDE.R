@@ -59,7 +59,7 @@ ch_tidyhydat_ECDE <- function(data) {
     return(result)
   }
   
-  if (length(nstations != 1)) {
+  if (length(nstations) != 1) {
   message(paste("Original tibble contained ",length(nstations),
               " stations. A list of dataframes is returned"))
    

@@ -9,7 +9,7 @@
 #'
 #' @param wd working directory file path
 #' @param do_check If \code{TRUE}, the default, the user is asked to confirm the
-#' deletion of the working directory. If \code{TRUE}, the directory is deleted
+#' deletion of the working directory. If \code{FALSE}, the directory is deleted
 #' without confirmation.
 #' 
 #' @return
@@ -40,7 +40,11 @@ ch_clear_wd <- function(wd, do_check = TRUE) {
     if (response == "n") return(paste(wd, "not removed"))
   }
   filelist <- list.files(wd)
-  file.remove(paste0(wd, "/", filelist))
+  # Guard the empty case: paste0(wd, "/", character(0)) yields the directory
+  # path itself, so file.remove() would warn about being unable to remove it.
+  if (length(filelist) > 0) {
+    file.remove(file.path(wd, filelist))
+  }
   unlink(wd, recursive = TRUE)
   return(paste(wd, "removed"))
 }

@@ -20,10 +20,10 @@
 #' catchment elevation is used. Default is \code{NULL}.
 #' @param quantiles Vector of elevation quantiles. Default is \code{NULL}.
 #' @param hypso_plot if \code{TRUE} the hypsometric curve is plotted. Default is
-#' \code{NULL}.
+#' \code{FALSE}.
 #' @param z_units Elevation units for plot. Default is \option{m}. 
 #' @param col Colour for plot. Default is \option{red}.
-#' @param type Type of plot. Defailt is \option{o} (lines with overplotted
+#' @param type Type of plot. Default is \option{o} (lines with overplotted
 #' points).
 #' @param xlab Plot x-axis label.
 #' @param ylab Plot y-axis label.

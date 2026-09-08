@@ -8,3 +8,6 @@ CSHShydRology.pdf
 ^doc$
 ^Meta$
 LICENSE
+^codecov\.yml$
+^\.claude$
+^data-raw$

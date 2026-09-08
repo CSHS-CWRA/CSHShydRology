@@ -8,7 +8,9 @@
 #' @param method Method for removing sinks. Default method is \option{breach_leastcost}. Other methods include
 #' \option{breach}, \option{fill}, \option{fill_pd} (Planchon and Darboux), and \option{fill_wl} (Wang and Liu).
 #' @param dist Maximum search distance for breach paths in cells. Required if \code{method = "breach_leastcost"}.
-#' @param fn_dem_fsc File path for dem after removing single-cell pits.
+#' @param fn_dem_fsc File path for dem after removing single-cell pits. Required by
+#' the \option{breach_leastcost} (the default) and \option{breach} methods, which fill
+#' single-cell pits before breaching; not used by the \option{fill} methods.
 #' @param ... Additional arguments to be passed to functions to remove sinks.
 #'
 #' @author Dan Moore Joel Trubilowicz and Billy Browning

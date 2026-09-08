@@ -12,12 +12,17 @@
 #' a value of \code{1} is specified, the \code{10} will be used.
 #' 
 #' @author Paul Whitfield, Kevin Shook
+#' @seealso \code{\link{ch_wtr_yr}}
 #' @return Returns a dataframe with date information:
 #' \item{Date}{in Date format}
 #' \item{year}{numeric calendar year}
 #' \item{month}{number calendar month}
+#' \item{day}{numeric day of month}
 #' \item{doy}{numeric day of year}
-#' \item{wyear}{numeric water year starting on day 1 of selected month}
+#' \item{wyear}{numeric water year, labelled by the calendar year in which the
+#' water year \emph{starts}. With the default \code{water_yr = 10}, October 2011
+#' to September 2012 is water year 2011. Note that \code{\link{ch_wtr_yr}} uses the
+#' opposite convention and would label the same period 2012.}
 #' \item{dwy}{numeric day of water year}
 #' 
 #'  

@@ -57,12 +57,13 @@ Returns a list containing:
  \item{Station_lname}{Name of station}
  \item{variable}{Name of variable}
  \item{bin_width}{Smoothing time step in days}
- \item{range1}{First range of years}
- \item{range2}{Second range of years}
+ \item{range1}{Label for the first period, from \code{lline1}}
+ \item{range2}{Label for the second period, from \code{lline2}}
  \item{p_used}{p_value}
- \item{fail}{TRUE if test failed due to missing values}
+ \item{fail}{always \code{FALSE}; present so the result matches the shape
+ returned by \code{\link{ch_binned_MannWhitney}}}
  \item{bin_method}{Method used for binning}
- \item{test_method}{Mann-Whitney U}
+ \item{test_method}{Name of the test used}
  \item{series}{A data frame containing six columns}
 	
 	The \code{series} data frame contains 

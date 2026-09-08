@@ -23,7 +23,9 @@ ch_wbt_removesinks(
 
 \item{dist}{Maximum search distance for breach paths in cells. Required if \code{method = "breach_leastcost"}.}
 
-\item{fn_dem_fsc}{File path for dem after removing single-cell pits.}
+\item{fn_dem_fsc}{File path for dem after removing single-cell pits. Required by
+the \option{breach_leastcost} (the default) and \option{breach} methods, which fill
+single-cell pits before breaching; not used by the \option{fill} methods.}
 
 \item{...}{Additional arguments to be passed to functions to remove sinks.}
 }
