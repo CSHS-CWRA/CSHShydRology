@@ -3,7 +3,6 @@
 [![CRAN
 status](https://www.r-pkg.org/badges/version/CSHShydRology)](https://cran.r-project.org/package=CSHShydRology)
 [![license](https://img.shields.io/badge/license-GPL3-lightgrey.svg)](https://choosealicense.com/)
-[![Codecov test coverage](https://codecov.io/gh/CSHS-CWRA/CSHShydRology/graph/badge.svg)](https://app.codecov.io/gh/CSHS-CWRA/CSHShydRology)
 [![R-CMD-check](https://github.com/CSHS-CWRA/CSHShydRology/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CSHS-CWRA/CSHShydRology/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 # CSHShydRology
