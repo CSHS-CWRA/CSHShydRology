@@ -8,7 +8,7 @@
 #' value default to 0.85. Default alpha is 1.0 - no transparency.
 #'
 #'
-#' @param n the number of colours (<= 1) to be in the palette
+#' @param n the number of colours (>= 1) to be in the palette
 #' @param m the smallest angle in radians
 #' @param M the largest angle in radians
 #' @param offset the zero in radians

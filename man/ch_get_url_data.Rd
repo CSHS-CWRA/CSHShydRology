@@ -18,7 +18,11 @@ string is returned.}
 }
 \value{
 Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
-or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
+or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file). If the file could
+not be retrieved and \code{stop_on_error = FALSE}, the error message is returned as a
+character string instead, so callers should check the type of the result (as the
+examples below do) before using it. Note that \code{gd_filename} must carry the
+file extension, as it is what determines how the file is read.
 }
 \description{
 Accesses data sets, via a url the first time,

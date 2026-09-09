@@ -6,19 +6,16 @@
 #' ECDataExplorer. Raster layout lets the use see the flags in a different context than in 
 #' a hydrograph.
 #' 
-#' @return
-#' Produces a raster plot: years against day of year, showing the data flags:
-#'  \item{A}{(Partial)  in green}
+#' @param DF dataframe of daily streamflow read by ch_read_ECDE_flows
+#' @param metadata dataframe of metadata or defaults to "HYDAT_list"
+#' 
+#' @return Returns \code{TRUE}. A raster plot of years against day of year is
+#' created, showing the flow magnitudes in grayscale overlain by the WSC data
+#' flags:
+#'  \item{A}{(Partial) in green}
 #'  \item{B}{(Backwater) in cyan}
 #'  \item{D}{(Dry) in yellow}
 #'  \item{E}{(Estimated) in red}
-#'
-#' 
-#' @param DF dataframe of daily streamflow read by ch_read_ECDE_flows
-#' @seealso \code{\link{ch_read_ECDE_flows}}
-#' @param metadata dataframe of metadata or defaults to "HYDAT_list"
-#' 
-#' @return Returns \code{TRUE} if executed properly; a standard R graphic is created.
 #' 
 #' @author Paul Whitfield 
 #' @importFrom graphics axis legend par plot points polygon image frame mtext layout box
@@ -26,7 +23,7 @@
 #' @importFrom timeDate dayOfYear as.timeDate 
 #' @importFrom fields image.plot 
 #' @export 
-#' @seealso \code{\link{ch_flow_raster}}
+#' @seealso \code{\link{ch_read_ECDE_flows}} \code{\link{ch_flow_raster}}
 #'
 #' @examples
 #' data(HYDAT_list)

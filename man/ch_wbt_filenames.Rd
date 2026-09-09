@@ -42,7 +42,7 @@ ch_wbt_filenames(
 
 \item{fn_pp}{File name for pour points (input). Vector file. Default is \option{pp.shp}.}
 
-\item{fn_pp_snap}{File name for pour points after snapping to channel network. Vector file. Default is \option{pp.shp}.}
+\item{fn_pp_snap}{File name for pour points after snapping to channel network. Vector file. Default is \option{pp_snap.shp}.}
 }
 \value{
 Returns a list of the input and output file names

@@ -13,3 +13,4 @@
 #'  \item{ch_rfa_julianplot}{Empty rose plot by day of year}
 #'  \item{ch_rfa_seasonstat}{Seasonal statistics for flood peaks}
 #' } 
+NULL

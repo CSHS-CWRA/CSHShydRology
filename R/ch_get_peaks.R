@@ -15,10 +15,8 @@
 #' @param threshold a value for the threshold. Values above the threshold are tested for peaks.
 #'
 #' @return Returns a list containing:
-#' 	\item{POTevents}{a dataframe contining details of the events}
-#' 	\item{events}{a vector with the value 0 when the flow is below the threshold and 1 when above.}
-#' 	\item{event_num}{a vector with the value 0 when the flow is below a threshold or the index of the events when the threshold was exceeded. i.e. 1,2,3, etc}
-#' 	\item{st_date}{start date of events}
+#' 	\item{POTevents}{a dataframe containing details of the events}
+#' 	\item{ncases}{the number of events found}
 #' 	\item{case}{a list of the daily flows in each individual event (see details for more information)}
 #' 	
 #' 	The \code{POTevents} data frame contains five columns: 
@@ -53,7 +51,10 @@
 
 ch_get_peaks <- function(dataframe, threshold) {
   
-  maxflow <- max(dataframe$Flow)
+  # na.rm is required: WSC daily records routinely have missing days, and
+  # without it maxflow is NA and the comparison below fails outright. The rest
+  # of the function already skips NA flows.
+  maxflow <- max(dataframe$Flow, na.rm = TRUE)
   
   if (maxflow < threshold) {
     message(paste("Threshold of", threshold, "

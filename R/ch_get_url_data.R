@@ -14,7 +14,11 @@
 #' @importFrom terra rast
 #' @author Dan Moore Kevin Shook Billy Browning and Joel Trubilowicz
 #' @return Returns a data frame (from a .csv file), a \pkg{terra} \code{SpatRaster} object (from a .tif file), 
-#'or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file).
+#'or a \pkg{terra} \code{SpatVector} object (from a GeoJSON file). If the file could
+#'not be retrieved and \code{stop_on_error = FALSE}, the error message is returned as a
+#'character string instead, so callers should check the type of the result (as the
+#'examples below do) before using it. Note that \code{gd_filename} must carry the
+#'file extension, as it is what determines how the file is read.
 #'
 #' @examples \donttest{
 #' # Example not tested automatically as multiple large data files are downloaded which is slow
@@ -98,6 +102,7 @@ ch_get_url_data <- function(gd_url, gd_filename, stop_on_error = TRUE) {
   
   # tiff file - returns SpatRaster object
   if (file_ext %in% c("tif", "tiff")) {
+    result <- "OK"
     if (!file.exists(gd_filename)) {
       result <- ch_safe_GET(gd_url, gd_filename)
     }

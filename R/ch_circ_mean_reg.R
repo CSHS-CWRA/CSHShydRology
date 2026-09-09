@@ -39,11 +39,23 @@ ch_circ_mean_reg <- function(dataframe){
   
  meanday <-  circular::mean.circular(x)
  if (meanday < 0) meanday <- 360 + meanday
- medianday <- circular::median.circular(x)
- if (medianday < 0) medianday <- 360 + medianday
+
+ # The sample circular median is the direction minimising the sum of angular
+ # distances to the observations. circular::median.circular() cannot be used
+ # here: for these data it returns a direction roughly opposite the true
+ # median (the well-known antimedian ambiguity), which the previous
+ # "add 360 if negative" line silently passed through as a plausible-looking
+ # day of year. Computing it directly is both correct and easy to check.
+ ang_dist <- function(a, b) {
+   d <- abs(a - b) %% 360
+   pmin(d, 360 - d)
+ }
+ cost <- vapply(doys, function(candidate) sum(ang_dist(candidate, doys)), numeric(1))
+ medianday <- doys[which.min(cost)]
+
  rho <- circular::rho.circular(x)
  
- result <- list(n, as.numeric(meanday)*365/360, as.numeric(medianday)*365/365, rho)
+ result <- list(n, as.numeric(meanday)*365/360, as.numeric(medianday)*365/360, rho)
  names(result) <- c("n", "mean", "median", "regularity")
  
   return(result)

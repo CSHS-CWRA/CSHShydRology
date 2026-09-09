@@ -138,9 +138,11 @@ ch_tidyhydat_ECDE_meta <- function(stations, all_ECDE = FALSE){
     meta <- data.frame(t2[,c(1:2,5,3,7:10,23,21:22,18)],t3,t3,t3,t3,t2[,c(12,12,4,15,14)])
     names(meta) <- colmeta
     
-    if (nrow(meta) > 1)
     # convert code numbers to strings
     # get dataframes of codes and strings
+    # (this must not be guarded by nrow(meta) > 1: a dangling if() here used to
+    #  leave `regions` undefined for a single station, so the left_join below
+    #  failed with "object 'regions' not found")
     regions <- hy_reg_office_list()
     datums <- hy_datum_list()
     agencies <- hy_agency_list()

@@ -1,0 +1,103 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  # Allows the job to be started by hand from the Actions tab, which is useful
+  # if the WhiteboxTools cache has been evicted and you want a full-coverage run
+  # on demand. See the "Install WhiteboxTools executable" step below.
+  workflow_dispatch:
+
+name: test-coverage.yaml
+
+permissions: read-all
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      # Without this, every skip_on_cran() test is skipped here too and so
+      # contributes no coverage. Several of the slower suites -- the FFA
+      # screening plot, the tidyhydat metadata lookups, the whitebox sink
+      # removal methods -- are gated that way.
+      NOT_CRAN: true
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: r-lib/actions/setup-r@v2
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          # whitebox and withr are named explicitly so this job does not depend
+          # on whether they sit in Imports or Suggests.
+          extra-packages: any::covr, any::xml2, any::whitebox, any::withr
+          needs: coverage
+
+      # The whitebox R package is only a wrapper: the WhiteboxTools executable
+      # is a separate ~100 MB download. Without it every ch_wbt_* test skips,
+      # which costs roughly ten percentage points of coverage.
+      #
+      # The binary is cached so it is fetched once and then restored in a couple
+      # of seconds on every later run, rather than downloaded each time. The
+      # cache key is pinned to the whitebox package version so a package upgrade
+      # fetches a matching binary.
+      - name: Cache WhiteboxTools executable
+        id: cache-whitebox
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/R/whitebox
+          key: whitebox-${{ runner.os }}-${{ hashFiles('DESCRIPTION') }}
+
+      # Failure here is not fatal: the ch_wbt_* tests skip cleanly, exactly as
+      # they do on a contributor's machine that has not installed the binary.
+      - name: Install WhiteboxTools executable
+        if: steps.cache-whitebox.outputs.cache-hit != 'true'
+        continue-on-error: true
+        run: |
+          whitebox::install_whitebox()
+        shell: Rscript {0}
+
+      - name: Report whether WhiteboxTools is available
+        run: |
+          found <- whitebox::check_whitebox_binary(silent = TRUE)
+          message("WhiteboxTools available: ", found)
+          if (!found)
+            message("ch_wbt_* tests will skip; coverage will be ~10 points lower.")
+        shell: Rscript {0}
+
+      - name: Test coverage
+        run: |
+          cov <- covr::package_coverage(
+            quiet = FALSE,
+            clean = FALSE,
+            install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
+          )
+          print(cov)
+          covr::to_cobertura(cov)
+        shell: Rscript {0}
+
+      - uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7
+        with:
+          # Fail if error if not on PR, or if on PR and token is given
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
+          files: ./cobertura.xml
+          plugins: noop
+          disable_search: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Show testthat output
+        if: always()
+        run: |
+          ## --------------------------------------------------------------------
+          find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
+        shell: bash
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package

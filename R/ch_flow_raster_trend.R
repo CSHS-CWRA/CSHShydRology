@@ -25,8 +25,8 @@
 #' @param metadata a dataframe of station metadata, default is HYDAT_list.
 #'
 #' @return Returns a list containing:
-#'   \item{stationID}{Station ID eg. 05BB001}
-#'   \item{missing}{How missing values were used FALSE = used, TRUE = removed}
+#'   \item{sID}{Station ID eg. 05BB001}
+#'   \item{`na.rm =`}{How missing values were used FALSE = used, TRUE = removed}
 #'   \item{step}{number of days in a bin}
 #'   \item{periods}{number of periods in a year}
 #'   \item{period}{period numbers i.e. 1:365/step}

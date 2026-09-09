@@ -3,6 +3,7 @@
 status](https://www.r-pkg.org/badges/version/CSHShydRology)](https://cran.r-project.org/package=CSHShydRology)
 [![Travis build status](https://travis-ci.org/CSHS-CWRA/CSHShydRology.svg?branch=master)](https://app.travis-ci.com/CSHS-CWRA/CSHShydRology)
 [![license](https://img.shields.io/badge/license-GPL3-lightgrey.svg)](https://choosealicense.com/)
+[![Codecov test coverage](https://codecov.io/gh/CSHS-CWRA/CSHShydRology/graph/badge.svg)](https://app.codecov.io/gh/CSHS-CWRA/CSHShydRology)
 # CSHShydRology
 
 ## Installing this package

@@ -12,13 +12,13 @@ ch_flow_raster_qa(DF, metadata = NULL)
 \item{metadata}{dataframe of metadata or defaults to "HYDAT_list"}
 }
 \value{
-Produces a raster plot: years against day of year, showing the data flags:
- \item{A}{(Partial)  in green}
+Returns \code{TRUE}. A raster plot of years against day of year is
+created, showing the flow magnitudes in grayscale overlain by the WSC data
+flags:
+ \item{A}{(Partial) in green}
  \item{B}{(Backwater) in cyan}
  \item{D}{(Dry) in yellow}
  \item{E}{(Estimated) in red}
-
-Returns \code{TRUE} if executed properly; a standard R graphic is created.
 }
 \description{
 Raster plot with WSC quality flags. 
@@ -34,9 +34,7 @@ qaplot <- ch_flow_raster_qa(CAN05AA008)
 
 }
 \seealso{
-\code{\link{ch_read_ECDE_flows}}
-
-\code{\link{ch_flow_raster}}
+\code{\link{ch_read_ECDE_flows}} \code{\link{ch_flow_raster}}
 }
 \author{
 Paul Whitfield

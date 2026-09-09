@@ -5,8 +5,9 @@
 #' boundaries relative to the elevation contours. 
 #' 
 #' @details 
-#' Also generates a table summarizing the catchments, 
-#' including the coordinates of the outlet point and the catchment area.
+#' Note that the catchment areas are computed but are not currently returned or
+#' printed; only the map is produced. See the \code{area} column of the value
+#' returned by \code{terra::expanse()} if you need the areas themselves.
 #'
 #' @param dem A \pkg{terra} \code{SpatRaster} DEM that catchments were generated from.
 #' @param catchment Catchment polygon (\pkg{terra} \code{SpatVector} object).
@@ -26,8 +27,8 @@
 #' @param na_location Location for the north arrow. Default is \option{tr}, i.e. top-right.
 #' @param scale_location Location for the scale bar. Default is \option{bl}, i.e. bottom-left.
 #' 
-#' @return \code{TRUE}. A map of the catchments is also plotted and 
-#' the catchment parameters are printed.
+#' @return \code{TRUE}, invisibly useful only as a success flag. A map of the
+#' catchments is plotted as a side effect.
 #' 
 #' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_checkchannels}} 

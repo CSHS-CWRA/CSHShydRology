@@ -61,7 +61,7 @@ after the catchment is created.}
 \item{...}{Extra parameters for \code{ch_wbt_removesinks}.}
 }
 \value{
-Returns an \pkg{sp} object of the delineated catchment.
+Returns a \pkg{terra} \code{SpatVector} object of the delineated catchment.
 }
 \description{
 Calls all of the \code{ch_wbt} and other functions required to do the sub-tasks

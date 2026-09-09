@@ -84,9 +84,9 @@ ch_polar_plot_peaks <- function(title = NA, direction = NULL, regularity = NULL,
   oldw <- getOption("warn")
   options(warn = -1)
   
-  opar <- par()
-  on.exit(par(opar))
-  on.exit(options(warn = oldw))
+  opar <- par(no.readonly = TRUE)
+  on.exit(par(opar), add = TRUE)
+  on.exit(options(warn = oldw), add = TRUE)
   
   par(cex.lab = 0.7)
   par(col.lab = "gray")

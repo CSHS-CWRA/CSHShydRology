@@ -9,7 +9,6 @@
 #' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' @importFrom terra rast
 #' @importFrom whitebox wbt_extract_streams wbt_raster_streams_to_vector
-#' @importFrom stats step
 #' @return Returns a \pkg{terra} \code{SpatVector} object of the stream channels.
 #' @export
 #'
@@ -59,7 +58,7 @@ ch_wbt_channels <- function(fn_flowacc, fn_flowdir,
   }
   
   if (is.null(threshold)) {
-    step("Error: threshold for channel initiation not specified")
+    stop("Error: threshold for channel initiation not specified")
   }
   
   message("ch_wbt: Generating stream network")

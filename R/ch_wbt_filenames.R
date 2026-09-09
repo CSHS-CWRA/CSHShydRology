@@ -15,7 +15,7 @@
 #' @param fn_catchment_ras File name for raster version of catchment. Default is \option{catchment.tif}. 
 #' @param fn_catchment_vec File name for vector version of catchment. Default is \option{catchment.shp}. 
 #' @param fn_pp File name for pour points (input). Vector file. Default is \option{pp.shp}.
-#' @param fn_pp_snap File name for pour points after snapping to channel network. Vector file. Default is \option{pp.shp}.
+#' @param fn_pp_snap File name for pour points after snapping to channel network. Vector file. Default is \option{pp_snap.shp}.
 #'
 #' @author Dan Moore
 #' @return Returns a list of the input and output file names
