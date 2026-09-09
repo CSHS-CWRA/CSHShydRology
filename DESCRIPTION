@@ -64,7 +64,9 @@ Imports:
     MGBT,
     outliers,
     TeachingDemos,
-    Kendall
+    Kendall,
+    vctrs,
+    rlang
 Suggests: 
     knitr,
     testthat, 
