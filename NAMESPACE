@@ -87,107 +87,139 @@ import(ggplot2)
 import(tidyhydat)
 importFrom(Kendall,MannKendall)
 importFrom(MGBT,MGBT)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
+importFrom(dplyr,
+  left_join,
+  mutate
+)
 importFrom(fields,image.plot)
-importFrom(ggplot2,coord_sf)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,theme_bw)
-importFrom(ggspatial,annotation_north_arrow)
-importFrom(ggspatial,annotation_scale)
-importFrom(ggspatial,north_arrow_fancy_orienteering)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,colorRampPalette)
-importFrom(grDevices,hsv)
-importFrom(graphics,abline)
-importFrom(graphics,axis)
-importFrom(graphics,box)
-importFrom(graphics,frame)
-importFrom(graphics,grconvertX)
-importFrom(graphics,grconvertY)
-importFrom(graphics,grid)
-importFrom(graphics,hist)
-importFrom(graphics,image)
-importFrom(graphics,layout)
-importFrom(graphics,legend)
-importFrom(graphics,lines)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,points)
-importFrom(graphics,polygon)
-importFrom(graphics,rect)
-importFrom(graphics,segments)
-importFrom(graphics,text)
-importFrom(graphics,title)
+importFrom(ggplot2,
+  coord_sf,
+  ggplot,
+  labs,
+  theme_bw
+)
+importFrom(ggspatial,
+  annotation_north_arrow,
+  annotation_scale,
+  north_arrow_fancy_orienteering
+)
+importFrom(grDevices,
+  col2rgb,
+  colorRampPalette,
+  hsv
+)
+importFrom(graphics,
+  abline,
+  axis,
+  box,
+  frame,
+  grconvertX,
+  grconvertY,
+  grid,
+  hist,
+  image,
+  layout,
+  legend,
+  lines,
+  mtext,
+  par,
+  plot,
+  points,
+  polygon,
+  rect,
+  segments,
+  text,
+  title
+)
 importFrom(grid,unit)
-importFrom(httr2,req_perform)
-importFrom(httr2,request)
-importFrom(lubridate,date)
-importFrom(lubridate,day)
-importFrom(lubridate,month)
-importFrom(lubridate,year)
+importFrom(httr2,
+  req_perform,
+  request
+)
+importFrom(lubridate,
+  date,
+  day,
+  month,
+  year
+)
 importFrom(outliers,grubbs.test)
-importFrom(plotrix,radial.grid)
-importFrom(plotrix,radial.plot)
-importFrom(scales,breaks_log)
-importFrom(scales,trans_new)
-importFrom(stats,approx)
-importFrom(stats,dist)
-importFrom(stats,get_all_vars)
-importFrom(stats,lm)
-importFrom(stats,median)
-importFrom(stats,model.frame)
-importFrom(stats,qnorm)
-importFrom(stats,qt)
-importFrom(stats,quantile)
-importFrom(stats,step)
-importFrom(stats,wilcox.test)
-importFrom(stringr,fixed)
-importFrom(stringr,str_detect)
-importFrom(stringr,str_split_fixed)
-importFrom(stringr,str_to_lower)
-importFrom(terra,as.contour)
-importFrom(terra,crs)
-importFrom(terra,hist)
-importFrom(terra,mask)
-importFrom(terra,minmax)
-importFrom(terra,plot)
-importFrom(terra,quantile)
-importFrom(terra,rast)
-importFrom(terra,values)
-importFrom(tidyhydat,hy_agency_list)
-importFrom(tidyhydat,hy_daily)
-importFrom(tidyhydat,hy_datum_list)
-importFrom(tidyhydat,hy_reg_office_list)
-importFrom(tidyhydat,hy_sed_daily_loads)
-importFrom(tidyhydat,hy_stations)
-importFrom(tidyhydat,hy_stn_data_coll)
-importFrom(tidyhydat,hy_stn_data_range)
-importFrom(tidyhydat,hy_stn_regulation)
-importFrom(tidyhydat,hy_version)
-importFrom(timeDate,as.timeDate)
-importFrom(timeDate,dayOfYear)
-importFrom(utils,data)
-importFrom(utils,read.csv)
-importFrom(utils,read.fwf)
-importFrom(utils,read.table)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
-importFrom(utils,write.csv)
-importFrom(whitebox,check_whitebox_binary)
-importFrom(whitebox,wbt_breach_depressions)
-importFrom(whitebox,wbt_breach_depressions_least_cost)
-importFrom(whitebox,wbt_d8_flow_accumulation)
-importFrom(whitebox,wbt_d8_pointer)
-importFrom(whitebox,wbt_extract_streams)
-importFrom(whitebox,wbt_fill_depressions)
-importFrom(whitebox,wbt_fill_depressions_planchon_and_darboux)
-importFrom(whitebox,wbt_fill_depressions_wang_and_liu)
-importFrom(whitebox,wbt_fill_single_cell_pits)
-importFrom(whitebox,wbt_init)
-importFrom(whitebox,wbt_raster_streams_to_vector)
-importFrom(whitebox,wbt_raster_to_vector_polygons)
-importFrom(whitebox,wbt_snap_pour_points)
-importFrom(whitebox,wbt_watershed)
+importFrom(plotrix,
+  radial.grid,
+  radial.plot
+)
+importFrom(scales,
+  breaks_log,
+  trans_new
+)
+importFrom(stats,
+  approx,
+  dist,
+  get_all_vars,
+  lm,
+  median,
+  model.frame,
+  qnorm,
+  qt,
+  quantile,
+  step,
+  wilcox.test
+)
+importFrom(stringr,
+  fixed,
+  str_detect,
+  str_split_fixed,
+  str_to_lower
+)
+importFrom(terra,
+  as.contour,
+  crs,
+  hist,
+  mask,
+  minmax,
+  plot,
+  quantile,
+  rast,
+  values
+)
+importFrom(tidyhydat,
+  hy_agency_list,
+  hy_daily,
+  hy_datum_list,
+  hy_reg_office_list,
+  hy_sed_daily_loads,
+  hy_stations,
+  hy_stn_data_coll,
+  hy_stn_data_range,
+  hy_stn_regulation,
+  hy_version
+)
+importFrom(timeDate,
+  as.timeDate,
+  dayOfYear
+)
+importFrom(utils,
+  data,
+  read.csv,
+  read.fwf,
+  read.table,
+  setTxtProgressBar,
+  txtProgressBar,
+  write.csv
+)
+importFrom(whitebox,
+  check_whitebox_binary,
+  wbt_breach_depressions,
+  wbt_breach_depressions_least_cost,
+  wbt_d8_flow_accumulation,
+  wbt_d8_pointer,
+  wbt_extract_streams,
+  wbt_fill_depressions,
+  wbt_fill_depressions_planchon_and_darboux,
+  wbt_fill_depressions_wang_and_liu,
+  wbt_fill_single_cell_pits,
+  wbt_init,
+  wbt_raster_streams_to_vector,
+  wbt_raster_to_vector_polygons,
+  wbt_snap_pour_points,
+  wbt_watershed
+)

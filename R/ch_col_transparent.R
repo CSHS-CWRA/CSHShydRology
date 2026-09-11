@@ -11,7 +11,7 @@
 #'
 #' @return \item{res}{returned updated colour code with transparency}
 #' @export
-#' @references See original code on post in Stack Overflow \url{https://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-rmaking}
+#' @references See original code on post in Stack Overflow \url{https://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-r}
 #'
 #' @importFrom grDevices col2rgb
 #' @author Rob Chlumsky; Paul Whitfield

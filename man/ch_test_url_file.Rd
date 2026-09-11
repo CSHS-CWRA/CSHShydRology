@@ -29,7 +29,7 @@ ch_test_url_file(test_url, quiet = TRUE)
 }
 \seealso{
 See original code on post in Stack Overflow
-\href{https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r}{
+\href{https://stackoverflow.com/questions/12193779/how-to-use-the-trycatch-function}{
 How to write trycatch in R}
 }
 \author{
