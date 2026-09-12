@@ -75,7 +75,7 @@ ch_date_subset <- function(df, prd) {
 #' warning. Otherwise, returns \option{OK}. Strings are returned instead of logical values
 #' to simplify checking result in calling function.
 #' @seealso See original code on post in Stack Overflow
-#' \href{https://stackoverflow.com/questions/12193779/how-to-write-trycatch-in-r}{
+#' \href{https://stackoverflow.com/questions/12193779/how-to-use-the-trycatch-function}{
 #' How to write trycatch in R}
 #' @export
 #' @keywords internal

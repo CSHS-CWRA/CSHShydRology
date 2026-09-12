@@ -5,29 +5,53 @@
 \title{Plots the regime of daily streamflows using quantiles}
 \usage{
 ch_regime_plot(
-  DF,
+  DF = NULL,
   wyear = 1,
   colour = TRUE,
   mx = 1,
   metadata = NULL,
-  quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05)
+  quant = c(0.95, 0.9, 0.75, 0.5, 0.25, 0.1, 0.05),
+  date = NULL,
+  flow = NULL,
+  id = NULL,
+  ...
 )
 }
 \arguments{
-\item{DF}{data frame of daily flow data}
+\item{DF}{data frame of daily flow data. Used on its own, it must contain
+\code{Date} and \code{Flow} columns, with the station code in the first
+column. It is also the place \code{date}, \code{flow} and \code{id} are
+looked up when those are given. Leave as \code{NULL} to supply vectors.}
 
 \item{wyear}{set \code{wyear = 10} for October, \code{water year = 1} for calendar year, can be any month}
 
 \item{colour}{if \code{TRUE} plot is in colour, if \code{FALSE} plot is grayscale.}
 
-\item{mx}{set the maximum y value; if = 1 then maximum value of the flows is used to set}
-
-\item{metadata}{a data frame of metadata, defaults to HYDAT_list.
+\item{mx}{set the maximum y value; if = 1 then maximum value of the flows is used to set 
 the y-axis value. The value of \code{mx} can be specified to produce a series of plots with the 
 same scale.}
 
+\item{metadata}{a data frame of metadata in which to look up the station. If
+\code{NULL} (the default), \code{HYDAT_list} is used.}
+
 \item{quant}{quantiles; default is \code{quant = c(0.95,0.9,0.75,0.5,0.25,0.1,0.05)}. 
 Can be changed but the length must be 7 and the 4th value must be 0.5 (median)}
+
+\item{date}{Vector of dates, or the name of the column in \code{DF} holding
+them (unquoted). Supply with \code{flow} instead of relying on the
+\code{Date} and \code{Flow} columns of \code{DF}.}
+
+\item{flow}{Vector of flows, or the name of the column in \code{DF} holding
+them (unquoted).}
+
+\item{id}{Gauge code, used to build the plot title; may also be the name of a
+column in \code{DF}. If \code{NULL} (the default) no title is created.
+Only used alongside \code{date} and \code{flow}.}
+
+\item{...}{Other arguments to pass to the \code{plot()} function. These take
+precedence over the defaults set by this function, so passing \code{ylab},
+\code{xlim} or \code{main} here overrides the default that would otherwise
+be used.}
 }
 \value{
 No value is returned; a standard \R graphic is created.
@@ -37,15 +61,45 @@ Produces a regime hydrograph similar to that in the reference. It shows the flow
 day of the year and the maximum and minimum. Parameters can be set to change colours and set the y-scale
 to allow plots of same scale to be produced.
 }
+\details{
+The function accepts data in two ways.
+
+By default it takes a data frame of daily flows as its first argument, which
+must contain \code{Date} and \code{Flow} columns, with the station code in
+the first column. This is the original interface and is unchanged:
+
+\code{ch_regime_plot(CAN05AA008, colour = TRUE, wyear = 1)}
+
+Alternatively, name the columns to use. They are looked up in \code{DF},
+which lets the function work with data frames that are not in the layout
+above:
+
+\code{ch_regime_plot(CAN05AA008, date = Date, flow = Flow, id = ID)}
+
+Or leave \code{DF} unset and pass vectors, from any source at all:
+
+\code{ch_regime_plot(date = my_dates, flow = my_flows)}
+
+The arguments of the second interface come after those of the first, so any
+call written for the original interface behaves identically.
+}
 \examples{
 data(CAN05AA008)
 ch_regime_plot(CAN05AA008, colour = TRUE, wyear = 1)
 
+# Name the columns to use, for data frames not in the layout above.
+ch_regime_plot(CAN05AA008, date = Date, flow = Flow, id = ID)
+
+# Or supply vectors, from any source.
+ch_regime_plot(date = CAN05AA008$Date, flow = CAN05AA008$Flow)
+
+# Override plot() defaults through ...; for instance, zoom in on the freshet.
+ch_regime_plot(CAN05AA008, date = Date, flow = Flow, xlim = c(90, 220))
 }
 \references{
 MacCulloch, G. and P. H. Whitfield (2012). Towards a Stream Classification System 
 for the Canadian Prairie Provinces. Canadian Water Resources Journal 37: 311-332.
 }
 \author{
-Paul Whitfield
+Paul Whitfield, Vincenzo Coia
 }

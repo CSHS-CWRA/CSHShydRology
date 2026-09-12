@@ -44,7 +44,7 @@ points(rnorm(20), col = mycol[2])
 
 }
 \references{
-See original code on post in Stack Overflow \url{https://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-rmaking}
+See original code on post in Stack Overflow \url{https://stackoverflow.com/questions/12995683/any-way-to-make-plot-points-in-scatterplot-more-transparent-in-r}
 }
 \author{
 Rob Chlumsky; Paul Whitfield
