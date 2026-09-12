@@ -50,7 +50,7 @@ ch_read_AHCCD_monthly <- function(monthly_file = NULL) {
     val_type <- 'tmean'
   }
   else if (str_detect(tolower(filename), 'mn')) {
-    vals_type <- 'tmin'
+    val_type <- 'tmin'
   } 
   else if (str_detect(str_to_lower(filename), "mt")) {
     val_type <- "precip"
@@ -72,7 +72,7 @@ ch_read_AHCCD_monthly <- function(monthly_file = NULL) {
   close(con)
   
   # find number of lines containing file info
-  # headerlines may be in English and/or French
+  # header lines may be in English and/or French
   
   input <- tolower(input)
   LineNum <- str_detect(input, fixed(','))
