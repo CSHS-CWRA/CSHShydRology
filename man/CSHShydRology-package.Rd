@@ -42,6 +42,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Kevin Shook \email{kshook@kshook.ca}
   \item Paul Whitfield \email{paul.h.whitfield@gmail.com}
   \item Robert Chlumsky \email{rchlumsk@uwaterloo.ca}
   \item Daniel Moore \email{dan.moore@ubc.ca}

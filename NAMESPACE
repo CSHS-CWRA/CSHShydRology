@@ -79,66 +79,86 @@ import(dplyr)
 import(ggplot2)
 importFrom(Kendall,MannKendall)
 importFrom(MGBT,MGBT)
-importFrom(dplyr,left_join)
-importFrom(dplyr,mutate)
+importFrom(dplyr,
+  left_join,
+  mutate
+)
 importFrom(fields,image.plot)
-importFrom(ggplot2,coord_sf)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
-importFrom(ggplot2,theme_bw)
-importFrom(grDevices,col2rgb)
-importFrom(grDevices,colorRampPalette)
-importFrom(grDevices,hsv)
-importFrom(graphics,abline)
-importFrom(graphics,axis)
-importFrom(graphics,box)
-importFrom(graphics,frame)
-importFrom(graphics,grconvertX)
-importFrom(graphics,grconvertY)
-importFrom(graphics,grid)
-importFrom(graphics,hist)
-importFrom(graphics,image)
-importFrom(graphics,layout)
-importFrom(graphics,legend)
-importFrom(graphics,lines)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,points)
-importFrom(graphics,polygon)
-importFrom(graphics,rect)
-importFrom(graphics,segments)
-importFrom(graphics,text)
-importFrom(graphics,title)
+importFrom(ggplot2,
+  coord_sf,
+  ggplot,
+  labs,
+  theme_bw
+)
+importFrom(grDevices,
+  col2rgb,
+  colorRampPalette,
+  hsv
+)
+importFrom(graphics,
+  abline,
+  axis,
+  box,
+  frame,
+  grconvertX,
+  grconvertY,
+  grid,
+  hist,
+  image,
+  layout,
+  legend,
+  lines,
+  mtext,
+  par,
+  plot,
+  points,
+  polygon,
+  rect,
+  segments,
+  text,
+  title
+)
 importFrom(grid,unit)
-importFrom(lubridate,date)
-importFrom(lubridate,day)
-importFrom(lubridate,month)
-importFrom(lubridate,year)
+importFrom(lubridate,
+  date,
+  day,
+  month,
+  year
+)
 importFrom(outliers,grubbs.test)
-importFrom(plotrix,radial.grid)
-importFrom(plotrix,radial.plot)
-importFrom(stats,approx)
-importFrom(stats,dist)
-importFrom(stats,get_all_vars)
-importFrom(stats,lm)
-importFrom(stats,median)
-importFrom(stats,model.frame)
-importFrom(stats,qnorm)
-importFrom(stats,qt)
-importFrom(stats,quantile)
-importFrom(stats,step)
-importFrom(stats,wilcox.test)
-importFrom(stringr,fixed)
-importFrom(stringr,str_detect)
-importFrom(stringr,str_split_fixed)
-importFrom(stringr,str_to_lower)
-importFrom(timeDate,as.timeDate)
-importFrom(timeDate,dayOfYear)
-importFrom(utils,data)
-importFrom(utils,read.csv)
-importFrom(utils,read.fwf)
-importFrom(utils,read.table)
-importFrom(utils,setTxtProgressBar)
-importFrom(utils,txtProgressBar)
-importFrom(utils,write.csv)
+importFrom(plotrix,
+  radial.grid,
+  radial.plot
+)
+importFrom(stats,
+  approx,
+  dist,
+  get_all_vars,
+  lm,
+  median,
+  model.frame,
+  qnorm,
+  qt,
+  quantile,
+  step,
+  wilcox.test
+)
+importFrom(stringr,
+  fixed,
+  str_detect,
+  str_split_fixed,
+  str_to_lower
+)
+importFrom(timeDate,
+  as.timeDate,
+  dayOfYear
+)
+importFrom(utils,
+  data,
+  read.csv,
+  read.fwf,
+  read.table,
+  setTxtProgressBar,
+  txtProgressBar,
+  write.csv
+)
