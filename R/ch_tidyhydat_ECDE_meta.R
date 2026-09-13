@@ -53,6 +53,9 @@
 #'   }
 #' }
 #' 
+#' @importFrom tidyhydat hy_version hy_stations hy_stn_regulation hy_stn_data_range 
+#' @importFrom tidyhydat hy_daily hy_reg_office_list hy_datum_list hy_agency_list 
+#' @importFrom tidyhydat hy_stn_data_coll hy_sed_daily_loads
 #' @importFrom stringr str_detect
 #' @importFrom dplyr left_join
 #' @importFrom utils txtProgressBar setTxtProgressBar
