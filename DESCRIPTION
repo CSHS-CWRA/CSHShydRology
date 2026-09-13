@@ -55,9 +55,10 @@ Imports:
     MGBT,
     outliers,
     TeachingDemos,
-    timeDate,
-    stats,
-    stringr
+    Kendall,
+    vctrs,
+    rlang,
+    scales
 Suggests: 
     ggspatial,
     httr2,
