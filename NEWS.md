@@ -1,3 +1,14 @@
+# CSHShydRology 1.5.1
+
+-  the packages `ggspatial`, `httr2`, `terra`, `tidyhydat`, `tidyterra` and `whitebox` have been
+moved from `Imports` to `Suggests`, as they are frequent sources of CRAN check failures. Functions
+that need one of these packages now check for it and stop with an informative message if it is not
+installed, so the rest of the package remains usable without them.
+-  calls to the above packages are now fully qualified (`pkg::function()`) and their `importFrom`
+directives have been removed, as a package in `Suggests` cannot be imported in `NAMESPACE`
+-  examples that require one of these packages, an external executable or a download are now
+wrapped in `\dontrun{}`
+
 # CSHShydRology 1.5.0
 
 -  functions from the packages `terra` and `tidyterra` have replaced `raster`, which is deprecated,

@@ -84,7 +84,7 @@ ch_checkchannels <- function(dem, channels, outlet = NULL, main_label = "",
   check_map <- ggplot2::ggplot(data = contours) +
     tidyterra::geom_spatvector(data = contours, color = contour_colour) +
     tidyterra::geom_spatvector(data = channels, color = channel_colour) +
-    ggspatial::annotation_north_arrow(style = north_arrow_fancy_orienteering, 
+    ggspatial::annotation_north_arrow(style = ggspatial::north_arrow_fancy_orienteering, 
                                       location = "tr",
                                       pad_x = unit(4, "mm"), 
                                       pad_y = unit(6.5, "mm")) +
