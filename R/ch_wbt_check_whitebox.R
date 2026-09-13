@@ -4,9 +4,8 @@
 #' @export
 #' @keywords internal
 #' @author Kevin Shook
-#' @importFrom whitebox check_whitebox_binary
 #'
-#' @examples 
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -14,8 +13,13 @@
 #' } else {
 #'   message("Example not run as Whitebox executable not found")
 #' }
+#' }
 ch_wbt_check_whitebox <- function() {
-  wb_found <- check_whitebox_binary(silent = TRUE)
+  # This also serves as the `whitebox` package guard for every ch_wbt_* function:
+  # they all call ch_wbt_check_whitebox() before touching whitebox::, so they do
+  # not need their own assert_pkg("whitebox") call.
+  assert_pkg("whitebox")
+  wb_found <- whitebox::check_whitebox_binary(silent = TRUE)
   msg <- paste("The WhiteboxTools executable could not be found.\n", 
                "Make sure that you have run install_whitebox().\n", 
                "If you have already done this, try setting the path to the executable using wbt_init().", sep = "")

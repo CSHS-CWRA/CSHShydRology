@@ -69,6 +69,7 @@ required to delineate a catchment. The names of files to be created
 are taken from the list created by the function \code{ch_wbt_filenames}.
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -85,6 +86,7 @@ if (check_whitebox_binary()){
                                         threshold = 1, snap_dist = 10)
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 }
 \seealso{

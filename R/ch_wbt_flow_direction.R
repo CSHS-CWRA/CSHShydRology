@@ -5,15 +5,13 @@
 #' @param return_raster Should a raster object be returned?
 #'
 #' @author Dan Moore Joel Trubilowicz
-#' @importFrom terra rast
-#' @importFrom whitebox wbt_d8_pointer
 #' @return If \code{return_raster = TRUE} (the default), the flow direction
 #' grid will be returned as a raster object, in addition to being written to
 #' \option{fn_flowdir}. If \code{return_raster = FALSE}, the output file will still be created
 #' but a \code{NULL} value is returned.
 #' @export
 #'
-#' @examples 
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -35,17 +33,19 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 
 ch_wbt_flow_direction <- function(fn_dem_ns, fn_flowdir, return_raster = TRUE) {
+  assert_pkg("terra")
   ch_wbt_check_whitebox()
   if (!file.exists(fn_dem_ns)) {
     stop("Error: input sink-free dem file does not exist")
   }
   message("ch_wbt: Creating flow direction grid")
-  
-  wbt_d8_pointer(fn_dem_ns, fn_flowdir)
+
+  whitebox::wbt_d8_pointer(fn_dem_ns, fn_flowdir)
   if (return_raster) {
-    return(rast(fn_flowdir))
+    return(terra::rast(fn_flowdir))
   } else {
     return(NULL)
   }

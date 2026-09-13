@@ -7,13 +7,11 @@
 #' @param return_vector If \code{TRUE} (the default) a vector of the catchment will be returned.
 #' 
 #' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
-#' @importFrom terra rast
-#' @importFrom whitebox wbt_watershed wbt_raster_to_vector_polygons
 #' @return If \code{return_vector == TRUE} a vector of the catchment is returned. Otherwise
 #' nothing is returned.
 #' @export
 #' @seealso  \code{\link{ch_wbt_catchment_onestep}}
-#' @examples 
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -49,10 +47,13 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 
 ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras, 
                              fn_catchment_vec, return_vector = TRUE) {
-  
+  assert_pkg("terra")
+  assert_pkg("whitebox")
+
   ch_wbt_check_whitebox()
   
   if (!file.exists(fn_pp_snap)) {
@@ -74,10 +75,10 @@ ch_wbt_catchment <- function(fn_pp_snap, fn_flowdir, fn_catchment_ras,
     stop("Error: pour points and flow direction grid have different crs")
   }
   
-  wbt_watershed(d8_pntr = fn_flowdir, pour_pts = fn_pp_snap, 
+  whitebox::wbt_watershed(d8_pntr = fn_flowdir, pour_pts = fn_pp_snap,
                           output = fn_catchment_ras)
-  
-  wbt_raster_to_vector_polygons(fn_catchment_ras, fn_catchment_vec)
+
+  whitebox::wbt_raster_to_vector_polygons(fn_catchment_ras, fn_catchment_vec)
   
   catchment_vec <- terra::vect(fn_catchment_vec)
   

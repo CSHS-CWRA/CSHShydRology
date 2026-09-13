@@ -73,7 +73,7 @@ and maximum elevations and the number of elevation intervals. A plot of the
 curve may also be created.
 }
 \examples{
-\donttest{
+\dontrun{
 # Note: example not tested automatically as it is very slow to execute due to the downloading
 # change the following line to specify a directory to hold the data
 library(terra)

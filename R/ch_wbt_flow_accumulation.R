@@ -8,13 +8,11 @@
 #' but a \code{NULL} value is returned.
 #'
 #' @author Dan Moore Joel Trubilowicz and Billy Browning
-#' @importFrom terra rast
-#' @importFrom whitebox wbt_d8_flow_accumulation
 #' @return If \code{return_raster = TRUE}, the flow accumulation
 #' grid will be returned as a raster object, otherwise \code{NULL} is returned.
 #' @export
 #'
-#' @examples 
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -36,18 +34,20 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 
 ch_wbt_flow_accumulation <- function(fn_dem_ns, fn_flowacc, return_raster = TRUE) {
+  assert_pkg("terra")
   ch_wbt_check_whitebox()
   if (!file.exists(fn_dem_ns)) {
     stop("Error: input sink-free dem file does not exist")
   }
-  
+
   message("ch_wbt: Creating flow accumulation grid")
-  wbt_d8_flow_accumulation(fn_dem_ns, fn_flowacc)
-  
+  whitebox::wbt_d8_flow_accumulation(fn_dem_ns, fn_flowacc)
+
   if (return_raster) {
-    return(rast(fn_flowacc))
+    return(terra::rast(fn_flowacc))
   } else {
     return(NULL)
   }

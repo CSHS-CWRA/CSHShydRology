@@ -16,12 +16,10 @@
 #'
 #' @author Dan Moore Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_volcano_pourpoints}}
-#' @importFrom terra rast
-#' @importFrom whitebox wbt_snap_pour_points
 #' @return Returns a \pkg{terra} \code{SpatVector} object of the specified pour points snapped to the
 #' channel network.
 #' @export 
-#' @examples
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -49,10 +47,11 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
+#' }
 
 ch_wbt_pourpoints <- function(pp_sv = NULL, fn_flowacc, fn_pp, fn_pp_snap, 
                               check_crs = TRUE, snap_dist = NULL, ...) {
-  
+  assert_pkg("terra")
   ch_wbt_check_whitebox()
   
   if (!file.exists(fn_flowacc)) {
@@ -69,7 +68,7 @@ ch_wbt_pourpoints <- function(pp_sv = NULL, fn_flowacc, fn_pp, fn_pp_snap,
   
   if (check_crs) {
     pp_crs <- as.integer(terra::crs(pp_sv, describe = TRUE)$code)
-    fa_crs <- as.integer(terra::crs(rast(fn_flowacc), describe = TRUE)$code)
+    fa_crs <- as.integer(terra::crs(terra::rast(fn_flowacc), describe = TRUE)$code)
     if (pp_crs != fa_crs) {
       stop("Error: pour points and flow accumulation grid have different crs")
     }
@@ -79,7 +78,7 @@ ch_wbt_pourpoints <- function(pp_sv = NULL, fn_flowacc, fn_pp, fn_pp_snap,
   
   terra::writeVector(pp_sv, fn_pp, overwrite = TRUE)
   
-  wbt_snap_pour_points(fn_pp, fn_flowacc, fn_pp_snap, snap_dist, ...)
+  whitebox::wbt_snap_pour_points(fn_pp, fn_flowacc, fn_pp_snap, snap_dist, ...)
   
   return(terra::vect(fn_pp_snap))
 }
