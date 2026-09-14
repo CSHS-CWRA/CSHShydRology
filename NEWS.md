@@ -1,3 +1,7 @@
+# CSHShydRology 1.6
+- replaces Travis with GitHub Actions. Travis shut down travis-ci.org and moved open-source projects onto a credit-based pla.
+- checks the package on every push to master and every pull request on five configurations: macOS and Windows on the current R release, plus R devel, release and old-release on Linux.
+
 # CSHShydRology 1.5.1
 
 -  the packages `ggspatial`, `httr2`, `terra`, `tidyhydat`, `tidyterra` and `whitebox` have been
