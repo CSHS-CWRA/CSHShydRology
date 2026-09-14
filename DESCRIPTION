@@ -70,11 +70,13 @@ Suggests:
     httr2,
     knitr,
     readr,
+    rlang,
     rmarkdown,
     terra,
     tidyhydat,
     tidyterra,
-    testthat, 
+    testthat,
+    vctrs,
     whitebox
 VignetteBuilder: knitr
 LazyData: true
