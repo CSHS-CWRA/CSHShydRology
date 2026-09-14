@@ -47,6 +47,7 @@ Authors:
   \item Robert Chlumsky \email{rchlumsk@uwaterloo.ca}
   \item Daniel Moore \email{dan.moore@ubc.ca}
   \item Martin Durocher
+  \item Joel Trubilowicz
   \item Billy Browning
   \item Vincenzo Coia
 }
@@ -55,7 +56,6 @@ Other contributors:
 \itemize{
   \item Matthew Lemieux [contributor]
   \item Jason Chiang [contributor]
-  \item Joel Trubilowicz [contributor]
   \item SJ Kim [contributor]
   \item Jad Saade [contributor]
 }

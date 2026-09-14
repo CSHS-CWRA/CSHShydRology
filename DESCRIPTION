@@ -21,7 +21,7 @@ Authors@R: c(person("Kevin", "Shook",
              person("Jason", "Chiang", 
                 role = c("ctb")),
              person("Joel", "Trubilowicz", 
-                role = c("ctb")),
+                role = c("aut")),
              person("SJ", "Kim", 
                 role = c("ctb")),
              person("Billy", "Browning", 
@@ -40,8 +40,8 @@ Author: Kevin Shook [cre, aut],
   Jason Chiang [ctb],
   Joel Trubilowicz [aut],
   SJ Kim [ctb],
-  Vincenzo Cia [aut],
   Billy Browning [aut],
+  Vincenzo Coia [aut],
   Jad Saade [ctb]
 Maintainer: Kevin Shook <kshook@kshook.ca>
 Description: A collection of user-submitted functions to aid in the analysis of hydrological data, particularly for users in Canada. The functions focus on the use of Canadian data sets, and are suited to Canadian hydrology, such as the important cold region hydrological processes and will work with Canadian hydrological models. The functions are grouped into several themes, currently including Statistical hydrology, Basic data manipulations, Visualization, and Spatial hydrology. Functions developed by the Floodnet project are also included. CSHShydRology has been developed with the assistance of the Canadian Society for Hydrological Sciences (CSHS) which is an affiliated society of the Canadian Water Resources Association (CWRA). As of version 1.2.6, functions now fail gracefully when attempting to download data from a url which is unavailable.
