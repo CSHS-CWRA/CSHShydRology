@@ -48,6 +48,7 @@ Authors:
   \item Daniel Moore \email{dan.moore@ubc.ca}
   \item Martin Durocher
   \item Billy Browning
+  \item Vincenzo Coia
 }
 
 Other contributors:
@@ -56,6 +57,7 @@ Other contributors:
   \item Jason Chiang [contributor]
   \item Joel Trubilowicz [contributor]
   \item SJ Kim [contributor]
+  \item Jad Saade [contributor]
 }
 
 }

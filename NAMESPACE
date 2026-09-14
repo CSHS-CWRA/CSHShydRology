@@ -137,6 +137,10 @@ importFrom(plotrix,
   radial.grid,
   radial.plot
 )
+importFrom(scales,
+  breaks_log,
+  trans_new
+)
 importFrom(stats,
   approx,
   dist,

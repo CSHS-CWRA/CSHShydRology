@@ -37,6 +37,8 @@
 #' ch_annual_plot(ams$Date, ams$Flow)
 #' @export
 ch_annual_plot <- function(date, flow, data = NULL) {
+  assert_pkg("rlang")
+  assert_pkg("vctrs")  
   in_date <- rlang::enquo(date)
   in_flow <- rlang::enquo(flow)
   name_flow <- names(rlang::quos_auto_name(list(in_flow)))

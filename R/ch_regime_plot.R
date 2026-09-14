@@ -82,6 +82,8 @@ ch_regime_plot <- function(DF = NULL,
                            flow = NULL,
                            id = NULL,
                            ...) {
+  assert_pkg("rlang")
+  assert_pkg("vctrs")  
   q_date <- rlang::enquo(date)
   q_flow <- rlang::enquo(flow)
   q_id <- rlang::enquo(id)

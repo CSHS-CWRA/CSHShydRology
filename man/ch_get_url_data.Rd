@@ -53,10 +53,9 @@ if (typeof(sm_data) != "character") {
 ra_fn <- file.path(dir_name, "gs_dem25.tif")
 ra_url <- "https://zenodo.org/record/4781469/files/gs_dem25.tif"
 ra_data <- ch_get_url_data(ra_url, ra_fn, stop_on_error = FALSE)
-terra::plot(ra_data)
 
 if (typeof(ra_data) != "character") {
-  plot(ra_data)
+  terra::plot(ra_data)
 } else {
   message(ra_data)}
  
