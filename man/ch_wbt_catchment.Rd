@@ -31,6 +31,7 @@ nothing is returned.
 Delineate catchment boundaries
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -65,6 +66,7 @@ if (check_whitebox_binary()){
                                  fn_catchment_ras, fn_catchment_vec)
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 }
 \seealso{

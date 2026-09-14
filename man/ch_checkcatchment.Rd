@@ -68,6 +68,7 @@ Also generates a table summarizing the catchments,
 including the coordinates of the outlet point and the catchment area.
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -106,6 +107,7 @@ if (check_whitebox_binary()){
   ch_checkcatchment(test_raster, catchments, snapped_pourpoints)
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 
 }

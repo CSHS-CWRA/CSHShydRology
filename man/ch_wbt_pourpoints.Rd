@@ -42,6 +42,7 @@ network. This function snaps (forces the locations) of pour points to the
 channels.
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -68,6 +69,7 @@ if (check_whitebox_binary()){
   snapped_pourpoint_file, snap_dist = 10)
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 }
 \seealso{

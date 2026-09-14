@@ -29,7 +29,7 @@
 #' @seealso  \code{\link{ch_qa_hydrograph}}  \code{\link{ch_model_hydrograph}} 
 #' @returns Returns a \code{ggplot2} object of the hydrographs.
 #' @export
-#' @import ggplot2 dplyr tidyhydat
+#' @import ggplot2 dplyr
 #'
 #' @examples  \dontrun{
 #' # Not run as this requires the installation of the HYDAT database
@@ -58,6 +58,7 @@ ch_gg_hydrographs <- function(WSC_stations,
                                inst_colour = "black",
                                daily_colour = "black",
                               ...) {
+  assert_pkg("tidyhydat")
   # set up plot values
   Datetime <- NULL 
   Value <- NULL
@@ -94,7 +95,7 @@ ch_gg_hydrographs <- function(WSC_stations,
     
   # get WSC data for plotting and find min and max dates
   if (daily) {
-    wsc_daily <- hy_daily_flows(WSC_stations, 
+    wsc_daily <- tidyhydat::hy_daily_flows(WSC_stations, 
                                 start_date = start_date, 
                                 end_date = end_date)
     
@@ -107,7 +108,7 @@ ch_gg_hydrographs <- function(WSC_stations,
   }
   
   if (instantaneous) {
-    wsc_inst <- hy_annual_instant_peaks(WSC_stations,
+    wsc_inst <- tidyhydat::hy_annual_instant_peaks(WSC_stations,
                                         start_year = start_year, 
                                         end_year = end_year)
     

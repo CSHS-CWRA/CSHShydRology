@@ -23,6 +23,7 @@ but a \code{NULL} value is returned.
 Creates flow direction grid file
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -43,6 +44,7 @@ if (check_whitebox_binary()){
   plot(flow_dir)
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 }
 \author{

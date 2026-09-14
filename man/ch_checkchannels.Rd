@@ -39,6 +39,7 @@ Generates a map of the generated channel network layer.
 Generates a simple map of the drainage network plotted over the contours to allow a visual assessment.
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
@@ -74,6 +75,7 @@ if (check_whitebox_binary()){
   ch_checkchannels(test_raster, channels, snapped_pourpoints)
 } else {
   message("Examples not run as Whitebox executable not found")
+}
 }
 }
 \seealso{

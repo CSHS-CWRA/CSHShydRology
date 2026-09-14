@@ -84,7 +84,6 @@ import(TeachingDemos)
 import(circular)
 import(dplyr)
 import(ggplot2)
-import(tidyhydat)
 importFrom(Kendall,MannKendall)
 importFrom(MGBT,MGBT)
 importFrom(dplyr,
@@ -97,11 +96,6 @@ importFrom(ggplot2,
   ggplot,
   labs,
   theme_bw
-)
-importFrom(ggspatial,
-  annotation_north_arrow,
-  annotation_scale,
-  north_arrow_fancy_orienteering
 )
 importFrom(grDevices,
   col2rgb,
@@ -132,10 +126,6 @@ importFrom(graphics,
   title
 )
 importFrom(grid,unit)
-importFrom(httr2,
-  req_perform,
-  request
-)
 importFrom(lubridate,
   date,
   day,
@@ -146,10 +136,6 @@ importFrom(outliers,grubbs.test)
 importFrom(plotrix,
   radial.grid,
   radial.plot
-)
-importFrom(scales,
-  breaks_log,
-  trans_new
 )
 importFrom(stats,
   approx,
@@ -170,29 +156,6 @@ importFrom(stringr,
   str_split_fixed,
   str_to_lower
 )
-importFrom(terra,
-  as.contour,
-  crs,
-  hist,
-  mask,
-  minmax,
-  plot,
-  quantile,
-  rast,
-  values
-)
-importFrom(tidyhydat,
-  hy_agency_list,
-  hy_daily,
-  hy_datum_list,
-  hy_reg_office_list,
-  hy_sed_daily_loads,
-  hy_stations,
-  hy_stn_data_coll,
-  hy_stn_data_range,
-  hy_stn_regulation,
-  hy_version
-)
 importFrom(timeDate,
   as.timeDate,
   dayOfYear
@@ -205,21 +168,4 @@ importFrom(utils,
   setTxtProgressBar,
   txtProgressBar,
   write.csv
-)
-importFrom(whitebox,
-  check_whitebox_binary,
-  wbt_breach_depressions,
-  wbt_breach_depressions_least_cost,
-  wbt_d8_flow_accumulation,
-  wbt_d8_pointer,
-  wbt_extract_streams,
-  wbt_fill_depressions,
-  wbt_fill_depressions_planchon_and_darboux,
-  wbt_fill_depressions_wang_and_liu,
-  wbt_fill_single_cell_pits,
-  wbt_init,
-  wbt_raster_streams_to_vector,
-  wbt_raster_to_vector_polygons,
-  wbt_snap_pour_points,
-  wbt_watershed
 )

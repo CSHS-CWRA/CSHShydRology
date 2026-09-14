@@ -13,12 +13,14 @@ If \code{WhiteboxTools} cannot be found, a message explaining what to do is disp
 Checks for WhiteboxTools executable
 }
 \examples{
+\dontrun{
 # Only proceed if Whitebox executable is installed
 library(whitebox)
 if (check_whitebox_binary()){
   ch_wbt_check_whitebox()
 } else {
   message("Example not run as Whitebox executable not found")
+}
 }
 }
 \author{

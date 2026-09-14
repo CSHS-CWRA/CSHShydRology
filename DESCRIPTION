@@ -44,34 +44,31 @@ URL: https://github.com/CSHS-hydRology/CSHShydRology
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    circular,
+    datasets,
+    dplyr,
     fields,
+    ggplot2,
+    Kendall,
     lubridate,
     plotrix,
-    timeDate,
-    stringr,
-    ggplot2,
-    ggspatial,
-    stats,
-    dplyr,
-    httr2,
-    terra,
-    tidyterra,
-    tidyhydat,
-    whitebox,
-    datasets,
-    circular,
     MGBT,
     outliers,
     TeachingDemos,
-    Kendall,
-    vctrs,
-    rlang,
-    scales
+    timeDate,
+    stats,
+    stringr
 Suggests: 
+    ggspatial,
+    httr2,
     knitr,
-    testthat, 
+    readr,
     rmarkdown,
-    readr
+    terra,
+    tidyhydat,
+    tidyterra,
+    testthat, 
+    whitebox
 VignetteBuilder: knitr
 LazyData: true
 Encoding: UTF-8

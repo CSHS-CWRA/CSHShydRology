@@ -32,11 +32,10 @@
 #' @author Dan Moore Kevin Shook Joel Trubilowicz and Billy Browning
 #' @seealso \code{\link{ch_checkchannels}} 
 #' @importFrom ggplot2 ggplot coord_sf theme_bw labs
-#' @importFrom ggspatial annotation_north_arrow north_arrow_fancy_orienteering annotation_scale 
-#' @importFrom dplyr mutate 
+#' @importFrom dplyr mutate
 #' @importFrom grid unit
 #' @export
-#' @examples
+#' @examples \dontrun{
 #' # Only proceed if Whitebox executable is installed
 #' library(whitebox)
 #' if (check_whitebox_binary()){
@@ -76,7 +75,8 @@
 #' } else {
 #'   message("Examples not run as Whitebox executable not found")
 #' }
-#' 
+#' }
+#'
 ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
                                 main_label = "", bbox_type = "catchment",
                                 channel_vec = NULL, 
@@ -84,7 +84,10 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
                                 channel_colour = "blue", contour_colour = "grey",
                                 plot_na = TRUE, plot_scale = TRUE,
                                 na_location = "tr", scale_location = "bl") {
-    
+    assert_pkg("terra")
+    assert_pkg("ggspatial")
+    assert_pkg("tidyterra")
+
     # check inputs
     if (missing(catchment)) {
       stop("ch_checkcatchment requires SpatVector catchment polygons to plot")
@@ -122,14 +125,14 @@ ch_checkcatchment <- function(dem, catchment, outlet, outlet_label = NULL,
       theme_bw()
     if (plot_na) {
       check_map <- check_map +
-       annotation_north_arrow(style = north_arrow_fancy_orienteering, 
+       ggspatial::annotation_north_arrow(style = ggspatial::north_arrow_fancy_orienteering,
                                           location = na_location,
-                                          pad_x = unit(4, "mm"), 
+                                          pad_x = unit(4, "mm"),
                                           pad_y = unit(6.5, "mm"))
     }
     if (plot_scale) {
       check_map <- check_map +
-        annotation_scale(location = scale_location)
+        ggspatial::annotation_scale(location = scale_location)
     }
     print(check_map)
     nc <- nrow(outlet)
