@@ -1,7 +1,10 @@
+<!-- badges: start -->
 [![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html) 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/CSHShydRology)](https://cran.r-project.org/package=CSHShydRology)
 [![license](https://img.shields.io/badge/license-GPL3-lightgrey.svg)](https://choosealicense.com/)
+[![R-CMD-check](https://github.com/CSHS-CWRA/CSHShydRology/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/CSHS-CWRA/CSHShydRology/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
 # CSHShydRology
 
 ## Installing this package
